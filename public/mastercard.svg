@@ -1,0 +1,28 @@
+<svg width="81" height="47" viewBox="0 0 81 47" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Clip path group">
+<mask id="mask0_23_14185" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="81" height="47">
+<g id="svg1248822778_8729_clip2_14_206">
+<path id="Vector" d="M80.49 0.818359H0.48999V46.8184H80.49V0.818359Z" fill="white" style="fill:white;fill-opacity:1;"/>
+</g>
+</mask>
+<g mask="url(#mask0_23_14185)">
+<g id="Group">
+<g id="Mask group">
+<mask id="mask1_23_14185" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="81" height="47">
+<g id="Group_2">
+<path id="Vector_2" d="M80.49 0.818359H0.48999V46.8184H80.49V0.818359Z" fill="white" style="fill:white;fill-opacity:1;"/>
+</g>
+</mask>
+<g mask="url(#mask1_23_14185)">
+<g id="Group_3">
+<path id="Vector_3" d="M71.136 0.818359H9.84398C4.67798 0.818359 0.48999 5.00626 0.48999 10.1723V37.4644C0.48999 42.6305 4.67798 46.8184 9.84398 46.8184H71.136C76.302 46.8184 80.49 42.6305 80.49 37.4644V10.1723C80.49 5.00626 76.302 0.818359 71.136 0.818359Z" fill="#F0F0F0" style="fill:#F0F0F0;fill:color(display-p3 0.9412 0.9412 0.9412);fill-opacity:1;"/>
+<path id="Vector_4" d="M46.2459 14.5073H34.7009V35.5543H46.2459V14.5073Z" fill="#C7C7C7" style="fill:#C7C7C7;fill:color(display-p3 0.7804 0.7804 0.7804);fill-opacity:1;"/>
+<path id="Vector_5" d="M35.472 25.0305C35.472 20.7544 37.453 16.9592 40.493 14.507C38.256 12.722 35.434 11.6433 32.355 11.6433C25.063 11.6433 19.162 17.6307 19.162 25.0305C19.162 32.4303 25.063 38.4177 32.355 38.4177C35.434 38.4177 38.256 37.3389 40.493 35.554C37.449 33.1365 35.472 29.3066 35.472 25.0305Z" fill="#5B5B5B" style="fill:#5B5B5B;fill:color(display-p3 0.3569 0.3569 0.3569);fill-opacity:1;"/>
+<path id="Vector_6" d="M61.829 25.0305C61.829 32.4303 55.929 38.4177 48.636 38.4177C45.558 38.4177 42.735 37.3389 40.498 35.554C43.576 33.0975 45.519 29.3066 45.519 25.0305C45.519 20.7544 43.538 16.9592 40.498 14.507C42.731 12.722 45.553 11.6433 48.632 11.6433C55.929 11.6433 61.829 17.6697 61.829 25.0305Z" fill="#898989" style="fill:#898989;fill:color(display-p3 0.5373 0.5373 0.5373);fill-opacity:1;"/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg>

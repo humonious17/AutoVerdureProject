@@ -1,0 +1,26 @@
+.cart-style {
+    width: 400px;
+    height: 650px;
+    flex-shrink: 0;
+    border-radius: 39px;
+    background: #FFF;
+    background: color(display-p3 1 1 1);
+    position: fixed; /* To ensure it stays in the top right corner */
+    top: 90px;       /* Adjust as necessary */
+    right: 84px;     /* Adjust as necessary */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: adds a shadow for better visibility */
+    z-index: 1000;   /* Ensures it stays above other content */
+}
+
+.cart-heading {
+    color: #000;
+    font-family: Poppins;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    margin-top: 28px;
+    margin-left: 30px;
+}
+  
+  

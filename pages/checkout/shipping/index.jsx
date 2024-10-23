@@ -1,10 +1,41 @@
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import Input from "./Input"; // Assuming Input is a separate component
+
+const Input = ({ label, placeholder, type, name, value, onChange }) => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  return (
+    <div className="w-full flex flex-col gap-y-3">
+      <label className="text-2xl leading-6 capitalize font-normal text-[#070707]">
+        {label}
+      </label>
+      <div className="w-full text-base px-4 py-3 leading-[25.6px] rounded-[84px] border-[1px] border-[#070707] text-[#070707] bg-[#FFFFFF] font-medium flex gap-5 justify-between">
+        <input
+          className="w-full h-fit text-base focus:outline-none"
+          placeholder={placeholder}
+          type={isVisible ? "text" : type}
+          name={name}
+          value={value}
+          onChange={onChange}
+        />
+        {type === "password" && (
+          <Image
+            className="cursor-pointer"
+            onClick={() => setIsVisible(!isVisible)}
+            src="/eye.svg"
+            alt="eye"
+            width={24}
+            height={24}
+          />
+        )}
+      </div>
+    </div>
+  );
+};
 
 const Shipping = (props) => {
-  const emailFromProps = props.email || null;
+  const email = props.email || null;
   const router = useRouter();
   const [error, setError] = useState(false);
   const [formData, setFormData] = useState({
@@ -16,14 +47,12 @@ const Shipping = (props) => {
     country: '',
     zipCode: '',
   });
-  const [email, setEmail] = useState(emailFromProps);
-  const [products, setProducts] = useState([]); // Initialize products array
 
   useEffect(() => {
     if (!email) {
       router.push('/checkout/guest');
     }
-  }, [email, router]);
+  }, [router, email]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -35,20 +64,17 @@ const Shipping = (props) => {
 
     if (Object.values(formData).includes('')) {
       setError('Please fill in all the fields');
-      return;
+      return false;
     }
 
     setError(false);
-
-    // Set the shipping address in a local variable or state
-    const shippingAddress = formData;
 
     const result = await fetch('/api/createRazorpayOrder', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ products }),
+      body: JSON.stringify({ products: formData }),
     });
 
     if (result.ok) {

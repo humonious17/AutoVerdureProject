@@ -10,7 +10,9 @@ const AdminNavbar = () => {
   return (
     <div className="pt-20 md:pt-[124px] xl:pt-[105px] w-full flex flex-col justify-center items-center bg-[#FFFCF8]">
       <div className="text-4xl md:text-[70px] leading-[48px] md:leading-[80px] -tracking-[1px] md:-tracking-[1.75px] text-primaryGrayscale text-center font-normal">
+        <Link href="/admin" passHref>
         <p>Admin</p>
+        </Link>
       </div>
 
       <div className="my-5 md:mt-6 md:mb-[40px] text-base text-secondaryGrayscale font-medium capitalize">

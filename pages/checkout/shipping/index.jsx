@@ -69,21 +69,28 @@ const Shipping = (props) => {
 
     setError(false);
 
+    // Example products data, replace with actual selected products
+    const products = {
+      selectedProducts: [
+        { price: 500, productQty: 2 },
+        // ...other selected products
+      ]
+    };
+
     const result = await fetch('/api/createRazorpayOrder', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ products: formData }),
+      body: JSON.stringify({ products }), // Ensure products data is sent
     });
 
     if (result.ok) {
-      // Redirect to payment page
       const resp = await result.json();
       const orderId = resp.id;
       router.push(`/checkout/payment?orderId=${orderId}`);
     }
-  };
+};
 
   return (
     <div className="mb-[95px] sm:mb-[58px] xl:mb-[105px] w-full px-11 sm:px-0 flex flex-col justify-center items-center">

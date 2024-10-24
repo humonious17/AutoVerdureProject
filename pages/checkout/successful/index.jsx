@@ -1,5 +1,6 @@
 import Image from "next/image";
 import React from "react";
+import Link from "next/link";
 
 const Successful = () => {
   return (
@@ -33,9 +34,11 @@ const Successful = () => {
           <p className="text-sm leading-[26.2px] font-normal text-[#8C8C8C]">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit.
           </p>
+          <Link href="/store" passHref>
           <button className="w-full py-[17px] text-base leading-[20.8px] font-bold rounded-[30px] bg-[#070707] text-white flex justify-center items-center">
             Back to Shopping
           </button>
+          </Link>
         </div>
       </div>
     </div>

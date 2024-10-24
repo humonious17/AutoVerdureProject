@@ -209,30 +209,23 @@ const Cart = (props) => {
     );
 };
 
-export async function getServerSideProps({req, res}) {
-    const cookies = req.headers.cookie;
-    let cartId;
-    let products;
+export async function getServerSideProps(context) {
+  const { req } = context;
+  const cookies = parse(req.headers.cookie || "");
+  const products = await findCartProducts(cookies.cartId);
 
-    if (cookies) {
-        const tokens = parse(cookies);
-        cartId = tokens.cartId;
+  // Ensure that productImage is either null or defined
+  const sanitizedProducts = products.map((product) => ({
+    ...product,
+    productImage: product.productImage || null, // Replace undefined with null
+  }));
 
-        products = await findCartProducts(cartId);
-        if (products) {
-            return {
-                props: { products: products },
-            }
-        } else {
-            return {
-                props: { products: [] },
-            }
-        }
-    } else {
-        return {
-            props: { products: [] },
-        }
-    }
+  return {
+    props: {
+      products: sanitizedProducts, // Return sanitized products
+    },
+  };
+
 }
 
 export default Cart;

@@ -4,7 +4,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { navItems } from "../constant/data";
 import { usePathname } from "next/navigation";
-import { CiSearch } from "react-icons/ci";
+
 import { PiLineVerticalLight } from "react-icons/pi";
 
 const Navbar = () => {
@@ -80,7 +80,7 @@ const Navbar = () => {
             {/* Search Input */}
             <div className="relative w-full">
               <input
-                type="search"
+                type="text"
                 name="search"
                 required
                 value={searchText}
@@ -99,7 +99,6 @@ const Navbar = () => {
                   className="absolute right-16 top-1/2 transform -translate-y-1/2 text-gray-700"
                   aria-label="Clear search"
                 >
-                  <CiSearch />
 
                 </button>
               )}

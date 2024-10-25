@@ -6,7 +6,7 @@ const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
 export default function AdminBlogs() {
   const [blogs, setBlogs] = useState([]);
-  const [newBlog, setNewBlog] = useState({ title: '', content: '', image: null });
+  const [newBlog, setNewBlog] = useState({ title: '', description: '', content: '', image: null });
   const [imagePreview, setImagePreview] = useState(null);
 
   useEffect(() => {
@@ -41,6 +41,7 @@ export default function AdminBlogs() {
 
     const formData = new FormData();
     formData.append('title', newBlog.title);
+    formData.append('description', newBlog.description); // Include description
     formData.append('content', newBlog.content);
     if (newBlog.image) {
       formData.append('image', newBlog.image);
@@ -54,7 +55,7 @@ export default function AdminBlogs() {
     if (res.ok) {
       const blog = await res.json();
       setBlogs([...blogs, blog]);
-      setNewBlog({ title: '', content: '', image: null });
+      setNewBlog({ title: '', description: '', content: '', image: null }); // Reset form
       setImagePreview(null); // Clear image preview after submission
     }
   };
@@ -70,6 +71,16 @@ export default function AdminBlogs() {
             type="text"
             name="title"
             value={newBlog.title}
+            onChange={handleInputChange}
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">Description</label>
+          <input
+            type="text"
+            name="description"
+            value={newBlog.description}
             onChange={handleInputChange}
             className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
           />
@@ -111,14 +122,17 @@ export default function AdminBlogs() {
       {blogs.length > 0 ? (
         <ul>
           {blogs.map((blog) => (
-            <li key={blog.id} className="mb-4 p-4 border-b">
-              <h3 className="text-lg font-semibold">{blog.title}</h3>
-              <p dangerouslySetInnerHTML={{ __html: blog.content }}></p>
+            <li key={blog.id} className="mb-4 p-4 border-b flex">
               {blog.image && (
-                <div className="mt-2">
+                <div className="mr-4">
                   <img src={blog.image} alt={blog.title} className="w-48 h-48 object-cover" />
                 </div>
               )}
+              <div className="flex-grow">
+                <h3 className="text-lg font-semibold">{blog.title}</h3>
+                <p className="text-gray-600">{blog.description}</p> {/* Ensure this line displays the description */}
+                <div dangerouslySetInnerHTML={{ __html: blog.content }} />
+              </div>
             </li>
           ))}
         </ul>

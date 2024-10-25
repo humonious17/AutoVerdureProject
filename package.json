@@ -36,7 +36,7 @@
     "ldrs": "^1.0.2",
     "lucide-react": "^0.453.0",
     "net": "^1.0.2",
-    "next": "^14.2.3",
+    "next": "^14.2.16",
     "next-cloudinary": "^6.3.0",
     "node-mailjet": "^6.0.5",
     "nodemailer": "^6.9.14",

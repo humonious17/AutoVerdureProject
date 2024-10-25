@@ -1,6 +1,7 @@
 import Image from "next/image";
 import React from "react";
 import Link from "next/link";
+import Reviewfom from "@/pages/Reviewfom";
 
 const Successful = () => {
   return (
@@ -39,6 +40,7 @@ const Successful = () => {
             Back to Shopping
           </button>
           </Link>
+          
         </div>
       </div>
     </div>

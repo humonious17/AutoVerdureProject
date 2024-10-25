@@ -808,9 +808,6 @@ const SingleProductPage = ({ productData, allProducts }) => {
             <Testimonial />
           </div>
         </div>
-        <div className="mt-10 sm:mt-[80.99px] xl:mt-[59.99px] w-full h-full flex justify-center items-center">
-          <Reviewfom/>
-        </div>
       </div>
     </div>
   );

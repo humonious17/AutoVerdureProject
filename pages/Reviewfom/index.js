@@ -25,7 +25,7 @@ export default function ReviewForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-2xl p-6 bg-white shadow-lg rounded-2xl">
+    <form onSubmit={handleSubmit} className="w-1/2 max-w-xl height-400 p-6 bg-white shadow-lg rounded-2xl">
       <h2 className="text-2xl font-bold mb-6 text-left text-gray-800">Add a Review</h2>
 
       {/* Rating (Label and Stars on the Same Line) */}

@@ -1,13 +1,16 @@
+"use client"
 import React from "react";
 import GuideCard from "../ui/GuideCard.jsx/GuideCard";
 import { guides } from "../constant/data";
 import Image from "next/image";
 import ResourcesNavbar from "../ui/ResourcesNavbar";
+import Blogs from "@/pages/Blogs";
 
 const resources = () => {
   return (
     <div className="w-full px-4 md:px-[27px] xl:px-[119.99px] 2xl:px-[230px] bg-[#FFFCF8]">
       <ResourcesNavbar />
+      <Blogs/>
 
       <div className="pt-8 pb-[94px] md:pt-[70px] md:pb-[72px] xl:pt-16 xl:pb-[143px] md:px-[43px] xl:px-[1px] 2xl:px-[20px] w-full flex flex-col justify-center items-center">
         <div className="w-full flex flex-col md:flex-row gap-6 md:gap-[33px]">

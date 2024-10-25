@@ -48,6 +48,8 @@ const RelatedBlog = ({ title, description }) => {
           </div>
         </div>
 
+        
+
         <div className="mt-[43px] w-full flex gap-10 justify-center items-center">
               <Image
                 src="/leftArrow1.svg"

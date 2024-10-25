@@ -1,12 +1,10 @@
 import jwt from 'jsonwebtoken';
-import {admin, db} from './firebaseAdmin';
+import { admin, db } from './firebaseAdmin';
 import crypto from 'crypto';
 import { serialize } from 'cookie';
-import { initializeStore } from '@/store/store';
-import { setEmail } from '@/features/userSlice/userSlice';
 
 function createSessionToken() {
-    return crypto.randomBytes(32).toString('hex')
+    return crypto.randomBytes(32).toString('hex');
 }
 
 function setCookie(res, sessionToken) {
@@ -15,7 +13,7 @@ function setCookie(res, sessionToken) {
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'Strict',
         path: '/',
-        maxAge: 30 * 24 * 60 * 60, 
+        maxAge: 30 * 24 * 60 * 60,
     };
 
     res.setHeader('Set-Cookie', serialize('sessionToken', sessionToken, cookieOptions));
@@ -41,33 +39,33 @@ async function addUserSession(userDetails) {
     } catch (error) {
         return false;
     }
-
 }
 
 export default async function handler(req, res) {
     if (req.method === 'POST') {
-        const {data} = req.body;
+        const { data } = req.body;
 
         if (!data) {
-            return res.status(400).json({error:'Token required.'})
+            return res.status(400).json({ error: 'Token required.' });
         }
 
         try {
             const response = await fetch('https://www.googleapis.com/oauth2/v3/certs');
-            const {keys} = await response.json();
+            const { keys } = await response.json();
             const decodedToken = jwt.decode(data.credential, keys[0].n);
+
             if (decodedToken.aud !== '704145836182-04mlgm7nhg2n4sjqno7vlh172427g778.apps.googleusercontent.com') {
-                return res.status(401).json({error: 'Invalid token'});
+                return res.status(401).json({ error: 'Invalid token' });
             }
+
             const sessionToken = await addUserSession(decodedToken);
 
             if (!sessionToken) {
                 res.status(401).json({ error: 'Something went wrong while adding session' });
             } else {
                 setCookie(res, sessionToken);
-                const store = useDispatch();
-                store.dispatch(setEmail(decodedToken.email));
-                res.status(200).json({ message: 'Session created successfully' });
+                // Here, instead of dispatching an action, you could simply set user data in your component state or pass it to the next page
+                res.status(200).json({ message: 'Session created successfully', email: decodedToken.email });
             }
 
         } catch (e) {

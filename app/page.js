@@ -795,53 +795,86 @@ export default function Home() {
         </div>
 
         {/* Join THE AV Family  World's first customizable hydroponic pots. */}
-        <div className="mt-[67px] md:mt-[103px] xl:mt-[160px] w-full flex flex-col justify-center items-center overflow-hidden mx-auto">
-          <div className=" max-w-[361px] md:max-w-[754px] xl:max-w-[1065px] w-full flex flex-col gap-5">
-            <p className="text-[40px] md:text-4xl leading-[48px] -tracking-[1px] md:text-center font-normal capitalize text-primaryGrayscale">
-              Join THE AV Family <br className="hidden md:block" /> World&apos;s
-              first customizable hydroponic pots.
-            </p>
-            <p className="w-[272px] md:w-full text-sm leading-6 text-center font-normal text-secondaryGrayscale">
-              &quot;Unlock The Biophile Inside You: Embrace Your Connection With
-              Nature !&quot;
-            </p>
+        <div className="mt-[80px] md:mt-[160px] max-w-[361px] md:max-w-[754px] xl:max-w-[991px] w-full flex flex-col justify-center items-center mx-auto">
+        <div className=" max-w-[361px] md:max-w-[754px] xl:max-w-[1065px] w-full flex flex-col gap-5">
+          <p className="text-[40px] md:text-4xl leading-[48px] -tracking-[1px] md:text-center font-normal capitalize text-primaryGrayscale">
+            Join THE AV Family <br className="hidden md:block" /> World&apos;s
+            first customizable hydroponic pots.
+          </p>
+          <p className="w-[272px] md:w-full text-sm leading-6 text-center font-normal text-secondaryGrayscale">
+            &quot;Unlock The Biophile Inside You: Embrace Your Connection With
+            Nature !&quot;
+          </p>
+        </div>
+
+        <div className="mt-[90px] flex flex-col xl:flex-row xl:gap-[29px] justify-center items-center">
+          <Image
+            className="hidden xl:flex cursor-pointer"
+            src="/leftArrow1.svg"
+            alt="leftArrow1"
+            width={13}
+            height={26}
+          />
+          <Testimonial />
+          <Image
+            className="hidden xl:flex cursor-pointer"
+            src="/rightArrow1.svg"
+            alt="rightArrow1"
+            width={13}
+            height={26}
+          />
+        </div>
+
+        <div className="hidden mt-[109.5px] w-full md:flex flex-col justify-center items-center">
+          <div className="w-[1595px] flex justify-center items-center gap-10 overflow-hidden">
+            <Image
+              className="object-contain w-[505px] h-[413px]"
+              src="/testimonial1.png"
+              alt="img"
+              width={505}
+              height={413}
+            />
+            <Image
+              className="object-contain w-[505px] h-[413px]"
+              src="/testimonial1.png"
+              alt="img"
+              width={505}
+              height={413}
+            />
+            <Image
+              className="object-contain w-[505px] h-[413px]"
+              src="/testimonial1.png"
+              alt="img"
+              width={505}
+              height={413}
+            />
           </div>
 
-          <div className="hidden mt-[109.5px] w-full md:flex flex-col justify-center items-center">
-      {/* Carousel with swipe animations */}
-      <div
-        {...swipeHandlers} // Apply swipe handlers
-        className="w-[1595px] flex justify-center items-center gap-10 overflow-hidden"
-      >
-        <Image
-          className="object-contain w-[505px] h-[413px]"
-          src={images[currentIndex1]}
-          alt={`testimonial-${currentIndex1}`}
-          width={505}
-          height={413}
-        />
-      </div>
-
-      <div className="mt-[43px] w-full flex gap-10 justify-center items-center">
-        <button onClick={handlePrev1}>
-          <Image src="/leftArrow1.svg" alt="leftArrow1" width={13} height={26} />
-        </button>
-
-        <button onClick={handleNext1}>
-          <Image src="/rightArrow1.svg" alt="rightArrow1" width={13} height={26} />
-        </button>
-      </div>
-    </div>
-
-          <div className="md:mt-[72.12px] w-full flex flex-col justify-center items-center">
-            <Link
-              href="/community"
-              className="text-base px-[42px] py-[18px] rounded-[100px] border-[1px] font-normal border-primaryGrayscale hover:bg-[#000000] text-primaryGrayscale hover:text-[#ffffff] ease-in-out duration-500"
-            >
-              Community
-            </Link>
+          <div className="mt-[43px] w-full flex gap-10 justify-center items-center">
+            <Image
+              src="/leftArrow1.svg"
+              alt="leftArrow1"
+              width={13}
+              height={26}
+            />
+            <Image
+              src="/rightArrow1.svg"
+              alt="rightArrow1"
+              width={13}
+              height={26}
+            />
           </div>
         </div>
+
+        <div className="md:mt-[72.12px] w-full flex flex-col justify-center items-center">
+          <Link
+            href="/community"
+            className="text-base px-[42px] py-[18px] rounded-[100px] border-[1px] font-normal border-primaryGrayscale hover:bg-[#000000] text-primaryGrayscale hover:text-[#ffffff] ease-in-out duration-500"
+          >
+            Community
+          </Link>
+        </div>
+      </div>
 
         {/* What we offer ? */}
         <div className="mt-[80px] md:mt-[160px] max-w-[361px] md:max-w-[754px] xl:max-w-[991px] w-full flex flex-col justify-center items-center mx-auto">

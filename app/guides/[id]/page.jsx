@@ -67,15 +67,16 @@ const SingleBlog = () => {
         {/* Blog Image and Description */}
         <div className="mt-[68px] w-full flex flex-col justify-center items-center">
           {/* Blog Image */}
-          <div className="w-full h-[218px] md:h-[419px] md:w-[681px] xl:w-[833px] 2xl:w-[1000px] rounded-3xl flex justify-center items-center">
-            <Image
-              className="object-cover w-full h-[218px] md:h-[419px] md:w-[681px] xl:w-[833px] 2xl:w-[1000px] rounded-3xl"
-              src="/blogImage.png"
-              alt="image"
-              width={1000}
-              height={218}
-            />
-          </div>
+          <div className="w-full h-[218px] md:h-[419px] lg:h-[500px] xl:h-[600px] 2xl:h-[700px] rounded-3xl flex justify-center items-center">
+          <Image
+            className="object-cover w-full h-full rounded-3xl"
+            src="/blogImage.png"
+            alt="image"
+            width={1000}
+            height={700}
+          />
+        </div>
+
 
           {/* Blog Description */}
           <div className="mt-[54px] md:mt-[49px] w-full flex flex-col justify-center items-start">

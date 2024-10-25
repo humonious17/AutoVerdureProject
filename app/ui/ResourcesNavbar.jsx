@@ -29,9 +29,6 @@ const ResourcesNavbar = () => {
             </Link>{" "}
             / Our Resources
           </p>
-          <Link href="/admin/blogs" passHref>
-            <button>Add New Blog</button>
-          </Link>
 
         </div>
         <div>

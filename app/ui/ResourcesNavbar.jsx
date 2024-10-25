@@ -29,7 +29,6 @@ const ResourcesNavbar = () => {
             </Link>{" "}
             / Our Resources
           </p>
-         
 
         </div>
         <div>

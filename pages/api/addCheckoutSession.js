@@ -64,8 +64,12 @@ export default async function handler(req, res) {
                 res.status(401).json({ error: 'Something went wrong while adding session' });
             } else {
                 setCookie(res, sessionToken);
-                // Here, instead of dispatching an action, you could simply set user data in your component state or pass it to the next page
-                res.status(200).json({ message: 'Session created successfully', email: decodedToken.email });
+                
+                // Send user data back in the response
+                res.status(200).json({
+                    message: 'Session created successfully',
+                    email: decodedToken.email
+                });
             }
 
         } catch (e) {

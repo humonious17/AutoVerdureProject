@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 
-const User = () => {
-    const [email, setEmail] = useState(''); // State for user's email
-    const [shippingAddress, setShippingAddress] = useState({}); // State for user's shipping address
+const User = ({ emailFromSession }) => {
+    const [email, setEmail] = useState(emailFromSession || ''); // Set email from session or empty
+    const [shippingAddress, setShippingAddress] = useState({}); // Local state for address
 
-    // Handler to clear user information
+    // Clear user information
     const clearUser = () => {
-        setEmail(''); // Reset email to empty string
-        setShippingAddress({}); // Reset shipping address to empty object
+        setEmail(''); // Clear email
+        setShippingAddress({}); // Clear address
     };
 
     return (
@@ -20,10 +20,10 @@ const User = () => {
                 placeholder="Enter your email"
             />
             
-            {/* Shipping Address Input (example) */}
+            {/* Shipping Address Input */}
             <input
                 type="text"
-                value={shippingAddress.street || ''} // Example for street address
+                value={shippingAddress.street || ''} // Display street
                 onChange={(e) => setShippingAddress({ ...shippingAddress, street: e.target.value })} // Update street on change
                 placeholder="Enter your shipping address"
             />
@@ -33,7 +33,7 @@ const User = () => {
                 Clear User Info
             </button>
             
-            {/* Displaying user information for reference */}
+            {/* Display user info */}
             <div>
                 <h3>User Information:</h3>
                 <p>Email: {email}</p>

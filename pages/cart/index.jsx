@@ -142,6 +142,7 @@ export async function getServerSideProps(context) {
   const { data: products, error } = await findCartProducts(token);
 
   if (error || !Array.isArray(products)) {
+    console.error('Error fetching products:', error); // Log the error for debugging
     return {
       props: {
         products: [],
@@ -149,6 +150,7 @@ export async function getServerSideProps(context) {
       },
     };
   }
+
 
   // Ensure products are an array and sanitized
   const sanitizedProducts = products.map(product => ({

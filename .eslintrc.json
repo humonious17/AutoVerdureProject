@@ -1,6 +1,10 @@
 {
   "extends": "next/core-web-vitals",
   "env": {
-    "browser": true // Corrected the spelling of "browser" and moved it under "env"
+    "browser": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 2021,
+    "sourceType": "module"
   }
 }

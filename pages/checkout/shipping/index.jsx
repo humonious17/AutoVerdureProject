@@ -1,6 +1,7 @@
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 const Input = ({ label, placeholder, type, name, value, onChange }) => {
   const [isVisible, setIsVisible] = useState(false);

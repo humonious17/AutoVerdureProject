@@ -61,10 +61,10 @@ const AboutUs = () => {
               </p>
               <p className="mt-5 pr-[27px] md:px-0 text-sm font-normal leading-6 text-[#3D3D3D]">
                 Welcome to Auto Verdure, your gateway to a thriving indoor
-                garden! We're thrilled to introduce you to our exceptional line
+                garden! We&apos;re thrilled to introduce you to our exceptional line
                 of self-watering pots, based on the ingenious principles of
-                hydroponics. Here, you'll discover the perfect harmony of
-                nature's warmth within the confines of your home.
+                hydroponics. Here, you&apos;ll discover the perfect harmony of
+                nature&apos;s warmth within the confines of your home.
               </p>
               <p className="mt-5 pr-[27px] md:px-0 text-sm font-normal leading-6 text-[#3D3D3D]">
                 Perfection has no end, but we are dedicated to a long-term

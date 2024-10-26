@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 
 export default function Blogs() {
   const [blogs, setBlogs] = useState([]);
@@ -22,7 +23,7 @@ export default function Blogs() {
   <li key={blog.id} className="mb-4 p-4 border-b flex">
     <div className="mr-4">
       {blog.image && (
-        <img src={blog.image} alt={blog.title} className="w-48 h-48 object-cover" />
+        <Image src={blog.image} alt={blog.title} className="w-48 h-48 object-cover" />
       )}
     </div>
     <div className="flex-grow">

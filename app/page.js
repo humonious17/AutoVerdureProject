@@ -54,9 +54,10 @@ export default function Home() {
     const intervalId = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % hydroponics.length);
     }, 3000);
-
+  
     return () => clearInterval(intervalId);
-  }, [hydroponics.length]);
+  }, [hydroponics]); // Use hydroponics directly as a dependency
+  
 
   return (
     <div className="w-full px-4 md:px-10 pb-[100px] bg-[#FFFCF8] flex flex-col justify-center items-center overflow-hidden">
@@ -400,7 +401,7 @@ export default function Home() {
                 warmth!
               </p>
               <p className="text-sm leading-6 font-normal text-secondaryGrayscale mt-3">
-                Here, you'll discover the perfect harmony of nature's warmth
+                Here, you&apos;ll discover the perfect harmony of nature&apos;s warmth
                 within the confines of your home.
               </p>
             </div>
@@ -650,9 +651,11 @@ export default function Home() {
               Loved by buyers
             </p>
             <div className="flex gap-[9.14px] xl:pb-3 xl:border-b-[1px] xl:border-[#BBBBBB]">
+              <Link href="/store" passHref>
               <p className="hidden xl:flex">
-                <a href="/store">Browse all products</a>
+                Browse all products
               </p>
+              </Link>
               <Image src="/rightArr.svg" alt="img" width={18} height={19} />
             </div>
           </div>

@@ -105,10 +105,10 @@ const TalkToExpertButton = () => {
                         <div class="profile-picture"></div>
                         <span class="name">Auto Verdure Support</span>
                         <div class="icon call-icon">
-                            <img alt="phone"  loading="lazy" width="40" height="40" decoding="async" data-nimg="1" src="/telephone.svg" style={{background: 'rgb(154 92 245 / var(--tw-bg-opacity))'}}></img>
+                            <Image alt="phone"  loading="lazy" width="40" height="40" decoding="async" data-nImage="1" src="/telephone.svg" style={{background: 'rgb(154 92 245 / var(--tw-bg-opacity))'}}></Image>
                         </div>
                         <div class="icon menu-icon">
-                            <img alt="phone" loading="lazy" width="40" height="40" decoding="async" data-nimg="1" src="/hamburger.svg" style={{ background: 'rgb(154 92 245 / var(--tw-bg-opacity))' }}></img>
+                            <Image alt="phone" loading="lazy" width="40" height="40" decoding="async" data-nImage="1" src="/hamburger.svg" style={{ background: 'rgb(154 92 245 / var(--tw-bg-opacity))' }}></Image>
                         </div>
                     </div>
                     <div className="popup-box-chat">
@@ -129,7 +129,7 @@ const TalkToExpertButton = () => {
                             onKeyDown={handleKeyPress}
                         />
                         <button onClick={handleSendMessage}>
-                            <img alt="send" loading="lazy" width="35" height="35" decoding="async" data-nimg="1" src="/rightArr.svg" style={{ background: 'rgb(154 92 245 / var(--tw-bg-opacity))' }}></img>
+                            <Image alt="send" loading="lazy" width="35" height="35" decoding="async" data-nImage="1" src="/rightArr.svg" style={{ background: 'rgb(154 92 245 / var(--tw-bg-opacity))' }}></Image>
                         </button>
                     </div>
                 </div>

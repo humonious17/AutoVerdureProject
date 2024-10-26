@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import 'react-quill/dist/quill.snow.css'; // Import styles for the editor
+import Image from 'next/image';
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
@@ -106,7 +107,7 @@ export default function AdminBlogs() {
           />
           {imagePreview && (
             <div className="mt-2">
-              <img src={imagePreview} alt="Image Preview" className="w-48 h-48 object-cover" />
+              <Image src={imagePreview} alt="Image Preview" className="w-48 h-48 object-cover" />
             </div>
           )}
         </div>
@@ -125,7 +126,7 @@ export default function AdminBlogs() {
             <li key={blog.id} className="mb-4 p-4 border-b flex">
               {blog.image && (
                 <div className="mr-4">
-                  <img src={blog.image} alt={blog.title} className="w-48 h-48 object-cover" />
+                  <Image src={blog.image} alt={blog.title} className="w-48 h-48 object-cover" />
                 </div>
               )}
               <div className="flex-grow">

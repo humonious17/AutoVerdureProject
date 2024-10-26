@@ -673,7 +673,7 @@ const ProductListPage = ({ products: initialProducts }) => {
                     {Object.keys(productImages).map((key, index) => (
                       <div key={index} className="thumbnail">
                         {productImages[key] instanceof File ? (
-                          <img
+                          <Image
                             src={URL.createObjectURL(productImages[key])}
                             alt={`Thumbnail ${index + 1}`}
                           />

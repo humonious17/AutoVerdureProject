@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Image from 'next/image';
 
 export default function ReviewForm() {
   const [rating, setRating] = useState(0);
@@ -64,7 +65,7 @@ export default function ReviewForm() {
         <label className="block mb-2 text-base font-semibold text-gray-700">Add Photos</label>
         <div className="relative w-full h-44 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center overflow-hidden">
           {image ? (
-            <img src={image} alt="Uploaded" className="w-full h-full object-cover rounded-lg" />
+            <Image src={image} alt="Uploaded" className="w-full h-full object-cover rounded-lg" />
           ) : (
             <>
               <button

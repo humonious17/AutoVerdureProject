@@ -1,8 +1,11 @@
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable react/jsx-key */
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import findCartProducts from "@/lib/server/findCartProducts";
 import {parse} from "cookie";
+
 
 const Cart = (props) => {
     const products = props.products;
@@ -148,7 +151,7 @@ const Cart = (props) => {
                 {products.map((item, index) => (
                   <div className="justify-start items-center gap-12 inline-flex">
                   <div className="w-[108px] h-[105px] relative">
-                    <img className="w-[105px] h-[105px] left-[3px] top-0 absolute rounded-lg" src={item.productImage} />
+                    <Image className="w-[105px] h-[105px] left-[3px] top-0 absolute rounded-lg" src={item.productImage} />
                     <div className="w-[105px] h-[105px] left-0 top-0 absolute rounded-[10px]" />
                   </div>
                   <div className="w-[150px] text-neutral-400 text-base font-normal font-['Urbanist']">{item.productName}</div>

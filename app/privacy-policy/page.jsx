@@ -333,7 +333,7 @@ const Privacy = () => {
           <br /> <br />
 
           <span className="block md:leading-6 -tracking-[0.5px] text-primaryGrayscale font-[600]">
-            Children's Policy
+            Children&apos;s Policy
           </span>{" "}
           Our service does not address anyone under the age of 13. We do not knowingly
           collect personally identifiable information from anyone under the age of 13. If you

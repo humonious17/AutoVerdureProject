@@ -1,6 +1,6 @@
 // store.js
 import { configureStore } from '@reduxjs/toolkit';
-import userReducer from './userSlice';
+import userReducer, { setEmail, setShippingAddress, clearUser } from './userSlice';
 import { createSlice } from '@reduxjs/toolkit';
 
 // Create a products slice
@@ -14,9 +14,7 @@ const productsSlice = createSlice({
     addProduct: (state, action) => {
       state.push(action.payload);
     },
-    clearProducts: (state) => {
-      return [];
-    }
+    clearProducts: () => []
   }
 });
 
@@ -31,17 +29,15 @@ export const store = configureStore({
   }
 });
 
-// Export a function to get the entire state (if needed)
-export const getStoreState = () => store.getState();
-
-// Helper function to dispatch actions (if needed)
+// Helper function to set specific states within the store
 export const setStoreState = (slice, newState) => {
   switch (slice) {
     case 'products':
       store.dispatch(setProducts(newState));
       break;
     case 'user':
-      store.dispatch({ type: 'user/setState', payload: newState });
+      if (newState.email) store.dispatch(setEmail(newState.email));
+      if (newState.shippingAddress) store.dispatch(setShippingAddress(newState.shippingAddress));
       break;
     default:
       console.warn('Unknown slice:', slice);

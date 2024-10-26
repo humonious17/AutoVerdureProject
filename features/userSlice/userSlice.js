@@ -1,13 +1,41 @@
-import React, { useState } from "react";
+import React from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import { 
+  setEmail, 
+  setShippingAddress, 
+  clearUser,
+  selectEmail,
+  selectShippingAddress 
+} from './userSlice';
 
 const User = ({ emailFromSession }) => {
-    const [email, setEmail] = useState(emailFromSession || ''); // Set email from session or empty
-    const [shippingAddress, setShippingAddress] = useState({}); // Local state for address
+    const dispatch = useDispatch();
+    const email = useSelector(selectEmail);
+    const shippingAddress = useSelector(selectShippingAddress);
+
+    // Set initial email from session if provided
+    React.useEffect(() => {
+        if (emailFromSession) {
+            dispatch(setEmail(emailFromSession));
+        }
+    }, [emailFromSession, dispatch]);
+
+    // Update email
+    const handleEmailChange = (e) => {
+        dispatch(setEmail(e.target.value));
+    };
+
+    // Update shipping address
+    const handleAddressChange = (e) => {
+        dispatch(setShippingAddress({
+            ...shippingAddress,
+            street: e.target.value
+        }));
+    };
 
     // Clear user information
-    const clearUser = () => {
-        setEmail(''); // Clear email
-        setShippingAddress({}); // Clear address
+    const handleClearUser = () => {
+        dispatch(clearUser());
     };
 
     return (
@@ -16,20 +44,20 @@ const User = ({ emailFromSession }) => {
             <input
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)} // Update email on change
+                onChange={handleEmailChange}
                 placeholder="Enter your email"
             />
             
             {/* Shipping Address Input */}
             <input
                 type="text"
-                value={shippingAddress.street || ''} // Display street
-                onChange={(e) => setShippingAddress({ ...shippingAddress, street: e.target.value })} // Update street on change
+                value={shippingAddress.street || ''}
+                onChange={handleAddressChange}
                 placeholder="Enter your shipping address"
             />
             
             {/* Button to clear user information */}
-            <button onClick={clearUser}>
+            <button onClick={handleClearUser}>
                 Clear User Info
             </button>
             

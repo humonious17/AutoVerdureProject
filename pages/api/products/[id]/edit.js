@@ -1,3 +1,4 @@
+/* eslint-disable import/no-anonymous-default-export */
 import currentUser from "/lib/server/currentUser";
 
 export default async function(req, res) {

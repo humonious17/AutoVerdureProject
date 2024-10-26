@@ -217,18 +217,18 @@ export async function getServerSideProps(context) {
   const cookies = parse(req.headers.cookie || "");
   const products = await findCartProducts(cookies.cartId);
 
-  // Ensure that productImage is either null or defined
-  const sanitizedProducts = products.map((product) => ({
+  // Ensure products is an array
+  const sanitizedProducts = Array.isArray(products) ? products.map((product) => ({
     ...product,
     productImage: product.productImage || null, // Replace undefined with null
-  }));
+  })) : []; // Default to an empty array if products is not an array
 
   return {
     props: {
       products: sanitizedProducts, // Return sanitized products
     },
   };
-
 }
+
 
 export default Cart;

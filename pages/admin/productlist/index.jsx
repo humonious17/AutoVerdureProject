@@ -9,6 +9,7 @@ const ProductListPage = ({ products: initialProducts }) => {
   const [showForm, setShowForm] = useState(false);
   const [products, setProducts] = useState(initialProducts);
   const [productName, setProductName] = useState("");
+  const [productSubTitle, setProductSubTitle] = useState("");
   const [productDetails, setProductDetails] = useState("");
   const [productPrice, setProductPrice] = useState("");
   const [priceXS, setPriceXS] = useState("");
@@ -16,6 +17,11 @@ const ProductListPage = ({ products: initialProducts }) => {
   const [priceM, setPriceM] = useState("");
   const [priceL, setPriceL] = useState("");
   const [priceXL, setPriceXL] = useState("");
+  const [dimensionsXS, setDimensionsXS] = useState("");
+  const [dimensionsS, setDimensionsS] = useState("");
+  const [dimensionsM, setDimensionsM] = useState("");
+  const [dimensionsL, setDimensionsL] = useState("");
+  const [dimensionsXL, setDimensionsXL] = useState("");
   const [type, setType] = useState("");
   const [stockQuantity, setStockQuantity] = useState("");
   const [innerHeight, setInnerHeight] = useState("");
@@ -83,6 +89,7 @@ const ProductListPage = ({ products: initialProducts }) => {
       });
     } else {
       if (name === "productName") setProductName(value);
+      if (name === "productSubTitle") setProductSubTitle(value);
       if (name === "productDetails") setProductDetails(value);
       if (name === "productPrice") setProductPrice(value);
       if (name === "priceXS") setPriceXS(value);
@@ -90,6 +97,11 @@ const ProductListPage = ({ products: initialProducts }) => {
       if (name === "priceM") setPriceM(value);
       if (name === "priceL") setPriceL(value);
       if (name === "priceXL") setPriceXL(value);
+      if (name === "dimensionsXS") setDimensionsXS(value);
+      if (name === "dimensionsS") setDimensionsS(value);
+      if (name === "dimensionsM") setDimensionsM(value);
+      if (name === "dimensionsL") setDimensionsL(value);
+      if (name === "dimensionsXL") setDimensionsXL(value);
       if (name === "stockQuantity") setStockQuantity(value);
       if (name === "type") setType(value);
       if (name === "innerLength") setInnerLength(value);
@@ -97,10 +109,6 @@ const ProductListPage = ({ products: initialProducts }) => {
       if (name === "dimensions") setDimensions(value);
     }
   };
-
-  if (!isClient) {
-    return null; // Avoid rendering until the client-side check is done
-  }
 
   const handleImageChange = (e, key) => {
     const file = e.target.files[0];
@@ -113,171 +121,161 @@ const ProductListPage = ({ products: initialProducts }) => {
 
     const createFormData = (product) => {
       const formData = new FormData();
-      formData.append("productName", product.name);
-      formData.append("productDetails", product.description);
-      formData.append("productPrice", product.price);
-      formData.append("type", product.type);
-      formData.append("stockQuantity", product.stockQuantity);
+      formData.append("productName", product.name || "");
+      formData.append("productSubTitle", product.subTitle || "");
+      formData.append("productDetails", product.description || "");
+      formData.append("priceXS", product.priceXS || "");
+      formData.append("priceS", product.priceS || "");
+      formData.append("priceM", product.priceM || "");
+      formData.append("priceL", product.priceL || "");
+      formData.append("priceXL", product.priceXL || "");
+      formData.append("dimensionsXS", product.dimensionsXS || "");
+      formData.append("dimensionsS", product.dimensionsS || "");
+      formData.append("dimensionsM", product.dimensionsM || "");
+      formData.append("dimensionsL", product.dimensionsL || "");
+      formData.append("dimensionsXL", product.dimensionsXL || "");
+      formData.append("type", product.type || "");
+      formData.append("stockQuantity", product.stockQuantity || "");
+      formData.append("innerLength", product.innerLength || "");
+      formData.append("innerHeight", product.innerHeight || "");
+      formData.append("dimensions", product.dimensions || "");
 
-      const images = product.images;
-      formData.append("firstImage", images[0]);
-      formData.append("secondImage", images[1]);
-      formData.append("thirdImage", images[2]);
-      formData.append("fourthImage", images[3]);
-      formData.append("fifthImage", images[4]);
-
-      formData.append("innerLength", product.innerLength);
-      formData.append("innerHeight", product.innerHeight);
-      formData.append("dimensions", product.dimensions);
+      const images = product.images || [];
+      images?.forEach((img, index) => {
+        if (img) formData.append(`image${index + 1}`, img);
+      });
 
       Object.keys(checkboxes).forEach((key) => {
         formData.append(key, `${checkboxes[key]}`);
       });
-      // Object.keys(product.attributes).forEach((key) => {
-      //   formData.append(`attributes[${key}]`, product.attributes[key]);
-      // });
-      // console.log(colors)
-      colors.forEach((color, index) => {
-        console.log(color.value);
+
+      colors.forEach((color) => {
         formData.append(color.value, "true");
       });
 
-      product.size.forEach((size, index) => {
+      (product.size || []).forEach((size) => {
         formData.append(size, "true");
       });
 
-      product.finish.forEach((finish, index) => {
+      (product.finish || []).forEach((finish) => {
         formData.append(finish, "true");
       });
 
       return formData;
     };
 
-    const logFormData = (formData) => {
-      for (const [key, value] of formData.entries()) {
-        console.log(`${key}: ${value}`);
-      }
+    // const logFormData = (formData) => {
+    //   for (const [key, value] of formData.entries()) {
+    //     console.log(`${key}: ${value}`);
+    //   }
+    // };
+
+    const submitFormData = async (formData, url) => {
+      const response = await fetch(url, { method: "POST", body: formData });
+      if (!response.ok) throw new Error("Form submission failed");
+      const result = await response.json();
+      console.log("Submission Result:", result);
+      return result;
     };
 
     let updatedProducts = [...products];
 
-    if (editIndex !== null) {
-      const newProduct = {
-        id: products[editIndex].id,
-        name: productName,
-        description: productDetails,
-        price: productPrice,
-        type: type,
-        stockQuantity: stockQuantity,
-        innerHeight: innerHeight,
-        innerLength: innerLength,
-        dimensions: dimensions,
-        images: Object.values(productImages).filter((image) => image),
-        attributes: {
-          petFriendly: checkboxes.petFriendly,
-          notPetFriendly: checkboxes.notPetFriendly,
-          moreSunlight: checkboxes.moreSunlight,
-          lessSunlight: checkboxes.lessSunlight,
-        },
-        colors: colors.map((color) => color.value),
-        size: size.map((size) => size.value),
-        finish: finish.map((finish) => finish.value),
-      };
+    const newProduct = {
+      id: editIndex !== null ? products[editIndex].id : products.length + 1,
+      name: productName,
+      subTitle: productSubTitle,
+      description: productDetails,
+      type: type,
+      stockQuantity: stockQuantity,
+      innerHeight: innerHeight,
+      innerLength: innerLength,
+      dimensions: dimensions,
+      images: Object.values(productImages).filter((image) => image),
+      attributes: {
+        petFriendly: checkboxes.petFriendly,
+        notPetFriendly: checkboxes.notPetFriendly,
+        moreSunlight: checkboxes.moreSunlight,
+        lessSunlight: checkboxes.lessSunlight,
+      },
+      colors: colors.map((color) => color.value),
+      size: size.map((size) => size.value),
+      finish: finish.map((finish) => finish.value),
 
-      updatedProducts[editIndex] = newProduct;
-      setProducts(updatedProducts);
+      priceXS: priceXS,
+      priceS: priceS,
+      priceM: priceM,
+      priceL: priceL,
+      priceXL: priceXL,
 
-      // Save to local storage
-      localStorage.setItem("products", JSON.stringify(updatedProducts));
+      dimensionsXS: dimensionsXS,
+      dimensionsS: dimensionsS,
+      dimensionsM: dimensionsM,
+      dimensionsL: dimensionsL,
+      dimensionsXL: dimensionsXL,
+    };
 
-      try {
-        const formData = createFormData(newProduct);
-        logFormData(formData);
+    try {
+      const formData = createFormData(newProduct);
+      // logFormData(formData);
 
-        const response = await fetch(`/api/products/update/${newProduct.id}`, {
-          method: "PUT",
-          body: formData,
-        });
+      if (editIndex !== null) {
+        updatedProducts[editIndex] = newProduct;
+        setProducts(updatedProducts);
+        localStorage.setItem("products", JSON.stringify(updatedProducts));
+        await submitFormData(formData, `/api/products/update/${newProduct.id}`);
+      } else {
+        updatedProducts = [...products, newProduct];
+        setProducts(updatedProducts);
+        localStorage.setItem("products", JSON.stringify(updatedProducts));
+        const result = await submitFormData(formData, "/api/products/add");
 
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-
-        const result = await response.json();
-        console.log("Product Updated", result);
-      } catch (error) {
-        console.error("There was a problem with your fetch operation:", error);
-      }
-    } else {
-      const newProduct = {
-        id: products.length + 1,
-        name: productName,
-        description: productDetails,
-        price: productPrice,
-        type: type,
-        stockQuantity: stockQuantity,
-        innerHeight: innerHeight,
-        innerLength: innerLength,
-        dimensions: dimensions,
-        images: Object.values(productImages).filter((image) => image),
-        attributes: {
-          petFriendly: checkboxes.petFriendly,
-          notPetFriendly: checkboxes.notPetFriendly,
-          moreSunlight: checkboxes.moreSunlight,
-          lessSunlight: checkboxes.lessSunlight,
-        },
-        colors: colors.map((color) => color.value),
-        size: size.map((size) => size.value),
-        finish: finish.map((finish) => finish.value),
-      };
-
-      setProducts([...products, newProduct]);
-
-      // Save to local storage
-      localStorage.setItem("products", JSON.stringify(updatedProducts));
-
-      try {
-        const formData = createFormData(newProduct);
-        logFormData(formData);
-        const response = await fetch("/api/products/add", {
-          method: "POST",
-          body: formData,
-        });
-
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-
-        const result = await response.json();
-
-        if (response.status === 200) {
+        if (result && result.id) {
           window.location.href = `store/${productName}/${result.id}`;
         }
-
-        console.log("Product added:", result);
-      } catch (error) {
-        console.error("There was a problem with your fetch operation:", error);
       }
-    }
-
-    setTimeout(() => {
+    } catch (error) {
+      console.error("There was a problem with your fetch operation:", error);
+    } finally {
       setLoading(false);
       setShowForm(false);
       clearForm();
-    }, 2000);
+    }
   };
+
+  // On component mount, retrieve products from localStorage
+  useEffect(() => {
+    const savedProducts = JSON.parse(localStorage.getItem("products"));
+    if (savedProducts) {
+      setProducts(savedProducts);
+    }
+  }, []);
 
   const handleEdit = (index) => {
     const editedProduct = products[index];
 
     setProductName(editedProduct.name || "");
+    setProductSubTitle(editedProduct.subTitle || "");
     setProductDetails(editedProduct.description || "");
-    setProductPrice(editedProduct.price || "");
+    // setProductPrice(editedProduct.price || "");
     setType(editedProduct.type || "");
     setStockQuantity(editedProduct.stockQuantity || "");
     setInnerHeight(editedProduct.innerHeight || "");
     setInnerLength(editedProduct.innerLength || "");
     setDimensions(editedProduct.dimensions || "");
+
+    // Add size-specific prices
+    setPriceXS(editedProduct.priceXS || "");
+    setPriceS(editedProduct.priceS || "");
+    setPriceM(editedProduct.priceM || "");
+    setPriceL(editedProduct.priceL || "");
+    setPriceXL(editedProduct.priceXL || "");
+
+    // Add size-specific dimensions
+    setDimensionsXS(editedProduct.dimensionsXS || "");
+    setDimensionsS(editedProduct.dimensionsS || "");
+    setDimensionsM(editedProduct.dimensionsM || "");
+    setDimensionsL(editedProduct.dimensionsL || "");
+    setDimensionsXL(editedProduct.dimensionsXL || "");
 
     setProductImages({
       first: editedProduct.images?.[0] || null,
@@ -316,13 +314,28 @@ const ProductListPage = ({ products: initialProducts }) => {
 
   const clearForm = () => {
     setProductName("");
+    setProductSubTitle("");
     setProductDetails("");
-    setProductPrice("");
+    // setProductPrice("");
     setType("");
     setStockQuantity("");
     setInnerHeight("");
     setInnerLength("");
     setDimensions("");
+
+    // Clear size-specific prices
+    setPriceXS("");
+    setPriceS("");
+    setPriceM("");
+    setPriceL("");
+    setPriceXL("");
+
+    // Clear size-specific dimensions
+    setDimensionsXS("");
+    setDimensionsS("");
+    setDimensionsM("");
+    setDimensionsL("");
+    setDimensionsXL("");
 
     setProductImages({
       first: null,
@@ -345,18 +358,12 @@ const ProductListPage = ({ products: initialProducts }) => {
   };
 
   const handleCheckboxChange = (index) => {
-    if (selectedProducts.includes(index)) {
-      setSelectedProducts(selectedProducts.filter((i) => i !== index));
-    } else {
-      setSelectedProducts([...selectedProducts, index]);
-    }
+    setSelectedProducts((prev) =>
+      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
+    );
   };
 
   const handleDeleteChecked = async () => {
-    const updatedProducts = products.filter(
-      (_, i) => !selectedProducts.includes(i)
-    );
-
     const idsToDelete = products
       .filter((_, i) => selectedProducts.includes(i))
       .map((product) => product.id);
@@ -371,13 +378,19 @@ const ProductListPage = ({ products: initialProducts }) => {
         )
       );
 
+      // Update the products state and local storage
+      const updatedProducts = products.filter(
+        (_, i) => !selectedProducts.includes(i)
+      );
       setProducts(updatedProducts);
-      localStorage.setItem("products", JSON.stringify(updatedProducts));
+      localStorage.setItem("products", JSON.stringify(updatedProducts)); // Update local storage
       setSelectedProducts([]);
     } catch (error) {
       console.error("Error deleting products:", error);
     }
   };
+
+  if (!isClient) return null;
 
   return (
     <div className="container">
@@ -401,13 +414,13 @@ const ProductListPage = ({ products: initialProducts }) => {
 
           <table rules="all">
             <thead className="w-[1160px]  mt-[30px] hidden md:flex flex-col gap-5">
-              <tr className="justify-start items-start inline-flex flex justify-between items-center pl-[190px]">
+              <tr className="inline-flex justify-between items-center pl-[190px]">
                 <td className="w-[50px] text-gray-900 text-xs font-normal font-['Poppins'] tracking-tight">
                   Product
                 </td>
-                <td className="w-[80px] text-gray-900 text-xs font-normal font-['Poppins'] tracking-tight">
+                {/* <td className="w-[80px] text-gray-900 text-xs font-normal font-['Poppins'] tracking-tight">
                   Dimensions
-                </td>
+                </td> */}
                 <td className="w-[50px] text-gray-900 text-xs font-normal font-['Poppins'] tracking-tight">
                   Stock Quantity
                 </td>
@@ -432,10 +445,10 @@ const ProductListPage = ({ products: initialProducts }) => {
                     className="product-checkbox"
                     onChange={(e) => handleCheckboxChange(index)}
                   />
-                  <td className="w-[110px]">{product.productName}</td>
-                  <td className="w-[120px]">{product.dimensions}</td>
+                  <td className="w-[110px]">{product.name}</td>
+                  {/* <td className="w-[120px]">{product.dimensions}</td> */}
                   <td className="w-[70px]">{product.stockQuantity}</td>
-                  <td className="w-[90px]">{product.productType}</td>
+                  <td className="w-[90px]">{product.type}</td>
                   <td className="w-[70px] flex justify-around items-center">
                     <button
                       onClick={() => handleEdit(index)}
@@ -469,6 +482,15 @@ const ProductListPage = ({ products: initialProducts }) => {
                     type="text"
                     name="productName"
                     value={productName}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Sub-Title</label>
+                  <input
+                    type="text"
+                    name="productSubTitle"
+                    value={productSubTitle}
                     onChange={handleChange}
                   />
                 </div>
@@ -536,15 +558,6 @@ const ProductListPage = ({ products: initialProducts }) => {
                         onChange={handleChange}
                       />
                     </div>
-                    {/* <div style={{ width: "48%" }}>
-                      <label>Product Price</label>
-                      <input
-                        type="number"
-                        name="productPrice"
-                        value={productPrice}
-                        onChange={handleChange}
-                      />
-                    </div> */}
                   </div>
                 </div>
 
@@ -605,6 +618,73 @@ const ProductListPage = ({ products: initialProducts }) => {
                         name="priceXL"
                         value={priceXL}
                         onChange={handleChange}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* New Dimension Fields for Different Sizes */}
+                <div className="form-group">
+                  <label>Dimensions for Each Size</label>
+                  <div
+                    style={{ display: "flex", justifyContent: "space-between" }}
+                  >
+                    <div style={{ width: "18%" }}>
+                      <label>XS</label>
+                      <input
+                        type="text"
+                        name="dimensionsXS"
+                        value={dimensionsXS}
+                        onChange={handleChange}
+                        placeholder="LxWxH"
+                      />
+                    </div>
+                    <div style={{ width: "18%" }}>
+                      <label>S</label>
+                      <input
+                        type="text"
+                        name="dimensionsS"
+                        value={dimensionsS}
+                        onChange={handleChange}
+                        placeholder="LxWxH"
+                      />
+                    </div>
+                    <div style={{ width: "18%" }}>
+                      <label>M</label>
+                      <input
+                        type="text"
+                        name="dimensionsM"
+                        value={dimensionsM}
+                        onChange={handleChange}
+                        placeholder="LxWxH"
+                      />
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      marginTop: "10px",
+                    }}
+                  >
+                    <div style={{ width: "18%" }}>
+                      <label>L</label>
+                      <input
+                        type="text"
+                        name="dimensionsL"
+                        value={dimensionsL}
+                        onChange={handleChange}
+                        placeholder="LxWxH"
+                      />
+                    </div>
+                    <div style={{ width: "18%" }}>
+                      <label>XL</label>
+                      <input
+                        type="text"
+                        name="dimensionsXL"
+                        value={dimensionsXL}
+                        onChange={handleChange}
+                        placeholder="LxWxH"
                       />
                     </div>
                   </div>
@@ -673,7 +753,7 @@ const ProductListPage = ({ products: initialProducts }) => {
                     {Object.keys(productImages).map((key, index) => (
                       <div key={index} className="thumbnail">
                         {productImages[key] instanceof File ? (
-                          <Image
+                          <img
                             src={URL.createObjectURL(productImages[key])}
                             alt={`Thumbnail ${index + 1}`}
                           />
@@ -742,7 +822,7 @@ const ProductListPage = ({ products: initialProducts }) => {
                     onChange={handleChange}
                   />
                 </div>
-                <div style={{ flex: 1 }}>
+                {/* <div style={{ flex: 1 }}>
                   <label>Dimensions</label>
                   <input
                     type="text"
@@ -750,7 +830,7 @@ const ProductListPage = ({ products: initialProducts }) => {
                     value={dimensions}
                     onChange={handleChange}
                   />
-                </div>
+                </div> */}
               </div>
 
               <div className="submit-button-container">
@@ -767,24 +847,22 @@ const ProductListPage = ({ products: initialProducts }) => {
 };
 
 export async function getServerSideProps() {
+  // Dynamically import the findAllProducts function
   const findAllProducts = (await import("@/pages/api/products/findAllProducts"))
     .default;
 
-  const zenpot = await findAllProducts("zenpot");
-  const grobox = await findAllProducts("grobox");
-  const plant = await findAllProducts("plants");
-  const accessory = await findAllProducts("accessory");
+  // Fetch products of various types
+  const productTypes = ["zenpot", "grobox", "plants", "accessory"];
+  const products = await Promise.all(
+    productTypes.map((type) => findAllProducts(type))
+  );
 
-  const products = [
-    ...(zenpot ? zenpot : []),
-    ...(grobox ? grobox : []),
-    ...(plant ? plant : []),
-    ...(accessory ? accessory : []),
-  ];
+  // Flatten the array and remove any undefined values
+  const allProducts = products.flat().filter(Boolean);
 
   return {
     props: {
-      products: products,
+      products: allProducts,
     },
   };
 }

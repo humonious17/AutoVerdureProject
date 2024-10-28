@@ -88,6 +88,7 @@ const Cart = ({ products = [] }) => {
   );
 };
 
+// Inside getServerSideProps, modify this section to ensure proper JSON serialization.
 export async function getServerSideProps(context) {
   try {
     const cookies = parse(context.req.headers.cookie || '');
@@ -95,13 +96,13 @@ export async function getServerSideProps(context) {
 
     const products = await findCartProducts(token);
 
-    // Ensure the data is serializable
+    // Ensure the data is fully serializable
     const serializedProducts = products.map(product => ({
-      productId: String(product.productId),
-      productQty: Number(product.productQty),
-      productImage: String(product.productImage),
-      productName: String(product.productName),
-      price: Number(product.price)
+      productId: product.productId || '',
+      productQty: product.productQty || 0,
+      productImage: product.productImage || '/default-image.png',
+      productName: product.productName || 'Unnamed Product',
+      price: product.price || 0
     }));
 
     return {

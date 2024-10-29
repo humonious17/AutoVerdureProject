@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable @next/next/no-sync-scripts */
 "use client";
 
 import Image from "next/image";
@@ -10,6 +12,7 @@ import { setProducts } from "@/features/productsSlice/productSlice";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import Reviewfom from "@/pages/Reviewfom";
+import { FaMinus, FaPlus } from "react-icons/fa6";
 
 const SingleProductPage = ({ productData, allProducts }) => {
   useEffect(() => {
@@ -776,85 +779,61 @@ const SingleProductPage = ({ productData, allProducts }) => {
             <div className="mt-[30px] sm:mt-[39px] w-full sm:pr-[0px] hidden xl:flex xl:flex-col">
               {/* Product long description */}
               <div className="w-full text-sm sm:text-[17px] leading-[30px] flex flex-col gap-[18px]">
-                {/* Description Dropdown */}
-                <div className="w-full">
-                  <button
-                    className="w-full p-2 xl:p-5 text-left bg-primaryMain bg-opacity-10 rounded-xl border-[1px] border-primaryMain text-black flex justify-between items-center transition-colors duration-300 hover:bg-purple-200"
-                    onClick={toggleDescription}
-                  >
-                    Product Description
-                    <svg
-                      className={`w-5 h-5 ml-2 transform transition-transform duration-300 ${
-                        isDescriptionOpen ? "rotate-180" : ""
-                      }`}
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 9l-7 7-7-7"
-                      />
-                    </svg>
-                  </button>
-                  {isDescriptionOpen && (
-                    <div className="pl-4 mt-1 bg-white text-black p-3 rounded-md transition-opacity duration-300 opacity-100">
-                      <p>
-                        zenpot nurtures your plant while adding a touch of
-                        serenity to your living space. Elevate your gardening
-                        journey and find your inner peace with the zenpot
-                        self-watering system.
-                      </p>
-                    </div>
-                  )}
-                </div>
+  {/* Description Dropdown */}
+  <div className="w-full">
+    <button
+      className="w-full p-2 xl:p-5 text-left bg-primaryMain bg-opacity-10 rounded-xl border-[1px] border-primaryMain text-black flex justify-between items-center transition-colors duration-300 hover:bg-purple-200"
+      onClick={toggleDescription}
+    >
+      Product Description
+      {isDescriptionOpen ? (
+        <FaMinus className="cursor-pointer ml-2" />
+      ) : (
+        <FaPlus className="cursor-pointer ml-2" />
+      )}
+    </button>
+    {isDescriptionOpen && (
+      <div className="pl-4 mt-1 bg-white text-black p-3 rounded-md transition-opacity duration-300 opacity-100">
+        <p>
+          zenpot nurtures your plant while adding a touch of serenity to your living space. 
+          Elevate your gardening journey and find your inner peace with the zenpot self-watering system.
+        </p>
+      </div>
+    )}
+  </div>
 
-                {/* Product Details Dropdown */}
-                <div className="w-full">
-                  <button
-                    className="w-full p-2 xl:p-5 text-left bg-primaryMain bg-opacity-10 rounded-xl border-[1px] border-primaryMain text-black flex justify-between items-center transition-colors duration-300 hover:bg-purple-200"
-                    onClick={toggleDetails}
-                  >
-                    Product Details
-                    <svg
-                      className={`w-5 h-5 ml-2 transform transition-transform duration-300 ${
-                        isDetailsOpen ? "rotate-180" : ""
-                      }`}
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 9l-7 7-7-7"
-                      />
-                    </svg>
-                  </button>
-                  {isDetailsOpen && (
-                    <ul className="pl-4 mt-1 bg-white text-black p-3 rounded-md transition-opacity duration-300 opacity-100">
-                      <li className="decoration-dotted flex justify-start items-center">
-                        <div className="w-[5px] h-[5px] rounded-full bg-[#5B5B5B] mr-[13.9px]" />
-                        {productData.innerHeight}cm - Inner height,{" "}
-                        {productData.innerLength}cm Inner length/diameter
-                      </li>
-                      <li className="decoration-dotted flex justify-start items-center">
-                        <div className="w-[5px] h-[5px] rounded-full bg-[#5B5B5B] mr-[13.9px]" />
-                        Water-resistant canvas
-                      </li>
-                      <li className="decoration-dotted flex justify-start items-center">
-                        <div className="w-[5px] h-[5px] rounded-full bg-[#5B5B5B] mr-[13.9px]" />
-                        Dimensions - {productData.dimensions}
-                      </li>
-                    </ul>
-                  )}
-                </div>
-              </div>
+  {/* Product Details Dropdown */}
+  <div className="w-full">
+    <button
+      className="w-full p-2 xl:p-5 text-left bg-primaryMain bg-opacity-10 rounded-xl border-[1px] border-primaryMain text-black flex justify-between items-center transition-colors hover:bg-purple-200 ease-in-out duration-200"
+      onClick={toggleDetails}
+    >
+      Product Details
+      {isDetailsOpen ? (
+        <FaMinus className="cursor-pointer ml-2" />
+      ) : (
+        <FaPlus className="cursor-pointer ml-2" />
+      )}
+    </button>
+    {isDetailsOpen && (
+      <ul className="pl-4 mt-1 bg-white text-black p-3 rounded-md transition-opacity duration-300 opacity-100">
+        <li className="decoration-dotted flex justify-start items-center">
+          <div className="w-[5px] h-[5px] rounded-full bg-[#5B5B5B] mr-[13.9px]" />
+          {productData.innerHeight}cm - Inner height, {productData.innerLength}cm Inner length/diameter
+        </li>
+        <li className="decoration-dotted flex justify-start items-center">
+          <div className="w-[5px] h-[5px] rounded-full bg-[#5B5B5B] mr-[13.9px]" />
+          Water-resistant canvas
+        </li>
+        <li className="decoration-dotted flex justify-start items-center">
+          <div className="w-[5px] h-[5px] rounded-full bg-[#5B5B5B] mr-[13.9px]" />
+          Dimensions - {productData.dimensions}
+        </li>
+      </ul>
+    )}
+  </div>
+</div>
+
 
               {/* Payment Methods */}
               <div className="mt-[16.5px] w-full flex flex-col sm:flex-row sm:justify-between sm:items-center">
@@ -997,9 +976,6 @@ const SingleProductPage = ({ productData, allProducts }) => {
             <Testimonial />
             <Testimonial />
           </div>
-        </div>
-        <div className="mt-10 sm:mt-[80.99px] xl:mt-[59.99px] w-full h-full flex justify-center items-center">
-          <Reviewfom />
         </div>
       </div>
     </div>

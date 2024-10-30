@@ -238,6 +238,16 @@ const SingleProductPage = ({ productData, allProducts }) => {
 
     router.push('/checkout/guest');
   }
+   // State to control whether to show all products or just three
+   const [showAll, setShowAll] = useState(false);
+
+   // Function to handle the "Browse all" click
+   const toggleShowAll = () => {
+     setShowAll(!showAll);
+   };
+ 
+   // Products to display based on showAll state
+   const displayedProducts = showAll ? allProducts : allProducts.slice(0, 3);
 
   return (
     <div className="w-full px-[18px] sm:px-[38px] xl:px-16 bg-[#FFFCF8]">
@@ -781,21 +791,24 @@ const SingleProductPage = ({ productData, allProducts }) => {
 
         {/* Related Product */}
         <div className="mt-[55.18px] sm:mt-[25px] lg:mt-[84.43px] xl:max-w-[1312px] w-full">
-          <div className="hidden w-full sm:flex sm:justify-between sm:items-center">
-            <p className="text-[38px] leading-[49.4px]">Add flowers</p>
-            <p className="text-[21px] leading-[25.2px] font-normal pb-[7.99px] border-b-[2px] border-[#BBBBBB]">
-              Browse all
-            </p>
-          </div>
+      <div className="hidden w-full sm:flex sm:justify-between sm:items-center">
+        <p className="text-[38px] leading-[49.4px]">Add flowers</p>
+        <p
+          className="text-[21px] leading-[25.2px] font-normal pb-[7.99px] border-b-[2px] border-[#BBBBBB] cursor-pointer"
+          onClick={toggleShowAll}
+        >
+          {showAll ? "Show less" : "Browse all"}
+        </p>
+      </div>
 
-          <div className="sm:mt-[52.6px] w-full grid grid-cols-2 xl:grid-cols-3 gap-x-[9px] gap-y-[41.46px] md:gap-x-[43.21px] md:gap-y-16 xl:gap-x-[49px] xl:gap-y-[48px]">
-            {allProducts.map((product, index) => (
-              <Link className="w-full" key={index} href={`/store/${product.productName}/${product.productId}`}>
-                <ProductCard product={product} />
-              </Link>
-            ))}
-          </div>
-        </div>
+      <div className="sm:mt-[52.6px] w-full grid grid-cols-2 xl:grid-cols-3 gap-x-[9px] gap-y-[41.46px] md:gap-x-[43.21px] md:gap-y-16 xl:gap-x-[49px] xl:gap-y-[48px]">
+        {displayedProducts.map((product, index) => (
+          <Link className="w-full" key={index} href={`/store/${product.productName}/${product.productId}`}>
+            <ProductCard product={product} />
+          </Link>
+        ))}
+      </div>
+    </div>
 
         {/* Testimonials */}
         <div className="mt-[92.46px] sm:mt-[115px] xl:mt-[272.19px] xl:max-w-[1312px] w-full flex flex-col justify-center items-center">

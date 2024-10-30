@@ -830,6 +830,7 @@ export default function Home() {
         </div>
 
         <div className="hidden mt-[109.5px] w-full md:flex flex-col justify-center items-center">
+          <Link href="/community" passHref>
           <div className="w-[1595px] flex justify-center items-center gap-10 overflow-hidden">
             <Image
               className="object-contain w-[505px] h-[413px]"
@@ -853,6 +854,7 @@ export default function Home() {
               height={413}
             />
           </div>
+          </Link>
 
           <div className="mt-[43px] w-full flex gap-10 justify-center items-center">
             <Image

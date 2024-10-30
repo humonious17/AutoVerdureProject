@@ -2,18 +2,26 @@ import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import 'react-quill/dist/quill.snow.css'; // Import styles for the editor
 import Image from 'next/image';
+import Link from 'next/link';
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
 export default function AdminBlogs() {
   const [blogs, setBlogs] = useState([]);
-  const [newBlog, setNewBlog] = useState({ title: '', description: '', content: '', image: null });
-  const [imagePreview, setImagePreview] = useState(null);
+  const [newBlog, setNewBlog] = useState({
+    title: '',
+    description: '',
+    content: '',
+    imageUrl: '',
+    selectedBlogId: '',
+    category: '' // Added category field
+  });
+
+  const categories = ['Learning', 'Guides', 'Article']; // Example categories
 
   useEffect(() => {
-    // Fetch existing blogs from the API
     const fetchBlogs = async () => {
-      const res = await fetch('/api/blogs');
+      const res = await fetch('/api/addblogs');
       const data = await res.json();
       setBlogs(data);
     };
@@ -25,41 +33,31 @@ export default function AdminBlogs() {
     setNewBlog({ ...newBlog, [name]: value });
   };
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setNewBlog({ ...newBlog, image: file });
-      setImagePreview(URL.createObjectURL(file)); // Show a preview of the image
-    }
-  };
-
   const handleContentChange = (content) => {
     setNewBlog({ ...newBlog, content });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const formData = new FormData();
-    formData.append('title', newBlog.title);
-    formData.append('description', newBlog.description); // Include description
-    formData.append('content', newBlog.content);
-    if (newBlog.image) {
-      formData.append('image', newBlog.image);
-    }
-
-    const res = await fetch('/api/blogs', {
+  
+    const res = await fetch('/api/addblogs', {
       method: 'POST',
-      body: formData,
+      headers: {
+        'Content-Type': 'application/json', // Set content type to JSON
+      },
+      body: JSON.stringify(newBlog), // Convert newBlog object to JSON string
     });
-
+  
     if (res.ok) {
       const blog = await res.json();
       setBlogs([...blogs, blog]);
-      setNewBlog({ title: '', description: '', content: '', image: null }); // Reset form
-      setImagePreview(null); // Clear image preview after submission
+      setNewBlog({ title: '', description: '', content: '', imageUrl: '', selectedBlogId: '', category: '' }); // Reset form
+    } else {
+      console.error('Failed to submit the blog');
     }
   };
+  
+  
 
   return (
     <div className="container mx-auto p-6">
@@ -97,19 +95,29 @@ export default function AdminBlogs() {
           />
         </div>
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Attach Image</label>
+          <label className="block text-sm font-medium text-gray-700">Image URL</label>
           <input
-            type="file"
-            name="image"
-            accept="image/*"
-            onChange={handleImageChange}
+            type="text"
+            name="imageUrl"
+            value={newBlog.imageUrl}
+            onChange={handleInputChange}
             className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
+            placeholder="Enter image URL"
           />
-          {imagePreview && (
-            <div className="mt-2">
-              <Image src={imagePreview} alt="Image Preview" className="w-48 h-48 object-cover" />
-            </div>
-          )}
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">Category</label>
+          <select
+            name="category"
+            value={newBlog.category}
+            onChange={handleInputChange}
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
+          >
+            <option value="">-- Select a category --</option>
+            {categories.map((category) => (
+              <option key={category} value={category}>{category}</option>
+            ))}
+          </select>
         </div>
         <button
           type="submit"
@@ -119,27 +127,9 @@ export default function AdminBlogs() {
         </button>
       </form>
 
-      <h2 className="text-xl font-bold mb-4">Existing Blogs</h2>
-      {blogs.length > 0 ? (
-        <ul>
-          {blogs.map((blog) => (
-            <li key={blog.id} className="mb-4 p-4 border-b flex">
-              {blog.image && (
-                <div className="mr-4">
-                  <Image src={blog.image} alt={blog.title} className="w-48 h-48 object-cover" />
-                </div>
-              )}
-              <div className="flex-grow">
-                <h3 className="text-lg font-semibold">{blog.title}</h3>
-                <p className="text-gray-600">{blog.description}</p> {/* Ensure this line displays the description */}
-                <div dangerouslySetInnerHTML={{ __html: blog.content }} />
-              </div>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>No blogs available</p>
-      )}
+
+      
     </div>
+    
   );
 }

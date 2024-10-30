@@ -1,8 +1,10 @@
 import Image from "next/image";
 import React from "react";
+import Link from "next/link";
 
 const Testimonial = () => {
   return (
+    <Link href="/community" passHref>
     <div className="w-full flex flex-col md:flex-row gap-5 md:gap-x-[18px] xl:gap-x-[120px] justify-center items-center md:justify-normal md:items-start xl:items-center md:p-6 md:rounded-[20px] md:border-[1px] border-[#D8D8D8]">
       <div className="w-full xl:w-fit flex flex-col md:flex-1 xl:flex-none gap-5">
         <Image
@@ -34,6 +36,7 @@ const Testimonial = () => {
         </p>
       </div>
     </div>
+    </Link>
   );
 };
 

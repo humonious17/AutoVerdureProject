@@ -1,7 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   webpack: (config, { isServer }) => {
-    // Add the file-loader rule
+    // Enable WebAssembly and Layers support
+   // config.experiments = {asyncWebAssembly: true,   layers: true,          };
+
+    // Add WebAssembly loader rule
+    config.module.rules.push({
+      test: /\.wasm$/,
+      type: "webassembly/async", // Set the type for WebAssembly modules
+    });
+
+    // Add the file-loader rule for videos
     config.module.rules.push({
       test: /\.(mp4|webm)$/,
       use: [
@@ -16,17 +25,17 @@ const nextConfig = {
         },
       ],
     });
-    //config.experiments = { asyncWebAssembly: true };
+    
     return config;
   },
-    images: {
-        remotePatterns: [
-            {
-                protocol: "https",
-                hostname: "**",
-            },
-        ],
-    },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**",
+      },
+    ],
+  },
 };
 
 export default nextConfig;

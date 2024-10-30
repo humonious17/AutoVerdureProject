@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { BiEdit } from "react-icons/bi";
+import { FiEdit } from "react-icons/fi";
 import { parse } from 'cookie';
 
 const Profile = (props) => {
@@ -47,58 +47,70 @@ const Profile = (props) => {
 
   const styles = {
     body: { display: 'flex', justifyContent: 'center', marginTop: '5%', alignItems: 'center' },
-    container: { display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100vh', fontFamily: 'Arial, sans-serif' },
+    container: {  flexDirection: 'column', justifyContent: 'center', height: '100vh', fontFamily: 'Arial, sans-serif' },
     form: { padding: '20px', width: '560px', display: 'flex', flexDirection: 'column', justifyContent: 'center', margin: 'auto' },
-    label: { marginBottom: '8px', fontWeight: '400', fontSize: '24px' },
-    labellast: { marginBottom: '8px', fontWeight: '400', fontSize: '24px', position: 'relative', left: '25px' },
-    input: { width: '100%', padding: '10px', marginBottom: '15px', border: '1px solid #ccc', borderRadius: '25px', fontSize: '14px' },
-    inputHalf: { width: '100%', padding: '10px', border: '1px solid #ccc', borderRadius: '25px', fontSize: '14px' },
-    button: { width: '99%', padding: '10px 0', border: 'none', borderRadius: '25px', backgroundColor: '#9A5CF5', color: 'white', fontSize: '16px', cursor: 'pointer', marginTop: '10px' },
-    editIcon: { position: 'relative', width: '40px', height: '40px', left: '10%' },
-    editIcon2: { position: 'relative', width: '40px', height: '40px', left: '3%' },
+    row: { display: 'flex', alignItems: 'center', marginBottom: '15px' },
+    inputContainer: { flex: 1, position: 'relative' },
+    label: { fontWeight: '400', fontSize: '18px', marginBottom: '5px' },
+    input: { width: '100%', padding: '10px', border: '1px solid #ccc', borderRadius: '25px', fontSize: '14px' },
+    button: { width: '100%', padding: '10px 0', border: 'none', borderRadius: '25px', backgroundColor: '#9A5CF5', color: 'white', fontSize: '16px', cursor: 'pointer', marginTop: '10px' },
+    editIcon: { position: 'relative', top: '50%', right: '10px', cursor: 'pointer', left:'10%', width:'20px', height:'20px' },
+    
   };
 
   return (
-    <div className={styles.container}>
+    <div style={styles.container}>
       <form onSubmit={handleSubmit} style={styles.form}>
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <div>
+        <div style={styles.row}>
+          <div style={{ ...styles.inputContainer, marginRight: '10px' }}>
             <label htmlFor="firstName" style={styles.label}>First Name</label>
             <input
               type="text"
               name="firstName"
               value={formData.firstName}
               onChange={handleChange}
-              style={styles.inputHalf}
+              style={styles.input}
               disabled={!editField.name}
             />
           </div>
-          <div>
-            <label htmlFor="lastName" style={styles.labellast}>Last Name</label>
+          <div style={styles.inputContainer}>
+            <label htmlFor="lastName" style={styles.label}>Last Name</label>
             <input
               type="text"
               name="lastName"
               value={formData.lastName}
               onChange={handleChange}
-              style={styles.inputHalf}
+              style={styles.input}
               disabled={!editField.name}
             />
+          
           </div>
-          <BiEdit style={styles.editIcon} onClick={() => handleEdit('name')} />
+          <FiEdit style={styles.editIcon} onClick={() => handleEdit('name')} />
         </div>
 
-        <label htmlFor="email" style={styles.label}>Email</label>
-        <input type="email" name="email" value={formData.email} onChange={handleChange} style={styles.input} disabled />
-
-        <label htmlFor="phone" style={styles.label}>Phone</label>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <input type="tel" name="phone" value={formData.phone} onChange={handleChange} style={styles.input} disabled={!editField.phone} />
-          <BiEdit style={styles.editIcon2} onClick={() => handleEdit('phone')} />
+        <div style={styles.row}>
+          <div style={styles.inputContainer}>
+            <label htmlFor="email" style={styles.label}>Email</label>
+            <input type="email" name="email" value={formData.email} onChange={handleChange} style={styles.input} disabled={!editField.email}  />
+          </div>
+          <FiEdit style={styles.editIcon} onClick={() => handleEdit('email')} />
         </div>
 
-        <label htmlFor="avPoints" style={styles.label}>AV Points</label>
-        <input type="number" name="avPoints" value={formData.avPoints} onChange={handleChange} style={styles.input} disabled />
+        <div style={styles.row}>
+          <div style={styles.inputContainer}>
+            <label htmlFor="phone" style={styles.label}>Phone</label>
+            <input type="tel" name="phone" value={formData.phone} onChange={handleChange} style={styles.input} disabled={!editField.phone} />
+           
+          </div>
+          <FiEdit style={styles.editIcon} onClick={() => handleEdit('phone')} />
+        </div>
 
+        <div style={styles.row}>
+          <div style={styles.inputContainer}>
+            <label htmlFor="avPoints" style={styles.label}>AV Points</label>
+            <input type="number" name="avPoints" value={formData.avPoints} onChange={handleChange} style={styles.input} disabled />
+          </div>
+        </div>
         <button type="submit" style={styles.button} onClick={handleEditProfile}>
           {buttonText}
         </button>
@@ -106,7 +118,6 @@ const Profile = (props) => {
     </div>
   );
 };
-
 export default Profile;
 
 export async function getServerSideProps({ req, res }) {

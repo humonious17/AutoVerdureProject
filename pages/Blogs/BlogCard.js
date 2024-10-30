@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export default function BlogCard({ blog }) {
   return (
-    <Link href={`/blogs/${blog.id}`} className="block max-w-xs rounded overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+    <Link href={`/Blogs/${blog.id}`} className="block max-w-xs rounded overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
       <div className="relative h-48 w-full">
         {blog.imageUrl && (
           <Image

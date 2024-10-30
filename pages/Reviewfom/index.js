@@ -17,20 +17,19 @@ export default function ReviewForm() {
   };
 
   const handleRating = (index) => {
-    // If the user clicks on the same star again, decrease the rating
     if (rating === index + 1) {
-      setRating(0); // Reset the rating
+      setRating(0);
     } else {
-      setRating(index + 1); // Set the new rating
+      setRating(index + 1);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-1/2 max-w-xl height-400 p-6 bg-white shadow-lg rounded-2xl">
-      <h2 className="text-2xl font-bold mb-6 text-left text-gray-800">Add a Review</h2>
+    <form onSubmit={handleSubmit} className="w-full max-w-xl sm:w-3/4 md:w-1/2 p-4 sm:p-6 bg-white shadow-lg rounded-2xl mx-auto">
+      <h2 className="text-2xl font-bold mb-4 sm:mb-6 text-left text-gray-800">Add a Review</h2>
 
-      {/* Rating (Label and Stars on the Same Line) */}
-      <div className="mb-6 flex items-center space-x-6">
+      {/* Rating */}
+      <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0 sm:space-x-6">
         <label className="text-base font-semibold text-gray-700">Select Rating</label>
         <div className="flex space-x-2">
           {[...Array(5)].map((_, i) => (
@@ -49,7 +48,7 @@ export default function ReviewForm() {
       </div>
 
       {/* Comments */}
-      <div className="mb-6">
+      <div className="mb-4 sm:mb-6">
         <label className="block mb-2 text-base font-semibold text-gray-700">Add Comments</label>
         <textarea
           className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-shadow shadow-sm"
@@ -61,7 +60,7 @@ export default function ReviewForm() {
       </div>
 
       {/* Add Photos */}
-      <div className="mb-6">
+      <div className="mb-4 sm:mb-6">
         <label className="block mb-2 text-base font-semibold text-gray-700">Add Photos</label>
         <div className="relative w-full h-44 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center overflow-hidden">
           {image ? (
@@ -87,10 +86,10 @@ export default function ReviewForm() {
       </div>
 
       {/* Submit Button */}
-      <div className="flex justify-end mt-8">
+      <div className="flex justify-center sm:justify-end mt-6 sm:mt-8">
         <button
           type="submit"
-          className="py-3 px-12 bg-purple-600 text-white font-bold rounded-full hover:bg-purple-700 transition-colors duration-300 shadow-lg"
+          className="w-full sm:w-auto py-3 px-6 sm:px-12 bg-purple-600 text-white font-bold rounded-full hover:bg-purple-700 transition-colors duration-300 shadow-lg"
         >
           Submit Review
         </button>

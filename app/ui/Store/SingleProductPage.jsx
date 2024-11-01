@@ -641,7 +641,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
                   {isDescriptionOpen && (
                     <div className="pl-4 mt-1 bg-white text-black p-3 rounded-md transition-opacity duration-300 opacity-100">
                       <p>
-                        zenpot nurtures your plant while adding a touch of serenity to your living space. Elevate your gardening journey and find your inner peace with the zenpot self-watering system.
+                        {productData.productDescription}
                       </p>
                     </div>
                   )}

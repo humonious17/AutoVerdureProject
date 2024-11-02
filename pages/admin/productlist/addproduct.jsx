@@ -1,4 +1,5 @@
-import { useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useState, useEffect } from "react";
 
 const ProductForm = () => {
   const initialFormData = {
@@ -10,9 +11,19 @@ const ProductForm = () => {
     innerHeight: 0,
     innerLength: 0,
     dimensions: "",
-    petFriendly: false,
-    lessLight: false,
-    moreLight: false,
+    petFriendly: "false",
+    lessLight: "false",
+    moreLight: "false",
+    XS: "false",
+    S: "false",
+    M: "false",
+    L: "false",
+    XL: "false",
+    white: "false",
+    cream: "false",
+    lightGrey: "false",
+    darkGrey: "false",
+    black: "false",
     sizes: {
       XS: { selected: false, price: 0 },
       S: { selected: false, price: 0 },
@@ -21,17 +32,31 @@ const ProductForm = () => {
       XL: { selected: false, price: 0 },
     },
     colors: {
-      white: false,
-      cream: false,
-      lightGrey: false,
-      darkGrey: false,
-      black: false,
+      white: { selected: false, price: 0 },
+      cream: { selected: false, price: 0 },
+      lightGrey: { selected: false, price: 0 },
+      darkGrey: { selected: false, price: 0 },
+      black: { selected: false, price: 0 },
     },
     images: [],
-    stockQuantity: 0, // New field for stock quantity
+    stockQuantity: 0,
+    defaultSize: "",
+    defaultColor: "",
   };
 
+
   const [formData, setFormData] = useState(initialFormData);
+  useEffect(() => {
+    (() => {
+      const defaultSizePrice = formData.sizes[formData.defaultSize]?.price || 0;
+      const defaultColorPrice = formData.colors[formData.defaultColor]?.price || 0;
+
+      setFormData((prev) => ({
+        ...prev,
+        productPrice: defaultSizePrice + defaultColorPrice
+      }));
+    })();
+  }, [formData.defaultSize, formData.defaultColor]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -39,6 +64,7 @@ const ProductForm = () => {
     if (name in formData.sizes) {
       setFormData((prev) => ({
         ...prev,
+        [name]: checked.toString(), // Convert boolean to string "true"/"false"
         sizes: {
           ...prev.sizes,
           [name]: { selected: checked, price: prev.sizes[name].price },
@@ -47,13 +73,14 @@ const ProductForm = () => {
     } else if (name in formData.colors) {
       setFormData((prev) => ({
         ...prev,
+        [name]: checked.toString(), // Convert boolean to string "true"/"false"
         colors: {
           ...prev.colors,
-          [name]: checked, // Update color selection
+          [name]: { selected: checked, price: prev.colors[name].price },
         },
       }));
     } else if (type === "checkbox") {
-      setFormData((prev) => ({ ...prev, [name]: checked }));
+      setFormData((prev) => ({ ...prev, [name]: checked.toString() })); // Convert boolean to string
     } else if (type === "number") {
       setFormData((prev) => ({ ...prev, [name]: Number(value) }));
     } else {
@@ -61,15 +88,50 @@ const ProductForm = () => {
     }
   };
 
+
   const handleSizePriceChange = (size, value) => {
-    setFormData((prev) => ({
-      ...prev,
-      sizes: {
+    setFormData((prev) => {
+      const updatedSizes = {
         ...prev.sizes,
         [size]: { ...prev.sizes[size], price: Number(value) },
+      };
+
+      const selectedSizes = Object.entries(updatedSizes)
+        .filter(([_, details]) => details.selected)
+        .map(([_, details]) => details.price);
+
+      const smallestPrice = Math.min(...selectedSizes);
+
+      return {
+        ...prev,
+        sizes: updatedSizes,
+        productPrice: selectedSizes.length > 0 ? smallestPrice : prev.productPrice,
+      };
+    });
+  };
+
+  const handleColorPriceChange = (color, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      colors: {
+        ...prev.colors,
+        [color]: { ...prev.colors[color], price: Number(value) },
       },
     }));
   };
+
+
+  const validateSelection = () => {
+    const hasSize = Object.values(formData.sizes).some((size) => size.selected);
+    const hasColor = Object.values(formData.colors).some((color) => color);
+
+    if (!hasSize || !hasColor) {
+      alert("Please select at least one size and one color.");
+      return false;
+    }
+    return true;
+  };
+
 
   const handleImageChange = async (index, e) => {
     if (!e.target.files || e.target.files.length === 0) {
@@ -117,8 +179,54 @@ const ProductForm = () => {
     }));
   };
 
+  const setDefaultSize = (size) => {
+    setFormData((prev) => ({ 
+      ...prev, 
+      defaultSize: size 
+    }));
+    // Directly calculate price after setting default size
+    calculateProductPrice();
+  };
+  
+
+  const setDefaultColor = (color) => {
+    setFormData((prev) => ({ 
+      ...prev, 
+      defaultColor: color 
+    }));
+    // Directly calculate price after setting default color
+    calculateProductPrice();
+  };
+  
+
+  const calculateProductPrice = () => {
+    const defaultSizePrice = formData.sizes[formData.defaultSize]?.price || 0;
+    const defaultColorPrice = formData.colors[formData.defaultColor]?.price || 0;
+    setFormData((prev) => ({ ...prev, productPrice: defaultSizePrice + defaultColorPrice }));
+  };
+
+  const validateForm = () => {
+    const selectedSizes = Object.values(formData.sizes).some((size) => size.selected);
+    const selectedColors = Object.values(formData.colors).some((color) => color.selected);
+    return selectedSizes && selectedColors;
+  };
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) {
+      alert("Please select at least one size and one color.");
+      return;
+    }
+    (() => {
+      const defaultSizePrice = formData.sizes[formData.defaultSize]?.price || 0;
+      const defaultColorPrice = formData.colors[formData.defaultColor]?.price || 0;
+
+      setFormData((prev) => ({
+        ...prev,
+        productPrice: defaultSizePrice + defaultColorPrice
+      }));
+    })();
     const response = await fetch("/api/products/add", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -131,6 +239,8 @@ const ProductForm = () => {
       alert("Failed to add product.");
     }
   };
+
+
 
   return (
     <form onSubmit={handleSubmit} style={styles.formContainer}>
@@ -155,17 +265,12 @@ const ProductForm = () => {
           <option value="accessory">Accessory</option>
         </select>
       </div>
-
       <div style={styles.fieldContainer}>
         <label style={styles.label}>Product Description</label>
         <textarea name="productDescription" value={formData.productDescription} onChange={handleChange} style={styles.textarea} />
       </div>
 
       <div style={styles.row}>
-        <div style={styles.fieldContainer}>
-          <label style={styles.label}>Product Price</label>
-          <input type="number" name="productPrice" value={formData.productPrice} onChange={handleChange} required style={styles.input} />
-        </div>
 
         <div style={styles.fieldContainer}>
           <label style={styles.label}>Stock Quantity</label>
@@ -222,13 +327,22 @@ const ProductForm = () => {
               {size}
             </label>
             {formData.sizes[size].selected && (
-              <input
-                type="number"
-                value={formData.sizes[size].price}
-                onChange={(e) => handleSizePriceChange(size, e.target.value)}
-                placeholder={`Price for ${size}`}
-                style={styles.priceInput}
-              />
+              <>
+                <input
+                  type="number"
+                  value={formData.sizes[size].price}
+                  onChange={(e) => handleSizePriceChange(size, e.target.value)}
+                  placeholder={`Price for ${size}`}
+                  style={styles.priceInput}
+                />
+                <input
+                  type="radio"
+                  name="defaultSize"
+                  checked={formData.defaultSize === size}
+                  onChange={() => setDefaultSize(size)}
+                />
+                Set as Default
+              </>
             )}
           </div>
         ))}
@@ -242,13 +356,36 @@ const ProductForm = () => {
               <input
                 type="checkbox"
                 name={color}
-                checked={formData.colors[color]}
+                checked={formData.colors[color].selected}
                 onChange={handleChange}
               />
               {color.charAt(0).toUpperCase() + color.slice(1)}
             </label>
+            {formData.colors[color].selected && (
+              <>
+                <input
+                  type="number"
+                  value={formData.colors[color].price}
+                  onChange={(e) => handleColorPriceChange(color, e.target.value)}
+                  placeholder={`Price for ${color}`}
+                  style={styles.priceInput}
+                />
+                <input
+                  type="radio"
+                  name="defaultColor"
+                  checked={formData.defaultColor === color}
+                  onChange={() => setDefaultColor(color)}
+                />
+                Set as Default
+              </>
+            )}
           </div>
         ))}
+      </div>
+
+      <div style={styles.fieldContainer}>
+          <label style={styles.label}>Product Price</label>
+          <label style={styles.label}>{formData.productPrice} </label>
       </div>
 
       <h3 style={styles.subHeader}>Images</h3>
@@ -292,6 +429,7 @@ const styles = {
   label: {
     display: 'block',
     marginBottom: '5px',
+
   },
   input: {
     width: '100%',

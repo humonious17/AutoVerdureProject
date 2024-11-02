@@ -5,19 +5,17 @@ import { useRouter } from "next/router";
 const Payment = (props) => {
   const orderId = props.orderId;
   const [scriptLoaded, setScriptLoaded] = useState(false);
-  const [products, setProducts] = useState([]); // To store selected products
-  const [email, setEmail] = useState(''); // To store user's email
-  const [address, setAddress] = useState({}); // To store shipping address
+  const [products, setProducts] = useState([]);
+  const [email, setEmail] = useState('');
+  const [address, setAddress] = useState({});
   let total = 0;
   const router = useRouter();
 
-  // Sample products for demonstration
   const selectedProducts = [
-    { productPrice: "100", productQty: 2 }, 
+    { productPrice: "100", productQty: 2 },
     { productPrice: "200", productQty: 1 }
-  ]; // Replace with actual selected products
+  ];
 
-  // Calculate total amount
   selectedProducts.forEach((element) => {
     total += parseInt(element.productPrice) * parseInt(element.productQty);
   });
@@ -41,14 +39,14 @@ const Payment = (props) => {
             image: '/logo.png',
             order_id: orderId,
             handler: async function (response) {
-              // handle successful payment here
               const payload = {
-                orderId: orderId, 
+                orderId: orderId,
                 signature: response.razorpay_signature,
                 paymentId: response.razorpay_payment_id,
-              }
+              };
+              
               const result = await fetch('/api/verifyPayment', {
-                method: 'POST', 
+                method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
                 },
@@ -57,22 +55,35 @@ const Payment = (props) => {
 
               if (result.ok) {
                 const orderPayload = {
-                  products: selectedProducts, 
+                  products: selectedProducts,
                   email: email,
                   shippingAddress: address,
                 };
 
-                // Clear user session or data as required
                 setEmail('');
                 setAddress({});
                 setProducts([]);
 
                 await fetch('/api/addOrder', {
-                  method: 'POST', 
+                  method: 'POST',
                   headers: {
                     'Content-Type': 'application/json'
-                  }, 
+                  },
                   body: JSON.stringify(orderPayload)
+                });
+
+                // Send order confirmation email
+                await fetch('/api/sendEmail', {
+                  method: 'POST',
+                  headers: {  
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({
+                    email: email,
+                    orderId: orderId,
+                    products: selectedProducts,
+                    totalAmount: total,
+                  })
                 });
 
                 router.push('/checkout/successful');

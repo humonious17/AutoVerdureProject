@@ -472,23 +472,25 @@ const handleColorSelection = (colorKey) => {
                 
 
               {/* Product Color */}
-              <div>
-    <p className="text-sm font-normal">Color</p>
-    <div className="mt-[12px] w-[306px] flex gap-4">
-      {Object.entries(colors).map(([colorKey, { hex, isAvailable }]) => 
-        isAvailable && (
-          <div
-            key={colorKey}
-            onClick={() => handleColorSelection(colorKey)}
-            className={`w-[30px] h-[30px] rounded-full cursor-pointer border-2 border-black transition-transform duration-300 ease-in-out 
-              ${selectedColor === colorKey 
-                ? `bg-[${hex}] border-2 border-[#9A5CF5] shadow-lg scale-110`
-                : `bg-[${hex}] hover:shadow-md hover:scale-105`}`}
-          />
-        )
-      )}
-    </div>
+              <p className="text-sm font-normal">Color</p>
+<div className="mt-[12px] w-[306px] flex gap-4">
+  {Object.entries(colors).map(([colorKey, { hex, isAvailable }]) => 
+    isAvailable && (
+      <div
+        key={colorKey}
+        onClick={() => handleColorSelection(colorKey)}
+        style={{ backgroundColor: hex }}
+        className={`w-[30px] h-[30px] rounded-full cursor-pointer border-2 transition-transform duration-300 ease-in-out 
+          ${selectedColor === colorKey 
+            ? "border-[#9A5CF5] shadow-lg scale-110 ring- ring-offset-2 ring-[#9A5CF5]"
+            : "hover:shadow-md hover:scale-105"}`}
+      >
+      </div>
+    )
+  )}
 </div>
+
+
 
 
 

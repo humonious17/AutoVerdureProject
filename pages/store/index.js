@@ -1,31 +1,113 @@
-import React from "react";
+import React, { useState } from "react";
 import ProductCard from "@/app/ui/Store/ProductCard";
 import Link from "next/link";
 import TopSegment from "@/app/ui/Store/TopSegment";
+import StoreTools from "@/app/ui/Store/StoreTools";
 import findAllProducts from "/pages/api/products/findAllProducts";
 
-const Store = (props) => {
-    const plants = props.plants;
-    const grobox = props.grobox;
-    const zenpot = props.zenpot;
+const Store = ({ initialProducts }) => {
+    const [filteredProducts, setFilteredProducts] = useState(initialProducts);
+    const [sortBy, setSortBy] = useState("default");
+    const [showCount, setShowCount] = useState(16);
+
+    // Safe string getter for sorting
+    const getSafeString = (obj, key) => {
+        if (!obj || typeof obj !== 'object') return '';
+        return (obj[key] || '').toString().toLowerCase();
+    };
+
+    // Safe number getter for sorting
+    const getSafeNumber = (obj, key) => {
+        if (!obj || typeof obj !== 'object') return 0;
+        const value = parseFloat(obj[key]);
+        return isNaN(value) ? 0 : value;
+    };
+
+    // Handle filtering of products
+    const handleFilterChange = (filters) => {
+        let filtered = [...initialProducts];
+
+        // Filter by type
+        if (filters.type.length > 0) {
+            filtered = filtered.filter(product => 
+                product && product.category && filters.type.includes(product.category)
+            );
+        }
+
+        // Filter by pot type
+        if (filters.pot.length > 0) {
+            filtered = filtered.filter(product => 
+                product && product.potType && filters.pot.includes(product.potType)
+            );
+        }
+
+        // Filter by material
+        if (filters.material.length > 0) {
+            filtered = filtered.filter(product => 
+                product && product.material && filters.material.includes(product.material)
+            );
+        }
+
+        setFilteredProducts(filtered);
+    };
+
+    // Handle sorting of products
+    const handleSort = (sortType) => {
+        setSortBy(sortType);
+        let sorted = [...filteredProducts].filter(Boolean); // Remove null/undefined items
+
+        switch (sortType) {
+            case "name-asc":
+                sorted.sort((a, b) => getSafeString(a, 'productName').localeCompare(getSafeString(b, 'productName')));
+                break;
+            case "name-desc":
+                sorted.sort((a, b) => getSafeString(b, 'productName').localeCompare(getSafeString(a, 'productName')));
+                break;
+            case "price-asc":
+                sorted.sort((a, b) => getSafeNumber(a, 'productPrice') - getSafeNumber(b, 'productPrice'));
+                break;
+            case "price-desc":
+                sorted.sort((a, b) => getSafeNumber(b, 'productPrice') - getSafeNumber(a, 'productPrice'));
+                break;
+            default:
+                // Reset to original order
+                sorted = [...initialProducts].filter(Boolean);
+        }
+
+        setFilteredProducts(sorted);
+    };
+
+    // Handle show count change
+    const handleShowCountChange = (count) => {
+        setShowCount(parseInt(count));
+    };
+
+    // Ensure we have valid products to display
+    const validProducts = filteredProducts.filter(product => 
+        product && product.productId && product.category
+    );
+
     return (
         <div className="w-full bg-[#FFFCF8]">
             <TopSegment />
+            
+            <StoreTools 
+                totalProducts={validProducts.length}
+                displayedProducts={Math.min(showCount, validProducts.length)}
+                onFilterChange={handleFilterChange}
+                onSortChange={handleSort}
+                onShowCountChange={handleShowCountChange}
+                sortBy={sortBy}
+                showCount={showCount}
+            />
 
             <div className="mt-[42px] md:mt-[58px] xl:mt-[110px] mb-[70.46px] md:mb-[124.8px] xl:mb-[142.3px] w-full flex flex-col justify-center items-center">
                 <div className="max-w-[359px] md:max-w-[750.998px] xl:max-w-[1312px] w-full grid grid-cols-2 xl:grid-cols-3 gap-x-[9px] gap-y-[41.46px] md:gap-x-[43.21px] md:gap-y-16 xl:gap-x-[49px] xl:gap-y-[48px]">
-                    {plants.map((product, index) => (
-                        <Link key={index} href={`/store/plants/${product.productId}`}>
-                            <ProductCard product={product} />
-                        </Link>
-                    ))}
-                    {zenpot.map((product, index) => (
-                        <Link key={index} href={`/store/zenpot/${product.productId}`}>
-                            <ProductCard product={product} />
-                        </Link>
-                    ))}
-                    {grobox.map((product, index) => (
-                        <Link key={index} href={`/store/grobox/${product.productId}`}>
+                    {validProducts.slice(0, showCount).map((product, index) => (
+                        <Link 
+                            key={product.productId || index} 
+                            href={`/store/${product.category}/${product.productId}`}
+                        >
                             <ProductCard product={product} />
                         </Link>
                     ))}
@@ -38,15 +120,38 @@ const Store = (props) => {
 export async function getServerSideProps() {
     console.log("Fetching products for store page...");
 
-    const zenpot = await findAllProducts('zenpot');
-    const grobox = await findAllProducts('grobox');
-    const plants = await findAllProducts('plants');
+    try {
+        const zenpot = await findAllProducts('zenpot') || [];
+        const grobox = await findAllProducts('grobox') || [];
+        const plants = await findAllProducts('plants') || [];
 
-    console.log({ zenpot, grobox, plants }); // Log the fetched products
+        // Combine all products and add category, filter out invalid entries
+        const allProducts = [
+            ...zenpot.map(p => p ? { ...p, category: 'zenpot' } : null),
+            ...grobox.map(p => p ? { ...p, category: 'grobox' } : null),
+            ...plants.map(p => p ? { ...p, category: 'plants' } : null)
+        ].filter(Boolean); // Remove any null values
 
-    // If none of the products are found, redirect to home
-    if (!zenpot && !grobox && !plants) {
-        console.error("No products found. Redirecting to home.");
+        // Validate the structure of each product
+        const validProducts = allProducts.map(product => {
+            if (!product || typeof product !== 'object') return null;
+            
+            return {
+                ...product,
+                name: product.name || 'Unnamed Product',
+                price: parseFloat(product.price) || 0,
+                productId: product.productId || `product-${Math.random()}`,
+                category: product.category || 'uncategorized'
+            };
+        }).filter(Boolean);
+
+        return {
+            props: {
+                initialProducts: validProducts,
+            },
+        };
+    } catch (error) {
+        console.error("Error fetching products:", error);
         return {
             redirect: {
                 destination: '/',
@@ -54,17 +159,6 @@ export async function getServerSideProps() {
             },
         };
     }
-
-    // Pass empty arrays for missing product types to avoid breaking the page
-    return {
-        props: {
-            zenpot: zenpot || [],
-            grobox: grobox || [],
-            plants: plants || [],
-        },
-    };
 }
-
-
 
 export default Store;

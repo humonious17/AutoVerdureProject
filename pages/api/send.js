@@ -1,4 +1,4 @@
-import {EmailTemplate} from "@/components/emailTemplate";
+//import {EmailTemplate} from "@/components/emailTemplate";
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY)
@@ -9,7 +9,7 @@ export default async function handler(req, res) {
             from: 'Acme <onboarding@resend.dev>',
             to: ['server.autoverdure@gmail.com'],
             subject: 'Test',
-            react: EmailTemplate({firstName: 'Raghav'})
+           // react: EmailTemplate({firstName: 'Raghav'})
         })
 
         if (error) {

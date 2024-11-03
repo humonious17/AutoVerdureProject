@@ -1,4 +1,4 @@
-import {EmailTemplate} from "@/components/contactEmailTemplate";
+//import {EmailTemplate} from "@/components/contactEmailTemplate";
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY)
@@ -9,7 +9,7 @@ async function sendContactMail(details) {
             from: 'Acme <onboarding@resend.dev>',
             to: ['server.autoverdure@gmail.com'],
             subject: `Query from ${details.email}`,
-            react: EmailTemplate({firstName: details.firstName, lastName: details.lastName, email: details.email, queryType: details.queryType, comments: details.comments})
+            //react: EmailTemplate({firstName: details.firstName, lastName: details.lastName, email: details.email, queryType: details.queryType, comments: details.comments})
         })
 
         if (error) {

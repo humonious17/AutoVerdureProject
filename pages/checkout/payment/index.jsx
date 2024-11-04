@@ -5,24 +5,63 @@ import { useRouter } from "next/router";
 const Payment = (props) => {
   const orderId = props.orderId;
   const [scriptLoaded, setScriptLoaded] = useState(false);
-  const [products, setProducts] = useState([]); // To store selected products
-  const [email, setEmail] = useState(''); // To store user's email
-  const [address, setAddress] = useState({}); // To store shipping address
+  const [products, setProducts] = useState([]);
+  const [email, setEmail] = useState('');
+  const [address, setAddress] = useState({
+    fullName: '',
+    streetName: '',
+    houseNumber: '',
+    city: '',
+    phone: '',
+    country: '',
+    zipCode: '',
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
   let total = 0;
   const router = useRouter();
 
-  // Sample products for demonstration
+  // Update this with proper product data
   const selectedProducts = [
-    { productPrice: "100", productQty: 2 }, 
-    { productPrice: "200", productQty: 1 }
-  ]; // Replace with actual selected products
+    { 
+      productId: "prod1",
+      productName: "Product 1",
+      productPrice: "100", 
+      productQty: 2 
+    },
+    { 
+      productId: "prod2",
+      productName: "Product 2",
+      productPrice: "200", 
+      productQty: 1 
+    }
+  ];
 
-  // Calculate total amount
   selectedProducts.forEach((element) => {
     total += parseInt(element.productPrice) * parseInt(element.productQty);
   });
 
-  const handleSubmit = () => {};
+  useEffect(() => {
+    // Get shipping details from URL or localStorage when component mounts
+    const shippingDetails = router.query;
+    if (shippingDetails) {
+      setAddress({
+        fullName: shippingDetails.fullName || '',
+        streetName: shippingDetails.streetName || '',
+        houseNumber: shippingDetails.houseNumber || '',
+        city: shippingDetails.city || '',
+        phone: shippingDetails.phone || '',
+        country: shippingDetails.country || '',
+        zipCode: shippingDetails.zipCode || '',
+      });
+      setEmail(shippingDetails.email || '');
+    }
+  }, [router.query]);
+
+  const handleSubmit = () => {
+    if (scriptLoaded) {
+      // Your existing submit logic
+    }
+  };
 
   useEffect(() => {
     if (orderId && !scriptLoaded) {
@@ -41,47 +80,99 @@ const Payment = (props) => {
             image: '/logo.png',
             order_id: orderId,
             handler: async function (response) {
-              // handle successful payment here
-              const payload = {
-                orderId: orderId, 
-                signature: response.razorpay_signature,
-                paymentId: response.razorpay_payment_id,
-              }
-              const result = await fetch('/api/verifyPayment', {
-                method: 'POST', 
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(payload),
-              });
-
-              if (result.ok) {
-                const orderPayload = {
-                  products: selectedProducts, 
-                  email: email,
-                  shippingAddress: address,
+              try {
+                setIsSubmitting(true);
+                
+                const payload = {
+                  orderId: orderId,
+                  signature: response.razorpay_signature,
+                  paymentId: response.razorpay_payment_id,
                 };
-
-                // Clear user session or data as required
-                setEmail('');
-                setAddress({});
-                setProducts([]);
-
-                await fetch('/api/addOrder', {
-                  method: 'POST', 
+                
+                const result = await fetch('/api/verifyPayment', {
+                  method: 'POST',
                   headers: {
-                    'Content-Type': 'application/json'
-                  }, 
-                  body: JSON.stringify(orderPayload)
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify(payload),
                 });
+            
+                if (result.ok) {
+                  const orderPayload = {
+                    products: selectedProducts.map(product => ({
+                      productId: product.productId,
+                      productName: product.productName,
+                      productPrice: product.productPrice,
+                      productQty: product.productQty
+                    })),
+                    email: email,
+                    shippingAddress: {
+                      fullName: address.fullName,
+                      streetName: address.streetName,
+                      houseNumber: address.houseNumber,
+                      city: address.city,
+                      phone: address.phone,
+                      country: address.country,
+                      zipCode: address.zipCode
+                    }
+                  };
+            
+                  console.log('Sending order payload:', orderPayload);
+            
+                  const orderResponse = await fetch('/api/addOrder', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(orderPayload)
+                  });
+            
+                  if (!orderResponse.ok) {
+                    const errorData = await orderResponse.json();
+                    throw new Error(`Failed to create order: ${errorData.message}`);
+                  }
+                  /*
+                  // Send order confirmation email with complete shipping details
+                  await fetch('/api/sendEmail', {
+                    method: 'POST',
+                    headers: {  
+                      'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                      email: email,
+                      orderId: orderId,
+                      products: selectedProducts,
+                      totalAmount: total,
+                      shippingDetails: address
+                    })
+                  });*/
 
-                router.push('/checkout/successful');
-              } else {
+                  setEmail('');
+                  setAddress({
+                    fullName: '',
+                    streetName: '',
+                    houseNumber: '',
+                    city: '',
+                    phone: '',
+                    country: '',
+                    zipCode: '',
+                  });
+                  setProducts([]);
+                  router.push('/checkout/successful');
+                } else {
+                  throw new Error('Payment verification failed');
+                }
+              } catch (error) {
+                console.error('Payment processing error:', error);
                 router.push('/store');
+              } finally {
+                setIsSubmitting(false);
               }
             },
             prefill: {
               email: email,
+              contact: address.phone,
+              name: address.fullName
             },
             theme: {
               color: '#9A5CF5',
@@ -96,7 +187,7 @@ const Payment = (props) => {
 
       loadRazorpayScript();
     }
-  }, [orderId, total, router]);
+  }, [orderId, total, router, email, address]);
 
   return (
     <div className="mb-[177px] sm:mb-[303px] w-full px-11 sm:px-0 flex flex-col justify-center items-center">
@@ -112,14 +203,28 @@ const Payment = (props) => {
 
       {/* Content */}
       <div className="w-full sm:px-[51px] xl:px-[12px] flex flex-col justify-center items-center">
-        <div className="mt-[86px] sm:mt-[69px] max-w-[1119px] w-full h-[703px] border-[1px] rounded-[25px] border-[#000000]"></div>
+        <div className="mt-[86px] sm:mt-[69px] max-w-[1119px] w-full h-[703px] border-[1px] rounded-[25px] border-[#000000]">
+          {/* Display shipping details summary */}
+          <div className="p-6">
+            <h3 className="text-xl font-semibold mb-4">Shipping Details</h3>
+            <p>{address.fullName}</p>
+            <p>{address.streetName} {address.houseNumber}</p>
+            <p>{address.city}, {address.country} {address.zipCode}</p>
+            <p>Phone: {address.phone}</p>
+            <p>Email: {email}</p>
+          </div>
+        </div>
         <form action="https://www.example.com/payment/success/" method="POST">
           <div id="razorpay-button-container"></div>
           <input type="hidden" custom="Hidden Element" name="hidden"/>
         </form>
         {/* Button */}
-        <button className="mt-10 max-w-[440px] w-full px-6 py-[17px] rounded-[30px] bg-[#070707] text-[#FFFFFF] flex justify-center items-center" onClick={handleSubmit}>
-          Continue
+        <button 
+          className="mt-10 max-w-[440px] w-full px-6 py-[17px] rounded-[30px] bg-[#070707] text-[#FFFFFF] flex justify-center items-center" 
+          onClick={handleSubmit}
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? 'Processing...' : 'Continue'}
         </button>
       </div>
     </div>
@@ -133,7 +238,7 @@ export function getServerSideProps(context) {
 
   return {
     props: {
-      orderId: orderId
+      orderId: orderId || null
     },
   };
 }

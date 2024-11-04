@@ -5,6 +5,9 @@ import React, { useEffect, useState } from "react";
 
 const ProductCard = ({ product }) => {
   const plants = product.productType === "plants";
+  const grobox = product.productType === "grobox";
+  const zenpot = product.productType === "zenpot";
+  const accessory = product.productType === "accessory";
   const [isHover, setHover] = useState(false);
   const productDetail = product;
   const productImage = product.images && product.images.length > 0 ? product.images[0].publicUrl : null;
@@ -70,6 +73,78 @@ const ProductCard = ({ product }) => {
                   <Image src="/brightness.png" alt="brightness" width={32} height={32} />
                 </div>
               )}
+            </div>
+          )}
+          {grobox && (
+            <div className="hidden w-fit xl:flex flex-col gap-[12px] absolute top-[21.18px] right-[29px]">
+              {product.petFriendly && (
+                <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
+                  <Image src="/veterinary.png" alt="veterinary" width={32} height={32} />
+                </div>
+              )}
+              {product.petUnfriendly && (
+                <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
+                  <Image src="/noPets.png" alt="noPets" width={32} height={32} />
+                </div>
+              )}
+              {product.lessLight && (
+                <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
+                  <Image src="/noLight.png" alt="noLight" width={32} height={32} />
+                </div>
+              )}
+              {product.moreLight && (
+                <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
+                  <Image src="/brightness.png" alt="brightness" width={32} height={32} />
+                </div>
+              )}
+            </div>
+          )}
+          {zenpot && (
+            <div className="hidden w-fit xl:flex flex-col gap-[12px] absolute top-[21.18px] right-[29px]">
+              {product.petFriendly && (
+                <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
+                  <Image src="/veterinary.png" alt="veterinary" width={32} height={32} />
+                </div>
+              )}
+              {product.petUnfriendly && (
+                <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
+                  <Image src="/noPets.png" alt="noPets" width={32} height={32} />
+                </div>
+              )}
+              {product.lessLight && (
+                <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
+                  <Image src="/noLight.png" alt="noLight" width={32} height={32} />
+                </div>
+              )}
+              {product.moreLight && (
+                <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
+                  <Image src="/brightness.png" alt="brightness" width={32} height={32} />
+                </div>
+              )}
+              {accessory && (
+            <div className="hidden w-fit xl:flex flex-col gap-[12px] absolute top-[21.18px] right-[29px]">
+              {product.petFriendly && (
+                <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
+                  <Image src="/veterinary.png" alt="veterinary" width={32} height={32} />
+                </div>
+              )}
+              {product.petUnfriendly && (
+                <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
+                  <Image src="/noPets.png" alt="noPets" width={32} height={32} />
+                </div>
+              )}
+              {product.lessLight && (
+                <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
+                  <Image src="/noLight.png" alt="noLight" width={32} height={32} />
+                </div>
+              )}
+              {product.moreLight && (
+                <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
+                  <Image src="/brightness.png" alt="brightness" width={32} height={32} />
+                </div>
+              )}
+            </div>
+          )}
             </div>
           )}
         </div>

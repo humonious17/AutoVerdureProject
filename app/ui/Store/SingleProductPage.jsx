@@ -31,7 +31,6 @@ const SingleProductPage = ({ productData, allProducts }) => {
 );
 
   const [size, setSize] = useState("");
-  const [selectedColor, setSelectedColor] = useState('');
   const [stockQuantity, setStockQuantity] = useState(1);
   const [buttonText, setButtonText] = useState('Add To Cart');
   const [error, setError] = useState('');
@@ -41,20 +40,21 @@ const SingleProductPage = ({ productData, allProducts }) => {
   const router = useRouter();
   const [imageId, setImageId] = useState(0);
   const [showModel, setShowModel] = useState(false);
-  const fallbackImageUrl = "https://www.noahgardencentre.com.sg/cdn/shop/files/pottedplant-5.png?v=1724900001";
+  const fallbackImageUrl = "https://kamayo.in/wp-content/themes/koji/assets/images/default-fallback-image.png";
   const [currentImageUrls, setCurrentImageUrls] = useState([]);
   const [loading, setLoading] = useState(true);
   const [basePrice] = useState(productData.productPrice); 
   const [price, setPrice] = useState(basePrice); // Initial price
+  const [selectedColor, setSelectedColor] = useState(productData.defaultColor);
 
-  // Define the price mapping based on size selection
-  const priceIncrements = {
-    XS: 0,    // No additional cost for XS
-    S: 300,   // Additional cost for S
-    M: 500,   // Additional cost for M
-    L: 700,   // Additional cost for L
-    XL: 800,  // Additional cost for XL
+  const colors = {
+    White: { hex: "#FFFFFF", isAvailable: productData.white === 'true', price: productData.colors.white?.price || 0 },
+    Cream: { hex: "#FFFDD0", isAvailable: productData.cream === 'true', price: productData.colors.cream?.price || 0 },
+    LightGrey: { hex: "#D3D3D3", isAvailable: productData.lightGrey === 'true', price: productData.colors.lightGrey?.price || 0 },
+    DarkGrey: { hex: "#A9A9A9", isAvailable: productData.darkGrey === 'true', price: productData.colors.darkGrey?.price || 0 },
+    Black: { hex: "#000000", isAvailable: productData.black === 'true', price: productData.colors.black?.price || 0 },
   };
+  
 
   const [isDescriptionOpen, setIsDescriptionOpen] = useState(false);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
@@ -65,10 +65,15 @@ const SingleProductPage = ({ productData, allProducts }) => {
 
   const handleSizeChange = (selectedSize) => {
     setSize(selectedSize); // Update the selected size state
-    // Calculate the new price as the base price + the size-specific increment
-    const newPrice = basePrice + priceIncrements[selectedSize];
-    setPrice(newPrice); // Update the price state with the new calculated price
-  };
+
+    // Check if the selected size exists in the sizes object and has a price
+    const selectedSizePrice = productData.sizes[selectedSize]?.price || basePrice;
+    
+    // Calculate the new price based on the selected size and current color
+    const colorPrice = productData.colors[selectedColor]?.price || 0;
+    setPrice(selectedSizePrice + colorPrice); // Update price
+};
+
   
 
   const incrementQuantity = () => {
@@ -82,8 +87,25 @@ const SingleProductPage = ({ productData, allProducts }) => {
   };  
 
   const handleColorClick = (color) => {
-    setSelectedColor(color);
-  };
+    setSelectedColor(color); // Update the selected color state
+
+    // Check if the selected color exists in the colors object and has a price
+    const selectedColorPrice = productData.colors[color]?.price || 0;
+    
+    // Calculate the new price based on the selected color and current size
+    const sizePrice = productData.sizes[size]?.price || basePrice;
+    setPrice(sizePrice + selectedColorPrice); // Update price
+};
+
+const handleColorSelection = (colorKey) => {
+  setSelectedColor(colorKey);
+
+  // Update price based on selected color and current size
+  const selectedColorPrice = colors[colorKey].price;
+  const sizePrice = productData.sizes[size]?.price || basePrice;
+  setPrice(sizePrice + selectedColorPrice);
+};
+
 
   useEffect(() => {
     if (productData && productData.images) {
@@ -195,15 +217,17 @@ const SingleProductPage = ({ productData, allProducts }) => {
     }
     setError('');
     setButtonText('Adding...');
-
+  
     const payload = {
       productId: productData.productId,
+      productName: productData.productName,  // Added productName
+      productPrice: price,  // Added current price (which includes size/color adjustments)
       productColor: selectedColor,
       productSize: size,
       productQuantity: stockQuantity,
       productStyle: style
     };
-
+  
     try {
       const response = await fetch('/api/cart/add', {
         method: 'POST',
@@ -212,7 +236,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
         },
         body: JSON.stringify(payload),
       });
-
+  
       if (response.ok) {
         setButtonText('Added');
         const result = await response.json();
@@ -450,57 +474,25 @@ const SingleProductPage = ({ productData, allProducts }) => {
                 
 
               {/* Product Color */}
-              <div>
-  <p className="text-sm font-normal">Color</p>
-
-  <div className="mt-[12px] w-[306px] flex gap-4">
-    {productData.white === 'true' && (
+              <p className="text-sm font-normal">Color</p>
+<div className="mt-[12px] w-[306px] flex gap-4">
+  {Object.entries(colors).map(([colorKey, { hex, isAvailable }]) => 
+    isAvailable && (
       <div
-        onClick={() => setSelectedColor("White")}
-        className={`w-[30px] h-[30px] rounded-full cursor-pointer border-2 border-black transition-transform duration-300 ease-in-out 
-          ${selectedColor === "White" 
-            ? "bg-[#FFFFFF] border-2 border-[#9A5CF5] shadow-lg scale-110"
-            : "bg-[#FFFFFF] hover:shadow-md hover:scale-105"}`}
-      />
-    )}
-    {productData.cream === 'true' && (
-      <div
-        onClick={() => setSelectedColor("Cream")}
-        className={`w-[30px] h-[30px] rounded-full cursor-pointer border-2 border-black transition-transform duration-300 ease-in-out 
-          ${selectedColor === "Cream" 
-            ? "bg-[#FFFDD0] border-2 border-[#9A5CF5] shadow-lg scale-110"
-            : "bg-[#FFFDD0] hover:shadow-md hover:scale-105"}`}
-      />
-    )}
-    {productData.lightGrey === 'true' && (
-      <div
-        onClick={() => setSelectedColor("LightGrey")}
-        className={`w-[30px] h-[30px] rounded-full cursor-pointer border-2 border-black transition-transform duration-300 ease-in-out 
-          ${selectedColor === "LightGrey" 
-            ? "bg-[#D3D3D3] border-2 border-[#9A5CF5] shadow-lg scale-110"
-            : "bg-[#D3D3D3] hover:shadow-md hover:scale-105"}`}
-      />
-    )}
-    {productData.darkGrey === 'true' && (
-      <div
-        onClick={() => setSelectedColor("DarkGrey")}
-        className={`w-[30px] h-[30px] rounded-full cursor-pointer border-2 border-black transition-transform duration-300 ease-in-out 
-          ${selectedColor === "DarkGrey" 
-            ? "bg-[#A9A9A9] border-2 border-[#9A5CF5] shadow-lg scale-110"
-            : "bg-[#A9A9A9] hover:shadow-md hover:scale-105"}`}
-      />
-    )}
-    {productData.black === 'true' && (
-      <div
-        onClick={() => setSelectedColor("Black")}
-        className={`w-[30px] h-[30px] rounded-full cursor-pointer border-2 border-black transition-transform duration-300 ease-in-out 
-          ${selectedColor === "Black" 
-            ? "bg-[#000000] border-2 border-[#9A5CF5] shadow-lg scale-110"
-            : "bg-[#000000] hover:shadow-md hover:scale-105"}`}
-      />
-    )}
-  </div>
+        key={colorKey}
+        onClick={() => handleColorSelection(colorKey)}
+        style={{ backgroundColor: hex }}
+        className={`w-[30px] h-[30px] rounded-full cursor-pointer border-2 transition-transform duration-300 ease-in-out 
+          ${selectedColor === colorKey 
+            ? "border-[#9A5CF5] shadow-lg scale-110 ring- ring-offset-2 ring-[#9A5CF5]"
+            : "hover:shadow-md hover:scale-105"}`}
+      >
+      </div>
+    )
+  )}
 </div>
+
+
 
 
 
@@ -593,6 +585,78 @@ const SingleProductPage = ({ productData, allProducts }) => {
       </button>
     </div>
     {(productData.productType === 'plants') && <div className="mt-[21.5px] w-full sm:w-fit xl:w-full flex flex-row sm:flex-col xl:flex-row sm:gap-y-3 xl:gap-x-[22px] justify-between xl:justify-start">
+              <div className="flex gap-2 sm:gap-3 justify-between sm:justify-start xl:justify-between items-center">
+                <Image
+                  src={(productData.petFriendly === 'true') ? "/veterinary.png" : "/noPets.png"}
+                  alt="veterinary"
+                  width={32}
+                  height={32}
+                />
+                <p className="text-[13px] leading-[15.6px] -tracking-[0.325px] font-normal text-[#000000]">
+                  {(productData.petFriendly === 'true') ? "Pet Friendly" : "Not pet Friendly"};
+                </p>
+              </div>
+              <div className="flex gap-2 sm:gap-3 justify-between sm:justify-start xl:justify-between items-center">
+                <Image
+                  src={(productData.lessLight === 'true') ? "/noLight.png" : "/brightness.png"}
+                  alt={(productData.lessLight === 'true') ? "lessLight" : "moreLight"}
+                  width={32}
+                  height={32}
+                />
+                <p className="text-[13px] leading-[15.6px] -tracking-[0.325px] font-normal text-[#000000]">
+                  {(productData.lessLight === 'true') ? "Needs Less Light" : "Needs More Light"}
+                </p>
+              </div>
+            </div>}
+            {(productData.productType === 'grobox') && <div className="mt-[21.5px] w-full sm:w-fit xl:w-full flex flex-row sm:flex-col xl:flex-row sm:gap-y-3 xl:gap-x-[22px] justify-between xl:justify-start">
+              <div className="flex gap-2 sm:gap-3 justify-between sm:justify-start xl:justify-between items-center">
+                <Image
+                  src={(productData.petFriendly === 'true') ? "/veterinary.png" : "/noPets.png"}
+                  alt="veterinary"
+                  width={32}
+                  height={32}
+                />
+                <p className="text-[13px] leading-[15.6px] -tracking-[0.325px] font-normal text-[#000000]">
+                  {(productData.petFriendly === 'true') ? "Pet Friendly" : "Not pet Friendly"};
+                </p>
+              </div>
+              <div className="flex gap-2 sm:gap-3 justify-between sm:justify-start xl:justify-between items-center">
+                <Image
+                  src={(productData.lessLight === 'true') ? "/noLight.png" : "/brightness.png"}
+                  alt={(productData.lessLight === 'true') ? "lessLight" : "moreLight"}
+                  width={32}
+                  height={32}
+                />
+                <p className="text-[13px] leading-[15.6px] -tracking-[0.325px] font-normal text-[#000000]">
+                  {(productData.lessLight === 'true') ? "Needs Less Light" : "Needs More Light"}
+                </p>
+              </div>
+            </div>}
+            {(productData.productType === 'zenpot') && <div className="mt-[21.5px] w-full sm:w-fit xl:w-full flex flex-row sm:flex-col xl:flex-row sm:gap-y-3 xl:gap-x-[22px] justify-between xl:justify-start">
+              <div className="flex gap-2 sm:gap-3 justify-between sm:justify-start xl:justify-between items-center">
+                <Image
+                  src={(productData.petFriendly === 'true') ? "/veterinary.png" : "/noPets.png"}
+                  alt="veterinary"
+                  width={32}
+                  height={32}
+                />
+                <p className="text-[13px] leading-[15.6px] -tracking-[0.325px] font-normal text-[#000000]">
+                  {(productData.petFriendly === 'true') ? "Pet Friendly" : "Not pet Friendly"};
+                </p>
+              </div>
+              <div className="flex gap-2 sm:gap-3 justify-between sm:justify-start xl:justify-between items-center">
+                <Image
+                  src={(productData.lessLight === 'true') ? "/noLight.png" : "/brightness.png"}
+                  alt={(productData.lessLight === 'true') ? "lessLight" : "moreLight"}
+                  width={32}
+                  height={32}
+                />
+                <p className="text-[13px] leading-[15.6px] -tracking-[0.325px] font-normal text-[#000000]">
+                  {(productData.lessLight === 'true') ? "Needs Less Light" : "Needs More Light"}
+                </p>
+              </div>
+            </div>}
+            {(productData.productType === 'accessory') && <div className="mt-[21.5px] w-full sm:w-fit xl:w-full flex flex-row sm:flex-col xl:flex-row sm:gap-y-3 xl:gap-x-[22px] justify-between xl:justify-start">
               <div className="flex gap-2 sm:gap-3 justify-between sm:justify-start xl:justify-between items-center">
                 <Image
                   src={(productData.petFriendly === 'true') ? "/veterinary.png" : "/noPets.png"}

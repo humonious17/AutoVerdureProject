@@ -16,7 +16,7 @@ const SingleAccessoryPage = (props) => {
 export async function getServerSideProps(context) {
     const { id } = context.params;
 
-    const product = await findProduct('accessory', id);
+    const product = await findProduct(id, 'accessory');
     const allProducts = await findAllProducts('accessory');
 
     if (!product || !allProducts) {

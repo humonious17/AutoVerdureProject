@@ -124,12 +124,14 @@ export async function getServerSideProps() {
         const zenpot = await findAllProducts('zenpot') || [];
         const grobox = await findAllProducts('grobox') || [];
         const plants = await findAllProducts('plants') || [];
+        const accessory = await findAllProducts('accessory') || [];
 
         // Combine all products and add category, filter out invalid entries
         const allProducts = [
             ...zenpot.map(p => p ? { ...p, category: 'zenpot' } : null),
             ...grobox.map(p => p ? { ...p, category: 'grobox' } : null),
-            ...plants.map(p => p ? { ...p, category: 'plants' } : null)
+            ...plants.map(p => p ? { ...p, category: 'plants' } : null),
+            ...accessory.map(p => p ? { ...p, category: 'accessory' } : null)
         ].filter(Boolean); // Remove any null values
 
         // Validate the structure of each product

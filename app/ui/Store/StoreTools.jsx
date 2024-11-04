@@ -108,7 +108,7 @@ const StoreTools = ({
                                         {/* Product Type Filter */}
                                         <div>
                                             <p className="text-sm font-semibold">Product Type</p>
-                                            {['plants', 'zenpot', 'grobox'].map((type) => (
+                                            {['plants', 'zenpot', 'grobox', 'accessory'].map((type) => (
                                                 <div key={type} className="flex justify-between items-center py-1">
                                                     <p className="capitalize">{type}</p>
                                                     <input

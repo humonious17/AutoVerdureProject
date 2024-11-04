@@ -2,7 +2,6 @@ import SingleProductPage from "@/app/ui/Store/SingleProductPage";
 import findProduct from "/pages/api/products/findProduct";
 import findAllProducts from "/pages/api/products/findAllProducts";
 import React from "react";
-import { zenpot } from "@/app/constant/data";
 
 const SingleGroboxPage = (props) => {
     const productData = props.product;

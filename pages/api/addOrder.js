@@ -18,7 +18,7 @@ async function addOrder(payload) {
 
     const data = {
         orderId: orderId,
-        ordererEmail: payload.email, 
+        ordererEmail: "kangnetworks.a17b@gmail.com", 
         orderedProducts: products, 
         shippingAddress: payload.shippingAddress,
         orderTime: date.join(' '), 

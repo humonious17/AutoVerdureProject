@@ -40,7 +40,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
   const router = useRouter();
   const [imageId, setImageId] = useState(0);
   const [showModel, setShowModel] = useState(false);
-  const fallbackImageUrl = "https://www.noahgardencentre.com.sg/cdn/shop/files/pottedplant-5.png?v=1724900001";
+  const fallbackImageUrl = "https://kamayo.in/wp-content/themes/koji/assets/images/default-fallback-image.png";
   const [currentImageUrls, setCurrentImageUrls] = useState([]);
   const [loading, setLoading] = useState(true);
   const [basePrice] = useState(productData.productPrice); 
@@ -217,15 +217,17 @@ const handleColorSelection = (colorKey) => {
     }
     setError('');
     setButtonText('Adding...');
-
+  
     const payload = {
       productId: productData.productId,
+      productName: productData.productName,  // Added productName
+      productPrice: price,  // Added current price (which includes size/color adjustments)
       productColor: selectedColor,
       productSize: size,
       productQuantity: stockQuantity,
       productStyle: style
     };
-
+  
     try {
       const response = await fetch('/api/cart/add', {
         method: 'POST',
@@ -234,7 +236,7 @@ const handleColorSelection = (colorKey) => {
         },
         body: JSON.stringify(payload),
       });
-
+  
       if (response.ok) {
         setButtonText('Added');
         const result = await response.json();
@@ -583,6 +585,78 @@ const handleColorSelection = (colorKey) => {
       </button>
     </div>
     {(productData.productType === 'plants') && <div className="mt-[21.5px] w-full sm:w-fit xl:w-full flex flex-row sm:flex-col xl:flex-row sm:gap-y-3 xl:gap-x-[22px] justify-between xl:justify-start">
+              <div className="flex gap-2 sm:gap-3 justify-between sm:justify-start xl:justify-between items-center">
+                <Image
+                  src={(productData.petFriendly === 'true') ? "/veterinary.png" : "/noPets.png"}
+                  alt="veterinary"
+                  width={32}
+                  height={32}
+                />
+                <p className="text-[13px] leading-[15.6px] -tracking-[0.325px] font-normal text-[#000000]">
+                  {(productData.petFriendly === 'true') ? "Pet Friendly" : "Not pet Friendly"};
+                </p>
+              </div>
+              <div className="flex gap-2 sm:gap-3 justify-between sm:justify-start xl:justify-between items-center">
+                <Image
+                  src={(productData.lessLight === 'true') ? "/noLight.png" : "/brightness.png"}
+                  alt={(productData.lessLight === 'true') ? "lessLight" : "moreLight"}
+                  width={32}
+                  height={32}
+                />
+                <p className="text-[13px] leading-[15.6px] -tracking-[0.325px] font-normal text-[#000000]">
+                  {(productData.lessLight === 'true') ? "Needs Less Light" : "Needs More Light"}
+                </p>
+              </div>
+            </div>}
+            {(productData.productType === 'grobox') && <div className="mt-[21.5px] w-full sm:w-fit xl:w-full flex flex-row sm:flex-col xl:flex-row sm:gap-y-3 xl:gap-x-[22px] justify-between xl:justify-start">
+              <div className="flex gap-2 sm:gap-3 justify-between sm:justify-start xl:justify-between items-center">
+                <Image
+                  src={(productData.petFriendly === 'true') ? "/veterinary.png" : "/noPets.png"}
+                  alt="veterinary"
+                  width={32}
+                  height={32}
+                />
+                <p className="text-[13px] leading-[15.6px] -tracking-[0.325px] font-normal text-[#000000]">
+                  {(productData.petFriendly === 'true') ? "Pet Friendly" : "Not pet Friendly"};
+                </p>
+              </div>
+              <div className="flex gap-2 sm:gap-3 justify-between sm:justify-start xl:justify-between items-center">
+                <Image
+                  src={(productData.lessLight === 'true') ? "/noLight.png" : "/brightness.png"}
+                  alt={(productData.lessLight === 'true') ? "lessLight" : "moreLight"}
+                  width={32}
+                  height={32}
+                />
+                <p className="text-[13px] leading-[15.6px] -tracking-[0.325px] font-normal text-[#000000]">
+                  {(productData.lessLight === 'true') ? "Needs Less Light" : "Needs More Light"}
+                </p>
+              </div>
+            </div>}
+            {(productData.productType === 'zenpot') && <div className="mt-[21.5px] w-full sm:w-fit xl:w-full flex flex-row sm:flex-col xl:flex-row sm:gap-y-3 xl:gap-x-[22px] justify-between xl:justify-start">
+              <div className="flex gap-2 sm:gap-3 justify-between sm:justify-start xl:justify-between items-center">
+                <Image
+                  src={(productData.petFriendly === 'true') ? "/veterinary.png" : "/noPets.png"}
+                  alt="veterinary"
+                  width={32}
+                  height={32}
+                />
+                <p className="text-[13px] leading-[15.6px] -tracking-[0.325px] font-normal text-[#000000]">
+                  {(productData.petFriendly === 'true') ? "Pet Friendly" : "Not pet Friendly"};
+                </p>
+              </div>
+              <div className="flex gap-2 sm:gap-3 justify-between sm:justify-start xl:justify-between items-center">
+                <Image
+                  src={(productData.lessLight === 'true') ? "/noLight.png" : "/brightness.png"}
+                  alt={(productData.lessLight === 'true') ? "lessLight" : "moreLight"}
+                  width={32}
+                  height={32}
+                />
+                <p className="text-[13px] leading-[15.6px] -tracking-[0.325px] font-normal text-[#000000]">
+                  {(productData.lessLight === 'true') ? "Needs Less Light" : "Needs More Light"}
+                </p>
+              </div>
+            </div>}
+            {(productData.productType === 'accessory') && <div className="mt-[21.5px] w-full sm:w-fit xl:w-full flex flex-row sm:flex-col xl:flex-row sm:gap-y-3 xl:gap-x-[22px] justify-between xl:justify-start">
               <div className="flex gap-2 sm:gap-3 justify-between sm:justify-start xl:justify-between items-center">
                 <Image
                   src={(productData.petFriendly === 'true') ? "/veterinary.png" : "/noPets.png"}

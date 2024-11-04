@@ -1,11 +1,11 @@
 /* Index.css */
 .container {
-  max-width: 800px;
-  margin: 0 auto;
+  max-width: 1000px;
+  margin: 20px auto;
   padding: 20px;
   font-family: 'Arial', sans-serif;
   background-color: #f9f9f9;
-  border-radius: 8px;
+ 
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -63,7 +63,7 @@
 
 .add-product-dropdown {
   margin-top: 10px;
-  border: 1px solid #ccc; /* Optional: Add border */
+  /* border: 1px solid #ccc; Optional: Add border */
   padding: 10px; /* Optional: Add padding */
   border-radius: 5px; /* Optional: Rounded corners */
   background-color: #f9f9f9; /* Optional: Background color */

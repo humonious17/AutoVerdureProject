@@ -7,12 +7,14 @@ import CollectionCard from "./ui/Home/CollectionCard";
 import { BiCheck, BiX } from "react-icons/bi";
 import Loved from "./ui/Home/Loved";
 import Testimonial from "./ui/Home/Testimonial";
-import RelatedBlog from "./ui/RelatedBlog";
+import Displayblogs from "./ui/Store/Displayblogs"
 import Contact from "./ui/Home/Contact";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import Chatbot from "./ChatBot";
 import { useSwipeable } from 'react-swipeable';
+
+import Blogs from "@/pages/Blogs";
 
 export default function Home() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -542,7 +544,7 @@ export default function Home() {
 
             <div className="mt-[59px] md:mt-0 w-full md:w-[293.34px] hidden md:flex flex-col justify-center items-center md:justify-start md:items-start">
               <Image
-                className="object-contain rounded-[16px]"
+                className=" rounded-[16px]"
                 src="https://res.cloudinary.com/dguzhztdt/image/upload/v1729091861/Auto%20Verdure%20media%20%28website%29/Collections/RJP00673_dsbv5n.jpg"
                 alt="image"
                 width={293.34}
@@ -965,7 +967,7 @@ export default function Home() {
         </div>
 
         {/* Blogs */}
-        <RelatedBlog
+        <Displayblogs
           title="Explore Our Blog for Green Inspiration"
           description="Our blog is filled with informative and inspiring content on all things green. From plant care tips and advice to the latest trends in gardening and design, our experts share their knowledge to help you bring your indoor and outdoor spaces to life."
         />

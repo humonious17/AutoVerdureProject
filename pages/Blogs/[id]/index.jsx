@@ -1,7 +1,7 @@
 import { db } from "@/pages/api/firebaseAdmin";
 import Image from "next/image";
 import Contact from "@/app/ui/Contact";
-import RelatedBlog from "@/app/ui/RelatedBlog";
+import Displayblogs from "@/app/ui/Store/Displayblogs";
 
 export async function getServerSideProps({ params }) {
   try {
@@ -95,13 +95,15 @@ export default function BlogPost({ blog }) {
       {/* </div> */}
 
       {/* Related Blog */}
-      <RelatedBlog
+      <div className=" container mx-auto p-12 text-center">
+      <Displayblogs
         title="Related Blog"
         description="Our blog is filled with informative and inspiring content on all
             things green. From plant care tips and advice to the latest trends
             in gardening and design, our experts share their knowledge to help
             you bring your indoor and outdoor spaces to life."
       />
+      </div>
 
       {/* Contact Us */}
       <div className="mt-8 mb-24">

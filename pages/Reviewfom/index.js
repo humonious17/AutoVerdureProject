@@ -37,8 +37,8 @@ export default function ReviewForm() {
               type="button"
               key={i}
               onClick={() => handleRating(i)}
-              className={`w-8 h-8 flex items-center justify-center rounded-full transition-colors duration-300 ${
-                rating > i ? 'bg-primaryMain text-white' : 'bg-gray-200 text-gray-400'
+              className={`w-6 h-6 flex items-center justify-center transition-colors duration-300 ${
+                rating > i ? 'bg-green-700 text-white' : 'bg-gray-200 text-gray-400'
               } hover:scale-110`}
             >
               <span className="text-xl">★</span>
@@ -64,7 +64,13 @@ export default function ReviewForm() {
         <label className="block mb-2 text-base font-semibold text-gray-700">Add Photos</label>
         <div className="relative w-full h-44 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center overflow-hidden">
           {image ? (
-            <Image src={image} alt="Uploaded" className="w-full h-full object-cover rounded-lg" />
+            <Image
+              src={image}
+              alt="Uploaded"
+              width={176} // Set width (adjust as necessary)
+              height={176} // Set height (adjust as necessary)
+              className="w-full h-full object-cover rounded-lg"
+            />
           ) : (
             <>
               <button

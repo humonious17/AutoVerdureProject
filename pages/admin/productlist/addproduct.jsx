@@ -116,6 +116,9 @@ const ProductForm = () => {
       images: [...prev.images, { publicUrl: "", thumbnailUrl: "", alt: "" }],
     }));
   };
+  
+
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -130,6 +133,11 @@ const ProductForm = () => {
     } else {
       alert("Failed to add product.");
     }
+      // Check if productType is selected
+      if (formData.productType === "") {
+        alert("Please select a product type.");
+        return; // Prevent form submission
+      }
   };
 
   return (
@@ -148,8 +156,10 @@ const ProductForm = () => {
 
       <div style={styles.fieldContainer}>
         <label style={styles.label}>Product Type</label>
-        <select name="productType" value={formData.productType} onChange={handleChange} style={styles.select}>
-          <option value="plants">Plants</option>
+        
+        <select name="productType" value={formData.productType} onChange={handleChange} required style={styles.select}>
+        <option value="">Select a type</option>
+        <option value="zenpot">Plant</option>
           <option value="zenpot">Zenpot</option>
           <option value="grobox">Grobox</option>
           <option value="accessory">Accessory</option>
@@ -274,17 +284,20 @@ const ProductForm = () => {
   );
 };
 
+
 const styles = {
   formContainer: {
-    maxWidth: '600px',
+    maxWidth: '800px',
     margin: '0 auto',
     padding: '20px',
-    border: '1px solid #ccc',
-    borderRadius: '8px',
     backgroundColor: '#f9f9f9',
+    borderRadius: '8px',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
   },
   header: {
     textAlign: 'center',
+    fontSize: '24px',
+    color: '#333',
   },
   fieldContainer: {
     marginBottom: '15px',
@@ -292,6 +305,8 @@ const styles = {
   label: {
     display: 'block',
     marginBottom: '5px',
+    fontWeight: 'bold',
+    color: '#555',
   },
   input: {
     width: '100%',
@@ -321,31 +336,32 @@ const styles = {
   },
   row: {
     display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end',
+    justifyContent: 'space-between'
+  },
+  sectionContainer: {
+    marginTop: '20px',
+    padding: '15px',
+    backgroundColor: '#f1f1f1',
+    borderRadius: '8px',
+  },
+  subHeader: {
+    marginBottom: '10px',
+    fontSize: '18px',
+    fontWeight: 'bold',
+    color: '#333',
   },
   checkboxGroup: {
     marginBottom: '10px',
   },
-  subHeader: {
-    marginTop: '20px',
-    marginBottom: '10px',
-  },
   sizesContainer: {
-    marginBottom: '20px',
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap:'10px'
   },
   colorsContainer: {
-    marginBottom: '20px',
-  },
-  imageContainer: {
-    marginBottom: '10px',
-  },
-  fileInput: {
-    marginBottom: '5px',
-  },
-  imagePreview: {
-    maxWidth: '100px',
-    marginTop: '5px',
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap:'10px'
   },
   priceInput: {
     width: '80px',
@@ -353,6 +369,20 @@ const styles = {
     padding: '5px',
     border: '1px solid #ccc',
     borderRadius: '4px',
+  },
+  imageContainer: {
+    marginBottom: '10px',
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap: '10px',
+  },
+  fileInput: {
+    marginBottom: '5px',
+  },
+  imagePreview: {
+    maxWidth: '100px',
+    marginTop: '5px',
+   
   },
   button: {
     marginTop: '10px',
@@ -371,6 +401,7 @@ const styles = {
     backgroundColor: '#28A745',
     color: '#fff',
     cursor: 'pointer',
+    width: '100%',
   },
 };
 

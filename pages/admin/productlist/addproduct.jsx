@@ -183,26 +183,6 @@ const ProductForm = () => {
 
   
 
-<<<<<<< HEAD
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const response = await fetch("/api/products/add", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    });
-    if (response.ok) {
-      alert("Product added successfully!");
-      setFormData(initialFormData);
-    } else {
-      alert("Failed to add product.");
-    }
-      // Check if productType is selected
-      if (formData.productType === "") {
-        alert("Please select a product type.");
-        return; // Prevent form submission
-      }
-=======
   const setDefaultSize = (size) => {
     setFormData((prev) => ({ 
       ...prev, 
@@ -227,7 +207,6 @@ const ProductForm = () => {
     const defaultSizePrice = formData.sizes[formData.defaultSize]?.price || 0;
     const defaultColorPrice = formData.colors[formData.defaultColor]?.price || 0;
     setFormData((prev) => ({ ...prev, productPrice: defaultSizePrice + defaultColorPrice }));
->>>>>>> c6cd5e222bc1fb5ed74a7c126e8f03704d0bab35
   };
 
   const validateForm = () => {
@@ -245,19 +224,6 @@ const ProductForm = () => {
         return;
     }
 
-<<<<<<< HEAD
-      <div style={styles.fieldContainer}>
-        <label style={styles.label}>Product Type</label>
-        
-        <select name="productType" value={formData.productType} onChange={handleChange} required style={styles.select}>
-        <option value="">Select a type</option>
-        <option value="zenpot">Plant</option>
-          <option value="zenpot">Zenpot</option>
-          <option value="grobox">Grobox</option>
-          <option value="accessory">Accessory</option>
-        </select>
-      </div>
-=======
     (() => {
         const defaultSizePrice = formData.sizes[formData.defaultSize]?.price || 0;
         const defaultColorPrice = formData.colors[formData.defaultColor]?.price || 0;
@@ -267,7 +233,6 @@ const ProductForm = () => {
             productPrice: defaultSizePrice + defaultColorPrice
         }));
     })();
->>>>>>> c6cd5e222bc1fb5ed74a7c126e8f03704d0bab35
 
     // Ensure `productId` is either provided by the user or auto-generated
     const productId = formData.productId || db.collection("products").doc().id;
@@ -290,126 +255,6 @@ const ProductForm = () => {
 };
 
 
-<<<<<<< HEAD
-const styles = {
-  formContainer: {
-    maxWidth: '800px',
-    margin: '0 auto',
-    padding: '20px',
-    backgroundColor: '#f9f9f9',
-    borderRadius: '8px',
-    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-  },
-  header: {
-    textAlign: 'center',
-    fontSize: '24px',
-    color: '#333',
-  },
-  fieldContainer: {
-    marginBottom: '15px',
-  },
-  label: {
-    display: 'block',
-    marginBottom: '5px',
-    fontWeight: 'bold',
-    color: '#555',
-  },
-  input: {
-    width: '100%',
-    padding: '10px',
-    border: '1px solid #ccc',
-    borderRadius: '4px',
-  },
-  smallInput: {
-    width: '48%',
-    padding: '10px',
-    border: '1px solid #ccc',
-    borderRadius: '4px',
-    marginRight: '4%',
-  },
-  textarea: {
-    width: '100%',
-    height: '100px',
-    padding: '10px',
-    border: '1px solid #ccc',
-    borderRadius: '4px',
-  },
-  select: {
-    width: '100%',
-    padding: '10px',
-    border: '1px solid #ccc',
-    borderRadius: '4px',
-  },
-  row: {
-    display: 'flex',
-    justifyContent: 'space-between'
-  },
-  sectionContainer: {
-    marginTop: '20px',
-    padding: '15px',
-    backgroundColor: '#f1f1f1',
-    borderRadius: '8px',
-  },
-  subHeader: {
-    marginBottom: '10px',
-    fontSize: '18px',
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  checkboxGroup: {
-    marginBottom: '10px',
-  },
-  sizesContainer: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    gap:'10px'
-  },
-  colorsContainer: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    gap:'10px'
-  },
-  priceInput: {
-    width: '80px',
-    marginLeft: '10px',
-    padding: '5px',
-    border: '1px solid #ccc',
-    borderRadius: '4px',
-  },
-  imageContainer: {
-    marginBottom: '10px',
-    display: 'flex',
-    flexWrap: 'wrap',
-    gap: '10px',
-  },
-  fileInput: {
-    marginBottom: '5px',
-  },
-  imagePreview: {
-    maxWidth: '100px',
-    marginTop: '5px',
-   
-  },
-  button: {
-    marginTop: '10px',
-    padding: '10px 15px',
-    border: 'none',
-    borderRadius: '4px',
-    backgroundColor: '#007BFF',
-    color: '#fff',
-    cursor: 'pointer',
-  },
-  submitButton: {
-    marginTop: '20px',
-    padding: '10px 15px',
-    border: 'none',
-    borderRadius: '4px',
-    backgroundColor: '#28A745',
-    color: '#fff',
-    cursor: 'pointer',
-    width: '100%',
-  },
-=======
 
 
 return (
@@ -719,7 +564,6 @@ return (
     </div>
   </div>
 );
->>>>>>> c6cd5e222bc1fb5ed74a7c126e8f03704d0bab35
 };
 
 

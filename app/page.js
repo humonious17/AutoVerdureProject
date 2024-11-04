@@ -346,35 +346,35 @@ export default function Home() {
         </div>
 
         <div className="hidden md:flex flex-col xl:w-full justify-center items-center">
-          <div className="w-[240px] h-[240px] flex flex-col justify-center items-center p-10 rounded-full bg-[#F3F0F1] border-[3px] border-primaryMain">
-            <Image
-              className="object-cover"
-              src="https://res.cloudinary.com/dgzqokaju/image/upload/v1721325296/Untitled_video_-_Made_with_Clipchamp_1_khdjlv.gif"
-              alt="pour"
-              width={160.741}
-              height={160}
-            />
-          </div>
-          <div className="w-[240px] h-[240px] flex flex-col justify-center items-center relative bottom-[90px] left-[160px] p-10 rounded-full bg-[#F3F0F1] border-[3px] border-primaryMain">
-            <Image
-              className="object-contain"
-              src="/pest.png"
-              alt="pestFree"
-              width={160.741}
-              height={160}
-            />
-          </div>
-          <div className="w-[240px] h-[240px] flex flex-col justify-center items-center relative bottom-[170px] left-[20px] p-10 rounded-full bg-[#F3F0F1] border-[3px] border-primaryMain">
-            <Image
-              className="object-contain"
-              src="/check.png"
-              alt="check"
-              width={160.741}
-              height={160}
-            />
-          </div>
-        </div>
-      </div>
+  <div className="w-[240px] h-[240px] flex flex-col justify-center items-center rounded-full bg-[#F3F0F1] border-[3px] border-primaryMain overflow-hidden">
+    <Image
+      className="object-cover"
+      src="https://res.cloudinary.com/dguzhztdt/image/upload/v1729191093/Auto%20Verdure%20media%20%28website%29/Product%20Media/DSC04309_l5wrqp.jpg"
+      alt="pour"
+      width={240}
+      height={240}
+    />
+  </div>
+  <div className="w-[240px] h-[240px] flex flex-col justify-center items-center relative bottom-[90px] left-[160px] rounded-full bg-[#F3F0F1] border-[3px] border-primaryMain overflow-hidden">
+    <Image
+      className="object-cover"
+      src="/pest.png"
+      alt="pestFree"
+      width={160.741}
+      height={160}
+    />
+  </div>
+  <div className="w-[240px] h-[240px] flex flex-col justify-center items-center relative bottom-[170px] left-[20px] rounded-full bg-[#F3F0F1] border-[3px] border-primaryMain overflow-hidden">
+    <Image
+      className="object-cover"
+      src="/check.png"
+      alt="check"
+      width={160.741}
+      height={160}
+    />
+  </div>
+</div>
+</div>
 
       {/* Join the Auto Verdure Movement */}
       <div className="mt-[107.5px] md:mt-[72px] max-w-[361px] md:max-w-[754px] xl:max-w-[1226px] w-full h-full">
@@ -461,11 +461,11 @@ export default function Home() {
               style={{ width: "171.765px", height: "183.395px" }}
             />
             <Image
+              className="rounded-[16px]"
               src="/aboutImg3.png"
               alt="img"
               width={171.765}
               height={183.395}
-              className="rounded-[16px]"
               style={{ width: "171.765px", height: "183.395px" }}
             />
           </div>
@@ -482,7 +482,7 @@ export default function Home() {
             <div className="w-full md:w-[405px] xl:w-[646.67px] flex flex-col justify-center items-center md:justify-start md:items-start">
               <Image
                 className="rounded-[16px]"
-                src="https://res.cloudinary.com/dguzhztdt/image/upload/v1729191093/Auto%20Verdure%20media%20%28website%29/Product%20Media/DSC04309_l5wrqp.jpg"
+                src="/waterRetention.png"
                 alt="image"
                 width={646.67}
                 height={300}
@@ -490,7 +490,29 @@ export default function Home() {
               />
               <div className="mt-[30px] w-full">
                 <p className="text-2xl leading-[48px] -tracking-[0.6px] text-primaryMain font-bold">
-                  Powerful design research
+                  
+                  Water Retention
+                </p>
+                <p className="mt-[10px] text-xl leading-8 -tracking-[0.5px] font-normal text-secondryGrayscale">
+                 
+                  We have successfully developed an unmatchable Water Retention
+                  Technology amongst all the Hydroponic system competitors.
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-[59px] md:mt-0 w-full md:w-[293.34px] hidden md:flex flex-col justify-center items-center md:justify-start md:items-start">
+              <Image
+                className=" rounded-[16px]"
+                src="/xyz.png"
+                alt="image"
+                width={293.34}
+                height={300}
+                style={{ width: "293.34px", height: "300px" }}
+              />
+              <div className="mt-[30px] w-[237px]">
+                <p className="text-2xl leading-[48px] -tracking-[0.6px] text-primaryMain font-bold">
+                Powerful design research
                 </p>
                 <p className="mt-[10px] text-xl leading-8 -tracking-[0.5px] font-normal text-secondryGrayscale">
                   We are the first in the Indian Market to combat the rising
@@ -499,27 +521,8 @@ export default function Home() {
                 </p>
               </div>
             </div>
-
-            <div className="mt-[59px] md:mt-0 w-full md:w-[293.33px] flex flex-col justify-start items-start">
-              <Image
-                className="object-contain rounded-[16px]"
-                src="/waterRetention.png"
-                alt="image"
-                width={293.33}
-                height={300}
-                style={{ width: "293.33px", height: "300px" }}
-              />
-              <div className="mt-[30px] w-[237px]">
-                <p className="text-2xl leading-[48px] -tracking-[0.6px] text-primaryMain font-bold">
-                  Water Retention
-                </p>
-                <p className="mt-[10px] text-xl leading-8 -tracking-[0.5px] font-normal text-secondryGrayscale">
-                  We have successfully developed an unmatchable Water Retention
-                  Technology amongst all the Hydroponic system competitors.
-                </p>
-              </div>
-            </div>
           </div>
+          
 
           <div className="hidden w-full md:flex md:gap-[56.67px] justify-center">
             <div className="w-full md:w-[405px] xl:w-[646.66px] hidden md:flex flex-col justify-center items-center md:justify-start md:items-start">

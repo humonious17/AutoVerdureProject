@@ -20,7 +20,7 @@ const Explore = () => {
         <div className="hidden xl:flex">
           <div className="w-[433px] h-[372px]">
             <Image
-              src="/call.png"
+              src="/RJP00605.png"
               alt="call"
               width={433}
               height={372}

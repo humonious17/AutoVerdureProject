@@ -40,17 +40,15 @@ const BlogCard = ({ blog, className }) => {
         </div>
         <div className="mt-3 flex gap-[12px] items-center">
           <div>
-            {/*
-              Profile picture of the blog author.
-              This image represents the author and provides a personal touch.
-              It's important for building a connection with the audience.
-            
+          
+              
             <Image
-              src={blog.authorImage}
+              src='/image.png'
               alt={`Profile picture of ${blog.authorName}`} // Descriptive alt text
               width={32}
               height={32}
-            />*/}
+              
+            />
           </div>
           <div className="flex flex-col gap-[2px] text-start text-primaryGrayscale">
             <p className="text-xs font-medium">By {blog.authorName}</p>

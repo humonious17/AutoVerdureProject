@@ -1,114 +1,336 @@
-import Reviewfom from "@/pages/Reviewfom";
-import React from "react";
+import React, { useState } from "react";
+import { Search, SortAsc, SortDesc, Filter, X } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
-const Orders = (props) => {
-  const orders = props.orders;
-  return (
-    <div className="py-[62px] md:pt-[132px] md:pb-[188px] xl:pt-[106px] xl:pb-[260px] 2xl:pb-[320px] px-4 md:px-[51px] xl:px-[216px] 2xl:px-[270px] flex flex-col gap-5 bg-[#FFFCF8]">
-      <div className="mt-[30px] flex flex-col gap-y-5">
-        {orders.map((order, index) => (
-          <>
-            <div
-              className="w-full px-[19px] py-[21px] text-xs tracking-[0.24px] md:hidden flex flex-col tertiaryFont font-normal border-[1px] rounded-2xl border-black"
-              key={index}
-            >
-              <div className="flex justify-between items-center">
-                <div className="w-[120px] font-[600] text-[#151C28]">
-                  <p>{order.productName}</p>
-                </div>
-                <div className="pr-[23px] text-[#585562]">
-                  <p>paid</p>
-                </div>
+const ProfileOrders = ({ orders: initialOrders }) => {
+  const [orders, setOrders] = useState(initialOrders);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortConfig, setSortConfig] = useState({
+    key: "orderTime",
+    direction: "desc",
+  });
+  const [filterStatus, setFilterStatus] = useState("all");
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
+
+  // Search functionality
+  const handleSearch = (value) => {
+    setSearchTerm(value);
+    const filtered = initialOrders.filter(
+      (order) =>
+        order.orderedProducts.some((product) =>
+          product.productName.toLowerCase().includes(value.toLowerCase())
+        ) ||
+        order.shippingAddress.city.toLowerCase().includes(value.toLowerCase())
+    );
+    setOrders(filtered);
+  };
+
+  // Sorting functionality
+  const handleSort = (key) => {
+    const direction =
+      sortConfig.key === key && sortConfig.direction === "asc" ? "desc" : "asc";
+    setSortConfig({ key, direction });
+
+    const sortedOrders = [...orders].sort((a, b) => {
+      if (key === "productName") {
+        const aName = a.orderedProducts[0].productName;
+        const bName = b.orderedProducts[0].productName;
+        return direction === "asc"
+          ? aName.localeCompare(bName)
+          : bName.localeCompare(aName);
+      }
+      return direction === "asc"
+        ? a[key] > b[key]
+          ? 1
+          : -1
+        : a[key] < b[key]
+        ? 1
+        : -1;
+    });
+    setOrders(sortedOrders);
+  };
+
+  // Filtering functionality
+  const handleFilter = (status) => {
+    setFilterStatus(status);
+    if (status === "all") {
+      setOrders(initialOrders);
+    } else {
+      const filtered = initialOrders.filter(
+        (order) => order.orderStatus === status
+      );
+      setOrders(filtered);
+    }
+  };
+
+  // Order detail dialog
+  const openOrderDetail = (order) => {
+    setSelectedOrder(order);
+    setIsDetailOpen(true);
+  };
+
+  const OrderDetailDialog = ({ order, open, onClose }) => {
+    if (!order) return null;
+
+    return (
+      <Dialog open={open} onOpenChange={onClose}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Order Details</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <h3 className="font-semibold">Order ID</h3>
+                <p className="text-sm text-gray-600">{order.orderId}</p>
               </div>
-
-              <div className="mt-4 flex justify-between items-center">
-                <div className="text-[#585562]">
-                  <p>{order.shippingAddress.city}</p>
-                </div>
-                <div
-                  className={
-                    order.orderStatus === "Delivered"
-                      ? "px-4 py-2 rounded-[20px] w-fit bg-secondarySuccessAlerts bg-opacity-10 text-secondarySuccessAlerts"
-                      : "px-4 py-2 rounded-[20px] w-fit bg-[#FFF5EB] text-[#FB7E15]"
-                  }
-                >
-                  <p>{order.orderStatus}</p>
-                </div>
+              <div>
+                <h3 className="font-semibold">Order Time</h3>
+                <p className="text-sm text-gray-600">{order.orderTime}</p>
               </div>
             </div>
-          </>
-        ))}
-      </div>
 
-      <table rules="all">
-        <thead className="w-full px-[25px] mt-[30px] hidden md:flex flex-col gap-5">
-          <tr className="justify-start items-start inline-flex flex justify-between items-center px-[35px]">
-            {/* <div classname="w-[946px] h-[18px] justify-start items-start gap-[120px] inline-flex"> */}
-              <td className="w-[160px] text-gray-900 text-xs font-normal font-['Poppins'] tracking-tight">Product</td>
-              <td className="w-[80px] text-gray-900 text-xs font-normal font-['Poppins'] tracking-tight">Address</td>
-              <td className="w-[70px] text-gray-900 text-xs font-normal font-['Poppins'] tracking-tight">Order Type</td>
-              <td className="w-[90px] text-gray-900 text-xs font-normal font-['Poppins'] tracking-tight">Payment</td>
-              <td className="w-[145px] text-gray-900 text-xs font-normal font-['Poppins'] tracking-tight">Delivery Status</td>
-              <td className="w-[70px] text-gray-900 text-xs font-normal font-['Poppins'] tracking-tight">Time</td>
-            {/* </div> */}
-          </tr>
-        </thead>
+            <div>
+              <h3 className="font-semibold mb-2">Products</h3>
+              <div className="space-y-2">
+                {order.orderedProducts.map((product, idx) => (
+                  <div key={idx} className="bg-gray-50 p-3 rounded-lg">
+                    <p className="font-medium">{product.productName}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
 
-        <tbody className="mt-[30px] hidden md:flex flex-col gap-5">
-          {orders.map((order, index) => (
-            <tr
-              key={index}
-              className="px-[35px] py-[38px] text-xs w-full border-[1px] border-black rounded-2xl bg-white flex justify-between items-center"
+            <div>
+              <h3 className="font-semibold mb-2">Shipping Address</h3>
+              <div className="bg-gray-50 p-3 rounded-lg">
+                <p className="text-sm">{order.shippingAddress.city}</p>
+              </div>
+            </div>
+
+            <div className="flex justify-between items-center">
+              <div>
+                <h3 className="font-semibold">Status</h3>
+                <span
+                  className={`inline-flex px-3 py-1 rounded-full text-sm ${
+                    order.orderStatus === "Delivered"
+                      ? "bg-green-100 text-green-800"
+                      : "bg-orange-100 text-orange-800"
+                  }`}
+                >
+                  {order.orderStatus}
+                </span>
+              </div>
+              <div>
+                <h3 className="font-semibold">Payment</h3>
+                <span className="text-sm text-gray-600">Paid</span>
+              </div>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
+  };
+
+  return (
+    <Card className="max-w-7xl mx-auto my-8">
+      <CardHeader>
+        <CardTitle className="text-2xl font-bold">My Orders</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="flex flex-col md:flex-row gap-4 mb-6">
+          {/* Search */}
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
+            <Input
+              placeholder="Search orders..."
+              className="pl-10"
+              value={searchTerm}
+              onChange={(e) => handleSearch(e.target.value)}
+            />
+          </div>
+
+          {/* Filter */}
+          <Select value={filterStatus} onValueChange={handleFilter}>
+            <SelectTrigger className="w-[180px]">
+              <Filter className="mr-2 h-4 w-4" />
+              <SelectValue placeholder="Filter by status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Orders</SelectItem>
+              <SelectItem value="Delivered">Delivered</SelectItem>
+              <SelectItem value="In Transit">In Transit</SelectItem>
+              <SelectItem value="Processing">Processing</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* Desktop Table */}
+        <div className="hidden md:block">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead
+                  className="cursor-pointer"
+                  onClick={() => handleSort("productName")}
+                >
+                  Product
+                  {sortConfig.key === "productName" &&
+                    (sortConfig.direction === "asc" ? (
+                      <SortAsc className="inline ml-2 h-4 w-4" />
+                    ) : (
+                      <SortDesc className="inline ml-2 h-4 w-4" />
+                    ))}
+                </TableHead>
+                <TableHead>Address</TableHead>
+                <TableHead>Order Type</TableHead>
+                <TableHead>Payment</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead
+                  className="cursor-pointer"
+                  onClick={() => handleSort("orderTime")}
+                >
+                  Time
+                  {sortConfig.key === "orderTime" &&
+                    (sortConfig.direction === "asc" ? (
+                      <SortAsc className="inline ml-2 h-4 w-4" />
+                    ) : (
+                      <SortDesc className="inline ml-2 h-4 w-4" />
+                    ))}
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {orders.map((order) => (
+                <TableRow
+                  key={order.orderId}
+                  className="cursor-pointer hover:bg-gray-50"
+                  onClick={() => openOrderDetail(order)}
+                >
+                  <TableCell className="font-medium">
+                    {order.orderedProducts[0].productName +
+                      (order.orderedProducts.length === 1
+                        ? ""
+                        : ` + ${order.orderedProducts.length - 1} more`)}
+                  </TableCell>
+                  <TableCell>{order.shippingAddress.city}</TableCell>
+                  <TableCell>Product</TableCell>
+                  <TableCell>Paid</TableCell>
+                  <TableCell>
+                    <span
+                      className={`inline-flex px-3 py-1 rounded-full text-sm ${
+                        order.orderStatus === "Delivered"
+                          ? "bg-green-100 text-green-800"
+                          : "bg-orange-100 text-orange-800"
+                      }`}
+                    >
+                      {order.orderStatus}
+                    </span>
+                  </TableCell>
+                  <TableCell>{order.orderTime}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+
+        {/* Mobile Cards */}
+        <div className="md:hidden space-y-4">
+          {orders.map((order) => (
+            <div
+              key={order.orderId}
+              className="bg-white p-4 rounded-lg border cursor-pointer"
+              onClick={() => openOrderDetail(order)}
             >
-              <td className="w-[150px]">{order.orderedProducts[0].productName + ((order.orderedProducts.length == 1) ? '' : `+ ${order.orderedProducts.length - 1} more`)}</td>
-
-              <td>{order.shippingAddress.city}</td>
-
-              <td>Product</td>
-
-              <td>Paid</td>
-
-              <td
-                className={
-                  order.orderStatus === "Delivered"
-                    ? "px-4 py-2 rounded-[20px] w-[130px] flex justify-center items-center bg-secondarySuccessAlerts bg-opacity-10 text-secondarySuccessAlerts"
-                    : "px-4 py-2 rounded-[20px] w-[130px] flex justify-center items-center bg-[#FFF5EB] text-[#FB7E15]"
-                }
-              >
-                {order.orderStatus}
-              </td>
-
-              <td width={"100px"}>{order.orderTime}</td>
-            </tr>
+              <div className="flex justify-between items-start mb-3">
+                <div>
+                  <p className="font-medium">
+                    {order.orderedProducts[0].productName +
+                      (order.orderedProducts.length === 1
+                        ? ""
+                        : ` + ${order.orderedProducts.length - 1} more`)}
+                  </p>
+                  <p className="text-sm text-gray-500">
+                    {order.shippingAddress.city}
+                  </p>
+                </div>
+                <span
+                  className={`inline-flex px-3 py-1 rounded-full text-sm ${
+                    order.orderStatus === "Delivered"
+                      ? "bg-green-100 text-green-800"
+                      : "bg-orange-100 text-orange-800"
+                  }`}
+                >
+                  {order.orderStatus}
+                </span>
+              </div>
+              <div className="text-sm text-gray-500">{order.orderTime}</div>
+            </div>
           ))}
-        </tbody>
-      </table>
-      <div className="mt-10 sm:mt-[80.99px] xl:mt-[59.99px] w-full h-full flex justify-center items-center"><Reviewfom/></div>
-      
-    </div>
+        </div>
+
+        {orders.length === 0 && (
+          <div className="text-center py-8 text-gray-500">No orders found</div>
+        )}
+
+        <OrderDetailDialog
+          order={selectedOrder}
+          open={isDetailOpen}
+          onClose={() => setIsDetailOpen(false)}
+        />
+      </CardContent>
+    </Card>
   );
 };
 
-export async function getServerSideProps({req, res}) {
+export async function getServerSideProps({ req }) {
   const currentUser = (await import("@/lib/server/currentUser")).default;
-  const findAllOrders = (await import("@/pages/api/orders/findAllOrders")).default
+  const findAllProfileOrders = (
+    await import("@/pages/api/orders/findAllProfileOrders")
+  ).default;
 
   const user = await currentUser(req);
 
-  if (user) {
-    const orders = await findAllOrders(user.email);
+  if (!user) {
     return {
-      props: {
-        orders: orders
-      }
-    }
-  } else {
-    return {
-      props: {
-        orders: []
-      }
-    }
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
   }
+
+  const orders = await findAllProfileOrders(user.email);
+
+  return {
+    props: {
+      orders: orders || [],
+    },
+  };
 }
 
-export default Orders;
+export default ProfileOrders;

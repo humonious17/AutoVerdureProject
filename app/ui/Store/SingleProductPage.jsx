@@ -14,11 +14,11 @@ import Head from "next/head";
 import Reviewfom from "@/pages/Reviewfom";
 
 const SingleProductPage = ({ productData, allProducts }) => {
-  
   useEffect(() => {
-    const script1 = document.createElement('script');
-    script1.src = 'https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js';
-    script1.type = 'module';
+    const script1 = document.createElement("script");
+    script1.src =
+      "https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js";
+    script1.type = "module";
     script1.async = true;
     document.head.appendChild(script1);
 
@@ -26,35 +26,53 @@ const SingleProductPage = ({ productData, allProducts }) => {
     return () => {
       document.head.removeChild(script1);
     };
-  }, []
-    
-);
+  }, []);
 
   const [size, setSize] = useState("");
   const [stockQuantity, setStockQuantity] = useState(1);
-  const [buttonText, setButtonText] = useState('Add To Cart');
-  const [error, setError] = useState('');
+  const [buttonText, setButtonText] = useState("Add To Cart");
+  const [error, setError] = useState("");
   const [cartItems, setCartItems] = useState([]);
   const [isCartVisible, setIsCartVisible] = useState(false);
-  const [style, setStyle] = useState('');
+  const [style, setStyle] = useState("");
   const router = useRouter();
   const [imageId, setImageId] = useState(0);
   const [showModel, setShowModel] = useState(false);
-  const fallbackImageUrl = "https://kamayo.in/wp-content/themes/koji/assets/images/default-fallback-image.png";
+  const fallbackImageUrl =
+    "https://kamayo.in/wp-content/themes/koji/assets/images/default-fallback-image.png";
   const [currentImageUrls, setCurrentImageUrls] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [basePrice] = useState(productData.productPrice); 
+  const [basePrice] = useState(productData.productPrice);
   const [price, setPrice] = useState(basePrice); // Initial price
   const [selectedColor, setSelectedColor] = useState(productData.defaultColor);
 
   const colors = {
-    White: { hex: "#FFFFFF", isAvailable: productData.white === 'true', price: productData.colors.white?.price || 0 },
-    Cream: { hex: "#FFFDD0", isAvailable: productData.cream === 'true', price: productData.colors.cream?.price || 0 },
-    LightGrey: { hex: "#D3D3D3", isAvailable: productData.lightGrey === 'true', price: productData.colors.lightGrey?.price || 0 },
-    DarkGrey: { hex: "#A9A9A9", isAvailable: productData.darkGrey === 'true', price: productData.colors.darkGrey?.price || 0 },
-    Black: { hex: "#000000", isAvailable: productData.black === 'true', price: productData.colors.black?.price || 0 },
+    White: {
+      hex: "#FFFFFF",
+      isAvailable: productData.white === "true",
+      price: productData.colors.white?.price || 0,
+    },
+    Cream: {
+      hex: "#FFFDD0",
+      isAvailable: productData.cream === "true",
+      price: productData.colors.cream?.price || 0,
+    },
+    LightGrey: {
+      hex: "#D3D3D3",
+      isAvailable: productData.lightGrey === "true",
+      price: productData.colors.lightGrey?.price || 0,
+    },
+    DarkGrey: {
+      hex: "#A9A9A9",
+      isAvailable: productData.darkGrey === "true",
+      price: productData.colors.darkGrey?.price || 0,
+    },
+    Black: {
+      hex: "#000000",
+      isAvailable: productData.black === "true",
+      price: productData.colors.black?.price || 0,
+    },
   };
-  
 
   const [isDescriptionOpen, setIsDescriptionOpen] = useState(false);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
@@ -62,19 +80,17 @@ const SingleProductPage = ({ productData, allProducts }) => {
   const toggleDescription = () => setIsDescriptionOpen(!isDescriptionOpen);
   const toggleDetails = () => setIsDetailsOpen(!isDetailsOpen);
 
-
   const handleSizeChange = (selectedSize) => {
     setSize(selectedSize); // Update the selected size state
 
     // Check if the selected size exists in the sizes object and has a price
-    const selectedSizePrice = productData.sizes[selectedSize]?.price || basePrice;
-    
+    const selectedSizePrice =
+      productData.sizes[selectedSize]?.price || basePrice;
+
     // Calculate the new price based on the selected size and current color
     const colorPrice = productData.colors[selectedColor]?.price || 0;
     setPrice(selectedSizePrice + colorPrice); // Update price
-};
-
-  
+  };
 
   const incrementQuantity = () => {
     setStockQuantity(stockQuantity + 1);
@@ -84,33 +100,32 @@ const SingleProductPage = ({ productData, allProducts }) => {
     if (stockQuantity > 1) {
       setStockQuantity(stockQuantity - 1);
     }
-  };  
+  };
 
   const handleColorClick = (color) => {
     setSelectedColor(color); // Update the selected color state
 
     // Check if the selected color exists in the colors object and has a price
     const selectedColorPrice = productData.colors[color]?.price || 0;
-    
+
     // Calculate the new price based on the selected color and current size
     const sizePrice = productData.sizes[size]?.price || basePrice;
     setPrice(sizePrice + selectedColorPrice); // Update price
-};
+  };
 
-const handleColorSelection = (colorKey) => {
-  setSelectedColor(colorKey);
+  const handleColorSelection = (colorKey) => {
+    setSelectedColor(colorKey);
 
-  // Update price based on selected color and current size
-  const selectedColorPrice = colors[colorKey].price;
-  const sizePrice = productData.sizes[size]?.price || basePrice;
-  setPrice(sizePrice + selectedColorPrice);
-};
-
+    // Update price based on selected color and current size
+    const selectedColorPrice = colors[colorKey].price;
+    const sizePrice = productData.sizes[size]?.price || basePrice;
+    setPrice(sizePrice + selectedColorPrice);
+  };
 
   useEffect(() => {
     if (productData && productData.images) {
       // Assuming productData.images contains the full image objects with publicUrl
-      const imageUrls = productData.images.map(image => image.publicUrl);
+      const imageUrls = productData.images.map((image) => image.publicUrl);
       setCurrentImageUrls(imageUrls);
       setLoading(false);
     } else {
@@ -118,20 +133,18 @@ const handleColorSelection = (colorKey) => {
       setLoading(false);
     }
   }, [productData]);
-  
 
-  
   const handleNextImageClick = (clickSide) => {
     setImageId((prevId) => {
-      if (clickSide === 'right') {
+      if (clickSide === "right") {
         return (prevId + 1) % currentImageUrls.length; // Navigate to the right
-      } else if (clickSide === 'left') {
+      } else if (clickSide === "left") {
         return (prevId - 1 + currentImageUrls.length) % currentImageUrls.length; // Navigate to the left
       }
       return prevId; // No change
     });
   };
-  
+
   const MainImageSection = () => (
     <div className="w-full sm:flex sm:flex-col sm:w-[50%] xl:w-[624px]">
       <div className="h-[550px] w-full relative">
@@ -147,22 +160,22 @@ const handleColorSelection = (colorKey) => {
             />
             {currentImageUrls.length > 1 && (
               <>
-                <button 
+                <button
                   className="absolute top-1/2 left-[29px] transform -translate-y-1/2 cursor-pointer"
-                  onClick={() => handleNextImageClick('left')} // Left arrow click
+                  onClick={() => handleNextImageClick("left")} // Left arrow click
                 >
-                  <Image 
+                  <Image
                     src="/leftArrow1Purple.svg"
                     height={32}
                     width={25}
                     alt="Previous"
                   />
                 </button>
-                <button 
+                <button
                   className="absolute top-1/2 right-[29px] transform -translate-y-1/2 cursor-pointer"
-                  onClick={() => handleNextImageClick('right')} // Right arrow click
+                  onClick={() => handleNextImageClick("right")} // Right arrow click
                 >
-                  <Image 
+                  <Image
                     src="/rightArrow1Purple.svg"
                     height={32}
                     width={25}
@@ -174,110 +187,111 @@ const handleColorSelection = (colorKey) => {
           </>
         )}
       </div>
-  
+
       {currentImageUrls.length > 1 && (
         <div className="mt-[20px] w-full grid grid-cols-4 xl:grid-cols-2 gap-x-[6px] xl:gap-x-4 xl:gap-y-[24px] justify-center items-center">
-          {!loading && currentImageUrls.map((url, index) => (
-            <div 
-              key={index} 
-              className="w-full h-[76px] xl:h-[264px] cursor-pointer"
-              onClick={() => setImageId(index)} // Update main image to the clicked thumbnail
-            >
-              <Image
-                className={`object-cover w-full h-full rounded-[22px] ${
-                  imageId === index ? 'border-2 border-primaryMain' : ''
-                }`}
-                src={url || fallbackImageUrl} // Always use the URL from the original array
-                alt={`${productData.productName}-${index + 1}`}
-                width={86}
-                height={76}
-                unoptimized={true}
-              />
-            </div>
-          ))}
+          {!loading &&
+            currentImageUrls.map((url, index) => (
+              <div
+                key={index}
+                className="w-full h-[76px] xl:h-[264px] cursor-pointer"
+                onClick={() => setImageId(index)} // Update main image to the clicked thumbnail
+              >
+                <Image
+                  className={`object-cover w-full h-full rounded-[22px] ${
+                    imageId === index ? "border-2 border-primaryMain" : ""
+                  }`}
+                  src={url || fallbackImageUrl} // Always use the URL from the original array
+                  alt={`${productData.productName}-${index + 1}`}
+                  width={86}
+                  height={76}
+                  unoptimized={true}
+                />
+              </div>
+            ))}
         </div>
       )}
     </div>
   );
-  
-  
 
   const show3dModel = () => {
     setShowModel(true);
-  }
+  };
 
   const hideModelViewer = () => {
-    setShowModel(false)
-  }
+    setShowModel(false);
+  };
 
   const handleAddToCart = async () => {
     if (!selectedColor || !size) {
-      setError('Please select color and size.');
+      setError("Please select color and size.");
       return;
     }
-    setError('');
-    setButtonText('Adding...');
-  
+    setError("");
+    setButtonText("Adding...");
+
     const payload = {
       productId: productData.productId,
-      productName: productData.productName,  // Added productName
-      productPrice: price,  // Added current price (which includes size/color adjustments)
+      productName: productData.productName, // Added productName
+      productPrice: price, // Added current price (which includes size/color adjustments)
       productColor: selectedColor,
       productSize: size,
       productQuantity: stockQuantity,
-      productStyle: style
+      productStyle: style,
     };
-  
+
     try {
-      const response = await fetch('/api/cart/add', {
-        method: 'POST',
+      const response = await fetch("/api/cart/add", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(payload),
       });
-  
+
       if (response.ok) {
-        setButtonText('Added');
+        setButtonText("Added");
         const result = await response.json();
         const cartProducts = result.cartProducts;
         setCartItems(cartProducts);
         setIsCartVisible(true);
       } else {
-        setButtonText('Add To Cart');
+        setButtonText("Add To Cart");
       }
     } catch (error) {
-      console.error('Error adding to cart:', error);
-      setButtonText('Add To Cart');
+      console.error("Error adding to cart:", error);
+      setButtonText("Add To Cart");
     }
   };
 
   const handleBuyNow = () => {
     if (!selectedColor || !size) {
-      setError('Please select color and size.');
+      setError("Please select color and size.");
       return;
     }
-    
-    setError('');
 
-    router.push('/checkout/guest');
-  }
-   // State to control whether to show all products or just three
-   const [showAll, setShowAll] = useState(false);
+    setError("");
 
-   // Function to handle the "Browse all" click
-   const toggleShowAll = () => {
-     setShowAll(!showAll);
-   };
- 
-   // Products to display based on showAll state
-   const displayedProducts = showAll ? allProducts : allProducts.slice(0, 3);
+    router.push("/checkout/guest");
+  };
+  // State to control whether to show all products or just three
+  const [showAll, setShowAll] = useState(false);
+
+  // Function to handle the "Browse all" click
+  const toggleShowAll = () => {
+    setShowAll(!showAll);
+  };
+
+  // Products to display based on showAll state
+  const displayedProducts = showAll ? allProducts : allProducts.slice(0, 3);
 
   return (
     <div className="w-full px-[18px] sm:px-[38px] xl:px-16 bg-[#FFFCF8]">
-      
       <Head>
-        <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+        <script
+          type="module"
+          src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"
+        ></script>
       </Head>
       <div className="pt-[13px] sm:pt-[29px] xl:pt-[96.5px] pb-[221px] flex flex-col justify-center items-center">
         {/* Navigation */}
@@ -286,16 +300,22 @@ const handleColorSelection = (colorKey) => {
             <Link href="/">
               <span>Home</span>
             </Link>{" "}
-            / <Link href="/store"><span>Store</span></Link> /{" "}
+            /{" "}
+            <Link href="/store">
+              <span>Store</span>
+            </Link>{" "}
+            /{" "}
             <Link href="/store/zenpot">
               <span className="text-[#000]">{productData.productName}</span>
             </Link>
           </p>
         </div>
-        
 
         {isCartVisible && (
-          <CartOverview items={cartItems} onClose={() => setIsCartVisible(false)} />
+          <CartOverview
+            items={cartItems}
+            onClose={() => setIsCartVisible(false)}
+          />
         )}
 
         {/* Product Details */}
@@ -303,72 +323,134 @@ const handleColorSelection = (colorKey) => {
           {/* Product Image */}
           <div className="w-full sm:flex sm:flex-col sm:w-[50%] xl:w-[624px]">
             <div className="h-[550px] w-full relative">
-            <Image
-              className="object-cover w-full h-full rounded-[44px]"
-              src={currentImageUrls[imageId] || fallbackImageUrl}
-              alt={productData.productName}
-              width={550}
-              height={550}
-              unoptimized={true}
-            />
+              <Image
+                className="object-cover w-full h-full rounded-[44px]"
+                src={currentImageUrls[imageId] || fallbackImageUrl}
+                alt={productData.productName}
+                width={550}
+                height={550}
+                unoptimized={true}
+              />
 
-              <div style={{height: "32px", width: "32px", position: "absolute", top: "50%", left: "29px", cursor: "pointer"}}>
-                <Image 
-                src="/leftArrow1Purple.svg"
-                height={32}
-                width={25}
-                onClick={() => {handleNextImageClick('left')}}
-              />
+              <div
+                style={{
+                  height: "32px",
+                  width: "32px",
+                  position: "absolute",
+                  top: "50%",
+                  left: "29px",
+                  cursor: "pointer",
+                }}
+              >
+                <Image
+                  src="/leftArrow1Purple.svg"
+                  height={32}
+                  width={25}
+                  onClick={() => {
+                    handleNextImageClick("left");
+                  }}
+                />
               </div>
-              <div style={{height: "32px", width: "32px", position: "absolute", top: "50%", right: "29px", cursor: "pointer"}}>
-                <Image 
-                src="/rightArrow1Purple.svg"
-                height={32}
-                width={25}
-                onClick={() => {handleNextImageClick('right')}}
-              />
+              <div
+                style={{
+                  height: "32px",
+                  width: "32px",
+                  position: "absolute",
+                  top: "50%",
+                  right: "29px",
+                  cursor: "pointer",
+                }}
+              >
+                <Image
+                  src="/rightArrow1Purple.svg"
+                  height={32}
+                  width={25}
+                  onClick={() => {
+                    handleNextImageClick("right");
+                  }}
+                />
               </div>
 
               <div className="flex w-fit xl:flex flex-col gap-[12px] absolute top-[21.18px] right-[29px]">
-            {(productData.petFriendly === 'true') ? <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
-              <Image
-                src="/veterinary.png"
-                alt="veterinary"
-                width={32}
-                height={32}
-              />
-            </div> : <></>}
-            {(productData.petUnfriendly === 'true') ? <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
-              <Image
-                src="/noPets.png"
-                alt="veterinary"
-                width={32}
-                height={32}
-              />
-            </div> : <></>}
-            {(productData.lessLight === 'true') ? <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
-              <Image src="/noLight.png" alt="noLight" width={32} height={32} />
-            </div> : <></>}
-            {(productData.moreLight === 'true') ? <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
-              <Image
-                src="/brightness.png"
-                alt="brightness"
-                width={32}
-                height={32}
-              />
-            </div> : <></>}
-          </div>
-              <button className="px-[12.15px] py-[5.79px] xl:px-[21px] xl:py-[10px] text-[8.099px] xl:text-sm border-[0.58px] rounded-[18.5px] absolute bottom-[19.22px] right-[18.17px] xl:bottom-[29.5px] xl:right-[31px] text-[#000] font-normal border-[#000]" onClick={show3dModel}>
+                {productData.petFriendly === "true" ? (
+                  <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
+                    <Image
+                      src="/veterinary.png"
+                      alt="veterinary"
+                      width={32}
+                      height={32}
+                    />
+                  </div>
+                ) : (
+                  <></>
+                )}
+                {productData.petUnfriendly === "true" ? (
+                  <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
+                    <Image
+                      src="/noPets.png"
+                      alt="veterinary"
+                      width={32}
+                      height={32}
+                    />
+                  </div>
+                ) : (
+                  <></>
+                )}
+                {productData.lessLight === "true" ? (
+                  <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
+                    <Image
+                      src="/noLight.png"
+                      alt="noLight"
+                      width={32}
+                      height={32}
+                    />
+                  </div>
+                ) : (
+                  <></>
+                )}
+                {productData.moreLight === "true" ? (
+                  <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
+                    <Image
+                      src="/brightness.png"
+                      alt="brightness"
+                      width={32}
+                      height={32}
+                    />
+                  </div>
+                ) : (
+                  <></>
+                )}
+              </div>
+              <button
+                className="px-[12.15px] py-[5.79px] xl:px-[21px] xl:py-[10px] text-[8.099px] xl:text-sm border-[0.58px] rounded-[18.5px] absolute bottom-[19.22px] right-[18.17px] xl:bottom-[29.5px] xl:right-[31px] text-[#000] font-normal border-[#000]"
+                onClick={show3dModel}
+              >
                 <p>View in 3D</p>
               </button>
-              {showModel ? <model-viewer alt="Neil Armstrong's Spacesuit from the Smithsonian Digitization Programs Office and National Air and Space Museum" src="https://res.cloudinary.com/dgzqokaju/image/upload/v1721140844/op3_mnxc5v.glb" ar environment-image="shared-assets/environments/moon_1k.hdr" poster="shared-assets/models/NeilArmstrong.webp" shadow-intensity="1" camera-controls touch-action="pan-y"></model-viewer> : <></>}
+              {showModel ? (
+                <model-viewer
+                  alt="Neil Armstrong's Spacesuit from the Smithsonian Digitization Programs Office and National Air and Space Museum"
+                  src="https://res.cloudinary.com/dgzqokaju/image/upload/v1721140844/op3_mnxc5v.glb"
+                  ar
+                  environment-image="shared-assets/environments/moon_1k.hdr"
+                  poster="shared-assets/models/NeilArmstrong.webp"
+                  shadow-intensity="1"
+                  camera-controls
+                  touch-action="pan-y"
+                ></model-viewer>
+              ) : (
+                <></>
+              )}
             </div>
 
             <div className="mt-[20px] w-full grid grid-cols-4 xl:grid-cols-2 gap-x-[6px] xl:gap-x-4 xl:gap-y-[24px] justify-center items-center">
               <div className="w-full h-[76px] xl:h-[264px]">
                 <Image
                   className="object-cover w-full h-full rounded-[22px]"
-                  src={currentImageUrls[(imageId + 1) % currentImageUrls.length] || fallbackImageUrl}
+                  src={
+                    currentImageUrls[(imageId + 1) % currentImageUrls.length] ||
+                    fallbackImageUrl
+                  }
                   alt="grobox.png"
                   width={86}
                   height={76}
@@ -378,7 +460,10 @@ const handleColorSelection = (colorKey) => {
               <div className="w-full h-[76px] xl:h-[264px]">
                 <Image
                   className="object-cover w-full h-full rounded-[22px]"
-                  src={currentImageUrls[(imageId + 2) % currentImageUrls.length] || fallbackImageUrl}
+                  src={
+                    currentImageUrls[(imageId + 2) % currentImageUrls.length] ||
+                    fallbackImageUrl
+                  }
                   alt="grobox.png"
                   width={86}
                   height={76}
@@ -388,7 +473,10 @@ const handleColorSelection = (colorKey) => {
               <div className="w-full h-[76px] xl:h-[264px]">
                 <Image
                   className="object-cover w-full h-full rounded-[22px]"
-                  src={currentImageUrls[(imageId + 3) % currentImageUrls.length] || fallbackImageUrl}
+                  src={
+                    currentImageUrls[(imageId + 3) % currentImageUrls.length] ||
+                    fallbackImageUrl
+                  }
                   alt="grobox.png"
                   width={86}
                   height={76}
@@ -398,7 +486,10 @@ const handleColorSelection = (colorKey) => {
               <div className="w-full h-[76px] xl:h-[264px]">
                 <Image
                   className="object-cover w-full h-full rounded-[22px]"
-                  src={currentImageUrls[(imageId + 4) % currentImageUrls.length] || fallbackImageUrl}
+                  src={
+                    currentImageUrls[(imageId + 4) % currentImageUrls.length] ||
+                    fallbackImageUrl
+                  }
                   alt="grobox.png"
                   width={86}
                   height={76}
@@ -408,93 +499,100 @@ const handleColorSelection = (colorKey) => {
             </div>
           </div>
 
-          {showModel ? 
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75">
-            <div className="relative w-4/5 h-4/5">
-              <model-viewer
-                src="https://res.cloudinary.com/dgzqokaju/image/upload/v1721140844/op3_mnxc5v.glb"
-                alt="3d Model"
-                auto-rotate
-                camera-controls
-                ar
-                shadow-intensity="1" 
-                touch-action="pan-y"
-                style={{ width: '100%', height: '100%' }}
-              >
-              </model-viewer>
-              <button onClick={hideModelViewer} className="absolute top-0 right-0 m-4 text-white">
-                Close
-              </button>
+          {showModel ? (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75">
+              <div className="relative w-4/5 h-4/5">
+                <model-viewer
+                  src="https://res.cloudinary.com/dgzqokaju/image/upload/v1721140844/op3_mnxc5v.glb"
+                  alt="3d Model"
+                  auto-rotate
+                  camera-controls
+                  ar
+                  shadow-intensity="1"
+                  touch-action="pan-y"
+                  style={{ width: "100%", height: "100%" }}
+                ></model-viewer>
+                <button
+                  onClick={hideModelViewer}
+                  className="absolute top-0 right-0 m-4 text-white"
+                >
+                  Close
+                </button>
+              </div>
             </div>
-          </div> : <></>}
+          ) : (
+            <></>
+          )}
 
           {/* Product Description */}
           <div className="mt-[31px] sm:flex sm:flex-col sm:w-[50%] xl:w-[624px] sm:mt-0 w-full">
             {/* Product Title */}
-            <div >
-              <p className="text-stone-950 text-[51px] font-normal font-['Inter'] leading-[64px] ">{productData.productName}</p>
-            </div>
-
-            {/* Product short description */}
-            <div >
-              <p className="mb-[21.5px] text-zinc-600 text-[17px] font-normal font-['Inter'] leading-[30px]">
-              {productData.productDescription}
+            <div>
+              <p className="text-stone-950 text-[51px] font-normal font-['Inter'] leading-[64px] ">
+                {productData.productName}
               </p>
             </div>
 
-            
+            {/* Product short description */}
+            <div>
+              <p className="mb-[21.5px] text-zinc-600 text-[17px] font-normal font-['Inter'] leading-[30px]">
+                {productData.productTitle}
+              </p>
+            </div>
+
             {/* Product Price */}
-            <div >
-              <p className="text-stone-950 text-[27px] font-medium font-['Inter'] leading-10">₹ {price} INR</p>
+            <div>
+              <p className="text-stone-950 text-[27px] font-medium font-['Inter'] leading-10">
+                ₹ {price} INR
+              </p>
             </div>
 
             {/* Product Size, Color, Finish */}
             <div className="mt-[22px] w-full flex flex-col gap-8 sm:gap-6">
-            {/* Product Size */}
-            <div>
-              <p className="text-sm font-normal">Size</p>
-              <div className="mt-[12px] w-[200px] flex gap-4">
-                {['XS', 'S', 'M', 'L', 'XL'].map((sizeOption) => (
-                  productData[sizeOption] === 'true' ? (
-                    <button
-                      key={sizeOption}
-                      onClick={() => handleSizeChange(sizeOption)} // Call handleSizeChange on click
-                      className={`w-[80px] h-[30px] text-[13px] rounded-[5px] cursor-pointer flex justify-center items-center transition-transform duration-300 ease-in-out ${
-                        size === sizeOption
-                          ? 'bg-[#9A5CF5] text-[#fff] shadow-lg transform scale-105'
-                          : 'bg-[#9A5CF5] bg-opacity-20 hover:bg-opacity-100 text-[#000000] hover:text-[#fff] hover:shadow-md'
-                      }`}
-                    >
-                      <p className="uppercase font-semibold">{sizeOption.toLowerCase()}</p>
-                    </button>
-                  ) : null
-                ))}
+              {/* Product Size */}
+              <div>
+                <p className="text-sm font-normal">Size</p>
+                <div className="mt-[12px] w-[200px] flex gap-4">
+                  {["XS", "S", "M", "L", "XL"].map((sizeOption) =>
+                    productData[sizeOption] === "true" ? (
+                      <button
+                        key={sizeOption}
+                        onClick={() => handleSizeChange(sizeOption)} // Call handleSizeChange on click
+                        className={`w-[80px] h-[30px] text-[13px] rounded-[5px] cursor-pointer flex justify-center items-center transition-transform duration-300 ease-in-out ${
+                          size === sizeOption
+                            ? "bg-[#9A5CF5] text-[#fff] shadow-lg transform scale-105"
+                            : "bg-[#9A5CF5] bg-opacity-20 hover:bg-opacity-100 text-[#000000] hover:text-[#fff] hover:shadow-md"
+                        }`}
+                      >
+                        <p className="uppercase font-semibold">
+                          {sizeOption.toLowerCase()}
+                        </p>
+                      </button>
+                    ) : null
+                  )}
+                </div>
               </div>
-            </div>
-                
 
               {/* Product Color */}
               <p className="text-sm font-normal">Color</p>
-<div className="mt-[12px] w-[306px] flex gap-4">
-  {Object.entries(colors).map(([colorKey, { hex, isAvailable }]) => 
-    isAvailable && (
-      <div
-        key={colorKey}
-        onClick={() => handleColorSelection(colorKey)}
-        style={{ backgroundColor: hex }}
-        className={`w-[30px] h-[30px] rounded-full cursor-pointer border-2 transition-transform duration-300 ease-in-out 
-          ${selectedColor === colorKey 
-            ? "border-[#9A5CF5] shadow-lg scale-110 ring- ring-offset-2 ring-[#9A5CF5]"
-            : "hover:shadow-md hover:scale-105"}`}
-      >
-      </div>
-    )
-  )}
-</div>
-
-
-
-
+              <div className="mt-[12px] w-[306px] flex gap-4">
+                {Object.entries(colors).map(
+                  ([colorKey, { hex, isAvailable }]) =>
+                    isAvailable && (
+                      <div
+                        key={colorKey}
+                        onClick={() => handleColorSelection(colorKey)}
+                        style={{ backgroundColor: hex }}
+                        className={`w-[30px] h-[30px] rounded-full cursor-pointer border-2 transition-transform duration-300 ease-in-out 
+          ${
+            selectedColor === colorKey
+              ? "border-[#9A5CF5] shadow-lg scale-110 ring- ring-offset-2 ring-[#9A5CF5]"
+              : "hover:shadow-md hover:scale-105"
+          }`}
+                      ></div>
+                    )
+                )}
+              </div>
 
               {/* Product Finish */}
               <div>
@@ -502,31 +600,43 @@ const handleColorSelection = (colorKey) => {
 
                 <div className="flex gap-4">
                   {/* Matt Option */}
-                  <button 
-                    onClick={() => setStyle("Matt")} 
-                    className={`px-4 py-2 rounded-full transition-all duration-300 ${style === "Matt" ? "bg-[#9A5CF5] text-white font-bold border border-black" : "bg-gray-200 text-gray-700 hover:bg-gray-300"}`}
+                  <button
+                    onClick={() => setStyle("Matt")}
+                    className={`px-4 py-2 rounded-full transition-all duration-300 ${
+                      style === "Matt"
+                        ? "bg-[#9A5CF5] text-white font-bold border border-black"
+                        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                    }`}
                   >
                     Matt
                   </button>
 
                   {/* Gloss Option */}
-                  <button 
-                    onClick={() => setStyle("Gloss")} 
-                    className={`px-4 py-2 rounded-full transition-all duration-300 ${style === "Gloss" ? "bg-[#9A5CF5] text-white font-bold border border-black" : "bg-gray-200 text-gray-700 hover:bg-gray-300"}`}
+                  <button
+                    onClick={() => setStyle("Gloss")}
+                    className={`px-4 py-2 rounded-full transition-all duration-300 ${
+                      style === "Gloss"
+                        ? "bg-[#9A5CF5] text-white font-bold border border-black"
+                        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                    }`}
                   >
                     Gloss
                   </button>
 
                   {/* Art Option */}
-                  <button 
-                    onClick={() => setStyle("Art")} 
-                    className={`px-4 py-2 rounded-full transition-all duration-300 ${style === "Art" ? "bg-[#9A5CF5] text-white font-bold border border-black" : "bg-gray-200 text-gray-700 hover:bg-gray-300"}`}
+                  <button
+                    onClick={() => setStyle("Art")}
+                    className={`px-4 py-2 rounded-full transition-all duration-300 ${
+                      style === "Art"
+                        ? "bg-[#9A5CF5] text-white font-bold border border-black"
+                        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                    }`}
                   >
                     Art
                   </button>
                 </div>
               </div>
-              </div>
+            </div>
 
             {/* Discount Card */}
             <div className="mt-[37.5px] sm:mt-6 w-full flex flex-col gap-6 p-2 xl:p-5 rounded-xl border-[1px] bg-primaryMain bg-opacity-10 border-primaryMain">
@@ -560,153 +670,231 @@ const handleColorSelection = (colorKey) => {
             {error && <p className="text-red-600 mt-2">{error}</p>}
             {/* Quantity, Add to cart, Buy now */}
             <div className="mt-[18.5px] sm:mt-6 w-full h-[32.8px] xl:h-16 flex gap-[18px] xl:justify-between">
-      <div className="w-[63.077px] xl:w-[123px] h-full py-5 rounded-[29.2px] border-[0.51px] bg-[#FFFFFF] border-[#9F9F9F] flex justify-center items-center">
-        <button 
-          className="px-2 py-1"
-          onClick={decrementQuantity}
-        >
-          -
-        </button>
-        <span className="px-2">{stockQuantity}</span>
-        <button 
-          className="px-2 py-1"
-          onClick={incrementQuantity}
-        >
-          +
-        </button>
-      </div>
-      <button
-      className="w-[85.1px] xl:w-[166px] h-full text-[10.256px] xl:text-xl py-5 rounded-[29.7px] border-[0.51px] text-[#000000] bg-[#FFFFFF] border-[#000000] flex justify-center items-center"
-      onClick={handleAddToCart}>
-      {buttonText}
-      </button>
-      <button className="w-[154.359px] xl:w-[301px] h-full text-[10.256px] xl:text-xl py-5 leading-[12.308px] rounded-[35.9px] font-medium bg-primaryMain text-[#FFFFFF] flex justify-center items-center" onClick={handleBuyNow}>
-        Buy Now
-      </button>
-    </div>
-    {(productData.productType === 'plants') && <div className="mt-[21.5px] w-full sm:w-fit xl:w-full flex flex-row sm:flex-col xl:flex-row sm:gap-y-3 xl:gap-x-[22px] justify-between xl:justify-start">
-              <div className="flex gap-2 sm:gap-3 justify-between sm:justify-start xl:justify-between items-center">
-                <Image
-                  src={(productData.petFriendly === 'true') ? "/veterinary.png" : "/noPets.png"}
-                  alt="veterinary"
-                  width={32}
-                  height={32}
-                />
-                <p className="text-[13px] leading-[15.6px] -tracking-[0.325px] font-normal text-[#000000]">
-                  {(productData.petFriendly === 'true') ? "Pet Friendly" : "Not pet Friendly"};
-                </p>
+              <div className="w-[63.077px] xl:w-[123px] h-full py-5 rounded-[29.2px] border-[0.51px] bg-[#FFFFFF] border-[#9F9F9F] flex justify-center items-center">
+                <button className="px-2 py-1" onClick={decrementQuantity}>
+                  -
+                </button>
+                <span className="px-2">{stockQuantity}</span>
+                <button className="px-2 py-1" onClick={incrementQuantity}>
+                  +
+                </button>
               </div>
-              <div className="flex gap-2 sm:gap-3 justify-between sm:justify-start xl:justify-between items-center">
-                <Image
-                  src={(productData.lessLight === 'true') ? "/noLight.png" : "/brightness.png"}
-                  alt={(productData.lessLight === 'true') ? "lessLight" : "moreLight"}
-                  width={32}
-                  height={32}
-                />
-                <p className="text-[13px] leading-[15.6px] -tracking-[0.325px] font-normal text-[#000000]">
-                  {(productData.lessLight === 'true') ? "Needs Less Light" : "Needs More Light"}
-                </p>
+              <button
+                className="w-[85.1px] xl:w-[166px] h-full text-[10.256px] xl:text-xl py-5 rounded-[29.7px] border-[0.51px] text-[#000000] bg-[#FFFFFF] border-[#000000] flex justify-center items-center"
+                onClick={handleAddToCart}
+              >
+                {buttonText}
+              </button>
+              <button
+                className="w-[154.359px] xl:w-[301px] h-full text-[10.256px] xl:text-xl py-5 leading-[12.308px] rounded-[35.9px] font-medium bg-primaryMain text-[#FFFFFF] flex justify-center items-center"
+                onClick={handleBuyNow}
+              >
+                Buy Now
+              </button>
+            </div>
+            {productData.productType === "plants" && (
+              <div className="mt-[21.5px] w-full sm:w-fit xl:w-full flex flex-row sm:flex-col xl:flex-row sm:gap-y-3 xl:gap-x-[22px] justify-between xl:justify-start">
+                <div className="flex gap-2 sm:gap-3 justify-between sm:justify-start xl:justify-between items-center">
+                  <Image
+                    src={
+                      productData.petFriendly === "true"
+                        ? "/veterinary.png"
+                        : "/noPets.png"
+                    }
+                    alt="veterinary"
+                    width={32}
+                    height={32}
+                  />
+                  <p className="text-[13px] leading-[15.6px] -tracking-[0.325px] font-normal text-[#000000]">
+                    {productData.petFriendly === "true"
+                      ? "Pet Friendly"
+                      : "Not pet Friendly"}
+                    ;
+                  </p>
+                </div>
+                <div className="flex gap-2 sm:gap-3 justify-between sm:justify-start xl:justify-between items-center">
+                  <Image
+                    src={
+                      productData.lessLight === "true"
+                        ? "/noLight.png"
+                        : "/brightness.png"
+                    }
+                    alt={
+                      productData.lessLight === "true"
+                        ? "lessLight"
+                        : "moreLight"
+                    }
+                    width={32}
+                    height={32}
+                  />
+                  <p className="text-[13px] leading-[15.6px] -tracking-[0.325px] font-normal text-[#000000]">
+                    {productData.lessLight === "true"
+                      ? "Needs Less Light"
+                      : "Needs More Light"}
+                  </p>
+                </div>
               </div>
-            </div>}
-            {(productData.productType === 'grobox') && <div className="mt-[21.5px] w-full sm:w-fit xl:w-full flex flex-row sm:flex-col xl:flex-row sm:gap-y-3 xl:gap-x-[22px] justify-between xl:justify-start">
-              <div className="flex gap-2 sm:gap-3 justify-between sm:justify-start xl:justify-between items-center">
-                <Image
-                  src={(productData.petFriendly === 'true') ? "/veterinary.png" : "/noPets.png"}
-                  alt="veterinary"
-                  width={32}
-                  height={32}
-                />
-                <p className="text-[13px] leading-[15.6px] -tracking-[0.325px] font-normal text-[#000000]">
-                  {(productData.petFriendly === 'true') ? "Pet Friendly" : "Not pet Friendly"};
-                </p>
+            )}
+            {productData.productType === "grobox" && (
+              <div className="mt-[21.5px] w-full sm:w-fit xl:w-full flex flex-row sm:flex-col xl:flex-row sm:gap-y-3 xl:gap-x-[22px] justify-between xl:justify-start">
+                <div className="flex gap-2 sm:gap-3 justify-between sm:justify-start xl:justify-between items-center">
+                  <Image
+                    src={
+                      productData.petFriendly === "true"
+                        ? "/veterinary.png"
+                        : "/noPets.png"
+                    }
+                    alt="veterinary"
+                    width={32}
+                    height={32}
+                  />
+                  <p className="text-[13px] leading-[15.6px] -tracking-[0.325px] font-normal text-[#000000]">
+                    {productData.petFriendly === "true"
+                      ? "Pet Friendly"
+                      : "Not pet Friendly"}
+                    ;
+                  </p>
+                </div>
+                <div className="flex gap-2 sm:gap-3 justify-between sm:justify-start xl:justify-between items-center">
+                  <Image
+                    src={
+                      productData.lessLight === "true"
+                        ? "/noLight.png"
+                        : "/brightness.png"
+                    }
+                    alt={
+                      productData.lessLight === "true"
+                        ? "lessLight"
+                        : "moreLight"
+                    }
+                    width={32}
+                    height={32}
+                  />
+                  <p className="text-[13px] leading-[15.6px] -tracking-[0.325px] font-normal text-[#000000]">
+                    {productData.lessLight === "true"
+                      ? "Needs Less Light"
+                      : "Needs More Light"}
+                  </p>
+                </div>
               </div>
-              <div className="flex gap-2 sm:gap-3 justify-between sm:justify-start xl:justify-between items-center">
-                <Image
-                  src={(productData.lessLight === 'true') ? "/noLight.png" : "/brightness.png"}
-                  alt={(productData.lessLight === 'true') ? "lessLight" : "moreLight"}
-                  width={32}
-                  height={32}
-                />
-                <p className="text-[13px] leading-[15.6px] -tracking-[0.325px] font-normal text-[#000000]">
-                  {(productData.lessLight === 'true') ? "Needs Less Light" : "Needs More Light"}
-                </p>
+            )}
+            {productData.productType === "zenpot" && (
+              <div className="mt-[21.5px] w-full sm:w-fit xl:w-full flex flex-row sm:flex-col xl:flex-row sm:gap-y-3 xl:gap-x-[22px] justify-between xl:justify-start">
+                <div className="flex gap-2 sm:gap-3 justify-between sm:justify-start xl:justify-between items-center">
+                  <Image
+                    src={
+                      productData.petFriendly === "true"
+                        ? "/veterinary.png"
+                        : "/noPets.png"
+                    }
+                    alt="veterinary"
+                    width={32}
+                    height={32}
+                  />
+                  <p className="text-[13px] leading-[15.6px] -tracking-[0.325px] font-normal text-[#000000]">
+                    {productData.petFriendly === "true"
+                      ? "Pet Friendly"
+                      : "Not pet Friendly"}
+                    ;
+                  </p>
+                </div>
+                <div className="flex gap-2 sm:gap-3 justify-between sm:justify-start xl:justify-between items-center">
+                  <Image
+                    src={
+                      productData.lessLight === "true"
+                        ? "/noLight.png"
+                        : "/brightness.png"
+                    }
+                    alt={
+                      productData.lessLight === "true"
+                        ? "lessLight"
+                        : "moreLight"
+                    }
+                    width={32}
+                    height={32}
+                  />
+                  <p className="text-[13px] leading-[15.6px] -tracking-[0.325px] font-normal text-[#000000]">
+                    {productData.lessLight === "true"
+                      ? "Needs Less Light"
+                      : "Needs More Light"}
+                  </p>
+                </div>
               </div>
-            </div>}
-            {(productData.productType === 'zenpot') && <div className="mt-[21.5px] w-full sm:w-fit xl:w-full flex flex-row sm:flex-col xl:flex-row sm:gap-y-3 xl:gap-x-[22px] justify-between xl:justify-start">
-              <div className="flex gap-2 sm:gap-3 justify-between sm:justify-start xl:justify-between items-center">
-                <Image
-                  src={(productData.petFriendly === 'true') ? "/veterinary.png" : "/noPets.png"}
-                  alt="veterinary"
-                  width={32}
-                  height={32}
-                />
-                <p className="text-[13px] leading-[15.6px] -tracking-[0.325px] font-normal text-[#000000]">
-                  {(productData.petFriendly === 'true') ? "Pet Friendly" : "Not pet Friendly"};
-                </p>
+            )}
+            {productData.productType === "accessory" && (
+              <div className="mt-[21.5px] w-full sm:w-fit xl:w-full flex flex-row sm:flex-col xl:flex-row sm:gap-y-3 xl:gap-x-[22px] justify-between xl:justify-start">
+                <div className="flex gap-2 sm:gap-3 justify-between sm:justify-start xl:justify-between items-center">
+                  <Image
+                    src={
+                      productData.petFriendly === "true"
+                        ? "/veterinary.png"
+                        : "/noPets.png"
+                    }
+                    alt="veterinary"
+                    width={32}
+                    height={32}
+                  />
+                  <p className="text-[13px] leading-[15.6px] -tracking-[0.325px] font-normal text-[#000000]">
+                    {productData.petFriendly === "true"
+                      ? "Pet Friendly"
+                      : "Not pet Friendly"}
+                    ;
+                  </p>
+                </div>
+                <div className="flex gap-2 sm:gap-3 justify-between sm:justify-start xl:justify-between items-center">
+                  <Image
+                    src={
+                      productData.lessLight === "true"
+                        ? "/noLight.png"
+                        : "/brightness.png"
+                    }
+                    alt={
+                      productData.lessLight === "true"
+                        ? "lessLight"
+                        : "moreLight"
+                    }
+                    width={32}
+                    height={32}
+                  />
+                  <p className="text-[13px] leading-[15.6px] -tracking-[0.325px] font-normal text-[#000000]">
+                    {productData.lessLight === "true"
+                      ? "Needs Less Light"
+                      : "Needs More Light"}
+                  </p>
+                </div>
               </div>
-              <div className="flex gap-2 sm:gap-3 justify-between sm:justify-start xl:justify-between items-center">
-                <Image
-                  src={(productData.lessLight === 'true') ? "/noLight.png" : "/brightness.png"}
-                  alt={(productData.lessLight === 'true') ? "lessLight" : "moreLight"}
-                  width={32}
-                  height={32}
-                />
-                <p className="text-[13px] leading-[15.6px] -tracking-[0.325px] font-normal text-[#000000]">
-                  {(productData.lessLight === 'true') ? "Needs Less Light" : "Needs More Light"}
-                </p>
-              </div>
-            </div>}
-            {(productData.productType === 'accessory') && <div className="mt-[21.5px] w-full sm:w-fit xl:w-full flex flex-row sm:flex-col xl:flex-row sm:gap-y-3 xl:gap-x-[22px] justify-between xl:justify-start">
-              <div className="flex gap-2 sm:gap-3 justify-between sm:justify-start xl:justify-between items-center">
-                <Image
-                  src={(productData.petFriendly === 'true') ? "/veterinary.png" : "/noPets.png"}
-                  alt="veterinary"
-                  width={32}
-                  height={32}
-                />
-                <p className="text-[13px] leading-[15.6px] -tracking-[0.325px] font-normal text-[#000000]">
-                  {(productData.petFriendly === 'true') ? "Pet Friendly" : "Not pet Friendly"};
-                </p>
-              </div>
-              <div className="flex gap-2 sm:gap-3 justify-between sm:justify-start xl:justify-between items-center">
-                <Image
-                  src={(productData.lessLight === 'true') ? "/noLight.png" : "/brightness.png"}
-                  alt={(productData.lessLight === 'true') ? "lessLight" : "moreLight"}
-                  width={32}
-                  height={32}
-                />
-                <p className="text-[13px] leading-[15.6px] -tracking-[0.325px] font-normal text-[#000000]">
-                  {(productData.lessLight === 'true') ? "Needs Less Light" : "Needs More Light"}
-                </p>
-              </div>
-            </div>}
-           {/* Product long description, Payment methods */}
+            )}
+            {/* Product long description, Payment methods */}
             <div className="mt-[30px] sm:mt-[39px] w-full sm:pr-[0px] hidden xl:flex xl:flex-col">
               {/* Product long description */}
               <div className="w-full text-sm sm:text-[17px] leading-[30px] flex flex-col gap-[18px]">
-
                 {/* Description Dropdown */}
                 <div className="w-full">
                   <button
-                  className="w-full p-2 xl:p-5 text-left bg-primaryMain bg-opacity-10 rounded-xl border-[1px] border-primaryMain text-black flex justify-between items-center transition-colors duration-300 hover:bg-purple-200"
-                  onClick={toggleDescription}
+                    className="w-full p-2 xl:p-5 text-left bg-primaryMain bg-opacity-10 rounded-xl border-[1px] border-primaryMain text-black flex justify-between items-center transition-colors duration-300 hover:bg-purple-200"
+                    onClick={toggleDescription}
                   >
                     Product Description
                     <svg
-                      className={`w-5 h-5 ml-2 transform transition-transform duration-300 ${isDescriptionOpen ? "rotate-180" : ""}`}
+                      className={`w-5 h-5 ml-2 transform transition-transform duration-300 ${
+                        isDescriptionOpen ? "rotate-180" : ""
+                      }`}
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
                     >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 9l-7 7-7-7"
+                      />
                     </svg>
                   </button>
                   {isDescriptionOpen && (
                     <div className="pl-4 mt-1 bg-white text-black p-3 rounded-md transition-opacity duration-300 opacity-100">
-                      <p>
-                        {productData.productDescription}
-                      </p>
+                      <p>{productData.productDescription}</p>
                     </div>
                   )}
                 </div>
@@ -714,29 +902,33 @@ const handleColorSelection = (colorKey) => {
                 {/* Product Details Dropdown */}
                 <div className="w-full">
                   <button
-                  className="w-full p-2 xl:p-5 text-left bg-primaryMain bg-opacity-10 rounded-xl border-[1px] border-primaryMain text-black flex justify-between items-center transition-colors duration-300 hover:bg-purple-200"
-                  onClick={toggleDetails}
+                    className="w-full p-2 xl:p-5 text-left bg-primaryMain bg-opacity-10 rounded-xl border-[1px] border-primaryMain text-black flex justify-between items-center transition-colors duration-300 hover:bg-purple-200"
+                    onClick={toggleDetails}
                   >
                     Product Details
                     <svg
-                      className={`w-5 h-5 ml-2 transform transition-transform duration-300 ${isDetailsOpen ? "rotate-180" : ""}`}
+                      className={`w-5 h-5 ml-2 transform transition-transform duration-300 ${
+                        isDetailsOpen ? "rotate-180" : ""
+                      }`}
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
                     >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 9l-7 7-7-7"
+                      />
                     </svg>
                   </button>
                   {isDetailsOpen && (
                     <ul className="pl-4 mt-1 bg-white text-black p-3 rounded-md transition-opacity duration-300 opacity-100">
                       <li className="decoration-dotted flex justify-start items-center">
                         <div className="w-[5px] h-[5px] rounded-full bg-[#5B5B5B] mr-[13.9px]" />
-                        {productData.innerHeight}cm - Inner height, {productData.innerLength}cm Inner length/diameter
-                      </li>
-                      <li className="decoration-dotted flex justify-start items-center">
-                        <div className="w-[5px] h-[5px] rounded-full bg-[#5B5B5B] mr-[13.9px]" />
-                        Water-resistant canvas
+                        {productData.innerHeight}cm - Inner height,{" "}
+                        {productData.innerLength}cm Inner length/diameter
                       </li>
                       <li className="decoration-dotted flex justify-start items-center">
                         <div className="w-[5px] h-[5px] rounded-full bg-[#5B5B5B] mr-[13.9px]" />
@@ -802,7 +994,8 @@ const handleColorSelection = (colorKey) => {
             <ul className="w-full flex flex-col justify-start items-start">
               <li className="decoration-dotted flex justify-center items-center">
                 <div className="w-[5px] h-[5px] rounded-full bg-[#5B5B5B] mr-[13.9px]" />
-                {productData.innerHeight} cm - Inner height, {productData.innerLength} cm Inner length/diameter
+                {productData.innerHeight} cm - Inner height,{" "}
+                {productData.innerLength} cm Inner length/diameter
               </li>
               <li className="decoration-dotted flex justify-center items-center">
                 <div className="w-[5px] h-[5px] rounded-full bg-[#5B5B5B] mr-[13.9px]" />
@@ -855,24 +1048,28 @@ const handleColorSelection = (colorKey) => {
 
         {/* Related Product */}
         <div className="mt-[55.18px] sm:mt-[25px] lg:mt-[84.43px] xl:max-w-[1312px] w-full">
-      <div className="hidden w-full sm:flex sm:justify-between sm:items-center">
-        <p className="text-[38px] leading-[49.4px]">Add flowers</p>
-        <p
-          className="text-[21px] leading-[25.2px] font-normal pb-[7.99px] border-b-[2px] border-[#BBBBBB] cursor-pointer"
-          onClick={toggleShowAll}
-        >
-          {showAll ? "Show less" : "Browse all"}
-        </p>
-      </div>
+          <div className="hidden w-full sm:flex sm:justify-between sm:items-center">
+            <p className="text-[38px] leading-[49.4px]">Add flowers</p>
+            <p
+              className="text-[21px] leading-[25.2px] font-normal pb-[7.99px] border-b-[2px] border-[#BBBBBB] cursor-pointer"
+              onClick={toggleShowAll}
+            >
+              {showAll ? "Show less" : "Browse all"}
+            </p>
+          </div>
 
-      <div className="sm:mt-[52.6px] w-full grid grid-cols-2 xl:grid-cols-3 gap-x-[9px] gap-y-[41.46px] md:gap-x-[43.21px] md:gap-y-16 xl:gap-x-[49px] xl:gap-y-[48px]">
-        {displayedProducts.map((product, index) => (
-          <Link className="w-full" key={index} href={`/store/${product.productName}/${product.productId}`}>
-            <ProductCard product={product} />
-          </Link>
-        ))}
-      </div>
-    </div>
+          <div className="sm:mt-[52.6px] w-full grid grid-cols-2 xl:grid-cols-3 gap-x-[9px] gap-y-[41.46px] md:gap-x-[43.21px] md:gap-y-16 xl:gap-x-[49px] xl:gap-y-[48px]">
+            {displayedProducts.map((product, index) => (
+              <Link
+                className="w-full"
+                key={index}
+                href={`/store/${product.productName}/${product.productId}`}
+              >
+                <ProductCard product={product} />
+              </Link>
+            ))}
+          </div>
+        </div>
 
         {/* Testimonials */}
         <div className="mt-[92.46px] sm:mt-[115px] xl:mt-[272.19px] xl:max-w-[1312px] w-full flex flex-col justify-center items-center">
@@ -888,7 +1085,7 @@ const handleColorSelection = (colorKey) => {
           </div>
         </div>
         <div className="mt-10 sm:mt-[80.99px] xl:mt-[59.99px] w-full h-full flex justify-center items-center">
-          <Reviewfom/>
+          <Reviewfom />
         </div>
       </div>
     </div>

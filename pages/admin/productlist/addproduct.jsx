@@ -4,9 +4,9 @@ import { useState, useEffect } from "react";
 
 const ProductForm = () => {
   const initialFormData = {
-    //docId: "",
     productId: "",
     productName: "",
+    productSubtitle: "",
     productType: "plants",
     productDescription: "",
     productPrice: 0,
@@ -14,24 +14,19 @@ const ProductForm = () => {
     innerLength: 0,
     dimensions: "",
     petFriendly: "false",
-    lessLight: "false",
-    moreLight: "false",
-    XS: "false",
-    S: "false",
-    M: "false",
-    L: "false",
-    XL: "false",
-    white: "false",
-    cream: "false",
-    lightGrey: "false",
-    darkGrey: "false",
-    black: "false",
+    indoorPlants: "false",
+    outdoorPlants: "false",
+    seasonalPlants: "false",
+    hydroponics: "false",
+    traditional: "false",
+    frp: "false",
+    ceramic: "false",
     sizes: {
-      XS: { selected: false, price: 0 },
-      S: { selected: false, price: 0 },
-      M: { selected: false, price: 0 },
-      L: { selected: false, price: 0 },
-      XL: { selected: false, price: 0 },
+      XS: { selected: false, price: 0, width: 0, height: 0, depth: 0 },
+      S: { selected: false, price: 0, width: 0, height: 0, depth: 0 },
+      M: { selected: false, price: 0, width: 0, height: 0, depth: 0 },
+      L: { selected: false, price: 0, width: 0, height: 0, depth: 0 },
+      XL: { selected: false, price: 0, width: 0, height: 0, depth: 0 },
     },
     colors: {
       white: { selected: false, price: 0 },
@@ -45,6 +40,7 @@ const ProductForm = () => {
     defaultSize: "",
     defaultColor: "",
   };
+
 
   const [formData, setFormData] = useState(initialFormData);
   useEffect(() => {
@@ -65,29 +61,49 @@ const ProductForm = () => {
     if (name in formData.sizes) {
       setFormData((prev) => ({
         ...prev,
-        [name]: checked.toString(), // Convert boolean to string "true"/"false"
+        [name]: checked.toString(),
         sizes: {
           ...prev.sizes,
-          [name]: { selected: checked, price: prev.sizes[name].price },
+          [name]: {
+            selected: checked,
+            price: prev.sizes[name].price,
+            width: prev.sizes[name].width,
+            height: prev.sizes[name].height,
+            depth: prev.sizes[name].depth,
+          },
         },
       }));
     } else if (name in formData.colors) {
       setFormData((prev) => ({
         ...prev,
-        [name]: checked.toString(), // Convert boolean to string "true"/"false"
+        [name]: checked.toString(),
         colors: {
           ...prev.colors,
           [name]: { selected: checked, price: prev.colors[name].price },
         },
       }));
     } else if (type === "checkbox") {
-      setFormData((prev) => ({ ...prev, [name]: checked.toString() })); // Convert boolean to string
+      setFormData((prev) => ({ ...prev, [name]: checked.toString() }));
     } else if (type === "number") {
       setFormData((prev) => ({ ...prev, [name]: Number(value) }));
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
     }
   };
+
+  const handleSizeDimensionChange = (size, field, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      sizes: {
+        ...prev.sizes,
+        [size]: {
+          ...prev.sizes[size],
+          [field]: Number(value),
+        },
+      },
+    }));
+  };
+
 
 
   const handleSizePriceChange = (size, value) => {
@@ -415,51 +431,183 @@ return (
             </div>
           </div>
 
+          {/* New fields */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold text-gray-700 border-b pb-2">
+          Additional Information
+        </h3>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Product Subtitle</label>
+            <input
+              type="text"
+              name="productSubtitle"
+              value={formData.productSubtitle}
+              onChange={handleChange}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            />
+          </div>
+
+          <div>
+            <label className="flex items-center space-x-3">
+              <input
+                type="checkbox"
+                name="indoorPlants"
+                checked={formData.indoorPlants === "true"}
+                onChange={handleChange}
+                className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 h-4 w-4"
+              />
+              <span className="text-sm text-gray-700">Indoor Plants</span>
+            </label>
+          </div>
+
+          <div>
+            <label className="flex items-center space-x-3">
+              <input
+                type="checkbox"
+                name="outdoorPlants"
+                checked={formData.outdoorPlants === "true"}
+                onChange={handleChange}
+                className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 h-4 w-4"
+              />
+              <span className="text-sm text-gray-700">Outdoor Plants</span>
+            </label>
+          </div>
+
+          <div>
+            <label className="flex items-center space-x-3">
+              <input
+                type="checkbox"
+                name="seasonalPlants"
+                checked={formData.seasonalPlants === "true"}
+                onChange={handleChange}
+                className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 h-4 w-4"
+              />
+              <span className="text-sm text-gray-700">Seasonal Plants</span>
+            </label>
+          </div>
+
+          <div>
+            <label className="flex items-center space-x-3">
+              <input
+                type="checkbox"
+                name="hydroponics"
+                checked={formData.hydroponics === "true"}
+                onChange={handleChange}
+                className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 h-4 w-4"
+              />
+              <span className="text-sm text-gray-700">Hydroponics</span>
+            </label>
+          </div>
+
+          <div>
+            <label className="flex items-center space-x-3">
+              <input
+                type="checkbox"
+                name="traditional"
+                checked={formData.traditional === "true"}
+                onChange={handleChange}
+                className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 h-4 w-4"
+              />
+              <span className="text-sm text-gray-700">Traditional</span>
+            </label>
+          </div>
+
+          <div>
+            <label className="flex items-center space-x-3">
+              <input
+                type="checkbox"
+                name="frp"
+                checked={formData.frp === "true"}
+                onChange={handleChange}
+                className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 h-4 w-4"
+              />
+              <span className="text-sm text-gray-700">FRP</span>
+            </label>
+          </div>
+
+          <div>
+            <label className="flex items-center space-x-3">
+              <input
+                type="checkbox"
+                name="ceramic"
+                checked={formData.ceramic === "true"}
+                onChange={handleChange}
+                className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 h-4 w-4"
+              />
+              <span className="text-sm text-gray-700">Ceramic</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
           {/* Sizes Section */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-700 border-b pb-2">Sizes (Price)</h3>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {Object.keys(formData.sizes).map((size) => (
-                <div key={size} className="bg-gray-50 p-4 rounded-lg">
-                  <div className="flex items-center justify-between mb-2">
-                    <label className="flex items-center space-x-2">
-                      <input
-                        type="checkbox"
-                        name={size}
-                        checked={formData.sizes[size].selected}
-                        onChange={handleChange}
-                        className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 h-4 w-4"
-                      />
-                      <span className="font-medium text-gray-700">{size}</span>
-                    </label>
+        <h3 className="text-lg font-semibold text-gray-700 border-b pb-2">Sizes (Price, Dimensions)</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {Object.keys(formData.sizes).map((size) => (
+            <div key={size} className="bg-gray-50 p-4 rounded-lg">
+              <div className="flex items-center justify-between mb-2">
+                <label className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    name={size}
+                    checked={formData.sizes[size].selected}
+                    onChange={handleChange}
+                    className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 h-4 w-4"
+                  />
+                  <span className="font-medium text-gray-700">{size}</span>
+                </label>
+              </div>
+              {formData.sizes[size].selected && (
+                <div className="space-y-2">
+                  <input
+                    type="number"
+                    value={formData.sizes[size].price}
+                    onChange={(e) => handleSizePriceChange(size, e.target.value)}
+                    placeholder={`Price for ${size}`}
+                    className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                  />
+                  <div className="grid grid-cols-3 gap-2">
+                    <input
+                      type="number"
+                      value={formData.sizes[size].width}
+                      onChange={(e) => handleSizeDimensionChange(size, "width", e.target.value)}
+                      placeholder="Width (cm)"
+                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    />
+                    <input
+                      type="number"
+                      value={formData.sizes[size].height}
+                      onChange={(e) => handleSizeDimensionChange(size, "height", e.target.value)}
+                      placeholder="Height (cm)"
+                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    />
+                    <input
+                      type="number"
+                      value={formData.sizes[size].depth}
+                      onChange={(e) => handleSizeDimensionChange(size, "depth", e.target.value)}
+                      placeholder="Depth (cm)"
+                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    />
                   </div>
-                  
-                  {formData.sizes[size].selected && (
-                    <div className="space-y-2">
-                      <input
-                        type="number"
-                        value={formData.sizes[size].price}
-                        onChange={(e) => handleSizePriceChange(size, e.target.value)}
-                        placeholder={`Price for ${size}`}
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                      />
-                      <label className="flex items-center space-x-2">
-                        <input
-                          type="radio"
-                          name="defaultSize"
-                          checked={formData.defaultSize === size}
-                          onChange={() => setDefaultSize(size)}
-                          className="rounded-full border-gray-300 text-blue-600 focus:ring-blue-500"
-                        />
-                        <span className="text-sm text-gray-600">Set as Default</span>
-                      </label>
-                    </div>
-                  )}
+                  <label className="flex items-center space-x-2">
+                    <input
+                      type="radio"
+                      name="defaultSize"
+                      checked={formData.defaultSize === size}
+                      onChange={() => setDefaultSize(size)}
+                      className="rounded-full border-gray-300 text-blue-600 focus:ring-blue-500"
+                    />
+                    <span className="text-sm text-gray-600">Set as Default</span>
+                  </label>
                 </div>
-              ))}
+              )}
             </div>
-          </div>
+          ))}
+        </div>
+      </div>
 
           {/* Colors Section */}
           <div className="space-y-4">

@@ -2,6 +2,7 @@ import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
+import findCartProducts from "@/lib/server/findCartProducts";
 
 const Input = ({ label, placeholder, type, name, value, onChange }) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -36,22 +37,22 @@ const Input = ({ label, placeholder, type, name, value, onChange }) => {
 };
 
 const Shipping = (props) => {
-  const email = props.email || null;
+  const { email, cartId, cartProducts } = props;
   const router = useRouter();
   const [error, setError] = useState(false);
   const [formData, setFormData] = useState({
-    fullName: '',
-    streetName: '',
-    houseNumber: '',
-    city: '',
-    phone: '',
-    country: '',
-    zipCode: '',
+    fullName: "",
+    streetName: "",
+    houseNumber: "",
+    city: "",
+    phone: "",
+    country: "",
+    zipCode: "",
   });
 
   useEffect(() => {
     if (!email) {
-      router.push('/checkout/guest');
+      router.push("/checkout/guest");
     }
   }, [router, email]);
 
@@ -63,35 +64,48 @@ const Shipping = (props) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (Object.values(formData).includes('')) {
-      setError('Please fill in all the fields');
+    if (Object.values(formData).includes("")) {
+      setError("Please fill in all the fields");
       return false;
     }
 
     setError(false);
 
-    // Example products data, replace with actual selected products
+    // Format cart products for the order
     const products = {
-      selectedProducts: [
-        { price: 500, productQty: 2 },
-        // ...other selected products
-      ]
+      selectedProducts: cartProducts.map((product) => ({
+        price: product.price,
+        productQty: product.productQty,
+        productId: product.productId,
+        productName: product.productName,
+      })),
     };
 
-    const result = await fetch('/api/createRazorpayOrder', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ products }), // Ensure products data is sent
-    });
+    try {
+      const result = await fetch("/api/createRazorpayOrder", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          products,
+          shippingDetails: formData,
+          email,
+        }),
+      });
 
-    if (result.ok) {
-      const resp = await result.json();
-      const orderId = resp.id;
-      router.push(`/checkout/payment?orderId=${orderId}`);
+      if (result.ok) {
+        const resp = await result.json();
+        const orderId = resp.id;
+        router.push(`/checkout/payment?orderId=${orderId}`);
+      } else {
+        setError("Failed to create order. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error creating order:", error);
+      setError("An error occurred. Please try again.");
     }
-};
+  };
 
   return (
     <div className="mb-[95px] sm:mb-[58px] xl:mb-[105px] w-full px-11 sm:px-0 flex flex-col justify-center items-center">
@@ -109,16 +123,65 @@ const Shipping = (props) => {
       <div className="max-w-[560px] w-full">
         <form onSubmit={handleSubmit} className="w-full flex flex-col gap-y-6">
           {/* Input components */}
-          <Input name="fullName" label="Full Name" placeholder="Name" type="text" value={formData.fullName} onChange={handleInputChange} />
-          <Input name="streetName" label="Street Name" placeholder="Street Name" type="text" value={formData.streetName} onChange={handleInputChange} />
+          <Input
+            name="fullName"
+            label="Full Name"
+            placeholder="Name"
+            type="text"
+            value={formData.fullName}
+            onChange={handleInputChange}
+          />
+          <Input
+            name="streetName"
+            label="Street Name"
+            placeholder="Street Name"
+            type="text"
+            value={formData.streetName}
+            onChange={handleInputChange}
+          />
           <div className="w-full flex flex-row gap-x-4 gap-y-6 sm:gap-y-0">
-            <Input name="houseNumber" label="House Number" placeholder="House Number" type="text" value={formData.houseNumber} onChange={handleInputChange} />
-            <Input name="city" label="City" placeholder="City" type="text" value={formData.city} onChange={handleInputChange} />
+            <Input
+              name="houseNumber"
+              label="House Number"
+              placeholder="House Number"
+              type="text"
+              value={formData.houseNumber}
+              onChange={handleInputChange}
+            />
+            <Input
+              name="city"
+              label="City"
+              placeholder="City"
+              type="text"
+              value={formData.city}
+              onChange={handleInputChange}
+            />
           </div>
-          <Input name="phone" label="Phone" placeholder="Phone" type="tel" value={formData.phone} onChange={handleInputChange} />
+          <Input
+            name="phone"
+            label="Phone"
+            placeholder="Phone"
+            type="tel"
+            value={formData.phone}
+            onChange={handleInputChange}
+          />
           <div className="w-full flex flex-row gap-x-4 gap-y-6 sm:gap-y-0">
-            <Input name="country" label="Country" placeholder="Country" type="text" value={formData.country} onChange={handleInputChange} />
-            <Input name="zipCode" label="ZIP Code" placeholder="ZIP Code" type="number" value={formData.zipCode} onChange={handleInputChange} />
+            <Input
+              name="country"
+              label="Country"
+              placeholder="Country"
+              type="text"
+              value={formData.country}
+              onChange={handleInputChange}
+            />
+            <Input
+              name="zipCode"
+              label="ZIP Code"
+              placeholder="ZIP Code"
+              type="number"
+              value={formData.zipCode}
+              onChange={handleInputChange}
+            />
           </div>
 
           {/* Submit button */}
@@ -139,9 +202,15 @@ export async function getServerSideProps({ req, res }) {
   const currentUser = require("@/lib/server/currentUser").default;
   const user = await currentUser(req);
 
+  // Get cart products
+  const cartId = req.cookies.cartId || null;
+  const cartProducts = await findCartProducts(cartId);
+
   return {
     props: {
       email: user.email || null,
+      cartId: cartId || null,
+      cartProducts: cartProducts || [],
     },
   };
 }

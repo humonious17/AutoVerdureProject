@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { useState, useEffect } from 'react';
 import { PlusCircle, Pencil, Trash2, LayoutGrid, List } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';

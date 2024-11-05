@@ -7,6 +7,7 @@ export default async function handler(req, res) {
         const { id } = req.query;
 
         try {
+            console.log("Attempting to delete product with ID:", id);
             // Ensure 'id' matches the Document ID in Firestore's 'products' collection
             await db.collection('products').doc(id).delete();
             res.status(200).json({ message: "Product deleted successfully" });

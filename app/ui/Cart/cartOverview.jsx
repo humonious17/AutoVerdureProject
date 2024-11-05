@@ -8,10 +8,20 @@ const CartOverview = ({ items, onClose }) => {
     const router = useRouter();
     const [cartItems, setCartItems] = useState(items);
     const [total, setTotal] = useState(0);
+    const [isRemoving, setIsRemoving] = useState(false);
+
+    useEffect(() => {
+        // Update cart items when items prop changes
+        setCartItems(items);
+    }, [items]);
 
     useEffect(() => {
         // Calculate total whenever cartItems change
-        const newTotal = cartItems.reduce((acc, item) => acc + (parseInt(item.productQty) * parseInt(item.price)), 0);
+        const newTotal = cartItems.reduce((acc, item) => {
+            const itemPrice = item.price || 0;
+            const quantity = parseInt(item.productQty) || 1;
+            return acc + (itemPrice * quantity);
+        }, 0);
         setTotal(newTotal);
     }, [cartItems]);
 
@@ -19,7 +29,6 @@ const CartOverview = ({ items, onClose }) => {
         if (!cartItems.length) {
             return false;
         }
-        // Proceed with guest checkout
         router.push('/checkout/guest');
     };
 
@@ -27,27 +36,42 @@ const CartOverview = ({ items, onClose }) => {
         if (!cartItems.length) {
             return false;
         }
-        // Proceed with member checkout
         router.push('/checkout/member');
     };
 
-    const removeCartItem = async (cartObjId, index) => {
-        const payload = { cartObjId: cartObjId };
-
+    const removeCartItem = async (cartObjId) => {
+        if (!cartObjId || isRemoving) {
+            console.log("Invalid cartObjId or removal in progress:", cartObjId);
+            return;
+        }
+        
+        setIsRemoving(true);
+        console.log("Attempting to remove item with cartObjId:", cartObjId);
+        
         try {
-            const newCartItems = cartItems.filter((_, i) => i !== index);
-            setCartItems(newCartItems);
             const response = await fetch('/api/cart/remove', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(payload),
+                body: JSON.stringify({ cartObjId }),
             });
-            // Handle response if needed
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.message || 'Failed to remove item');
+            }
+
+            // Only update UI after successful removal from database
+            const newCartItems = cartItems.filter(item => item.cartObjId !== cartObjId);
+            setCartItems(newCartItems);
+            console.log("Successfully removed item from cart");
+            
         } catch (error) {
-            console.error(error);
-            return true;
+            console.error('Failed to remove item:', error);
+            alert('Failed to remove item from cart. Please try again.');
+        } finally {
+            setIsRemoving(false);
         }
     };
 
@@ -65,6 +89,11 @@ const CartOverview = ({ items, onClose }) => {
         };
     }, [onClose]);
 
+    // Function to format price with commas for thousands
+    const formatPrice = (price) => {
+        return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    };
+
     return (
         <div className="cart-style" ref={cartRef}>
             <button onClick={onClose} className="absolute top-2 right-2 text-xl" style={{ marginTop: "10px", marginRight: "15px" }}>×</button>
@@ -72,10 +101,10 @@ const CartOverview = ({ items, onClose }) => {
             <div style={{ height: "1px", margin: "26px 30px 0 30px", backgroundColor: "#D9D9D9" }}></div>
             <div style={{ height: "41.73px" }}></div>
             <ul style={{ height: "400px", overflowY: "auto" }}>
-                {cartItems.map((item, index) => (
-                    <li key={index} className="mb-2" style={{ display: "flex", alignItems: "flex-start", marginBottom: "20.27px" }}>
+                {cartItems.map((item) => (
+                    <li key={item.cartObjId} className="mb-2" style={{ display: "flex", alignItems: "flex-start", marginBottom: "20.27px" }}>
                         <Image
-                            src={item.productImage}
+                            src={item.productImages}
                             alt={item.productName}
                             height={105}
                             width={105}
@@ -88,7 +117,7 @@ const CartOverview = ({ items, onClose }) => {
                             <p style={{ color: "#000", fontWeight: "550", fontSize: "16px" }}>{item.productName}</p>
                             <p>
                                 <span style={{ color: "#000", fontWeight: "400", fontSize: "16px" }}>{item.productQty} x </span>
-                                <span style={{ color: "#A458FE", fontSize: "12px", fontWeight: "600" }}>Rs. {item.price}</span>
+                                <span style={{ color: "#A458FE", fontSize: "12px", fontWeight: "600" }}>Rs. {formatPrice(item.price)}</span>
                             </p>
                         </div>
                         <button
@@ -98,16 +127,18 @@ const CartOverview = ({ items, onClose }) => {
                                 marginRight: "40px",
                                 backgroundColor: "#9F9F9F",
                                 border: "none",
-                                cursor: "pointer",
+                                cursor: isRemoving ? "not-allowed" : "pointer",
                                 borderRadius: "50%",
                                 width: "20px",
                                 height: "20px",
                                 color: "#FFF",
                                 display: "flex",
                                 alignItems: "center",
-                                justifyContent: "center"
+                                justifyContent: "center",
+                                opacity: isRemoving ? 0.5 : 1
                             }}
-                            onClick={() => removeCartItem(item.cartObjId, index)}
+                            onClick={() => removeCartItem(item.cartObjId)}
+                            disabled={isRemoving}
                         >
                             ×
                         </button>
@@ -134,7 +165,7 @@ const CartOverview = ({ items, onClose }) => {
                     lineHeight: "normal",
                     color: "#A458FE"
                 }}>
-                    Rs. {total}
+                    Rs. {formatPrice(total)}
                 </p>
             </div>
             <div style={{ height: "1px", marginTop: "15px", backgroundColor: "#D9D9D9" }}></div>

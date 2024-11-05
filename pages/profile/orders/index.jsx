@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Search, SortAsc, SortDesc, Filter, X } from "lucide-react";
 import {
   Dialog,
@@ -24,6 +24,128 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+
+const OrderDetailDialog = ({ order, open, onClose }) => {
+  const [productDetails, setProductDetails] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchProductDetails = async () => {
+      if (!order) return;
+      
+      setIsLoading(true);
+      try {
+        const productIds = order.orderedProducts.map(p => p.productId);
+        const response = await fetch('/api/products/getProductDetails', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ productIds }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch product details');
+        }
+
+        const details = await response.json();
+        setProductDetails(details);
+      } catch (error) {
+        console.error('Error:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (open && order) {
+      fetchProductDetails();
+    }
+  }, [open, order]);
+
+  if (!order) return null;
+
+  return (
+    <Dialog open={open} onOpenChange={onClose}>
+      <DialogContent className="max-w-3xl">
+        <DialogHeader>
+          <DialogTitle>Order Details</DialogTitle>
+        </DialogHeader>
+        <div className="space-y-6">
+          {/* Order Info */}
+          <div className="grid grid-cols-2 gap-4 bg-gray-50 p-4 rounded-lg">
+            <div>
+              <h3 className="font-semibold">Order ID</h3>
+              <p className="text-sm text-gray-600">{order.orderId}</p>
+            </div>
+            <div>
+              <h3 className="font-semibold">Order Time</h3>
+              <p className="text-sm text-gray-600">{order.orderTime}</p>
+            </div>
+          </div>
+
+          {/* Products */}
+          <div>
+            <h3 className="font-semibold mb-4">Products</h3>
+            {isLoading ? (
+              <div className="text-center py-4">Loading product details...</div>
+            ) : (
+              <div className="space-y-4">
+                {order.orderedProducts.map((orderedProduct, idx) => {
+                  const productDetail = productDetails.find(p => p.id === orderedProduct.productId);
+                  return (
+                    <div key={idx} className="bg-gray-50 p-4 rounded-lg">
+                      <div className="space-y-2">
+                        <p className="font-medium">{orderedProduct.productName}</p>
+                        {productDetail && (
+                          <>
+                            <p className="text-sm text-gray-600">
+                              Type: {productDetail.productType}
+                            </p>
+                            <p className="text-sm text-gray-600">
+                              Price: ${productDetail.productPrice}
+                            </p>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
+          {/* Status */}
+          <div className="flex justify-between items-center bg-gray-50 p-4 rounded-lg">
+            <div>
+              <h3 className="font-semibold">Status</h3>
+              <span
+                className={`inline-flex px-3 py-1 rounded-full text-sm ${
+                  order.orderStatus === "Delivered"
+                    ? "bg-green-100 text-green-800"
+                    : "bg-orange-100 text-orange-800"
+                }`}
+              >
+                {order.orderStatus}
+              </span>
+            </div>
+            <div>
+              <h3 className="font-semibold">Payment</h3>
+              <span className="text-sm text-gray-600">Paid</span>
+            </div>
+          </div>
+
+          {/* Shipping */}
+          <div>
+            <h3 className="font-semibold mb-2">Shipping Address</h3>
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <p className="text-sm text-gray-600">{order.shippingAddress.city}</p>
+            </div>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+};
 
 const ProfileOrders = ({ orders: initialOrders }) => {
   const [orders, setOrders] = useState(initialOrders);
@@ -91,69 +213,6 @@ const ProfileOrders = ({ orders: initialOrders }) => {
   const openOrderDetail = (order) => {
     setSelectedOrder(order);
     setIsDetailOpen(true);
-  };
-
-  const OrderDetailDialog = ({ order, open, onClose }) => {
-    if (!order) return null;
-
-    return (
-      <Dialog open={open} onOpenChange={onClose}>
-        <DialogContent className="max-w-2xl">
-          <DialogHeader>
-            <DialogTitle>Order Details</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <h3 className="font-semibold">Order ID</h3>
-                <p className="text-sm text-gray-600">{order.orderId}</p>
-              </div>
-              <div>
-                <h3 className="font-semibold">Order Time</h3>
-                <p className="text-sm text-gray-600">{order.orderTime}</p>
-              </div>
-            </div>
-
-            <div>
-              <h3 className="font-semibold mb-2">Products</h3>
-              <div className="space-y-2">
-                {order.orderedProducts.map((product, idx) => (
-                  <div key={idx} className="bg-gray-50 p-3 rounded-lg">
-                    <p className="font-medium">{product.productName}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <h3 className="font-semibold mb-2">Shipping Address</h3>
-              <div className="bg-gray-50 p-3 rounded-lg">
-                <p className="text-sm">{order.shippingAddress.city}</p>
-              </div>
-            </div>
-
-            <div className="flex justify-between items-center">
-              <div>
-                <h3 className="font-semibold">Status</h3>
-                <span
-                  className={`inline-flex px-3 py-1 rounded-full text-sm ${
-                    order.orderStatus === "Delivered"
-                      ? "bg-green-100 text-green-800"
-                      : "bg-orange-100 text-orange-800"
-                  }`}
-                >
-                  {order.orderStatus}
-                </span>
-              </div>
-              <div>
-                <h3 className="font-semibold">Payment</h3>
-                <span className="text-sm text-gray-600">Paid</span>
-              </div>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
-    );
   };
 
   return (

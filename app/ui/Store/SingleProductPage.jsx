@@ -45,6 +45,12 @@ const SingleProductPage = ({ productData, allProducts }) => {
   const [basePrice] = useState(productData.productPrice);
   const [price, setPrice] = useState(basePrice); // Initial price
   const [selectedColor, setSelectedColor] = useState(productData.defaultColor);
+  const [dimensions, setDimensions] = useState(
+    "Please Select a size to see it's dimensions"
+  );
+  const [innerDimensions, setInnerDimensions] = useState(
+    "Please Select a size to see it's Inner dimensions"
+  );
 
   const colors = {
     White: {
@@ -83,15 +89,29 @@ const SingleProductPage = ({ productData, allProducts }) => {
   const handleSizeChange = (selectedSize) => {
     setSize(selectedSize); // Update the selected size state
 
-    // Check if the selected size exists in the sizes object and has a price
-    const selectedSizePrice =
-      productData.sizes[selectedSize]?.price || basePrice;
+    // Check if the selected size exists in the sizes object
+    const selectedSizeData = productData.sizes[selectedSize];
 
-    // Calculate the new price based on the selected size and current color
-    const colorPrice = productData.colors[selectedColor]?.price || 0;
-    setPrice(selectedSizePrice + colorPrice); // Update price
+    if (selectedSizeData) {
+      // Update price
+      const selectedSizePrice = selectedSizeData.price || basePrice;
+      const colorPrice = productData.colors[selectedColor]?.price || 0;
+      setPrice(selectedSizePrice + colorPrice);
+
+      // Update dimensions
+      const { width = 0, height = 0, depth = 0 } = selectedSizeData;
+      const { ih = 0, il = 0} = selectedSizeData
+      const dimensionString = `${width}cm x ${height}cm x ${depth}cm`;
+      const InnerDimensionString = `${ih}cm x ${il}cm`;
+      setDimensions(dimensionString);
+      setInnerDimensions(InnerDimensionString);
+      //console.log("new dimensions: " + dimensionString);
+    } else {
+      // Reset to base values if size data doesn't exist
+      setPrice(basePrice);
+      setDimensions("");
+    }
   };
-
   const incrementQuantity = () => {
     setStockQuantity(stockQuantity + 1);
   };
@@ -927,12 +947,11 @@ const SingleProductPage = ({ productData, allProducts }) => {
                     <ul className="pl-4 mt-1 bg-white text-black p-3 rounded-md transition-opacity duration-300 opacity-100">
                       <li className="decoration-dotted flex justify-start items-center">
                         <div className="w-[5px] h-[5px] rounded-full bg-[#5B5B5B] mr-[13.9px]" />
-                        {productData.innerHeight}cm - Inner height,{" "}
-                        {productData.innerLength}cm Inner length/diameter
+                        Inner Dimensions - {innerDimensions}
                       </li>
                       <li className="decoration-dotted flex justify-start items-center">
                         <div className="w-[5px] h-[5px] rounded-full bg-[#5B5B5B] mr-[13.9px]" />
-                        Dimensions - {productData.dimensions}
+                        Dimensions - {dimensions}
                       </li>
                     </ul>
                   )}
@@ -1083,9 +1102,6 @@ const SingleProductPage = ({ productData, allProducts }) => {
             <Testimonial />
             <Testimonial />
           </div>
-        </div>
-        <div className="mt-10 sm:mt-[80.99px] xl:mt-[59.99px] w-full h-full flex justify-center items-center">
-          <Reviewfom />
         </div>
       </div>
     </div>

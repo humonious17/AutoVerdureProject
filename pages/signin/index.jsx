@@ -124,24 +124,24 @@ const Signin = (prop) => {
 
             {/* Google and Apple Authentication */}
             <div className="mt-[42px] sm:mt-[52px] w-full flex flex-col justify-start sm:flex-row gap-y-4 sm:gap-x-4">
-                <div id="g_id_onload"
-                    data-client_id="YOUR_GOOGLE_CLIENT_ID"
-                    data-context="signin"
-                    data-ux_mode="popup"
-                    data-callback="handleCredentialResponse"
-                    data-auto_prompt="false">
-                </div>
-
-                <div className="g_id_signin"
-                    data-type="standard"
-                    data-shape="pill"
-                    data-theme="outline"
-                    data-text="signin_with"
-                    data-size="large"
-                    data-logo_alignment="center"
-                    data-width="400">
-                </div>
+            <div id="g_id_onload"
+                data-client_id="704145836182-04mlgm7nhg2n4sjqno7vlh172427g778.apps.googleusercontent.com"
+                data-context="signin"
+                data-ux_mode="popup"
+                data-callback="handleCredentialResponse"
+                data-auto_prompt="false">
             </div>
+
+            <div className="g_id_signin"
+                data-type="standard"
+                data-shape="pill"
+                data-theme="outline"
+                data-text="signin_with"
+                data-size="large"
+                data-logo_alignment="center"
+                data-width="400">
+            </div>
+        </div>
 
             {/* Or */}
             <div className="my-8 w-[560px] flex gap-x-2 items-center">
@@ -191,9 +191,9 @@ const Signin = (prop) => {
 
         {/* Right Section with Image */}
         <div className="flex justify-center items-center w-full">
-        <div className="w-[350.65px] h-[300px] lg:w-[548.65px] lg:h-[592px] xl:w-[700.65px] xl:h-[600px] ">
+    <div className="w-[320.65px] h-[360px] md:w-[400px] md:h-[450px] lg:w-[548.65px] lg:h-[592px] xl:w-[715.65px] xl:h-[600px] overflow-hidden rounded-lg mx-auto">
         <video
-            className="w-full h-full object-cover  rounded-xl"
+            className="w-full h-full object-cover rounded-lg"
             src="/signin.mp4"
             autoPlay
             loop
@@ -201,7 +201,7 @@ const Signin = (prop) => {
         >
             Your browser does not support the video tag.
         </video>
-    </div>
+            </div>
         </div>
       </div>
     );
@@ -243,3 +243,8 @@ export async function getServerSideProps({ req, res }) {
         props: { user: null },
     }
 }
+
+
+
+
+

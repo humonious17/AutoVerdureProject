@@ -1,57 +1,58 @@
-import { db } from "@/pages/api/firebaseAdmin";
+import { admin, db } from "@/pages/api/firebaseAdmin";
 import crypto from "crypto";
 import currentUser from "@/lib/server/currentUser";
 
-async function addOrder(payload, req) {
-  const user = await currentUser(req);
-  if (!user) {
-    throw new Error("User not authenticated");
-  }
-
-  const products = [];
-  payload.products.forEach((element) => {
-    const product = {
-      productId: element.productId,
-      productName: element.productName,
-    };
-    products.push(product);
-  });
-
-  const orderId = crypto.randomBytes(8).toString("hex");
-  let date = Date().split(" ");
-  date.splice(4, 5);
-
-  const data = {
-    orderId: orderId,
-    ordererEmail: user.email, // Using email from current user
-    orderedProducts: products,
-    shippingAddress: payload.shippingAddress,
-    orderTime: date.join(" "),
-    orderStatus: "Processing",
-  };
-
+async function addOrder(orderData) {
   try {
-    await db.collection("orders").doc(orderId).set(data);
+    const { orderId, products, shipping, email, totalAmount, paymentStatus } =
+      orderData;
+    // Ensure all fields are defined
+    const shippingData = {
+      city: shipping.city || "",
+      state: shipping.state || "",
+      postalCode: shipping.postalCode || "",
+      country: shipping.country || "",
+    };
+
+    // Log the data being submitted to Firestore
+    console.log("Order Data:", {
+      orderId,
+      products,
+      shipping: shippingData,
+      email,
+      totalAmount,
+      paymentStatus,
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+    });
+
+    await db.collection("orders").doc(orderId).set({
+      orderId,
+      products,
+      shipping: shippingData,
+      email,
+      totalAmount,
+      paymentStatus,
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+    });
+
     return true;
   } catch (error) {
-    console.log(error);
+    console.error("Error adding order:", error);
     return false;
   }
 }
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
-    try {
-      const orderPayload = req.body;
-      console.log(orderPayload);
-      const result = await addOrder(orderPayload, req);
-      if (result) {
-        return res.status(200).json({ message: "Order created" });
-      } else {
-        return res.status(500).json({ message: "Something went wrong" });
-      }
-    } catch (error) {
-      return res.status(401).json({ message: error.message });
+    const orderData = req.body;
+    const result = await addOrder(orderData);
+
+    if (result) {
+      return res.status(200).json({ success: true });
+    } else {
+      return res
+        .status(500)
+        .json({ error: "Something went wrong while adding the order" });
     }
   } else {
     res.setHeader("Allow", ["POST"]);

@@ -14,22 +14,19 @@ export default async function findAllOrders(email = null) {
       querySnapshot = await ordersRef.orderBy("createdAt", "desc").get();
     }
 
-    if (querySnapshot.empty) {
-      console.log("No matching orders.");
-      return [];
-    }
-
-    const orders = querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-      createdAt:
-        doc.data().createdAt?.toDate?.().toISOString() ||
-        new Date().toISOString(),
-    }));
+    const orders = querySnapshot.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        ...data,
+        createdAt:
+          data.createdAt?.toDate?.().toISOString() || new Date().toISOString(),
+      };
+    });
 
     return orders;
   } catch (error) {
     console.error("Error fetching orders:", error);
-    throw error; // Propagate error to handle it in the component
+    throw error;
   }
 }

@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Search, SortAsc, SortDesc, Filter, X } from "lucide-react";
 import {
+  Clock,
+  Circle,
+  CheckCircle2,
+  XCircle,
+  AlertCircle,
+} from "lucide-react";
+import {
   Dialog,
   DialogContent,
   DialogHeader,
@@ -26,6 +33,55 @@ import {
 } from "@/components/ui/table";
 import Reviewfom from "@/pages/Reviewfom";
 
+// Utility function to format the timestamp
+const formatTimestamp = (timestamp) => {
+  if (!timestamp) return "";
+
+  try {
+    // Parse the timestamp string
+    const date = new Date(timestamp.replace("at", ""));
+
+    // Format the date
+    return new Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    }).format(date);
+  } catch (error) {
+    console.error("Error formatting timestamp:", error);
+    return timestamp; // Return original string if parsing fails
+  }
+};
+
+const OrderStatus = ({ status, className = "" }) => {
+  const statusConfig = {
+    pending: { icon: Clock, color: "text-yellow-500", bg: "bg-yellow-50" },
+    processing: { icon: Circle, color: "text-blue-500", bg: "bg-blue-50" },
+    completed: {
+      icon: CheckCircle2,
+      color: "text-green-500",
+      bg: "bg-green-50",
+    },
+    cancelled: { icon: XCircle, color: "text-red-500", bg: "bg-red-50" },
+    failed: { icon: AlertCircle, color: "text-gray-500", bg: "bg-gray-50" },
+  };
+
+  const config = statusConfig[status.toLowerCase()] || statusConfig.pending;
+  const StatusIcon = config.icon;
+
+  return (
+    <span
+      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm ${config.color} ${config.bg} ${className}`}
+    >
+      <StatusIcon className="h-4 w-4" />
+      {status}
+    </span>
+  );
+};
+
 const OrderDetailDialog = ({ order, open, onClose }) => {
   const [productDetails, setProductDetails] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -33,26 +89,26 @@ const OrderDetailDialog = ({ order, open, onClose }) => {
   useEffect(() => {
     const fetchProductDetails = async () => {
       if (!order) return;
-      
+
       setIsLoading(true);
       try {
-        const productIds = order.orderedProducts.map(p => p.productId);
-        const response = await fetch('/api/products/getProductDetails', {
-          method: 'POST',
+        const productIds = order.items.map((p) => p.productId);
+        const response = await fetch("/api/products/getProductDetails", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({ productIds }),
         });
 
         if (!response.ok) {
-          throw new Error('Failed to fetch product details');
+          throw new Error("Failed to fetch product details");
         }
 
         const details = await response.json();
         setProductDetails(details);
       } catch (error) {
-        console.error('Error:', error);
+        console.error("Error:", error);
       } finally {
         setIsLoading(false);
       }
@@ -80,7 +136,9 @@ const OrderDetailDialog = ({ order, open, onClose }) => {
             </div>
             <div>
               <h3 className="font-semibold">Order Time</h3>
-              <p className="text-sm text-gray-600">{order.orderTime}</p>
+              <p className="text-sm text-gray-600">
+                {formatTimestamp(order.createdAt)}
+              </p>
             </div>
           </div>
 
@@ -91,12 +149,14 @@ const OrderDetailDialog = ({ order, open, onClose }) => {
               <div className="text-center py-4">Loading product details...</div>
             ) : (
               <div className="space-y-4">
-                {order.orderedProducts.map((orderedProduct, idx) => {
-                  const productDetail = productDetails.find(p => p.id === orderedProduct.productId);
+                {order.items.map((items, idx) => {
+                  const productDetail = productDetails.find(
+                    (p) => p.id === items.productId
+                  );
                   return (
                     <div key={idx} className="bg-gray-50 p-4 rounded-lg">
                       <div className="space-y-2">
-                        <p className="font-medium">{orderedProduct.productName}</p>
+                        <p className="font-medium">{items.productName}</p>
                         {productDetail && (
                           <>
                             <p className="text-sm text-gray-600">
@@ -119,15 +179,7 @@ const OrderDetailDialog = ({ order, open, onClose }) => {
           <div className="flex justify-between items-center bg-gray-50 p-4 rounded-lg">
             <div>
               <h3 className="font-semibold">Status</h3>
-              <span
-                className={`inline-flex px-3 py-1 rounded-full text-sm ${
-                  order.orderStatus === "Delivered"
-                    ? "bg-green-100 text-green-800"
-                    : "bg-orange-100 text-orange-800"
-                }`}
-              >
-                {order.orderStatus}
-              </span>
+              <OrderStatus status={order.status} />
             </div>
             <div>
               <h3 className="font-semibold">Payment</h3>
@@ -139,7 +191,7 @@ const OrderDetailDialog = ({ order, open, onClose }) => {
           <div>
             <h3 className="font-semibold mb-2">Shipping Address</h3>
             <div className="bg-gray-50 p-4 rounded-lg">
-              <p className="text-sm text-gray-600">{order.shippingAddress.city}</p>
+              <p className="text-sm text-gray-600">{order.shipping.city}</p>
             </div>
           </div>
         </div>
@@ -152,7 +204,7 @@ const ProfileOrders = ({ orders: initialOrders }) => {
   const [orders, setOrders] = useState(initialOrders);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortConfig, setSortConfig] = useState({
-    key: "orderTime",
+    key: "createdAt",
     direction: "desc",
   });
   const [filterStatus, setFilterStatus] = useState("all");
@@ -164,7 +216,7 @@ const ProfileOrders = ({ orders: initialOrders }) => {
     setSearchTerm(value);
     const filtered = initialOrders.filter(
       (order) =>
-        order.orderedProducts.some((product) =>
+        order.items.some((product) =>
           product.productName.toLowerCase().includes(value.toLowerCase())
         ) ||
         order.shippingAddress.city.toLowerCase().includes(value.toLowerCase())
@@ -180,11 +232,16 @@ const ProfileOrders = ({ orders: initialOrders }) => {
 
     const sortedOrders = [...orders].sort((a, b) => {
       if (key === "productName") {
-        const aName = a.orderedProducts[0].productName;
-        const bName = b.orderedProducts[0].productName;
+        const aName = a.items[0].productName;
+        const bName = b.items[0].productName;
         return direction === "asc"
           ? aName.localeCompare(bName)
           : bName.localeCompare(aName);
+      }
+      if (key === "createdAt") {
+        const aDate = new Date(a.createdAt.replace("at", ""));
+        const bDate = new Date(b.createdAt.replace("at", ""));
+        return direction === "asc" ? aDate - bDate : bDate - aDate;
       }
       return direction === "asc"
         ? a[key] > b[key]
@@ -204,7 +261,7 @@ const ProfileOrders = ({ orders: initialOrders }) => {
       setOrders(initialOrders);
     } else {
       const filtered = initialOrders.filter(
-        (order) => order.orderStatus === status
+        (order) => order.status.toLowerCase() === status.toLowerCase()
       );
       setOrders(filtered);
     }
@@ -242,9 +299,11 @@ const ProfileOrders = ({ orders: initialOrders }) => {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Orders</SelectItem>
-              <SelectItem value="Delivered">Delivered</SelectItem>
-              <SelectItem value="In Transit">In Transit</SelectItem>
-              <SelectItem value="Processing">Processing</SelectItem>
+              <SelectItem value="completed">Completed</SelectItem>
+              <SelectItem value="processing">Processing</SelectItem>
+              <SelectItem value="pending">Pending</SelectItem>
+              <SelectItem value="cancelled">Cancelled</SelectItem>
+              <SelectItem value="failed">Failed</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -272,10 +331,10 @@ const ProfileOrders = ({ orders: initialOrders }) => {
                 <TableHead>Status</TableHead>
                 <TableHead
                   className="cursor-pointer"
-                  onClick={() => handleSort("orderTime")}
+                  onClick={() => handleSort("createdAt")}
                 >
                   Time
-                  {sortConfig.key === "orderTime" &&
+                  {sortConfig.key === "createdAt" &&
                     (sortConfig.direction === "asc" ? (
                       <SortAsc className="inline ml-2 h-4 w-4" />
                     ) : (
@@ -292,26 +351,20 @@ const ProfileOrders = ({ orders: initialOrders }) => {
                   onClick={() => openOrderDetail(order)}
                 >
                   <TableCell className="font-medium">
-                    {order.orderedProducts[0].productName +
-                      (order.orderedProducts.length === 1
-                        ? ""
-                        : ` + ${order.orderedProducts.length - 1} more`)}
+                    {order.items && order.items.length > 0
+                      ? order.items[0].productName +
+                        (order.items.length === 1
+                          ? ""
+                          : ` + ${order.items.length - 1} more`)
+                      : "No products"}
                   </TableCell>
-                  <TableCell>{order.shippingAddress.city}</TableCell>
+                  <TableCell>{order.shipping.city}</TableCell>
                   <TableCell>Product</TableCell>
                   <TableCell>Paid</TableCell>
                   <TableCell>
-                    <span
-                      className={`inline-flex px-3 py-1 rounded-full text-sm ${
-                        order.orderStatus === "Delivered"
-                          ? "bg-green-100 text-green-800"
-                          : "bg-orange-100 text-orange-800"
-                      }`}
-                    >
-                      {order.orderStatus}
-                    </span>
+                    <OrderStatus status={order.status} />
                   </TableCell>
-                  <TableCell>{order.orderTime}</TableCell>
+                  <TableCell>{formatTimestamp(order.createdAt)}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -329,26 +382,18 @@ const ProfileOrders = ({ orders: initialOrders }) => {
               <div className="flex justify-between items-start mb-3">
                 <div>
                   <p className="font-medium">
-                    {order.orderedProducts[0].productName +
-                      (order.orderedProducts.length === 1
+                    {order.items[0].productName +
+                      (order.items.length === 1
                         ? ""
-                        : ` + ${order.orderedProducts.length - 1} more`)}
+                        : ` + ${order.items.length - 1} more`)}
                   </p>
-                  <p className="text-sm text-gray-500">
-                    {order.shippingAddress.city}
-                  </p>
+                  <p className="text-sm text-gray-500">{order.shipping.city}</p>
                 </div>
-                <span
-                  className={`inline-flex px-3 py-1 rounded-full text-sm ${
-                    order.orderStatus === "Delivered"
-                      ? "bg-green-100 text-green-800"
-                      : "bg-orange-100 text-orange-800"
-                  }`}
-                >
-                  {order.orderStatus}
-                </span>
+                <OrderStatus status={order.status} />
               </div>
-              <div className="text-sm text-gray-500">{order.orderTime}</div>
+              <div className="text-sm text-gray-500">
+                {formatTimestamp(order.createdAt)}
+              </div>
             </div>
           ))}
         </div>

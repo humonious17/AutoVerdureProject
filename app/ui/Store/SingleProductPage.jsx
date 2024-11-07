@@ -101,7 +101,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
 
       // Update dimensions
       const { width = 0, height = 0, depth = 0 } = selectedSizeData;
-      const { ih = 0, il = 0} = selectedSizeData
+      const { ih = 0, il = 0 } = selectedSizeData;
       const dimensionString = `${width}cm x ${height}cm x ${depth}cm`;
       const InnerDimensionString = `${ih}cm x ${il}cm`;
       setDimensions(dimensionString);
@@ -290,11 +290,27 @@ const SingleProductPage = ({ productData, allProducts }) => {
       setError("Please select color and size.");
       return;
     }
-
     setError("");
+
+    // Assuming we have a function to validate payment details
+    const isPaymentValid = validatePaymentDetails();
+    if (!isPaymentValid) {
+      setError(
+        "Payment details are invalid. Please check your payment information."
+      );
+      return;
+    }
 
     router.push("/checkout/guest");
   };
+
+  // Example of a payment validation function
+  const validatePaymentDetails = () => {
+    // Add your payment validation logic here
+    // For example, check if payment details are filled and valid
+    return true; // Return true if valid, false otherwise
+  };
+
   // State to control whether to show all products or just three
   const [showAll, setShowAll] = useState(false);
 

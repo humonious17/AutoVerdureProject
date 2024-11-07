@@ -10,8 +10,10 @@ const ProductCard = ({ product }) => {
   const accessory = product.productType === "accessory";
   const [isHover, setHover] = useState(false);
   const productDetail = product;
-  const productImage = product.images && product.images.length > 0 ? product.images[0].publicUrl : null;
-
+  const productImage =
+    product.images && product.images.length > 0
+      ? product.images[0].publicUrl
+      : null;
 
   const handleMouseEnter = () => {
     setHover(true);
@@ -22,18 +24,20 @@ const ProductCard = ({ product }) => {
   };
 
   // Collect image URLs into an array
-  const productImages = Object.values(productDetail.images || {}).filter(Boolean); // This collects the image URLs
+  const productImages = Object.values(productDetail.images || {}).filter(
+    Boolean
+  ); // This collects the image URLs
 
   return (
     <div
-      className="w-full rounded-[44px] hover:shadow-black shadow-lg transition duration-100"
+      className="w-full rounded-[44px] hover:shadow-primaryMain shadow-lg transition duration-100"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
       {/* Product Image */}
       <div className="p-2">
         <div className="w-full xl:w-full h-full xl:h-[316px] relative">
-        {productImage ? (
+          {productImage ? (
             <Image
               className="w-full h-full object-cover rounded-[44px]"
               src={productImage}
@@ -48,29 +52,53 @@ const ProductCard = ({ product }) => {
             </div>
           )}
           <div className="w-fit text-[10px] md:text-[13px] p-1 md:px-[14px] md:py-[13px] leading-4 tracking-[0.56px] rounded-[40px] absolute top-[10px] left-[15px] md:top-[24px] md:left-[30px] bg-white text-[#5B5B5B] uppercase flex justify-center items-center">
-            <p>{productDetail && productDetail.stockQuantity > 10 ? "in stock" : "few left"}</p>
+            <p>
+              {productDetail && productDetail.stockQuantity > 10
+                ? "in stock"
+                : "few left"}
+            </p>
           </div>
 
           {plants && (
             <div className="hidden w-fit xl:flex flex-col gap-[12px] absolute top-[21.18px] right-[29px]">
               {product.petFriendly && (
                 <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
-                  <Image src="/veterinary.png" alt="veterinary" width={32} height={32} />
+                  <Image
+                    src="/veterinary.png"
+                    alt="veterinary"
+                    width={32}
+                    height={32}
+                  />
                 </div>
               )}
               {product.petUnfriendly && (
                 <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
-                  <Image src="/noPets.png" alt="noPets" width={32} height={32} />
+                  <Image
+                    src="/noPets.png"
+                    alt="noPets"
+                    width={32}
+                    height={32}
+                  />
                 </div>
               )}
               {product.lessLight && (
                 <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
-                  <Image src="/noLight.png" alt="noLight" width={32} height={32} />
+                  <Image
+                    src="/noLight.png"
+                    alt="noLight"
+                    width={32}
+                    height={32}
+                  />
                 </div>
               )}
               {product.moreLight && (
                 <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
-                  <Image src="/brightness.png" alt="brightness" width={32} height={32} />
+                  <Image
+                    src="/brightness.png"
+                    alt="brightness"
+                    width={32}
+                    height={32}
+                  />
                 </div>
               )}
             </div>
@@ -79,22 +107,42 @@ const ProductCard = ({ product }) => {
             <div className="hidden w-fit xl:flex flex-col gap-[12px] absolute top-[21.18px] right-[29px]">
               {product.petFriendly && (
                 <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
-                  <Image src="/veterinary.png" alt="veterinary" width={32} height={32} />
+                  <Image
+                    src="/veterinary.png"
+                    alt="veterinary"
+                    width={32}
+                    height={32}
+                  />
                 </div>
               )}
               {product.petUnfriendly && (
                 <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
-                  <Image src="/noPets.png" alt="noPets" width={32} height={32} />
+                  <Image
+                    src="/noPets.png"
+                    alt="noPets"
+                    width={32}
+                    height={32}
+                  />
                 </div>
               )}
               {product.lessLight && (
                 <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
-                  <Image src="/noLight.png" alt="noLight" width={32} height={32} />
+                  <Image
+                    src="/noLight.png"
+                    alt="noLight"
+                    width={32}
+                    height={32}
+                  />
                 </div>
               )}
               {product.moreLight && (
                 <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
-                  <Image src="/brightness.png" alt="brightness" width={32} height={32} />
+                  <Image
+                    src="/brightness.png"
+                    alt="brightness"
+                    width={32}
+                    height={32}
+                  />
                 </div>
               )}
             </div>
@@ -103,48 +151,88 @@ const ProductCard = ({ product }) => {
             <div className="hidden w-fit xl:flex flex-col gap-[12px] absolute top-[21.18px] right-[29px]">
               {product.petFriendly && (
                 <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
-                  <Image src="/veterinary.png" alt="veterinary" width={32} height={32} />
+                  <Image
+                    src="/veterinary.png"
+                    alt="veterinary"
+                    width={32}
+                    height={32}
+                  />
                 </div>
               )}
               {product.petUnfriendly && (
                 <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
-                  <Image src="/noPets.png" alt="noPets" width={32} height={32} />
+                  <Image
+                    src="/noPets.png"
+                    alt="noPets"
+                    width={32}
+                    height={32}
+                  />
                 </div>
               )}
               {product.lessLight && (
                 <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
-                  <Image src="/noLight.png" alt="noLight" width={32} height={32} />
+                  <Image
+                    src="/noLight.png"
+                    alt="noLight"
+                    width={32}
+                    height={32}
+                  />
                 </div>
               )}
               {product.moreLight && (
                 <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
-                  <Image src="/brightness.png" alt="brightness" width={32} height={32} />
+                  <Image
+                    src="/brightness.png"
+                    alt="brightness"
+                    width={32}
+                    height={32}
+                  />
                 </div>
               )}
               {accessory && (
-            <div className="hidden w-fit xl:flex flex-col gap-[12px] absolute top-[21.18px] right-[29px]">
-              {product.petFriendly && (
-                <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
-                  <Image src="/veterinary.png" alt="veterinary" width={32} height={32} />
+                <div className="hidden w-fit xl:flex flex-col gap-[12px] absolute top-[21.18px] right-[29px]">
+                  {product.petFriendly && (
+                    <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
+                      <Image
+                        src="/veterinary.png"
+                        alt="veterinary"
+                        width={32}
+                        height={32}
+                      />
+                    </div>
+                  )}
+                  {product.petUnfriendly && (
+                    <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
+                      <Image
+                        src="/noPets.png"
+                        alt="noPets"
+                        width={32}
+                        height={32}
+                      />
+                    </div>
+                  )}
+                  {product.lessLight && (
+                    <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
+                      <Image
+                        src="/noLight.png"
+                        alt="noLight"
+                        width={32}
+                        height={32}
+                      />
+                    </div>
+                  )}
+                  {product.moreLight && (
+                    <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
+                      <Image
+                        src="/brightness.png"
+                        alt="brightness"
+                        width={32}
+                        height={32}
+                      />
+                    </div>
+                  )}
                 </div>
               )}
-              {product.petUnfriendly && (
-                <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
-                  <Image src="/noPets.png" alt="noPets" width={32} height={32} />
-                </div>
-              )}
-              {product.lessLight && (
-                <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
-                  <Image src="/noLight.png" alt="noLight" width={32} height={32} />
-                </div>
-              )}
-              {product.moreLight && (
-                <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
-                  <Image src="/brightness.png" alt="brightness" width={32} height={32} />
-                </div>
-              )}
-            </div>
-          )}
             </div>
           )}
         </div>
@@ -159,7 +247,9 @@ const ProductCard = ({ product }) => {
               style={{
                 width: "100%",
                 height: "65px",
-                animation: isHover ? "increaseParaHeight 0.5s forwards" : "decreaseParaHeight 0.5s forwards",
+                animation: isHover
+                  ? "increaseParaHeight 0.5s forwards"
+                  : "decreaseParaHeight 0.5s forwards",
               }}
             >
               <p

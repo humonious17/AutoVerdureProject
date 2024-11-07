@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import {
   Sheet,
@@ -19,7 +19,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { SlidersHorizontal, X } from "lucide-react";
+import { SlidersHorizontal } from "lucide-react";
 
 const StoreTools = ({
   totalProducts,
@@ -34,15 +34,13 @@ const StoreTools = ({
     type: [],
     pot: [],
     material: [],
-    category: [], // New filter for plant categories
+    category: [],
   });
 
-  // Function to count active filters
   const getActiveFilterCount = () => {
     return Object.values(filters).reduce((acc, curr) => acc + curr.length, 0);
   };
 
-  // Function to toggle filters
   const toggleFilter = (category, value) => {
     setFilters((prev) => {
       const newFilters = { ...prev };
@@ -57,13 +55,11 @@ const StoreTools = ({
     });
   };
 
-  // Function to clear all filters
   const clearFilters = () => {
     setFilters({ type: [], pot: [], material: [], category: [] });
     onFilterChange({ type: [], pot: [], material: [], category: [] });
   };
 
-  // Function to apply filters
   const applyFilters = () => {
     onFilterChange(filters);
   };
@@ -87,7 +83,7 @@ const StoreTools = ({
               </SheetTrigger>
               <SheetContent
                 side="left"
-                className="w-[400px] sm:w-[540px] overflow-y-auto"
+                className="w-[400px] sm:w-[540px] h-full overflow-y-auto" // Added h-full for height and overflow-y-auto for scrolling
               >
                 <SheetHeader className="space-y-4">
                   <div className="flex items-center justify-between">
@@ -110,7 +106,6 @@ const StoreTools = ({
                     collapsible
                     className="w-full space-y-4"
                   >
-                    {/* Product Type Filter */}
                     <AccordionItem value="type" className="border-none">
                       <AccordionTrigger className="text-base font-medium">
                         Product Type
@@ -141,7 +136,6 @@ const StoreTools = ({
                       </AccordionContent>
                     </AccordionItem>
 
-                    {/* Plant Category Filter */}
                     <AccordionItem value="category" className="border-none">
                       <AccordionTrigger className="text-base font-medium">
                         Plant Category
@@ -176,7 +170,6 @@ const StoreTools = ({
                       </AccordionContent>
                     </AccordionItem>
 
-                    {/* Pot Type Filter */}
                     <AccordionItem value="pot" className="border-none">
                       <AccordionTrigger className="text-base font-medium">
                         Pot Type
@@ -202,7 +195,6 @@ const StoreTools = ({
                       </AccordionContent>
                     </AccordionItem>
 
-                    {/* Material Filter */}
                     <AccordionItem value="material" className="border-none">
                       <AccordionTrigger className="text-base font-medium">
                         Material
@@ -235,7 +227,7 @@ const StoreTools = ({
                   </Accordion>
                 </div>
 
-                <div className="absolute bottom-0 left-0 right-0 p-4 bg-white border-t">
+                <div className="sticky bottom-0 left-0 right-0 p-4 bg-white border-t">
                   <Button onClick={applyFilters} className="w-full">
                     Apply Filters
                   </Button>

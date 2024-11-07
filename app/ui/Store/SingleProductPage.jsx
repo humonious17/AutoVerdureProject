@@ -291,8 +291,25 @@ const SingleProductPage = ({ productData, allProducts }) => {
     }
     setError("");
 
+    // Assuming we have a function to validate payment details
+    const isPaymentValid = validatePaymentDetails();
+    if (!isPaymentValid) {
+      setError(
+        "Payment details are invalid. Please check your payment information."
+      );
+      return;
+    }
+
     router.push("/checkout/guest");
   };
+
+  // Example of a payment validation function
+  const validatePaymentDetails = () => {
+    // Add your payment validation logic here
+    // For example, check if payment details are filled and valid
+    return true; // Return true if valid, false otherwise
+  };
+
   // State to control whether to show all products or just three
   const [showAll, setShowAll] = useState(false);
 

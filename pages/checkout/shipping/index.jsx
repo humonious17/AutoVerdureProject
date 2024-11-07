@@ -81,6 +81,9 @@ const Shipping = (props) => {
       })),
     };
 
+    //  const address1 = `${formData.houseNumber} ${formData.streetName}`;
+    // const address2 = `${formData.city}, ${formData.country} ${formData.zipCode}`;
+
     try {
       const result = await fetch("/api/createRazorpayOrder", {
         method: "POST",
@@ -98,6 +101,14 @@ const Shipping = (props) => {
         const resp = await result.json();
         const orderId = resp.id;
         router.push(`/checkout/payment?orderId=${orderId}`);
+
+        // Assuming you have a function to handle the payment process
+        const paymentSuccess = await handlePayment(orderId);
+        if (paymentSuccess) {
+          router.push("/pages/checkout/successful/index.jsx");
+        } else {
+          setError("Payment failed. Please try again.");
+        }
       } else {
         setError("Failed to create order. Please try again.");
       }

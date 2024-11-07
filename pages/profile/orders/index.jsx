@@ -24,6 +24,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import Reviewfom from "@/pages/Reviewfom";
 
 const OrderDetailDialog = ({ order, open, onClose }) => {
   const [productDetails, setProductDetails] = useState([]);
@@ -362,7 +363,9 @@ const ProfileOrders = ({ orders: initialOrders }) => {
           onClose={() => setIsDetailOpen(false)}
         />
       </CardContent>
+      <Reviewfom/>
     </Card>
+   
   );
 };
 

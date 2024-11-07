@@ -54,7 +54,22 @@ const RelatedBlog = ({ title, description }) => {
             ))}
           </div>
         </div>
-
+<div className="mt-[43px] w-full flex gap-10 justify-center items-center">
+              <Image
+                src="/leftArrow1.svg"
+                alt="leftArrow1"
+                width={13}
+                height={26}
+                onClick={scrollLeft}
+              />
+            <Image
+              src="/rightArrow1.svg"
+              alt="rightArrow1"
+              width={13}
+              height={26}
+              onClick={scrollRight}
+            />
+          </div>
         
       </div>
 

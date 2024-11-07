@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { useState, useEffect } from "react";
 import {
   Search,
@@ -8,7 +9,6 @@ import {
   XCircle,
   Clock,
   AlertCircle,
-  X,
 } from "lucide-react";
 import {
   Dialog,
@@ -16,6 +16,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+//import { db } from "@/pages/api/firebaseAdmin"; // Import the firebaseAdmin
 import {
   Select,
   SelectContent,
@@ -53,19 +54,63 @@ const OrderStatus = ({ status, className = "" }) => {
     </div>
   );
 };
-
 const OrderDetailsDialog = ({ order, isOpen, onClose, onStatusChange }) => {
-  if (!order) return null;
+  const [productDetails, setProductDetails] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchProductDetails = async () => {
+      if (!order) return;
+
+      setIsLoading(true);
+      try {
+        const productPromises = order.items.map(async (item) => {
+          const response = await fetch(`/api/products/${item.productId}`);
+          if (response.ok) {
+            const productData = await response.json();
+            return { ...item, ...productData };
+          } else {
+            return { ...item, productName: "Unknown Product" };
+          }
+        });
+
+        const details = await Promise.all(productPromises);
+        setProductDetails(details);
+      } catch (error) {
+        console.error("Error fetching product details:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (isOpen && order) {
+      fetchProductDetails();
+    }
+  }, [isOpen, order]);
 
   const handleStatusChange = async (newStatus) => {
-    // Here you would implement the API call to update the order status
-    try {
-      // await updateOrderStatus(order.id, newStatus);
+    if (onStatusChange) {
       onStatusChange(order.id, newStatus);
+    }
+
+    try {
+      const response = await fetch("/api/orders/updateOrderStatus", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ orderId: order.id, status: newStatus }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update order status");
+      }
     } catch (error) {
       console.error("Error updating order status:", error);
     }
   };
+
+  if (!order) return null;
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -76,42 +121,6 @@ const OrderDetailsDialog = ({ order, isOpen, onClose, onStatusChange }) => {
 
         <div className="mt-4 space-y-6">
           {/* Order Summary Section */}
-          <div className="space-y-2">
-            <h3 className="text-lg font-semibold">Order Summary</h3>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <p className="text-sm text-gray-500">Order ID</p>
-                <p className="font-medium">{order.razorpayOrderId}</p>
-              </div>
-              <div>
-                <p className="text-sm text-gray-500">Receipt ID</p>
-                <p className="font-medium">{order.receiptId}</p>
-              </div>
-              <div>
-                <p className="text-sm text-gray-500">Amount</p>
-                <p className="font-medium">
-                  {new Intl.NumberFormat("en-IN", {
-                    style: "currency",
-                    currency: "INR",
-                  }).format(order.amount / 100)}
-                </p>
-              </div>
-              <div>
-                <p className="text-sm text-gray-500">Date</p>
-                <p className="font-medium">
-                  {new Date(order.createdAt).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Status Management */}
           <div className="space-y-2">
             <h3 className="text-lg font-semibold">Status</h3>
             <div className="flex items-center gap-4">
@@ -183,36 +192,44 @@ const OrderDetailsDialog = ({ order, isOpen, onClose, onStatusChange }) => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
-                  {order.items?.map((item, index) => (
-                    <tr key={index}>
-                      <td className="px-4 py-3">
-                        <div className="flex items-center gap-3">
-                          {item.image && (
-                            <img
-                              src={item.image}
-                              alt={item.name}
-                              className="w-12 h-12 object-cover rounded"
-                            />
-                          )}
-                          <div>
-                            <p className="font-medium">{item.name}</p>
-                            {item.variant && (
-                              <p className="text-sm text-gray-500">
-                                {item.variant}
-                              </p>
-                            )}
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-4 py-3">{item.quantity}</td>
-                      <td className="px-4 py-3 text-right">
-                        {new Intl.NumberFormat("en-IN", {
-                          style: "currency",
-                          currency: "INR",
-                        }).format(item.price / 100)}
+                  {isLoading ? (
+                    <tr>
+                      <td colSpan="3" className="text-center py-4">
+                        Loading product details...
                       </td>
                     </tr>
-                  ))}
+                  ) : (
+                    productDetails.map((item, index) => (
+                      <tr key={index}>
+                        <td className="px-4 py-3">
+                          <div className="flex items-center gap-3">
+                            {item.image && (
+                              <img
+                                src={item.image}
+                                alt={item.productName}
+                                className="w-12 h-12 object-cover rounded"
+                              />
+                            )}
+                            <div>
+                              <p className="font-medium">{item.productName}</p>
+                              {item.variant && (
+                                <p className="text-sm text-gray-500">
+                                  {item.variant}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-4 py-3">{item.quantity}</td>
+                        <td className="px-4 py-3 text-right">
+                          {new Intl.NumberFormat("en-IN", {
+                            style: "currency",
+                            currency: "INR",
+                          }).format(item.price)}
+                        </td>
+                      </tr>
+                    ))
+                  )}
                 </tbody>
               </table>
             </div>
@@ -360,41 +377,23 @@ const OrderList = ({ orders: initialOrders }) => {
           </div>
         </div>
 
-        {/* Orders Table */}
+        {/* Orders Table - Fixed Structure */}
         <div className="bg-white rounded-lg shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead className="bg-gray-50">
                 <tr>
-                  <th
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
-                    onClick={() => handleSort("razorpayOrderId")}
-                  >
-                    <div className="flex items-center gap-2">
-                      Order ID
-                      <ArrowUpDown className="w-4 h-4" />
-                    </div>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Order ID
                   </th>
-                  <th
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
-                    onClick={() => handleSort("createdAt")}
-                  >
-                    <div className="flex items-center gap-2">
-                      Date
-                      <ArrowUpDown className="w-4 h-4" />
-                    </div>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Date
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Customer
                   </th>
-                  <th
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
-                    onClick={() => handleSort("amount")}
-                  >
-                    <div className="flex items-center gap-2">
-                      Amount
-                      <ArrowUpDown className="w-4 h-4" />
-                    </div>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Amount
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Status
@@ -403,7 +402,11 @@ const OrderList = ({ orders: initialOrders }) => {
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {filteredOrders.map((order) => (
-                  <tr key={order.razorpayOrderId} className="hover:bg-gray-50">
+                  <tr
+                    key={order.razorpayOrderId}
+                    className="hover:bg-gray-50 cursor-pointer transition-colors"
+                    onClick={() => setSelectedOrder(order)}
+                  >
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-medium text-gray-900">
                         {order.razorpayOrderId}
@@ -425,7 +428,7 @@ const OrderList = ({ orders: initialOrders }) => {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-medium text-gray-900">
-                        {formatCurrency(order.amount)}
+                        {formatCurrency(order.amount) * 100}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -445,6 +448,7 @@ const OrderList = ({ orders: initialOrders }) => {
             </div>
           )}
         </div>
+
         {/* Order Details Dialog */}
         <OrderDetailsDialog
           order={selectedOrder}
@@ -460,17 +464,11 @@ const OrderList = ({ orders: initialOrders }) => {
 export async function getServerSideProps() {
   try {
     const orders = await findAllOrders();
-
-    // Add console.log to debug
-    console.log("Fetched orders:", orders);
-
     return {
       props: {
         orders: orders.map((order) => ({
           ...order,
-          // Ensure all dates are properly serialized
           createdAt: order.createdAt || new Date().toISOString(),
-          // Ensure all nested objects are properly handled
           shipping: order.shipping || {},
           items: order.items || [],
         })),

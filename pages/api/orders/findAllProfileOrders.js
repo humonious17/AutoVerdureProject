@@ -7,7 +7,7 @@ export default async function findAllProfileOrders(email = null) {
 
     // If email is provided, filter by ordererEmail, not email
     if (email) {
-      querySnapshot = await ordersRef.where("ordererEmail", "==", email).get();
+      querySnapshot = await ordersRef.where("email", "==", email).get();
     } else {
       querySnapshot = await ordersRef.orderBy("orderTime", "desc").get();
     }
@@ -22,6 +22,7 @@ export default async function findAllProfileOrders(email = null) {
       const data = doc.data();
       orders.push({
         ...data,
+        createdAt: data.createdAt?.toDate().toISOString() || null, // Convert Firestore Timestamp to ISO string
       });
     });
 

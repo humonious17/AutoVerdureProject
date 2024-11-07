@@ -100,7 +100,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
 
       // Update dimensions
       const { width = 0, height = 0, depth = 0 } = selectedSizeData;
-      const { ih = 0, il = 0} = selectedSizeData
+      const { ih = 0, il = 0 } = selectedSizeData;
       const dimensionString = `${width}cm x ${height}cm x ${depth}cm`;
       const InnerDimensionString = `${ih}cm x ${il}cm`;
       setDimensions(dimensionString);
@@ -289,7 +289,6 @@ const SingleProductPage = ({ productData, allProducts }) => {
       setError("Please select color and size.");
       return;
     }
-
     setError("");
 
     router.push("/checkout/guest");

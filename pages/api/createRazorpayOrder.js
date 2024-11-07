@@ -69,11 +69,13 @@ export default async function handler(req, res) {
     // Store order details in Firebase
     const orderRef = db.collection("orders").doc(razorpayOrder.id);
     await orderRef.set({
+      orderStatus: "created",
+      orderId: razorpayOrder.id,
       razorpayOrderId: razorpayOrder.id,
       receiptId,
       email,
       status: "created",
-      amount: amountInPaise,
+      amount: amountInPaise / 100,
       currency: "INR",
       createdAt: new Date(),
       items: orderItems,

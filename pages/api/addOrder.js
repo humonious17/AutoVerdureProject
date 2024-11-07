@@ -8,47 +8,64 @@ async function addOrder(payload, req) {
     throw new Error("User not authenticated");
   }
 
-  const products = [];
-  payload.products.forEach((element) => {
-    const product = {
-      productId: element.productId,
-      productName: element.productName,
-    };
-    products.push(product);
-  });
-
   const orderId = crypto.randomBytes(8).toString("hex");
-  let date = Date().split(" ");
-  date.splice(4, 5);
 
+  // Enhanced order data structure
   const data = {
     orderId: orderId,
-    ordererEmail: user.email, // Using email from current user
-    orderedProducts: products,
-    shippingAddress: payload.shippingAddress,
-    orderTime: date.join(" "),
-    orderStatus: "Processing",
+    razorpayOrderId: payload.razorpayOrderId || orderId, // For compatibility with existing UI
+    receiptId: payload.receiptId || `RCPT-${orderId.substring(0, 6)}`,
+    email: user.email,
+    amount: payload.amount || 0,
+    status: "pending",
+    createdAt: new Date(),
+
+    // Customer and shipping details
+    shipping: {
+      fullName: payload.shippingAddress.fullName,
+      address1: payload.shippingAddress.address1,
+      address2: payload.shippingAddress.address2,
+      city: payload.shippingAddress.city,
+      state: payload.shippingAddress.state,
+      pinCode: payload.shippingAddress.pinCode,
+      country: payload.shippingAddress.country,
+      phone: payload.shippingAddress.phone,
+    },
+
+    // Product details
+    items: payload.products.map((product) => ({
+      productId: product.productId,
+      name: product.productName,
+      quantity: product.quantity || 1,
+      price: product.price || 0,
+      variant: product.productType || null,
+      image: product.image || null,
+    })),
   };
 
   try {
     await db.collection("orders").doc(orderId).set(data);
-    return true;
+    return { success: true, orderId };
   } catch (error) {
-    console.log(error);
-    return false;
+    console.error("Error adding order:", error);
+    return { success: false, error: error.message };
   }
 }
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
     try {
-      const orderPayload = req.body;
-      console.log(orderPayload);
-      const result = await addOrder(orderPayload, req);
-      if (result) {
-        return res.status(200).json({ message: "Order created" });
+      const result = await addOrder(req.body, req);
+      if (result.success) {
+        return res.status(200).json({
+          message: "Order created",
+          orderId: result.orderId,
+        });
       } else {
-        return res.status(500).json({ message: "Something went wrong" });
+        return res.status(500).json({
+          message: "Failed to create order",
+          error: result.error,
+        });
       }
     } catch (error) {
       return res.status(401).json({ message: error.message });

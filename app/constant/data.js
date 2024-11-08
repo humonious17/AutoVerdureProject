@@ -51,23 +51,23 @@ export const support = [
 
 export const storeNavItems = [
   { title: "all", url: "/store" },
-  { title: "zenpot", url: "/store/zenpot" },
-  { title: "grobox", url: "/store/grobox" },
+  { title: "Planters", url: "/store/zenpot" },
+  { title: "Flowers", url: "/store/grobox" },
   { title: "plants", url: "/store/plants" },
   { title: "accessory", url: "/store/accessory" },
 ];
 
 export const collections = [
   {
-    title: "Zenpot",
+    title: "Planters",
     description:
-      "zenpot nurtures your plant while adding a touch of serenity to your living space.",
+      "Choose from an exceptional line of self-watering planters, based on the ingenious principles of hydroponics. Here, you'll discover the perfect harmony of nature's warmth within the confines of your home.",
     image: "https://res.cloudinary.com/dgzqokaju/image/upload/v1721321551/RJP00508_bbqtrh.jpg"
   },
   {
-    title: "Grobox",
+    title: "Flowers",
     description:
-      "Elevate your gardening game and enjoy a bountiful harvest year round.",
+      "Our arrangements are hand-made in-house by our expert florists, using the very best quality fresh flowers. Our style is artistic, modern and inspirational.",
     image: "https://res.cloudinary.com/dgzqokaju/image/upload/v1721322868/WhatsApp_Image_2024-07-18_at_22.40.05_fb2d5d82_qcblox.jpg"
   },
   {

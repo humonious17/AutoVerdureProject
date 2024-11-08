@@ -20,10 +20,15 @@ export default async function findAllProfileOrders(email = null) {
     const orders = [];
     querySnapshot.forEach((doc) => {
       const data = doc.data();
-      orders.push({
+      const serializedData = {
         ...data,
-        createdAt: data.createdAt?.toDate().toISOString() || null, // Convert Firestore Timestamp to ISO string
-      });
+        createdAt: data.createdAt?.toDate().toISOString() || null,
+        updatedAt: data.updatedAt?.toDate().toISOString() || null,
+        orderTime: data.orderTime?.toDate().toISOString() || null,
+      };
+
+      orders.push(serializedData);
+
     });
 
     return orders;

@@ -1,5 +1,6 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { useState, useEffect } from "react";
-import { Search, SortAsc, SortDesc, Filter, X } from "lucide-react";
+import { Search, SortAsc, SortDesc, Filter } from "lucide-react";
 import {
   Clock,
   Circle,
@@ -31,6 +32,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import Image from "next/image";
 
 // Utility function to format the timestamp
 const formatTimestamp = (timestamp) => {
@@ -68,7 +70,7 @@ const OrderStatus = ({ status, className = "" }) => {
     failed: { icon: AlertCircle, color: "text-gray-500", bg: "bg-gray-50" },
   };
 
-  const config = statusConfig[status.toLowerCase()] || statusConfig.pending;
+  const config = status ? statusConfig[status.toLowerCase()] : statusConfig.pending;
   const StatusIcon = config.icon;
 
   return (
@@ -76,8 +78,28 @@ const OrderStatus = ({ status, className = "" }) => {
       className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm ${config.color} ${config.bg} ${className}`}
     >
       <StatusIcon className="h-4 w-4" />
-      {status}
+      {status || "Pending"}
     </span>
+  );
+};
+
+const ProductImage = ({ src, alt, className = "" }) => {
+  return (
+    <div
+      className={`relative rounded-lg overflow-hidden bg-gray-100 ${className}`}
+    >
+      <img
+        src={
+          src || "https://headwayls.com/wp-content/uploads/2023/01/no-image.jpg"
+        }
+        alt={alt}
+        className="object-cover w-full h-full"
+        onError={(e) => {
+          e.target.src =
+            "https://headwayls.com/wp-content/uploads/2023/01/no-image.jpg";
+        }}
+      />
+    </div>
   );
 };
 
@@ -91,7 +113,7 @@ const OrderDetailDialog = ({ order, open, onClose }) => {
 
       setIsLoading(true);
       try {
-        const productIds = order.items.map((p) => p.productId);
+        const productIds = order.products.map((p) => p.productId);
         const response = await fetch("/api/products/getProductDetails", {
           method: "POST",
           headers: {
@@ -135,9 +157,7 @@ const OrderDetailDialog = ({ order, open, onClose }) => {
             </div>
             <div>
               <h3 className="font-semibold">Order Time</h3>
-              <p className="text-sm text-gray-600">
-                {formatTimestamp(order.createdAt)}
-              </p>
+              <p className="text-sm text-gray-600">{formatTimestamp(order.createdAt)}</p>
             </div>
           </div>
 
@@ -148,22 +168,22 @@ const OrderDetailDialog = ({ order, open, onClose }) => {
               <div className="text-center py-4">Loading product details...</div>
             ) : (
               <div className="space-y-4">
-                {order.items.map((items, idx) => {
-                  const productDetail = productDetails.find(
-                    (p) => p.id === items.productId
-                  );
+                {order.products.map((product, idx) => {
+                  const productDetail = productDetails.find((p) => p.id === product.productId);
                   return (
-                    <div key={idx} className="bg-gray-50 p-4 rounded-lg">
+                    <div key={idx} className="flex gap-4 bg-gray-50 p-4 rounded-lg">
+                      <ProductImage
+                        src={product.productImage}
+                        alt={product.productName}
+                        className="h-24 w-24 flex-shrink-0"
+                      />
                       <div className="space-y-2">
-                        <p className="font-medium">{items.productName}</p>
-                        {productDetail && (
+                        <p className="font-medium">{product.productName}</p>
+                        {product && (
                           <>
-                            <p className="text-sm text-gray-600">
-                              Type: {productDetail.productType}
-                            </p>
-                            <p className="text-sm text-gray-600">
-                              Price: ${productDetail.productPrice}
-                            </p>
+                            <p className="text-sm text-gray-600">Type: {product.productType}</p>
+                            <p className="text-sm text-gray-600">Price: Rs. {product.price}</p>
+                            <p className="text-sm text-gray-600">Quantity: {product.productQty}</p>
                           </>
                         )}
                       </div>
@@ -190,6 +210,8 @@ const OrderDetailDialog = ({ order, open, onClose }) => {
           <div>
             <h3 className="font-semibold mb-2">Shipping Address</h3>
             <div className="bg-gray-50 p-4 rounded-lg">
+              <p className="text-sm text-gray-600">{order.shipping.address1}</p>
+              <p className="text-sm text-gray-600">{order.shipping.address2}</p>
               <p className="text-sm text-gray-600">{order.shipping.city}</p>
             </div>
           </div>
@@ -215,7 +237,7 @@ const ProfileOrders = ({ orders: initialOrders }) => {
     setSearchTerm(value);
     const filtered = initialOrders.filter(
       (order) =>
-        order.items.some((product) =>
+        order.products.some((product) =>
           product.productName.toLowerCase().includes(value.toLowerCase())
         ) ||
         order.shippingAddress.city.toLowerCase().includes(value.toLowerCase())
@@ -231,8 +253,8 @@ const ProfileOrders = ({ orders: initialOrders }) => {
 
     const sortedOrders = [...orders].sort((a, b) => {
       if (key === "productName") {
-        const aName = a.items[0].productName;
-        const bName = b.items[0].productName;
+        const aName = a.products[0].productName;
+        const bName = b.products[0].productName;
         return direction === "asc"
           ? aName.localeCompare(bName)
           : bName.localeCompare(aName);
@@ -324,6 +346,7 @@ const ProfileOrders = ({ orders: initialOrders }) => {
                       <SortDesc className="inline ml-2 h-4 w-4" />
                     ))}
                 </TableHead>
+                <TableHead>Image</TableHead>
                 <TableHead>Address</TableHead>
                 <TableHead>Order Type</TableHead>
                 <TableHead>Payment</TableHead>
@@ -350,12 +373,23 @@ const ProfileOrders = ({ orders: initialOrders }) => {
                   onClick={() => openOrderDetail(order)}
                 >
                   <TableCell className="font-medium">
-                    {order.items && order.items.length > 0
-                      ? order.items[0].productName +
-                        (order.items.length === 1
+                    {order.products && order.products.length > 0
+                      ? order.products[0].productName +
+                        (order.products.length === 1
                           ? ""
-                          : ` + ${order.items.length - 1} more`)
+                          : ` + ${order.products.length - 1} more`)
                       : "No products"}
+                  </TableCell>
+                  <TableCell>
+                    {order.products && order.products.length > 0 && (
+                      <Image
+                        src={order.products[0].productImage}
+                        alt={order.products[0].productName}
+                        width={50}
+                        height={50}
+                        className="rounded-lg"
+                      />
+                    )}
                   </TableCell>
                   <TableCell>{order.shipping.city}</TableCell>
                   <TableCell>Product</TableCell>
@@ -381,17 +415,28 @@ const ProfileOrders = ({ orders: initialOrders }) => {
               <div className="flex justify-between items-start mb-3">
                 <div>
                   <p className="font-medium">
-                    {order.items[0].productName +
-                      (order.items.length === 1
+                    {order.products[0].productName +
+                      (order.products.length === 1
                         ? ""
-                        : ` + ${order.items.length - 1} more`)}
+                        : ` + ${order.products.length - 1} more`)}
                   </p>
                   <p className="text-sm text-gray-500">{order.shipping.city}</p>
                 </div>
                 <OrderStatus status={order.status} />
               </div>
-              <div className="text-sm text-gray-500">
-                {formatTimestamp(order.createdAt)}
+              <div className="flex items-center space-x-4">
+                {order.products && order.products.length > 0 && (
+                  <Image
+                    src={order.products[0].productImage}
+                    alt={order.products[0].productName}
+                    width={50}
+                    height={50}
+                    className="rounded-lg"
+                  />
+                )}
+                <div className="text-sm text-gray-500">
+                  {formatTimestamp(order.createdAt)}
+                </div>
               </div>
             </div>
           ))}

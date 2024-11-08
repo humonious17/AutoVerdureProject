@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import React, { useState, useEffect } from "react";
 
-export const AddProduct = ({ onAddProduct, product, onSave }) => {
+export const EditProduct = ({ onEditProduct, product, onSave }) => {
   const initialFormData = {
     productId: "",
     productName: "",
@@ -148,7 +148,7 @@ export const AddProduct = ({ onAddProduct, product, onSave }) => {
     if (product) {
       onSave(formData);
     } else {
-      onAddProduct(formData);
+      onEditProduct(formData);
     }
   };
 

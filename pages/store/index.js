@@ -4,11 +4,13 @@ import Link from "next/link";
 import TopSegment from "@/app/ui/Store/TopSegment";
 import StoreTools from "@/app/ui/Store/StoreTools";
 import findAllProducts from "/pages/api/products/findAllProducts";
+import TuneIcon from "@mui/icons-material/Tune";
 
 const Store = ({ initialProducts }) => {
   const [filteredProducts, setFilteredProducts] = useState(initialProducts);
   const [sortBy, setSortBy] = useState("default");
   const [showCount, setShowCount] = useState(16);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   // Safe string getter for sorting
   const getSafeString = (obj, key) => {
@@ -59,7 +61,7 @@ const Store = ({ initialProducts }) => {
   // Handle sorting of products
   const handleSort = (sortType) => {
     setSortBy(sortType);
-    let sorted = [...filteredProducts].filter(Boolean); // Remove null/undefined items
+    let sorted = [...filteredProducts].filter(Boolean);
 
     switch (sortType) {
       case "name-asc":
@@ -89,47 +91,99 @@ const Store = ({ initialProducts }) => {
         );
         break;
       default:
-        // Reset to original order
         sorted = [...initialProducts].filter(Boolean);
     }
 
     setFilteredProducts(sorted);
   };
 
-  // Handle show count change
   const handleShowCountChange = (count) => {
     setShowCount(parseInt(count));
   };
 
-  // Ensure we have valid products to display
   const validProducts = filteredProducts.filter(
     (product) => product && product.productId && product.category
   );
 
   return (
-    <div className="w-full bg-[#FFFCF8]">
+    <div className="w-full bg-[#FFFCF8] min-h-screen">
       <TopSegment />
 
-      <StoreTools
-        totalProducts={validProducts.length}
-        displayedProducts={Math.min(showCount, validProducts.length)}
-        onFilterChange={handleFilterChange}
-        onSortChange={handleSort}
-        onShowCountChange={handleShowCountChange}
-        sortBy={sortBy}
-        showCount={showCount}
-      />
+      <div className="relative flex">
+        {/* Filter Panel */}
+        <div
+          className={`fixed top-0 left-0 h-screen bg-white transform transition-transform duration-300 ease-in-out z-40 ${
+            isFilterOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
+          style={{ width: "300px" }}
+        >
+          <StoreTools
+            totalProducts={validProducts.length}
+            displayedProducts={Math.min(showCount, validProducts.length)}
+            onFilterChange={handleFilterChange}
+            onSortChange={handleSort}
+            onShowCountChange={handleShowCountChange}
+            sortBy={sortBy}
+            showCount={showCount}
+            isFilterOpen={isFilterOpen}
+            setIsFilterOpen={setIsFilterOpen}
+          />
+        </div>
 
-      <div className="mt-[42px] md:mt-[58px] xl:mt-[110px] mb-[70.46px] md:mb-[124.8px] xl:mb-[142.3px] w-full flex flex-col justify-center items-center">
-        <div className="max-w-[359px] md:max-w-[750.998px] xl:max-w-[1312px] w-full grid grid-cols-2 xl:grid-cols-3 gap-x-[9px] gap-y-[41.46px] md:gap-x-[43.21px] md:gap-y-16 xl:gap-x-[49px] xl:gap-y-[48px]">
-          {validProducts.slice(0, showCount).map((product, index) => (
-            <Link
-              key={product.productId || index}
-              href={`/store/${product.category}/${product.productId}`}
-            >
-              <ProductCard product={product} />
-            </Link>
-          ))}
+        {/* Main Content */}
+        <div
+          className={`flex-1 transition-all duration-300 ease-in-out ${
+            isFilterOpen ? "ml-[300px]" : "ml-0"
+          }`}
+        >
+          <div className="sticky top-0 z-30 bg-gray-50 w-full">
+            <div className="px-4 py-6 md:px-8">
+              <div className="flex justify-between items-center">
+                <button
+                  onClick={() => setIsFilterOpen(!isFilterOpen)}
+                  className="flex items-center gap-2 px-4 py-2 bg-white rounded-lg border"
+                >
+                  <TuneIcon />
+                  Filters
+                </button>
+                <div className="flex items-center gap-4">
+                  <select
+                    value={sortBy}
+                    onChange={(e) => handleSort(e.target.value)}
+                    className="py-2 px-3 text-sm border rounded-lg bg-white"
+                  >
+                    <option value="default">Sort by</option>
+                    <option value="name-asc">Name (A-Z)</option>
+                    <option value="name-desc">Name (Z-A)</option>
+                    <option value="price-asc">Price (Low to High)</option>
+                    <option value="price-desc">Price (High to Low)</option>
+                  </select>
+                  <select
+                    value={showCount}
+                    onChange={(e) => handleShowCountChange(e.target.value)}
+                    className="py-2 px-3 text-sm border rounded-lg bg-white"
+                  >
+                    <option value={16}>Show 16</option>
+                    <option value={32}>Show 32</option>
+                    <option value={64}>Show 64</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="p-4 md:p-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {validProducts.slice(0, showCount).map((product, index) => (
+                <Link
+                  key={product.productId || index}
+                  href={`/store/${product.category}/${product.productId}`}
+                >
+                  <ProductCard product={product} />
+                </Link>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>

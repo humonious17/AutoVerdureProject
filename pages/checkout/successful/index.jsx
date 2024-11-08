@@ -1,6 +1,21 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import Image from "next/image";
 import React from "react";
 import Link from "next/link";
+import { sendEmail } from "@/pages/api/sendEmail"; // Adjust this import path if needed
+import { useEffect } from "react";
+/*
+useEffect(() => {
+  const sendConfirmationEmail = async () => {
+    try {
+      sendEmail();
+    } catch (error) {
+      console.error("Failed to send confirmation email:", error);
+    }
+  };
+
+  sendConfirmationEmail();
+}, []);*/
 
 const Successful = () => {
   return (
@@ -35,11 +50,10 @@ const Successful = () => {
             Lorem ipsum dolor sit amet, consectetur adipiscing elit.
           </p>
           <Link href="/store" passHref>
-          <button className="w-full py-[17px] text-base leading-[20.8px] font-bold rounded-[30px] bg-[#070707] text-white flex justify-center items-center">
-            Back to Shopping
-          </button>
+            <button className="w-full py-[17px] text-base leading-[20.8px] font-bold rounded-[30px] bg-[#070707] text-white flex justify-center items-center">
+              Back to Shopping
+            </button>
           </Link>
-          
         </div>
       </div>
     </div>

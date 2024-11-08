@@ -1,10 +1,9 @@
-import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import findCartProducts from "@/lib/server/findCartProducts";
 
-const Input = ({ label, placeholder, type, name, value, onChange }) => {
+const Input = ({ label, placeholder, type, name, value, onChange, error }) => {
   const [isVisible, setIsVisible] = useState(false);
 
   return (
@@ -12,7 +11,9 @@ const Input = ({ label, placeholder, type, name, value, onChange }) => {
       <label className="text-2xl leading-6 capitalize font-normal text-[#070707]">
         {label}
       </label>
-      <div className="w-full text-base px-4 py-3 leading-[25.6px] rounded-[84px] border-[1px] border-[#070707] text-[#070707] bg-[#FFFFFF] font-medium flex gap-5 justify-between">
+      <div className={`w-full text-base px-4 py-3 leading-[25.6px] rounded-[84px] border-[1px] ${
+        error ? 'border-red-500' : 'border-[#070707]'
+      } text-[#070707] bg-[#FFFFFF] font-medium flex gap-5 justify-between`}>
         <input
           className="w-full h-fit text-base focus:outline-none"
           placeholder={placeholder}
@@ -20,6 +21,7 @@ const Input = ({ label, placeholder, type, name, value, onChange }) => {
           name={name}
           value={value}
           onChange={onChange}
+          required
         />
         {type === "password" && (
           <Image
@@ -32,14 +34,18 @@ const Input = ({ label, placeholder, type, name, value, onChange }) => {
           />
         )}
       </div>
+      {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
     </div>
   );
 };
 
 const Shipping = (props) => {
-  const { email, cartId, cartProducts } = props;
+  const { email, cartProducts } = props;
   const router = useRouter();
-  const [error, setError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState({});
+  
   const [formData, setFormData] = useState({
     fullName: "",
     streetName: "",
@@ -54,154 +60,160 @@ const Shipping = (props) => {
     if (!email) {
       router.push("/checkout/guest");
     }
-  }, [router, email]);
+    if (!cartProducts || cartProducts.length === 0) {
+      router.push("/cart");
+    }
+  }, [router, email, cartProducts]);
+
+  const validateForm = () => {
+    const errors = {};
+    const fields = Object.keys(formData);
+    
+    fields.forEach(field => {
+      if (!formData[field].trim()) {
+        errors[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} is required`;
+      }
+    });
+
+    if (formData.phone && !/^\d{10}$/.test(formData.phone.trim())) {
+      errors.phone = "Please enter a valid 10-digit phone number";
+    }
+
+    if (formData.zipCode && !/^\d{6}$/.test(formData.zipCode.trim())) {
+      errors.zipCode = "Please enter a valid 6-digit ZIP code";
+    }
+
+    setFieldErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+    // Clear error when user starts typing
+    if (fieldErrors[name]) {
+      setFieldErrors(prev => ({
+        ...prev,
+        [name]: ""
+      }));
+    }
+  };
+
+  const calculateTotal = () => {
+    return cartProducts.reduce((total, product) => {
+      return total + (product.price * product.productQty);
+    }, 0);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+    setIsLoading(true);
 
-    if (Object.values(formData).includes("")) {
-      setError("Please fill in all the fields");
-      return false;
+    if (!validateForm()) {
+      setIsLoading(false);
+      return;
     }
 
-    setError(false);
-
-    // Format cart products for the order
-    const products = {
-      selectedProducts: cartProducts.map((product) => ({
-        price: product.price,
-        productQty: product.productQty,
-        productId: product.productId,
-        productName: product.productName,
-      })),
-    };
-
-    //  const address1 = `${formData.houseNumber} ${formData.streetName}`;
-    // const address2 = `${formData.city}, ${formData.country} ${formData.zipCode}`;
-
     try {
+      const total = calculateTotal();
+      
+      // Format products for order creation
+      const products = {
+        selectedProducts: cartProducts.map(product => ({
+          price: product.price,
+          productQty: product.productQty,
+          productId: product.productId,
+          productName: product.productName,
+          productType: product.productType,
+          productImage: product.productImage,
+        })),
+      };
+
       const result = await fetch("/api/createRazorpayOrder", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          amount: total * 100, // Convert to paise
           products,
           shippingDetails: formData,
           email,
         }),
       });
 
-      if (result.ok) {
-        const resp = await result.json();
-        const orderId = resp.id;
-        router.push(`/checkout/payment?orderId=${orderId}`);
-
-        // Assuming you have a function to handle the payment process
-        const paymentSuccess = await handlePayment(orderId);
-        if (paymentSuccess) {
-          router.push("/pages/checkout/successful/index.jsx");
-        } else {
-          setError("Payment failed. Please try again.");
-        }
-      } else {
-        setError("Failed to create order. Please try again.");
+      if (!result.ok) {
+        throw new Error("Failed to create order");
       }
+
+      const { id: orderId } = await result.json();
+
+      // Encode data for URL
+      const encodedShippingDetails = encodeURIComponent(JSON.stringify(formData));
+      const encodedProducts = encodeURIComponent(JSON.stringify(products));
+
+      router.push({
+        pathname: "/checkout/payment",
+        query: {
+          orderId,
+          shippingDetails: encodedShippingDetails,
+          products: encodedProducts,
+          amount: total * 100,
+          email,
+        },
+      });
     } catch (error) {
       console.error("Error creating order:", error);
-      setError("An error occurred. Please try again.");
+      setError("Failed to process order. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="mb-[95px] sm:mb-[58px] xl:mb-[105px] w-full px-11 sm:px-0 flex flex-col justify-center items-center">
-      {/* Title */}
       <div className="mb-[42px] sm:mb-[52px] max-w-[560px] w-full flex flex-col gap-y-3 sm:justify-center sm:items-center">
         <p className="text-[32px] leading-8 font-normal capitalize text-[#070707]">
           Shipping Details
         </p>
         <p className="w-[266px] sm:w-full text-sm leading-[22.4px] font-medium text-[#8E8F94] sm:text-center">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          Please enter your shipping information
         </p>
       </div>
 
-      {/* Form */}
       <div className="max-w-[560px] w-full">
         <form onSubmit={handleSubmit} className="w-full flex flex-col gap-y-6">
-          {/* Input components */}
-          <Input
-            name="fullName"
-            label="Full Name"
-            placeholder="Name"
-            type="text"
-            value={formData.fullName}
-            onChange={handleInputChange}
-          />
-          <Input
-            name="streetName"
-            label="Street Name"
-            placeholder="Street Name"
-            type="text"
-            value={formData.streetName}
-            onChange={handleInputChange}
-          />
-          <div className="w-full flex flex-row gap-x-4 gap-y-6 sm:gap-y-0">
+          {error && (
+            <div className="text-red-600 text-center p-4 bg-red-50 rounded-lg">
+              {error}
+            </div>
+          )}
+          
+          {Object.keys(formData).map(field => (
             <Input
-              name="houseNumber"
-              label="House Number"
-              placeholder="House Number"
-              type="text"
-              value={formData.houseNumber}
+              key={field}
+              name={field}
+              label={field.split(/(?=[A-Z])/).join(" ")}
+              placeholder={field.split(/(?=[A-Z])/).join(" ")}
+              type={field === "phone" || field === "zipCode" ? "tel" : "text"}
+              value={formData[field]}
               onChange={handleInputChange}
+              error={fieldErrors[field]}
             />
-            <Input
-              name="city"
-              label="City"
-              placeholder="City"
-              type="text"
-              value={formData.city}
-              onChange={handleInputChange}
-            />
-          </div>
-          <Input
-            name="phone"
-            label="Phone"
-            placeholder="Phone"
-            type="tel"
-            value={formData.phone}
-            onChange={handleInputChange}
-          />
-          <div className="w-full flex flex-row gap-x-4 gap-y-6 sm:gap-y-0">
-            <Input
-              name="country"
-              label="Country"
-              placeholder="Country"
-              type="text"
-              value={formData.country}
-              onChange={handleInputChange}
-            />
-            <Input
-              name="zipCode"
-              label="ZIP Code"
-              placeholder="ZIP Code"
-              type="number"
-              value={formData.zipCode}
-              onChange={handleInputChange}
-            />
-          </div>
+          ))}
 
-          {/* Submit button */}
-          {error && <p className="text-red-600 mt-2">{error}</p>}
           <button
             type="submit"
-            className="mt-[42px] sm:mt-[52px] w-full text-base px-6 py-[17px] rounded-[30px] border-[1px] bg-[#070707] border-[#070707] text-[#FFFFFF] font-bold"
+            disabled={isLoading}
+            className={`mt-[42px] sm:mt-[52px] w-full text-base px-6 py-[17px] rounded-[30px] border-[1px] bg-[#070707] border-[#070707] text-[#FFFFFF] font-bold ${
+              isLoading ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
           >
-            Continue
+            {isLoading ? "Processing..." : "Continue to Payment"}
           </button>
         </form>
       </div>
@@ -209,7 +221,7 @@ const Shipping = (props) => {
   );
 };
 
-export async function getServerSideProps({ req, res }) {
+export async function getServerSideProps({ req }) {
   const currentUser = require("@/lib/server/currentUser").default;
   const user = await currentUser(req);
 
@@ -217,13 +229,24 @@ export async function getServerSideProps({ req, res }) {
   const cartId = req.cookies.cartId || null;
   const cartProducts = await findCartProducts(cartId);
 
+  if (!cartProducts || cartProducts.length === 0) {
+    return {
+      redirect: {
+        destination: "/cart",
+        permanent: false,
+      },
+    };
+  }
+
   return {
     props: {
-      email: user.email || null,
-      cartId: cartId || null,
+      email: user?.email || null,
       cartProducts: cartProducts || [],
     },
   };
 }
 
 export default Shipping;
+
+
+ 

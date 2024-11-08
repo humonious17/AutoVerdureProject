@@ -1,13 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useState, useEffect } from "react";
+import { Search, SortAsc, SortDesc, Filter } from "lucide-react";
 import {
-  Search,
-  Filter,
-  ArrowUpDown,
+  Clock,
   Circle,
   CheckCircle2,
   XCircle,
-  Clock,
   AlertCircle,
 } from "lucide-react";
 import {
@@ -16,7 +14,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-//import { db } from "@/pages/api/firebaseAdmin"; // Import the firebaseAdmin
 import {
   Select,
   SelectContent,
@@ -24,8 +21,41 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import findAllOrders from "@/pages/api/orders/findAllOrders";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import Image from "next/image";
+
+// Utility function to format the timestamp
+const formatTimestamp = (timestamp) => {
+  if (!timestamp) return "";
+
+  try {
+    // Parse the timestamp string
+    const date = new Date(timestamp.replace("at", ""));
+
+    // Format the date
+    return new Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    }).format(date);
+  } catch (error) {
+    console.error("Error formatting timestamp:", error);
+    return timestamp; // Return original string if parsing fails
+  }
+};
 
 const OrderStatus = ({ status, className = "" }) => {
   const statusConfig = {
@@ -40,21 +70,42 @@ const OrderStatus = ({ status, className = "" }) => {
     failed: { icon: AlertCircle, color: "text-gray-500", bg: "bg-gray-50" },
   };
 
-  const config = statusConfig[status.toLowerCase()] || statusConfig.pending;
+  const config = status
+    ? statusConfig[status.toLowerCase()]
+    : statusConfig.pending;
   const StatusIcon = config.icon;
 
   return (
-    <div
-      className={`flex items-center gap-2 px-3 py-1 rounded-full ${config.bg} ${className}`}
+    <span
+      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm ${config.color} ${config.bg} ${className}`}
     >
-      <StatusIcon className={`w-4 h-4 ${config.color}`} />
-      <span className={`text-sm font-medium capitalize ${config.color}`}>
-        {status}
-      </span>
+      <StatusIcon className="h-4 w-4" />
+      {status || "Pending"}
+    </span>
+  );
+};
+
+const ProductImage = ({ src, alt, className = "" }) => {
+  return (
+    <div
+      className={`relative rounded-lg overflow-hidden bg-gray-100 ${className}`}
+    >
+      <img
+        src={
+          src || "https://headwayls.com/wp-content/uploads/2023/01/no-image.jpg"
+        }
+        alt={alt}
+        className="object-cover w-full h-full"
+        onError={(e) => {
+          e.target.src =
+            "https://headwayls.com/wp-content/uploads/2023/01/no-image.jpg";
+        }}
+      />
     </div>
   );
 };
-const OrderDetailsDialog = ({ order, isOpen, onClose, onStatusChange }) => {
+
+const OrderDetailDialog = ({ order, open, onClose }) => {
   const [productDetails, setProductDetails] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -64,174 +115,167 @@ const OrderDetailsDialog = ({ order, isOpen, onClose, onStatusChange }) => {
 
       setIsLoading(true);
       try {
-        const productPromises = order.items.map(async (item) => {
-          const response = await fetch(`/api/products/${item.productId}`);
-          if (response.ok) {
-            const productData = await response.json();
-            return { ...item, ...productData };
-          } else {
-            return { ...item, productName: "Unknown Product" };
-          }
+        const productIds = order.products.map((p) => p.productId);
+        const response = await fetch("/api/products/getProductDetails", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ productIds }),
         });
 
-        const details = await Promise.all(productPromises);
+        if (!response.ok) {
+          throw new Error("Failed to fetch product details");
+        }
+
+        const details = await response.json();
         setProductDetails(details);
       } catch (error) {
-        console.error("Error fetching product details:", error);
+        console.error("Error:", error);
       } finally {
         setIsLoading(false);
       }
     };
 
-    if (isOpen && order) {
+    if (open && order) {
       fetchProductDetails();
     }
-  }, [isOpen, order]);
-
-  const handleStatusChange = async (newStatus) => {
-    if (onStatusChange) {
-      onStatusChange(order.id, newStatus);
-    }
-
-    try {
-      const response = await fetch("/api/orders/updateOrderStatus", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ orderId: order.id, status: newStatus }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to update order status");
-      }
-    } catch (error) {
-      console.error("Error updating order status:", error);
-    }
-  };
+  }, [open, order]);
 
   if (!order) return null;
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl">
+    <Dialog open={open} onOpenChange={onClose}>
+      <DialogContent className="max-w-3xl">
         <DialogHeader>
           <DialogTitle>Order Details</DialogTitle>
         </DialogHeader>
-
-        <div className="mt-4 space-y-6">
-          {/* Order Summary Section */}
-          <div className="space-y-2">
-            <h3 className="text-lg font-semibold">Status</h3>
-            <div className="flex items-center gap-4">
-              <OrderStatus status={order.status} className="w-32" />
-              <Select
-                onValueChange={handleStatusChange}
-                defaultValue={order.status.toLowerCase()}
-              >
-                <SelectTrigger className="w-48">
-                  <SelectValue placeholder="Change status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="pending">Pending</SelectItem>
-                  <SelectItem value="processing">Processing</SelectItem>
-                  <SelectItem value="completed">Completed</SelectItem>
-                  <SelectItem value="cancelled">Cancelled</SelectItem>
-                  <SelectItem value="failed">Failed</SelectItem>
-                </SelectContent>
-              </Select>
+        <div className="space-y-6">
+          {/* Order Info */}
+          <div className="grid grid-cols-2 gap-4 bg-gray-50 p-4 rounded-lg">
+            <div>
+              <h3 className="font-semibold">Order ID</h3>
+              <p className="text-sm text-gray-600">{order.orderId}</p>
             </div>
-          </div>
-
-          {/* Customer Details */}
-          <div className="space-y-2">
-            <h3 className="text-lg font-semibold">Customer Details</h3>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <p className="text-sm text-gray-500">Name</p>
-                <p className="font-medium">{order.shipping?.fullName}</p>
-              </div>
-              <div>
-                <p className="text-sm text-gray-500">Email</p>
-                <p className="font-medium">{order.email}</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Shipping Address */}
-          <div className="space-y-2">
-            <h3 className="text-lg font-semibold">Shipping Address</h3>
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <p>{order.shipping?.address1}</p>
-              {order.shipping?.address2 && <p>{order.shipping.address2}</p>}
-              <p>
-                {order.shipping?.city}, {order.shipping?.state}{" "}
-                {order.shipping?.pinCode}
+            <div>
+              <h3 className="font-semibold">Order Time</h3>
+              <p className="text-sm text-gray-600">
+                {formatTimestamp(order.createdAt)}
               </p>
-              <p>{order.shipping?.country}</p>
-              {order.shipping?.phone && <p>Phone: {order.shipping.phone}</p>}
             </div>
           </div>
 
           {/* Products */}
-          <div className="space-y-2">
-            <h3 className="text-lg font-semibold">Products</h3>
-            <div className="border rounded-lg overflow-hidden">
-              <table className="w-full">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-4 py-2 text-left text-sm font-medium text-gray-500">
-                      Product
-                    </th>
-                    <th className="px-4 py-2 text-left text-sm font-medium text-gray-500">
-                      Quantity
-                    </th>
-                    <th className="px-4 py-2 text-right text-sm font-medium text-gray-500">
-                      Price
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200">
-                  {isLoading ? (
-                    <tr>
-                      <td colSpan="3" className="text-center py-4">
-                        Loading product details...
-                      </td>
-                    </tr>
-                  ) : (
-                    productDetails.map((item, index) => (
-                      <tr key={index}>
-                        <td className="px-4 py-3">
-                          <div className="flex items-center gap-3">
-                            {item.image && (
-                              <img
-                                src={item.image}
-                                alt={item.productName}
-                                className="w-12 h-12 object-cover rounded"
-                              />
-                            )}
-                            <div>
-                              <p className="font-medium">{item.productName}</p>
-                              {item.variant && (
-                                <p className="text-sm text-gray-500">
-                                  {item.variant}
-                                </p>
-                              )}
-                            </div>
-                          </div>
-                        </td>
-                        <td className="px-4 py-3">{item.quantity}</td>
-                        <td className="px-4 py-3 text-right">
-                          {new Intl.NumberFormat("en-IN", {
-                            style: "currency",
-                            currency: "INR",
-                          }).format(item.price)}
-                        </td>
-                      </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
+          <div>
+            <h3 className="font-semibold mb-4">Products</h3>
+            {isLoading ? (
+              <div className="text-center py-4">Loading product details...</div>
+            ) : (
+              <div className="space-y-4">
+                {order.products.map((product, idx) => {
+                  const productDetail = productDetails.find(
+                    (p) => p.id === product.productId
+                  );
+                  return (
+                    <div
+                      key={idx}
+                      className="flex gap-4 bg-gray-50 p-4 rounded-lg"
+                    >
+                      <ProductImage
+                        src={product.productImage}
+                        alt={product.productName}
+                        className="h-24 w-24 flex-shrink-0"
+                      />
+                      <div className="space-y-2">
+                        <p className="font-medium">{product.productName}</p>
+                        {product && (
+                          <>
+                            <p className="text-sm text-gray-600">
+                              Type: {product.productType}
+                            </p>
+                            <p className="text-sm text-gray-600">
+                              Price: Rs. {product.price}
+                            </p>
+                            <p className="text-sm text-gray-600">
+                              Quantity: {product.productQty}
+                            </p>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
+          {/* Status */}
+          <div className="flex justify-between items-center bg-gray-50 p-4 rounded-lg">
+            <div>
+              <h3 className="font-semibold">Status</h3>
+              <OrderStatus status={order.status} />
+            </div>
+            <div>
+              <h3 className="font-semibold">Payment</h3>
+              <span className="text-sm text-gray-600">Paid</span>
+            </div>
+          </div>
+
+          {/* Update Status */}
+          <div>
+            <h3 className="font-semibold mb-2">Update Status</h3>
+            <Select
+              value={order.status}
+              onValueChange={async (newStatus) => {
+                try {
+                  const response = await fetch(
+                    "/api/orders/updateOrderStatus",
+                    {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({
+                        orderId: order.orderId,
+                        status: newStatus,
+                      }),
+                    }
+                  );
+
+                  if (!response.ok) {
+                    throw new Error("Failed to update order status");
+                  }
+
+                  const updatedOrder = await response.json();
+                  setSelectedOrder((prevOrder) => ({
+                    ...prevOrder,
+                    status: updatedOrder.status,
+                  }));
+                } catch (error) {
+                  console.error("Error updating order status:", error);
+                }
+              }}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select new status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="pending">Pending</SelectItem>
+                <SelectItem value="processing">Processing</SelectItem>
+                <SelectItem value="completed">Completed</SelectItem>
+                <SelectItem value="cancelled">Cancelled</SelectItem>
+                <SelectItem value="failed">Failed</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Shipping */}
+          <div>
+            <h3 className="font-semibold mb-2">Shipping Address</h3>
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <p className="text-sm text-gray-600">{order.shipping.address1}</p>
+              <p className="text-sm text-gray-600">{order.shipping.address2}</p>
+              <p className="text-sm text-gray-600">{order.shipping.city}</p>
             </div>
           </div>
         </div>
@@ -240,251 +284,265 @@ const OrderDetailsDialog = ({ order, isOpen, onClose, onStatusChange }) => {
   );
 };
 
-const OrderList = ({ orders: initialOrders }) => {
-  const [orders, setOrders] = useState(initialOrders || []);
-  const [filteredOrders, setFilteredOrders] = useState(orders);
+const ProfileOrders = ({ orders: initialOrders }) => {
+  const [orders, setOrders] = useState(initialOrders);
   const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("all");
   const [sortConfig, setSortConfig] = useState({
     key: "createdAt",
     direction: "desc",
   });
+  const [filterStatus, setFilterStatus] = useState("all");
   const [selectedOrder, setSelectedOrder] = useState(null);
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
 
-  const handleStatusChange = (orderId, newStatus) => {
-    setOrders(
-      orders.map((order) =>
-        order.id === orderId ? { ...order, status: newStatus } : order
-      )
+  // Search functionality
+  const handleSearch = (value) => {
+    setSearchTerm(value);
+    const filtered = initialOrders.filter(
+      (order) =>
+        order.products.some((product) =>
+          product.productName.toLowerCase().includes(value.toLowerCase())
+        ) ||
+        order.shippingAddress.city.toLowerCase().includes(value.toLowerCase())
     );
+    setOrders(filtered);
   };
 
-  // Filter and sort orders
-  useEffect(() => {
-    let result = [...orders];
-
-    // Apply search filter
-    if (searchTerm) {
-      result = result.filter(
-        (order) =>
-          order.shipping?.fullName
-            ?.toLowerCase()
-            .includes(searchTerm.toLowerCase()) ||
-          order.razorpayOrderId
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase()) ||
-          order.email?.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-
-    // Apply status filter
-    if (statusFilter !== "all") {
-      result = result.filter(
-        (order) => order.status.toLowerCase() === statusFilter
-      );
-    }
-
-    // Apply sorting
-    result.sort((a, b) => {
-      let aVal = a[sortConfig.key];
-      let bVal = b[sortConfig.key];
-
-      if (sortConfig.key === "amount") {
-        aVal = parseFloat(aVal);
-        bVal = parseFloat(bVal);
-      }
-
-      if (sortConfig.key === "createdAt") {
-        aVal = new Date(aVal).getTime();
-        bVal = new Date(bVal).getTime();
-      }
-
-      if (aVal < bVal) return sortConfig.direction === "asc" ? -1 : 1;
-      if (aVal > bVal) return sortConfig.direction === "asc" ? 1 : -1;
-      return 0;
-    });
-
-    setFilteredOrders(result);
-  }, [orders, searchTerm, statusFilter, sortConfig]);
-
+  // Sorting functionality
   const handleSort = (key) => {
-    setSortConfig((current) => ({
-      key,
-      direction:
-        current.key === key && current.direction === "asc" ? "desc" : "asc",
-    }));
-  };
+    const direction =
+      sortConfig.key === key && sortConfig.direction === "asc" ? "desc" : "asc";
+    setSortConfig({ key, direction });
 
-  const formatDate = (date) => {
-    return new Date(date).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
+    const sortedOrders = [...orders].sort((a, b) => {
+      if (key === "productName") {
+        const aName = a.products[0].productName;
+        const bName = b.products[0].productName;
+        return direction === "asc"
+          ? aName.localeCompare(bName)
+          : bName.localeCompare(aName);
+      }
+      if (key === "createdAt") {
+        const aDate = new Date(a.createdAt.replace("at", ""));
+        const bDate = new Date(b.createdAt.replace("at", ""));
+        return direction === "asc" ? aDate - bDate : bDate - aDate;
+      }
+      return direction === "asc"
+        ? a[key] > b[key]
+          ? 1
+          : -1
+        : a[key] < b[key]
+        ? 1
+        : -1;
     });
+    setOrders(sortedOrders);
   };
 
-  const formatCurrency = (amount) => {
-    return new Intl.NumberFormat("en-IN", {
-      style: "currency",
-      currency: "INR",
-    }).format(amount / 100);
+  // Filtering functionality
+  const handleFilter = (status) => {
+    setFilterStatus(status);
+    if (status === "all") {
+      setOrders(initialOrders);
+    } else {
+      const filtered = initialOrders.filter(
+        (order) => order.status.toLowerCase() === status.toLowerCase()
+      );
+      setOrders(filtered);
+    }
+  };
+
+  // Order detail dialog
+  const openOrderDetail = (order) => {
+    setSelectedOrder(order);
+    setIsDetailOpen(true);
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Order Management</h1>
-          <p className="mt-2 text-gray-600">
-            Track and manage all customer orders
-          </p>
-        </div>
-
-        {/* Filters and Search */}
-        <div className="bg-white p-6 rounded-lg shadow-sm mb-6">
-          <div className="flex flex-col md:flex-row gap-4 justify-between">
-            {/* Search */}
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
-              <input
-                type="text"
-                placeholder="Search by customer name, email or order ID..."
-                className="pl-10 pr-4 py-2 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
-
-            {/* Status Filter */}
-            <div className="flex items-center gap-2">
-              <Filter className="text-gray-400 w-5 h-5" />
-              <select
-                className="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-              >
-                <option value="all">All Status</option>
-                <option value="pending">Pending</option>
-                <option value="processing">Processing</option>
-                <option value="completed">Completed</option>
-                <option value="cancelled">Cancelled</option>
-                <option value="failed">Failed</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        {/* Orders Table - Fixed Structure */}
-        <div className="bg-white rounded-lg shadow-sm overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Order ID
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Date
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Customer
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Amount
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Status
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {filteredOrders.map((order) => (
-                  <tr
-                    key={order.razorpayOrderId}
-                    className="hover:bg-gray-50 cursor-pointer transition-colors"
-                    onClick={() => setSelectedOrder(order)}
-                  >
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">
-                        {order.razorpayOrderId}
-                      </div>
-                      <div className="text-sm text-gray-500">
-                        {order.receiptId}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">
-                        {formatDate(order.createdAt)}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="text-sm font-medium text-gray-900">
-                        {order.shipping?.fullName}
-                      </div>
-                      <div className="text-sm text-gray-500">{order.email}</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">
-                        {formatCurrency(order.amount * 100)}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <OrderStatus status={order.status} />
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+    <Card className="max-w-7xl mx-auto my-8">
+      <CardHeader>
+        <CardTitle className="text-2xl font-bold">My Orders</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="flex flex-col md:flex-row gap-4 mb-6">
+          {/* Search */}
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
+            <Input
+              placeholder="Search orders..."
+              className="pl-10"
+              value={searchTerm}
+              onChange={(e) => handleSearch(e.target.value)}
+            />
           </div>
 
-          {filteredOrders.length === 0 && (
-            <div className="text-center py-12">
-              <p className="text-gray-500">
-                No orders found matching your criteria
-              </p>
-            </div>
-          )}
+          {/* Filter */}
+          <Select value={filterStatus} onValueChange={handleFilter}>
+            <SelectTrigger className="w-[180px]">
+              <Filter className="mr-2 h-4 w-4" />
+              <SelectValue placeholder="Filter by status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Orders</SelectItem>
+              <SelectItem value="completed">Completed</SelectItem>
+              <SelectItem value="processing">Processing</SelectItem>
+              <SelectItem value="pending">Pending</SelectItem>
+              <SelectItem value="cancelled">Cancelled</SelectItem>
+              <SelectItem value="failed">Failed</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
-        {/* Order Details Dialog */}
-        <OrderDetailsDialog
+        {/* Desktop Table */}
+        <div className="hidden md:block">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead
+                  className="cursor-pointer"
+                  onClick={() => handleSort("productName")}
+                >
+                  Product
+                  {sortConfig.key === "productName" &&
+                    (sortConfig.direction === "asc" ? (
+                      <SortAsc className="inline ml-2 h-4 w-4" />
+                    ) : (
+                      <SortDesc className="inline ml-2 h-4 w-4" />
+                    ))}
+                </TableHead>
+                <TableHead>Image</TableHead>
+                <TableHead>Address</TableHead>
+                <TableHead>Order Type</TableHead>
+                <TableHead>Payment</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead
+                  className="cursor-pointer"
+                  onClick={() => handleSort("createdAt")}
+                >
+                  Time
+                  {sortConfig.key === "createdAt" &&
+                    (sortConfig.direction === "asc" ? (
+                      <SortAsc className="inline ml-2 h-4 w-4" />
+                    ) : (
+                      <SortDesc className="inline ml-2 h-4 w-4" />
+                    ))}
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {orders.map((order) => (
+                <TableRow
+                  key={order.orderId}
+                  className="cursor-pointer hover:bg-gray-50"
+                  onClick={() => openOrderDetail(order)}
+                >
+                  <TableCell className="font-medium">
+                    {order.products && order.products.length > 0
+                      ? order.products[0].productName +
+                        (order.products.length === 1
+                          ? ""
+                          : ` + ${order.products.length - 1} more`)
+                      : "No products"}
+                  </TableCell>
+                  <TableCell>
+                    {order.products && order.products.length > 0 && (
+                      <Image
+                        src={order.products[0].productImage}
+                        alt={order.products[0].productName}
+                        width={50}
+                        height={50}
+                        className="rounded-lg"
+                      />
+                    )}
+                  </TableCell>
+                  <TableCell>{order.shipping.city}</TableCell>
+                  <TableCell>Product</TableCell>
+                  <TableCell>Paid</TableCell>
+                  <TableCell>
+                    <OrderStatus status={order.status} />
+                  </TableCell>
+                  <TableCell>{formatTimestamp(order.createdAt)}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+
+        {/* Mobile Cards */}
+        <div className="md:hidden space-y-4">
+          {orders.map((order) => (
+            <div
+              key={order.orderId}
+              className="bg-white p-4 rounded-lg border cursor-pointer"
+              onClick={() => openOrderDetail(order)}
+            >
+              <div className="flex justify-between items-start mb-3">
+                <div>
+                  <p className="font-medium">
+                    {order.products[0].productName +
+                      (order.products.length === 1
+                        ? ""
+                        : ` + ${order.products.length - 1} more`)}
+                  </p>
+                  <p className="text-sm text-gray-500">{order.shipping.city}</p>
+                </div>
+                <OrderStatus status={order.status} />
+              </div>
+              <div className="flex items-center space-x-4">
+                {order.products && order.products.length > 0 && (
+                  <Image
+                    src={order.products[0].productImage}
+                    alt={order.products[0].productName}
+                    width={50}
+                    height={50}
+                    className="rounded-lg"
+                  />
+                )}
+                <div className="text-sm text-gray-500">
+                  {formatTimestamp(order.createdAt)}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {orders.length === 0 && (
+          <div className="text-center py-8 text-gray-500">No orders found</div>
+        )}
+
+        <OrderDetailDialog
           order={selectedOrder}
-          isOpen={!!selectedOrder}
-          onClose={() => setSelectedOrder(null)}
-          onStatusChange={handleStatusChange}
+          open={isDetailOpen}
+          onClose={() => setIsDetailOpen(false)}
         />
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 };
 
-export async function getServerSideProps() {
-  try {
-    const orders = await findAllOrders();
+export async function getServerSideProps({ req }) {
+  const currentUser = (await import("@/lib/server/currentUser")).default;
+  const findAllProfileOrders = (
+    await import("@/pages/api/orders/findAllProfileOrders")
+  ).default;
+
+  const user = await currentUser(req);
+
+  if (!user) {
     return {
-      props: {
-        orders: orders.map((order) => ({
-          ...order,
-          createdAt: order.createdAt || new Date().toISOString(),
-          shipping: order.shipping || {},
-          items: order.items || [],
-        })),
-      },
-    };
-  } catch (error) {
-    console.error("Error in getServerSideProps:", error);
-    return {
-      props: {
-        orders: [],
-        error: {
-          message: error.message,
-        },
+      redirect: {
+        destination: "/login",
+        permanent: false,
       },
     };
   }
+
+  const orders = await findAllProfileOrders(user.email);
+
+  return {
+    props: {
+      orders: orders || [],
+    },
+  };
 }
 
-export default OrderList;
+export default ProfileOrders;

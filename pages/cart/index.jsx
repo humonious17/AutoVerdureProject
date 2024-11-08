@@ -6,7 +6,7 @@ import findCartProducts from "@/lib/server/findCartProducts";
 import { parse } from "cookie";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Trash2 } from "lucide-react";
+import { Trash2, ShoppingCart, ArrowRight } from "lucide-react";
 
 const Cart = ({ products = [] }) => {
   const cartRef = useRef(null);
@@ -16,12 +16,10 @@ const Cart = ({ products = [] }) => {
   const [isRemoving, setIsRemoving] = useState(false);
 
   useEffect(() => {
-    // Update cart items when products prop changes
     setCartItems(products);
   }, [products]);
 
   useEffect(() => {
-    // Calculate subtotal whenever cartItems change
     const newSubtotal = cartItems.reduce((sum, product) => {
       return sum + product.productQty * product.price;
     }, 0);
@@ -39,16 +37,13 @@ const Cart = ({ products = [] }) => {
   const removeCartItem = async (cartObjId) => {
     setIsRemoving(true);
     try {
-      // Assuming you have an API endpoint to remove cart items
-      await fetch(`/api/removeCartItem`, {
+      await fetch(`/api/cart/remove`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ cartObjId }),
       });
-
-      // Remove item from cartItems state
       setCartItems((prevItems) =>
         prevItems.filter((item) => item.cartObjId !== cartObjId)
       );
@@ -59,89 +54,124 @@ const Cart = ({ products = [] }) => {
     }
   };
 
-  // Function to format price with commas for thousands
   const formatPrice = (price) => {
     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
 
   return (
-    <Card className="mt-[70px] sm:mt-[155px] xl:mt-[105px] mb-[131px] sm:mb-[106px] xl:mb-[188px] w-full">
-      {/* Title */}
-      <CardHeader>
-        <CardTitle>
+    <div className="min-h-screen my-20 bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+      <Card className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+        <CardHeader className="border-b border-gray-100">
           <div className="flex items-center justify-between">
-            <h1 className="text-[40px] sm:text-[70px] leading-[48px] sm:leading-[80px] -tracking-[1px] sm:-tracking-[1.75px] font-normal text-primaryGrayscale">
-              Cart
-            </h1>
-            <div className="text-base font-medium text-secondaryGrayscale">
+            <div className="flex items-center gap-3">
+              <ShoppingCart className="h-8 w-8 text-primaryMain" />
+              <CardTitle className="text-3xl font-bold text-gray-900">
+                Your Cart
+              </CardTitle>
+            </div>
+            <div className="text-sm font-medium text-gray-500">
               <Link href="/">
-                <span className="text-primaryMain hover:underline">Home</span>
-              </Link>{" "}
-              / Cart
+                <span className="text-primaryMain hover:text-primaryMain/80 transition-colors">
+                  Home
+                </span>
+              </Link>
+              <span className="mx-2">/</span>
+              <span>Cart</span>
             </div>
           </div>
-        </CardTitle>
-      </CardHeader>
+        </CardHeader>
 
-      <CardContent>
-        {cartItems.length === 0 ? (
-          <div className="mt-[58px] text-center">
-            <p>Your cart is empty</p>
-          </div>
-        ) : (
-          <div className="max-h-[400px] overflow-y-auto">
-            <ul>
-              {cartItems.map((item) => (
-                <li key={item.cartObjId} className="mb-6 flex items-start">
-                  <Image
-                    src={item.productImage}
-                    alt={item.productName}
-                    height={105}
-                    width={105}
-                    className="rounded-md"
-                  />
-                  <div className="ml-8 flex-1">
-                    <p className="text-[16px] font-[550] text-[#000]">
-                      {item.productName}
-                    </p>
-                    <p className="text-[16px] font-[400] text-[#000]">
-                      {item.productQty} x{" "}
-                      <span className="text-[12px] font-[600] text-[#A458FE]">
-                        Rs. {formatPrice(item.price)}
-                      </span>
-                    </p>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => removeCartItem(item.cartObjId)}
-                      disabled={isRemoving}
-                      className="mt-2 text-red-500 hover:text-red-600"
-                    >
-                      <Trash2 className="h-5 w-5" />
-                      Remove
-                    </Button>
+        <CardContent className="p-6">
+          {cartItems.length === 0 ? (
+            <div className="text-center py-12">
+              <ShoppingCart className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+              <p className="text-xl text-gray-600">Your cart is empty</p>
+              <Link href="/">
+                <Button className="mt-6">
+                  Continue Shopping
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
+          ) : (
+            <>
+              <div className="max-h-[480px] overflow-y-auto pr-2 space-y-6">
+                {cartItems.map((item) => (
+                  <div
+                    key={item.cartObjId}
+                    className="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                  >
+                    <div className="relative h-24 w-24 flex-shrink-0">
+                      <Image
+                        src={item.productImage}
+                        alt={item.productName}
+                        fill
+                        className="object-cover rounded-md"
+                      />
+                    </div>
+                    <div className="ml-6 flex-1">
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        {item.productName}
+                      </h3>
+                      <div className="mt-1 flex items-center gap-4">
+                        <span className="text-sm text-gray-600">
+                          Quantity: {item.productQty}
+                        </span>
+                        <span className="text-sm font-medium text-primaryMain">
+                          Rs. {formatPrice(item.price)}
+                        </span>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => removeCartItem(item.cartObjId)}
+                        disabled={isRemoving}
+                        className="mt-2 text-red-500 hover:bg-red-50 hover:text-red-600"
+                      >
+                        <Trash2 className="h-4 w-4 mr-1" />
+                        Remove
+                      </Button>
+                    </div>
+                    <div className="ml-4">
+                      <p className="text-lg font-bold text-primaryMain">
+                        Rs. {formatPrice(item.price * item.productQty)}
+                      </p>
+                    </div>
                   </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+                ))}
+              </div>
 
-        <div className="flex items-center justify-between mt-6">
-          <p className="text-[16px] font-[400] text-[#000]">Subtotal</p>
-          <p className="text-[16px] font-[600] text-[#A458FE]">
-            Rs. {formatPrice(subtotal)}
-          </p>
-        </div>
+              <div className="mt-8 border-t border-gray-100 pt-6">
+                <div className="flex items-center justify-between mb-6">
+                  <p className="text-lg font-medium text-gray-900">Subtotal</p>
+                  <p className="text-2xl font-bold text-primaryMain">
+                    Rs. {formatPrice(subtotal)}
+                  </p>
+                </div>
 
-        <div className="flex justify-center mt-6">
-          <Button onClick={handleCartGuestCheckout} className="mr-4">
-            Guest Checkout
-          </Button>
-          <Button onClick={handleCartMemberCheckout}>Member Checkout</Button>
-        </div>
-      </CardContent>
-    </Card>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Button
+                    onClick={handleCartGuestCheckout}
+                    className="flex-1 py-6 text-lg bg-primaryMain hover:bg-primaryMain/90"
+                  >
+                    Guest Checkout
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
+                  <Button
+                    onClick={handleCartMemberCheckout}
+                    variant="outline"
+                    className="flex-1 py-6 text-lg border-primaryMain text-primaryMain hover:bg-primaryMain hover:text-white"
+                  >
+                    Member Checkout
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
+                </div>
+              </div>
+            </>
+          )}
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 

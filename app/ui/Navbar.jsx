@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation"; // Use this import for `useRouter` in the app directory
 import React, { useState } from "react";
 import { navItems } from "../constant/data";
 import { usePathname } from "next/navigation";
@@ -8,6 +9,9 @@ import { PiLineVerticalLight } from "react-icons/pi";
 
 const Navbar = () => {
   const [searchText, setSearchText] = useState("");
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [logoutMessage, setLogoutMessage] = useState("");  
+  const router = useRouter();
 
   const handleClear = () => {
     setSearchText("");
@@ -15,8 +19,45 @@ const Navbar = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    // Implement search functionality here
     console.log("Searching for:", searchText);
+  };
+
+  const confirmLogout = async () => {
+    try {
+      const response = await fetch("/api/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include", // Include cookies for session-based auth
+      });
+
+      if (!response.ok) throw new Error("Logout failed");
+
+      // Clear tokens or user-related data
+      localStorage.removeItem("authToken");
+      sessionStorage.removeItem("userSession");
+
+      // Show success message
+      setLogoutMessage("You have successfully logged out.");
+
+      // Redirect to login after 2 seconds
+      setTimeout(() => {
+        setLogoutMessage(""); // Clear the message
+        router.push("/pwdLogin");
+      }, 2000);
+    } catch (error) {
+      console.error("Error during logout:", error);
+      alert("Something went wrong while logging out.");
+    }
+  };
+
+  const handleSignOut = () => {
+    setShowLogoutModal(true); // Show confirmation modal
+  };
+
+  const closeLogoutModal = () => {
+    setShowLogoutModal(false);
   };
 
   let pathname = usePathname();
@@ -177,7 +218,46 @@ const Navbar = () => {
               height={24.53}
             />
           </Link>
+          {/* Sign Out Button */}
+          <button onClick={handleSignOut} className="flex items-center">
+            <Image
+              src="/signout.svg"
+              alt="sign out"
+              width={24.53}
+              height={24.53}
+            />
+          </button>
         </div>
+
+        {/* Logout Modal */}
+        {showLogoutModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+            <div className="bg-white p-6 rounded-lg text-center">
+              <p className="text-lg mb-4">Are you sure you want to log out?</p>
+              <div className="flex justify-center gap-4">
+                <button
+                  onClick={confirmLogout}
+                  className="px-4 py-2 bg-red-500 text-white rounded-lg"
+                >
+                  Yes
+                </button>
+                <button
+                  onClick={closeLogoutModal}
+                  className="px-4 py-2 bg-gray-300 rounded-lg"
+                >
+                  No
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Logout Success Message */}
+        {logoutMessage && (
+          <div className="fixed top-0 left-0 w-full bg-green-500 text-white text-center py-3">
+            {logoutMessage}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -33,7 +33,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import Reviewfom from "@/pages/Reviewfom";
+import Image from "next/image";
 
 // Utility function to format the timestamp
 const formatTimestamp = (timestamp) => {
@@ -468,7 +468,6 @@ const ProfileOrders = ({ orders: initialOrders }) => {
           onClose={() => setIsDetailOpen(false)}
         />
       </CardContent>
-      <Reviewfom />
     </Card>
   );
 };

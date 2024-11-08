@@ -379,8 +379,8 @@ const ProductForm = () => {
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 >
                   <option value="plants">Plants</option>
-                  <option value="zenpot">Zenpot</option>
-                  <option value="grobox">Grobox</option>
+                  <option value="zenpot">Planters</option>
+                  <option value="grobox">Flowers</option>
                   <option value="accessory">Accessory</option>
                 </select>
               </div>

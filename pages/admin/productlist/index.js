@@ -32,7 +32,6 @@ const Index = () => {
   };
 
   const handleEditProduct = (product) => {
-    setEditingProduct(product);
   };
 
   const handleDeleteProduct = async (productId) => {

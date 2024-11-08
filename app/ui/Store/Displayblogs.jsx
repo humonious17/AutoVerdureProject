@@ -1,18 +1,18 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import BlogCard from '@/pages/Blogs/BlogCard'; // Adjust the path as needed
 import Link from 'next/link';
+import Image from 'next/image';
 
-// Accept title and description as props
 export default function Blogs({ title, description }) {
   const [blogs, setBlogs] = useState([]);
-  const visibleBlogs = 3; // Set to show only 3 blogs
+  const containerRef = useRef(null);
 
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const res = await fetch('/api/addblogs'); // Fetch from your API route
+        const res = await fetch('/api/addblogs?limit=6'); // Fetch 6 blogs
         const data = await res.json();
-        setBlogs(data);
+        setBlogs(data.slice(0, 6)); // Limit to 6 blogs
       } catch (error) {
         console.error("Error fetching blogs:", error);
       }
@@ -21,18 +21,61 @@ export default function Blogs({ title, description }) {
     fetchBlogs();
   }, []);
 
+  // Scroll Left Function
+  const scrollLeft = () => {
+    if (containerRef.current) {
+      const cardWidth = containerRef.current.children[0].offsetWidth;
+      containerRef.current.scrollBy({ left: -cardWidth, behavior: 'smooth' });
+    }
+  };
+
+  // Scroll Right Function
+  const scrollRight = () => {
+    if (containerRef.current) {
+      const cardWidth = containerRef.current.children[0].offsetWidth;
+      containerRef.current.scrollBy({ left: cardWidth, behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className="container mx-auto p-12 text-center">
-      <h2 className="text-4xl font-medium mb-4">{title}</h2> {/* Use title prop */}
+      <h2 className="text-4xl font-medium mb-4">{title}</h2>
       <p className="text-gray-600 max-w-4xl mx-auto mb-10 line-clamp-2">
-        {description} {/* Use description prop */}
+        {description}
       </p>
-      
-      {/* Adjusted grid classes for responsive behavior */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-10">
-        {blogs.slice(0, visibleBlogs).map((blog) => (
-          <BlogCard key={blog.id} blog={blog} />
-        ))}
+
+      {/* Scrollable Blog Cards Container with Hidden Scroll Bar */}
+      <div className="overflow-hidden relative">
+        <div
+          className="flex gap-4 overflow-x-auto no-scrollbar"
+          ref={containerRef}
+        >
+          {blogs.map((blog) => (
+            <div key={blog.id} className="flex-none w-1/3">
+              <BlogCard blog={blog} />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Scroll Buttons */}
+      <div className="mt-8 w-full flex gap-10 justify-center items-center">
+        <Image
+          src="/leftArrow1.svg"
+          alt="Scroll left"
+          width={13}
+          height={26}
+          onClick={scrollLeft}
+          className="cursor-pointer"
+        />
+        <Image
+          src="/rightArrow1.svg"
+          alt="Scroll right"
+          width={13}
+          height={26}
+          onClick={scrollRight}
+          className="cursor-pointer"
+        />
       </div>
 
       {/* Centered Explore More Button */}

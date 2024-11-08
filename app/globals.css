@@ -142,6 +142,16 @@ input[type="number"] {
     top: 574px;
   }
 }
+/* Hide scroll bar in most browsers */
+.no-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}
+
 
 @keyframes shrinkWidthLeft {
   0% {

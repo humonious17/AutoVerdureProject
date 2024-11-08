@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-undef */
 /* eslint-disable @next/next/no-img-element */
 import React, { useState, useEffect } from "react";
 import { Search, SortAsc, SortDesc, Filter } from "lucide-react";
@@ -32,7 +33,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import Image from "next/image";
+import Reviewfom from "@/pages/Reviewfom";
 
 // Utility function to format the timestamp
 const formatTimestamp = (timestamp) => {
@@ -70,7 +71,9 @@ const OrderStatus = ({ status, className = "" }) => {
     failed: { icon: AlertCircle, color: "text-gray-500", bg: "bg-gray-50" },
   };
 
-  const config = status ? statusConfig[status.toLowerCase()] : statusConfig.pending;
+  const config = status
+    ? statusConfig[status.toLowerCase()]
+    : statusConfig.pending;
   const StatusIcon = config.icon;
 
   return (
@@ -157,7 +160,9 @@ const OrderDetailDialog = ({ order, open, onClose }) => {
             </div>
             <div>
               <h3 className="font-semibold">Order Time</h3>
-              <p className="text-sm text-gray-600">{formatTimestamp(order.createdAt)}</p>
+              <p className="text-sm text-gray-600">
+                {formatTimestamp(order.createdAt)}
+              </p>
             </div>
           </div>
 
@@ -169,9 +174,14 @@ const OrderDetailDialog = ({ order, open, onClose }) => {
             ) : (
               <div className="space-y-4">
                 {order.products.map((product, idx) => {
-                  const productDetail = productDetails.find((p) => p.id === product.productId);
+                  const productDetail = productDetails.find(
+                    (p) => p.id === product.productId
+                  );
                   return (
-                    <div key={idx} className="flex gap-4 bg-gray-50 p-4 rounded-lg">
+                    <div
+                      key={idx}
+                      className="flex gap-4 bg-gray-50 p-4 rounded-lg"
+                    >
                       <ProductImage
                         src={product.productImage}
                         alt={product.productName}
@@ -181,9 +191,15 @@ const OrderDetailDialog = ({ order, open, onClose }) => {
                         <p className="font-medium">{product.productName}</p>
                         {product && (
                           <>
-                            <p className="text-sm text-gray-600">Type: {product.productType}</p>
-                            <p className="text-sm text-gray-600">Price: Rs. {product.price}</p>
-                            <p className="text-sm text-gray-600">Quantity: {product.productQty}</p>
+                            <p className="text-sm text-gray-600">
+                              Type: {product.productType}
+                            </p>
+                            <p className="text-sm text-gray-600">
+                              Price: Rs. {product.price}
+                            </p>
+                            <p className="text-sm text-gray-600">
+                              Quantity: {product.productQty}
+                            </p>
                           </>
                         )}
                       </div>
@@ -452,6 +468,7 @@ const ProfileOrders = ({ orders: initialOrders }) => {
           onClose={() => setIsDetailOpen(false)}
         />
       </CardContent>
+      <Reviewfom />
     </Card>
   );
 };

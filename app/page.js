@@ -482,7 +482,7 @@ export default function Home() {
             <div className="w-full md:w-[405px] xl:w-[646.67px] flex flex-col justify-center items-center md:justify-start md:items-start">
               <Image
                 className="rounded-[16px]"
-                src="/waterRetention.png"
+                src="/image.png"
                 alt="image"
                 width={646.67}
                 height={300}

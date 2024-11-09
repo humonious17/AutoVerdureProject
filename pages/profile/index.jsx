@@ -1,13 +1,12 @@
-
 "use client";
 import React, { useState } from "react";
 import { FiEdit } from "react-icons/fi";
-import { parse } from 'cookie';
-import { useRouter } from 'next/router';
+import { parse } from "cookie";
+import { useRouter } from "next/router";
 
 const Profile = (props) => {
   const [formData, setFormData] = useState(props.user);
-  const [buttonText, setButtonText] = useState('Update Profile');
+  const [buttonText, setButtonText] = useState("Update Profile");
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [logoutMessage, setLogoutMessage] = useState("");
   const [editField, setEditField] = useState({
@@ -36,20 +35,20 @@ const Profile = (props) => {
   };
 
   const handleEditProfile = async () => {
-    setButtonText('Updating Profile...');
-    const result = await fetch('/api/editProfile', {
-      method: 'POST',
+    setButtonText("Updating Profile...");
+    const result = await fetch("/api/editProfile", {
+      method: "POST",
       body: JSON.stringify(formData),
     });
 
     if (result.ok) {
-      setButtonText('Updated Profile');
+      setButtonText("Updated Profile");
       window.location.href = "/profile";
     } else {
-      setButtonText('Update Profile');
+      setButtonText("Update Profile");
     }
   };
-  
+
   const confirmLogout = async () => {
     try {
       const response = await fetch("/api/logout", {
@@ -89,24 +88,77 @@ const Profile = (props) => {
   };
 
   const styles = {
-    body: { display: 'flex', justifyContent: 'center', marginTop: '5%', alignItems: 'center' },
-    container: {  flexDirection: 'column', justifyContent: 'center', height: '100vh', fontFamily: 'Arial, sans-serif' },
-    form: { padding: '20px', width: '560px', display: 'flex', flexDirection: 'column', justifyContent: 'center', margin: 'auto' },
-    row: { display: 'flex', alignItems: 'center', marginBottom: '15px' },
-    inputContainer: { flex: 1, position: 'relative' },
-    label: { fontWeight: '400', fontSize: '18px', marginBottom: '5px' },
-    input: { width: '100%', padding: '10px', border: '1px solid #ccc', borderRadius: '25px', fontSize: '14px' },
-    button: { width: '100%', padding: '10px 0', border: 'none', borderRadius: '25px', backgroundColor: '#9A5CF5', color: 'white', fontSize: '16px', cursor: 'pointer', marginTop: '10px' },
-    logoutButton: { width: '100%', padding: '10px 0', border: 'none', borderRadius: '25px', backgroundColor: '#ff4d4d', color: 'white', fontSize: '16px', cursor: 'pointer', marginTop: '10px' },
-    editIcon: { position: 'relative', top: '50%', right: '10px', cursor: 'pointer', left: '10%', width: '20px', height: '20px' },
+    body: {
+      display: "flex",
+      justifyContent: "center",
+      marginTop: "5%",
+      alignItems: "center",
+    },
+    container: {
+      flexDirection: "column",
+      justifyContent: "center",
+      height: "100vh",
+      fontFamily: "Arial, sans-serif",
+    },
+    form: {
+      padding: "20px",
+      width: "560px",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      margin: "auto",
+    },
+    row: { display: "flex", alignItems: "center", marginBottom: "15px" },
+    inputContainer: { flex: 1, position: "relative" },
+    label: { fontWeight: "400", fontSize: "18px", marginBottom: "5px" },
+    input: {
+      width: "100%",
+      padding: "10px",
+      border: "1px solid #ccc",
+      borderRadius: "25px",
+      fontSize: "14px",
+    },
+    button: {
+      width: "100%",
+      padding: "10px 0",
+      border: "none",
+      borderRadius: "25px",
+      backgroundColor: "#9A5CF5",
+      color: "white",
+      fontSize: "16px",
+      cursor: "pointer",
+      marginTop: "10px",
+    },
+    logoutButton: {
+      width: "100%",
+      padding: "10px 0",
+      border: "none",
+      borderRadius: "25px",
+      backgroundColor: "#ff4d4d",
+      color: "white",
+      fontSize: "16px",
+      cursor: "pointer",
+      marginTop: "10px",
+    },
+    editIcon: {
+      position: "relative",
+      top: "50%",
+      right: "10px",
+      cursor: "pointer",
+      left: "10%",
+      width: "20px",
+      height: "20px",
+    },
   };
 
   return (
     <div style={styles.container}>
       <form onSubmit={handleSubmit} style={styles.form}>
         <div style={styles.row}>
-          <div style={{ ...styles.inputContainer, marginRight: '10px' }}>
-            <label htmlFor="firstName" style={styles.label}>First Name</label>
+          <div style={{ ...styles.inputContainer, marginRight: "10px" }}>
+            <label htmlFor="firstName" style={styles.label}>
+              First Name
+            </label>
             <input
               type="text"
               name="firstName"
@@ -117,7 +169,9 @@ const Profile = (props) => {
             />
           </div>
           <div style={styles.inputContainer}>
-            <label htmlFor="lastName" style={styles.label}>Last Name</label>
+            <label htmlFor="lastName" style={styles.label}>
+              Last Name
+            </label>
             <input
               type="text"
               name="lastName"
@@ -126,31 +180,57 @@ const Profile = (props) => {
               style={styles.input}
               disabled={!editField.name}
             />
-          
           </div>
-          <FiEdit style={styles.editIcon} onClick={() => handleEdit('name')} />
+          <FiEdit style={styles.editIcon} onClick={() => handleEdit("name")} />
         </div>
 
         <div style={styles.row}>
           <div style={styles.inputContainer}>
-            <label htmlFor="email" style={styles.label}>Email</label>
-            <input type="email" name="email" value={formData.email} onChange={handleChange} style={styles.input} disabled={!editField.email}  />
+            <label htmlFor="email" style={styles.label}>
+              Email
+            </label>
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              style={styles.input}
+              disabled={!editField.email}
+            />
           </div>
-          <FiEdit style={styles.editIcon} onClick={() => handleEdit('email')} />
+          <FiEdit style={styles.editIcon} onClick={() => handleEdit("email")} />
         </div>
 
         <div style={styles.row}>
           <div style={styles.inputContainer}>
-            <label htmlFor="phone" style={styles.label}>Phone</label>
-            <input type="tel" name="phone" value={formData.phone} onChange={handleChange} style={styles.input} disabled={!editField.phone} />
+            <label htmlFor="phone" style={styles.label}>
+              Phone
+            </label>
+            <input
+              type="tel"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              style={styles.input}
+              disabled={!editField.phone}
+            />
           </div>
-          <FiEdit style={styles.editIcon} onClick={() => handleEdit('phone')} />
+          <FiEdit style={styles.editIcon} onClick={() => handleEdit("phone")} />
         </div>
 
         <div style={styles.row}>
           <div style={styles.inputContainer}>
-            <label htmlFor="avPoints" style={styles.label}>AV Points</label>
-            <input type="number" name="avPoints" value={formData.avPoints} onChange={handleChange} style={styles.input} disabled />
+            <label htmlFor="avPoints" style={styles.label}>
+              AV Points
+            </label>
+            <input
+              type="number"
+              name="avPoints"
+              value={formData.avPoints}
+              onChange={handleChange}
+              style={styles.input}
+              disabled
+            />
           </div>
         </div>
 
@@ -160,7 +240,15 @@ const Profile = (props) => {
         </button>
 
         {/* Logout Button */}
-        <button type="button" style={styles.logoutButton} onClick={openLogoutModal}>
+        <button
+          type="button"
+          style={{
+            ...styles.logoutButton,
+            backgroundColor: "black",
+            color: "white",
+          }}
+          onClick={openLogoutModal}
+        >
           Log Out
         </button>
 
@@ -172,7 +260,14 @@ const Profile = (props) => {
               <div className="flex justify-center gap-4">
                 <button
                   onClick={confirmLogout}
-                  className="px-4 py-2 bg-red-500 text-white rounded-lg"
+                  style={{
+                    backgroundColor: "#9A5CF5",
+                    color: "white",
+                    padding: "8px 16px",
+                    borderRadius: "8px",
+                    border: "none",
+                    cursor: "pointer",
+                  }}
                 >
                   Yes
                 </button>
@@ -207,11 +302,13 @@ export async function getServerSideProps({ req, res }) {
     const sessionToken = tokens.sessionToken;
 
     if (sessionToken) {
-      const usersRef = db.collection('users');
-      const querySnapshot = await usersRef.where('sessionToken', '==', sessionToken).get();
+      const usersRef = db.collection("users");
+      const querySnapshot = await usersRef
+        .where("sessionToken", "==", sessionToken)
+        .get();
 
       const users = [];
-      querySnapshot.forEach(doc => {
+      querySnapshot.forEach((doc) => {
         users.push({ id: doc.id, ...doc.data() });
       });
 
@@ -219,15 +316,15 @@ export async function getServerSideProps({ req, res }) {
       if (!user) {
         return {
           redirect: {
-            destination: '/signin',
+            destination: "/signin",
             permanent: false,
           },
         };
       }
 
       const parsedUser = {
-        firstName: user.username.split(' ')[0],
-        lastName: user.username.split(' ')[1],
+        firstName: user.username.split(" ")[0],
+        lastName: user.username.split(" ")[1],
         email: user.email,
         phone: user.phone,
         avPoints: user.avPoints || 0,
@@ -239,7 +336,7 @@ export async function getServerSideProps({ req, res }) {
     } else {
       return {
         redirect: {
-          destination: '/signin',
+          destination: "/signin",
           permanent: false,
         },
       };
@@ -247,7 +344,7 @@ export async function getServerSideProps({ req, res }) {
   } else {
     return {
       redirect: {
-        destination: '/signin',
+        destination: "/signin",
         permanent: false,
       },
     };

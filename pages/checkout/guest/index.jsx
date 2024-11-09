@@ -22,7 +22,7 @@ const importScript = (src) => {
     }
   `;
   document.head.appendChild(credScript);
-  
+
   const script = document.createElement("script");
   script.src = src;
   script.async = true;
@@ -65,7 +65,7 @@ const GuestCheckout = (props) => {
   const router = useRouter();
   const [error, setError] = useState(false);
   const [formData, setFormData] = useState({
-    email: '',
+    email: "",
   });
 
   useEffect(() => {
@@ -83,14 +83,14 @@ const GuestCheckout = (props) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (formData.email === '') {
-      setError('Please enter your email');
+    if (formData.email === "") {
+      setError("Please enter your email");
       return;
     }
     setError(false);
     // Replace the dispatch action with local storage or similar logic
-    localStorage.setItem('userEmail', formData.email);
-    router.push('/checkout/shipping');
+    localStorage.setItem("userEmail", formData.email);
+    router.push("/checkout/shipping");
   };
 
   return (

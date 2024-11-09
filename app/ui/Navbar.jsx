@@ -9,7 +9,7 @@ import { PiLineVerticalLight } from "react-icons/pi";
 
 const Navbar = () => {
   const [searchText, setSearchText] = useState("");
-  
+
   const router = useRouter();
 
   const handleClear = () => {
@@ -20,8 +20,6 @@ const Navbar = () => {
     e.preventDefault();
     console.log("Searching for:", searchText);
   };
-
- 
 
   const handleSignOut = () => {
     setShowLogoutModal(true); // Show confirmation modal
@@ -189,10 +187,7 @@ const Navbar = () => {
               height={24.53}
             />
           </Link>
-          
         </div>
-
-       
       </div>
     </div>
   );

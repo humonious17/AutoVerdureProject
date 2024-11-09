@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import AddProduct from "./addproduct";
+import EditProductForm from "./EditProductForm";
 
 const Index = () => {
   const [products, setProducts] = useState([]);
@@ -32,6 +33,7 @@ const Index = () => {
   };
 
   const handleEditProduct = (product) => {
+    setEditingProduct(product);
   };
 
   const handleDeleteProduct = async (productId) => {
@@ -139,74 +141,6 @@ const Index = () => {
       ))}
     </div>
   );
-
-  const EditProductForm = ({ product, onSave, onCancel }) => {
-    const [formData, setFormData] = useState({ ...product });
-
-    const handleChange = (e) => {
-      const { name, value } = e.target;
-      setFormData({ ...formData, [name]: value });
-    };
-
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      onSave(formData);
-    };
-
-    return (
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Product Name
-          </label>
-          <input
-            type="text"
-            name="productName"
-            value={formData.productName}
-            onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Product Price
-          </label>
-          <input
-            type="number"
-            name="productPrice"
-            value={formData.productPrice}
-            onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Product Type
-          </label>
-          <input
-            type="text"
-            name="productType"
-            value={formData.productType}
-            onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-          />
-        </div>
-        <div className="flex gap-2">
-          <Button type="submit" variant="primary" className="flex-1">
-            Save
-          </Button>
-          <Button
-            type="button"
-            variant="outline"
-            className="flex-1"
-            onClick={onCancel}
-          >
-            Cancel
-          </Button>
-        </div>
-      </form>
-    );
-  };
 
   return (
     <div className="min-h-screen bg-gray-50 p-8">

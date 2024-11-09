@@ -51,22 +51,22 @@ export const support = [
 
 export const storeNavItems = [
   { title: "all", url: "/store" },
-  { title: "zenpot", url: "/store/zenpot" },
-  { title: "grobox", url: "/store/grobox" },
+  { title: "Planters", url: "/store/zenpot" },
+  { title: "Flowers", url: "/store/grobox" },
   { title: "plants", url: "/store/plants" },
   { title: "accessory", url: "/store/accessory" },
 ];
 
 export const collections = [
   {
-    title: "Zenpot",
+    title: "Planters",
     description:
       "zenpot nurtures your plant while adding a touch of serenity to your living space.",
     image:
       "https://res.cloudinary.com/dgzqokaju/image/upload/v1721321551/RJP00508_bbqtrh.jpg",
   },
   {
-    title: "Grobox",
+    title: "Flowers",
     description:
       "Elevate your gardening game and enjoy a bountiful harvest year round.",
     image:

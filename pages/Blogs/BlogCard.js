@@ -43,7 +43,7 @@ const BlogCard = ({ blog, className }) => {
           
               
             <Image
-              src='/image.png'
+              src='/image1.png'
               alt={`Profile picture of ${blog.authorName}`} // Descriptive alt text
               width={32}
               height={32}

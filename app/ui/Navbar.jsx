@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation"; // Use this import for `useRouter` in the app directory
 import React, { useState } from "react";
 import { navItems } from "../constant/data";
 import { usePathname } from "next/navigation";
@@ -8,6 +9,8 @@ import { PiLineVerticalLight } from "react-icons/pi";
 
 const Navbar = () => {
   const [searchText, setSearchText] = useState("");
+  
+  const router = useRouter();
 
   const handleClear = () => {
     setSearchText("");
@@ -15,8 +18,17 @@ const Navbar = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    // Implement search functionality here
     console.log("Searching for:", searchText);
+  };
+
+ 
+
+  const handleSignOut = () => {
+    setShowLogoutModal(true); // Show confirmation modal
+  };
+
+  const closeLogoutModal = () => {
+    setShowLogoutModal(false);
   };
 
   let pathname = usePathname();
@@ -177,7 +189,10 @@ const Navbar = () => {
               height={24.53}
             />
           </Link>
+          
         </div>
+
+       
       </div>
     </div>
   );

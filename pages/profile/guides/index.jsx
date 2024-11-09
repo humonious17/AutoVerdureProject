@@ -1,18 +1,43 @@
-import React from "react";
-import GuideCard from "@/app/ui/GuideCard.jsx/GuideCard";
-import { guides } from "@/app/constant/data";
+import { useState, useEffect } from 'react';
+import BlogCard from '@/pages/Blogs/BlogCard'; // Adjust the path as needed
 
-const Guides = () => {
+export default function Blogs() {
+  const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(true); // Add loading state
+
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        setLoading(true); // Start loading
+        const res = await fetch('/api/addblogs'); // Fetch from your API route
+        const data = await res.json();
+        setBlogs(data);
+      } catch (error) {
+        console.error("Error fetching blogs:", error);
+      } finally {
+        setLoading(false); // End loading
+      }
+    };
+
+    fetchBlogs();
+  }, []);
+
   return (
-    <div className="pt-20 pb-[132px] md:py-[102px] xl:pt-[90px] xl:pb-[70px] px-4 md:px-[70px] xl:px-[120px] 2xl:px-[250px] bg-[#FFFCF8] w-full flex flex-col justify-center items-center">
-      {/* All Guides */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-[41px] sm:gap-y-[57px] xl:gap-y-[73px] sm:gap-x-[55px] xl:gap-x-[41px]">
-        {guides.map((guide, index) => (
-          <GuideCard href="/profile/guides/123" guide={guide} key={index} />
-        ))}
-      </div>
+    <div className="container mx-auto p-6">
+      <h1 className="text-2xl font-bold mb-4">Blogs</h1>
+
+      {/* Conditional rendering based on loading and blogs state */}
+      {loading ? (
+        <p>Loading blogs...</p> // Show loading message or spinner here
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          {blogs.length > 0 ? (
+            blogs.map((blog) => <BlogCard key={blog.id} blog={blog} />)
+          ) : (
+            <p>No blogs available</p>
+          )}
+        </div>
+      )}
     </div>
   );
-};
-
-export default Guides;
+}

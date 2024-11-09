@@ -360,7 +360,7 @@ const ProfileOrders = ({ orders: initialOrders }) => {
   return (
     <Card className="max-w-7xl mx-auto my-8">
       <CardHeader>
-        <CardTitle className="text-2xl font-bold">My Orders</CardTitle>
+        <CardTitle className="text-2xl font-bold">Order Management</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col md:flex-row gap-4 mb-6">

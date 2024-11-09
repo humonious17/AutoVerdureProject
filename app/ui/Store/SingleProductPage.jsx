@@ -13,7 +13,6 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import Reviewfom from "@/pages/Reviewfom";
 
-
 const SingleProductPage = ({ productData, allProducts }) => {
   useEffect(() => {
     const script1 = document.createElement("script");
@@ -632,49 +631,31 @@ const SingleProductPage = ({ productData, allProducts }) => {
               </div>
 
               {/* Product Finish */}
-              <div>
-                <p className="text-sm font-semibold mb-2">Finish</p>
-
-                <div className="flex gap-4">
-                  {/* Matt Option */}
-                  <button
-                    onClick={() => setStyle("Matt")}
-                    className={`px-4 py-2 rounded-full transition-all duration-300 ${
-                      style === "Matt"
-                        ? "bg-[#9A5CF5] text-white font-bold border border-black"
-                        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                    }`}
-                  >
-                    Matt
-                  </button>
-
-                  {/* Gloss Option */}
-                  <button
-                    onClick={() => setStyle("Gloss")}
-                    className={`px-4 py-2 rounded-full transition-all duration-300 ${
-                      style === "Gloss"
-                        ? "bg-[#9A5CF5] text-white font-bold border border-black"
-                        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                    }`}
-                  >
-                    Gloss
-                  </button>
-
-                  {/* Art Option */}
-                  <button
-                    onClick={() => setStyle("Art")}
-                    className={`px-4 py-2 rounded-full transition-all duration-300 ${
-                      style === "Art"
-                        ? "bg-[#9A5CF5] text-white font-bold border border-black"
-                        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                    }`}
-                  >
-                    Art
-                  </button>
+              <div className="mt-[22px] w-full flex flex-col gap-8 sm:gap-6">
+                <div>
+                  <p className="text-sm font-semibold mb-2">Finish</p>
+                  <div className="mt-[12px] w-[200px] flex gap-4">
+                    {["Matt", "Gloss", "Art"].map((finishOption) =>
+                      productData[finishOption.toLowerCase()] === "true" ? (
+                        <button
+                          key={finishOption}
+                          onClick={() => setStyle(finishOption)} // Call setStyle on click
+                          className={`px-4 py-2 rounded-full cursor-pointer flex justify-center items-center transition-transform duration-300 ease-in-out ${
+                            style === finishOption
+                              ? "bg-[#9A5CF5] text-[#fff] shadow-lg transform scale-105"
+                              : "bg-[#9A5CF5] bg-opacity-20 hover:bg-opacity-100 text-gray hover:text-[#fff] hover:shadow-md"
+                          }`}
+                        >
+                          <p className="uppercase font-semibold">
+                            {finishOption.toLowerCase()}
+                          </p>
+                        </button>
+                      ) : null
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
-
             {/* Discount Card */}
             <div className="mt-[37.5px] sm:mt-6 w-full flex flex-col gap-6 p-2 xl:p-5 rounded-xl border-[1px] bg-primaryMain bg-opacity-10 border-primaryMain">
               <div className="w-full flex justify-between items-center">
@@ -1118,7 +1099,6 @@ const SingleProductPage = ({ productData, allProducts }) => {
             <Testimonial />
             <Testimonial />
             <Testimonial />
-            
           </div>
         </div>
       </div>

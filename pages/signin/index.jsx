@@ -125,7 +125,7 @@ const Signin = (prop) => {
         <div className="mt-[42px] sm:mt-[52px] w-full flex flex-col justify-start sm:flex-row gap-y-4 sm:gap-x-4">
           <div
             id="g_id_onload"
-            data-client_id="704145836182-04mlgm7nhg2n4sjqno7vlh172427g778.apps.googleusercontent.com"
+            data-client_id="39593396169-ppn7dc7v4huovmuromku2k01s26kngfa.apps.googleusercontent.com"
             data-context="signin"
             data-ux_mode="popup"
             data-callback="handleCredentialResponse"

@@ -63,7 +63,7 @@ export default async function handler(req, res) {
       const decodedToken = jwt.decode(data.credential, keys[0].n);
       if (
         decodedToken.aud !==
-        "704145836182-04mlgm7nhg2n4sjqno7vlh172427g778.apps.googleusercontent.com"
+        "39593396169-ppn7dc7v4huovmuromku2k01s26kngfa.apps.googleusercontent.com"
       ) {
         return res.status(401).json({ error: "Invalid token" });
       }

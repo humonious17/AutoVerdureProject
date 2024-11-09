@@ -128,25 +128,25 @@ export default function Home() {
         />
       </div>
       <div className="w-full h-[776px] absolute top-0 right-[20px] bg-transparent">
-        <div className="h-full w-full relative">
+      <div className="h-full w-full relative overflow-hidden">
           <Image
             className="w-full h-full hidden xl:flex top-0"
             style={{
               width: "100%",
               maxWidth: "100%",
-              transform: "scale(1)",
+              transform: "translateX(28px)",
             }}
-            src="/bgImage3.png"
+            src="/bgimggg.png"
             alt="bgImage"
             width={1550}
             height={776}
-          />
+          /> 
           <div
-            className="h-[100px] w-[20px] absolute z-15"
+            className="h-[90px] w-[10px] absolute z-15"
             style={{
-              height: "579px",
-              width: "20px",
-              marginLeft: "27%",
+              height: "560px",
+              width: "10px",
+              marginLeft: "23.5%",
               background: "#FFFCF8",
               top: "0px",
               animation: "shrinkHeight 2s forwards",
@@ -154,11 +154,11 @@ export default function Home() {
             }}
           ></div>
           <div
-            className="h-[100px] w-[20px] absolute z-15"
+            className="h-[90px] w-[20px] absolute z-15"
             style={{
-              height: "574px",
-              width: "10px",
-              marginLeft: "82.65%",
+              height: "495px",
+              width: "8px",
+              marginLeft: "84.35%",
               background: "#FFFCF8",
               top: "0px",
               animation: "shrinkHeightRight 2s forwards",
@@ -170,7 +170,7 @@ export default function Home() {
             style={{
               background: "#FFFCF8",
               top: "395px",
-              height: "10px",
+              height: "5px",
               width: "57px",
               marginLeft: "23.4%",
               animation: "shrinkWidthLeft 1.5s forwards",
@@ -182,7 +182,7 @@ export default function Home() {
             style={{
               background: "#FFFCF8",
               top: "394px",
-              height: "10px",
+              height: "5px",
               width: "57px",
               marginLeft: "82.9%",
               animation: "shrinkWidthRight 1.5s forwards",
@@ -209,6 +209,7 @@ export default function Home() {
                 title={collection.title}
                 description={collection.description}
                 image={collection.image}
+                video={collection.video}
               />
             </div>
           ))}
@@ -358,19 +359,19 @@ export default function Home() {
   <div className="w-[240px] h-[240px] flex flex-col justify-center items-center relative bottom-[90px] left-[160px] rounded-full bg-[#F3F0F1] border-[3px] border-primaryMain overflow-hidden">
     <Image
       className="object-cover"
-      src="/pest.png"
+      src="/pest1.jpg"
       alt="pestFree"
-      width={160.741}
-      height={160}
+      width={240}
+      height={240}
     />
   </div>
   <div className="w-[240px] h-[240px] flex flex-col justify-center items-center relative bottom-[170px] left-[20px] rounded-full bg-[#F3F0F1] border-[3px] border-primaryMain overflow-hidden">
     <Image
       className="object-cover"
-      src="/check.png"
+      src="/Dsc0431555.JPG"
       alt="check"
-      width={160.741}
-      height={160}
+      width={240}
+      height={240}
     />
   </div>
 </div>
@@ -386,7 +387,7 @@ export default function Home() {
           <div className="relative w-[366px] h-full xl:w-[604px] xl:h-[521px] xl:flex-1 overflow-hidden">
             <video
               className="w-full h-full rounded-[16px] object-cover"
-              src="https://res.cloudinary.com/dguzhztdt/video/upload/f_mp4/v1729091741/Auto%20Verdure%20media%20%28website%29/Plants/IMG_7939_wsnkj9.mov"
+             src="/home1.mp4"
               alt="video"
               // width={604}
               // height={521}
@@ -400,27 +401,31 @@ export default function Home() {
           <div className="w-[366px] h-[432px] xl:h-full flex xl:flex-1 flex-col gap-y-5 xl:gap-y-8">
             <div className="w-full flex flex-col gap-5">
               <p className="text-4xl xl:text-[50px] leading-[43.2px] xl:leading-[60px] -tracking-[0.9px] xl:-tracking-[1.25px] font-normal text-primaryGrayscale">
-                Explore a world where each leaf whispers a tale of wellness and
+                Explore a world where each leaf whispers a tale of wellness &
                 warmth!
               </p>
               <p className="text-sm leading-6 font-normal text-secondaryGrayscale mt-3">
-                Here, you&apos;ll discover the perfect harmony of nature&apos;s warmth
+                Here, you&apos;ll discover the perfect harmony of nature&apos;s warmth<br/>
                 within the confines of your home.
               </p>
             </div>
 
             {/* Image Grid */}
             <div className="w-full h-[432px] xl:h-full flex gap-[21.5px] justify-between xl:justify-normal xl:gap-6 mt-6">
-              <Image
-                className="w-[192px] h-[205px] xl:w-[192px] xl:h-[205px] rounded-[16px]"
-                src="https://res.cloudinary.com/dguzhztdt/image/upload/f_auto/v1729091744/Auto%20Verdure%20media%20%28website%29/Plants/IMG_1297_cy22gd.heic"
-                alt="image1"
-                width={192}
-                height={205}
+              <video
+                className="object-cover w-[192px] h-[205px] xl:w-[192px] xl:h-[205px] rounded-[16px]"
+                
+                 src="https://res.cloudinary.com/dguzhztdt/video/upload/f_mp4/v1729091741/Auto%20Verdure%20media%20%28website%29/Plants/IMG_7939_wsnkj9.mov"
+                alt="video"
+                // width={604}
+                // height={521}
+                loop
+                autoPlay
+                muted
               />
               <Image
                 className="w-[192px] h-[205px] xl:w-[192px] xl:h-[205px] rounded-[16px]"
-                src="https://res.cloudinary.com/dguzhztdt/image/upload/f_auto/v1729091765/Auto%20Verdure%20media%20%28website%29/Plants/IMG_7912_ebsqbz.heic"
+                src="https://res.cloudinary.com/dguzhztdt/image/upload/f_auto/v1729091744/Auto%20Verdure%20media%20%28website%29/Plants/IMG_1297_cy22gd.heic"
                 alt="image2"
                 width={192}
                 height={205}
@@ -482,7 +487,7 @@ export default function Home() {
             <div className="w-full md:w-[405px] xl:w-[646.67px] flex flex-col justify-center items-center md:justify-start md:items-start">
               <Image
                 className="rounded-[16px]"
-                src="/image.png"
+                src="/imag.jpg"
                 alt="image"
                 width={646.67}
                 height={300}
@@ -491,20 +496,21 @@ export default function Home() {
               <div className="mt-[30px] w-full">
                 <p className="text-2xl leading-[48px] -tracking-[0.6px] text-primaryMain font-bold">
                   
-                  Water Retention
+                Powerful design research
                 </p>
                 <p className="mt-[10px] text-xl leading-8 -tracking-[0.5px] font-normal text-secondryGrayscale">
                  
-                  We have successfully developed an unmatchable Water Retention
-                  Technology amongst all the Hydroponic system competitors.
+                We are the first in the Indian Market to combat the rising
+                  concern of mosquito-induced diseases by integrating the
+                  solution into our design research.
                 </p>
               </div>
             </div>
 
             <div className="mt-[59px] md:mt-0 w-full md:w-[293.34px] hidden md:flex flex-col justify-center items-center md:justify-start md:items-start">
               <Image
-                className=" rounded-[16px]"
-                src="/xyz.png"
+                className="object-cover rounded-[16px]"
+                src="/water.jpg"
                 alt="image"
                 width={293.34}
                 height={300}
@@ -512,12 +518,11 @@ export default function Home() {
               />
               <div className="mt-[30px] w-[237px]">
                 <p className="text-2xl leading-[48px] -tracking-[0.6px] text-primaryMain font-bold">
-                Powerful design research
+                  Water Retention
                 </p>
                 <p className="mt-[10px] text-xl leading-8 -tracking-[0.5px] font-normal text-secondryGrayscale">
-                  We are the first in the Indian Market to combat the rising
-                  concern of mosquito-induced diseases by integrating the
-                  solution into our design research.
+                 We have successfully developed an unmatchable Water Retention
+                  Technology amongst all the Hydroponic system competitors.
                 </p>
               </div>
             </div>
@@ -528,7 +533,7 @@ export default function Home() {
             <div className="w-full md:w-[405px] xl:w-[646.66px] hidden md:flex flex-col justify-center items-center md:justify-start md:items-start">
               <Image
                 className="rounded-[16px]"
-                src="https://res.cloudinary.com/dguzhztdt/image/upload/f_auto/v1729091759/Auto%20Verdure%20media%20%28website%29/Plants/IMG_7926_o57ycn.heic"
+                src="/RJP00792.JPG"
                 alt="image"
                 width={646.66}
                 height={300}
@@ -536,20 +541,28 @@ export default function Home() {
               />
               <div className="mt-[30px] w-full">
                 <p className="text-2xl leading-[48px] -tracking-[0.6px] text-primaryMain font-bold">
-                  Recyclable
+                  Aesthetic Appeal
                 </p>
                 <p className="mt-[10px] text-xl leading-8 -tracking-[0.5px] font-normal text-secondryGrayscale">
-                  100% Recyclable material for Transforming Urban Farming into a
-                  Greener Future.
+                Elevate your home or office with our diverse selection of
+indoor plants. From graceful succulents to verdant ferns, our
+self-watering pots add a touch of natural beauty to your
+surroundings, enhancing your space with an eye-catching
+allure
                 </p>
               </div>
             </div>
 
             <div className="mt-[59px] md:mt-0 w-full md:w-[293.34px] hidden md:flex flex-col justify-center items-center md:justify-start md:items-start">
-              <Image
-                className=" rounded-[16px]"
-                src="https://res.cloudinary.com/dguzhztdt/image/upload/v1729091861/Auto%20Verdure%20media%20%28website%29/Collections/RJP00673_dsbv5n.jpg"
-                alt="image"
+              <video
+                className="object-cover rounded-[16px]"
+                src="/expert.mp4"
+                alt="video"
+                // width={604}
+                // height={521}
+                loop
+                autoPlay
+                muted
                 width={293.34}
                 height={300}
                 style={{ width: "293.34px", height: "300px" }}

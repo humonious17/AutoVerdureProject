@@ -2,21 +2,35 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 
-const CollectionCard = ({ title, description, image }) => {
+const CollectionCard = ({ title, description, image, video}) => {
   const [lineClamp, setLineClamp] = useState(2);
   const [isHover, setIsHover] = useState(false)
+  const isVideo = Boolean(video);
+  
   return (
     <div className="w-fit h-fit md:h-fit p-3 md:p-0 md:flex flex-row-reverse rounded-xl md:rounded-[32.1px] xl:rounded-[56px] md:overflow-hidden bg-[#F8F8F8] border-[2.86px] hover:border-[2.86px] hover:border-primaryMain" onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}>
        <div className="transition-all duration-400 ease-in-out" style={{height: (isHover ? `${199 + 28 + (Math.ceil(description.length / 14) * 23)}px` : '274px')}}> 
-        <Image
-          className="object-cover md:w-[203.231px] md:h-full xl:w-[355px]"
-          src={image}
-          alt="img"
-          width={147.347}
-          height={157.183}
-          unoptimized={true}
-          priority
-        />
+       {isVideo ? (
+          <video
+            className="object-cover md:w-[203.231px] md:h-full xl:w-[355px]"
+            src={video}
+            width={203.231}
+            height="100%"
+            autoPlay
+            loop
+            muted
+          ></video>
+        ) : (
+          <Image
+            className="object-cover md:w-[203.231px] md:h-full xl:w-[355px]"
+            src={image}
+            alt="media"
+            width={147.347}
+            height={157.183}
+            unoptimized={true}
+            priority
+          />
+        )}
       </div>
       <div className="mt-[16.94px] w-[119px] xl:w-[202px] md:mx-[36.64px] xl:mx-16 xl:mt-[40px]">
         <p className="text-[15.237px] md:text-[21.754px] xl:text-[38px] leading-[19.888px] md:leading-[28.281px] xl:leading-[49.4px] text-[#0E0E0E] font-normal">

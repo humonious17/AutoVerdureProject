@@ -11,6 +11,7 @@ const Zenpot = (props) => {
   const [sortBy, setSortBy] = useState("default");
   const [showCount, setShowCount] = useState(16);
   const [displayedProductsCount, setDisplayedProductsCount] = useState(0);
+  
 
   // Safe string getter for sorting
   const getSafeString = (obj, key) => {

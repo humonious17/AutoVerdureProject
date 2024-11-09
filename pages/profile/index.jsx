@@ -97,7 +97,7 @@ const Profile = (props) => {
     label: { fontWeight: '400', fontSize: '18px', marginBottom: '5px' },
     input: { width: '100%', padding: '10px', border: '1px solid #ccc', borderRadius: '25px', fontSize: '14px' },
     button: { width: '100%', padding: '10px 0', border: 'none', borderRadius: '25px', backgroundColor: '#9A5CF5', color: 'white', fontSize: '16px', cursor: 'pointer', marginTop: '10px' },
-    logoutButton: { width: '100%', padding: '10px 0', border: 'none', borderRadius: '25px', backgroundColor: '#ff4d4d', color: 'white', fontSize: '16px', cursor: 'pointer', marginTop: '10px' },
+    logoutButton: { width: '100%', padding: '10px 0', border: 'none', borderRadius: '25px', backgroundColor: 'black', color: 'white', fontSize: '16px', cursor: 'pointer', marginTop: '10px' },
     editIcon: { position: 'relative', top: '50%', right: '10px', cursor: 'pointer', left: '10%', width: '20px', height: '20px' },
   };
 

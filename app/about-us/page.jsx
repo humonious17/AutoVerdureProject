@@ -123,13 +123,14 @@ const AboutUs = () => {
           <div className="mt-[63px] md:mt-[128.5px] xl:mt-0 w-full flex flex-col gap-[17.66px] md:gap-[21px] justify-center items-center overflow-hidden xl:overflow-visible">
             <div className="w-full h-[209.376px] md:h-[249px] flex relative">
               <div className="object-contain w-[375px] h-[249px] md:w-[379px] md:h-[249px] md:ml-[15%] lg:ml-[25%] rounded-2xl">
-                <Image
+              <Image
                   className="rounded-2xl w-full h-full"
-                  src="/aboutUs1.png"
+                  src="/DSC04361.JPG"
                   alt="img"
                   width={375}
                   height={249}
                 />
+                
               </div>
               <Image
                 className="hidden md:flex xl:hidden object-contain absolute top-[72.46px] right-[100px] lg:right-[180px] -rotate-45 transform -scale-y-100"
@@ -148,9 +149,9 @@ const AboutUs = () => {
                 height={41}
               />
               <div className="w-[375px] h-[249px] md:w-[379px] md:h-[249px] xl:w-full ml-[136.22px] md:ml-[35%] lg:ml-[45%] rounded-2xl">
-                <video
+              <video
                   className="w-full h-full rounded-2xl object-cover"
-                  src="https://res.cloudinary.com/dguzhztdt/video/upload/f_mp4/v1729091744/Auto%20Verdure%20media%20%28website%29/Plants/IMG_7937_o0u6xd.mov"
+                  src="/signin.mp4"
                   alt="video"
                   width={375}
                   height={249}

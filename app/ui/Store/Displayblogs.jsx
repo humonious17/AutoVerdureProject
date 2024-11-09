@@ -47,11 +47,11 @@ export default function Blogs({ title, description }) {
       {/* Scrollable Blog Cards Container with Hidden Scroll Bar */}
       <div className="overflow-hidden relative">
         <div
-          className="flex gap-4 overflow-x-auto no-scrollbar"
+          className="flex flex-col md:flex-row gap-4 overflow-x-auto no-scrollbar"
           ref={containerRef}
         >
           {blogs.map((blog) => (
-            <div key={blog.id} className="flex-none w-1/3">
+            <div key={blog.id} className="flex-none w-full md:w-1/3">
               <BlogCard blog={blog} />
             </div>
           ))}

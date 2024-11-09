@@ -1,3 +1,5 @@
+import { Video } from "lucide-react";
+
 export const navItems = [
   { title: "home", url: "/" },
   { title: "about us", url: "/about-us" },
@@ -62,13 +64,13 @@ export const collections = [
     title: "Planters",
     description:
       "Choose from an exceptional line of self-watering planters, based on the ingenious principles of hydroponics. Here, you'll discover the perfect harmony of nature's warmth within the confines of your home.",
-    image: "https://res.cloudinary.com/dgzqokaju/image/upload/v1721321551/RJP00508_bbqtrh.jpg"
+    image: "/aboutUs1.png"
   },
   {
     title: "Flowers",
     description:
       "Our arrangements are hand-made in-house by our expert florists, using the very best quality fresh flowers. Our style is artistic, modern and inspirational.",
-    image: "https://res.cloudinary.com/dgzqokaju/image/upload/v1721322868/WhatsApp_Image_2024-07-18_at_22.40.05_fb2d5d82_qcblox.jpg"
+    video: "/flower.mp4"
   },
   {
     title: "Plants",

@@ -368,7 +368,7 @@ export default function Home() {
   <div className="w-[240px] h-[240px] flex flex-col justify-center items-center relative bottom-[170px] left-[20px] rounded-full bg-[#F3F0F1] border-[3px] border-primaryMain overflow-hidden">
     <Image
       className="object-cover"
-      src="/Dsc0431555.JPG"
+      src="/DSC0431555.JPG"
       alt="check"
       width={240}
       height={240}

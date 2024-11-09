@@ -53,7 +53,9 @@ const ProductCard = ({ product }) => {
           )}
           <div className="w-fit text-[10px] md:text-[13px] p-1 md:px-[14px] md:py-[13px] leading-4 tracking-[0.56px] rounded-[40px] absolute top-[10px] left-[15px] md:top-[24px] md:left-[30px] bg-white text-[#5B5B5B] uppercase flex justify-center items-center">
             <p>
-              {productDetail && productDetail.stockQuantity > 10
+              {productDetail && productDetail.stockQuantity === 0
+                ? "Sold Out"
+                : productDetail.stockQuantity > 10
                 ? "in stock"
                 : "few left"}
             </p>
@@ -263,9 +265,10 @@ const ProductCard = ({ product }) => {
                   textOverflow: "ellipsis",
                 }}
               >
-                {productDetail.productDescription}
+                {productDetail.productSubtitle}
               </p>
             </div>
+
             <div
               className="w-full flex flex-col md:flex-row justify-between md:items-center"
               style={{ paddingLeft: "15px", paddingRight: "15px" }}

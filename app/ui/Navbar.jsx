@@ -9,7 +9,7 @@ import { PiLineVerticalLight } from "react-icons/pi";
 
 const Navbar = () => {
   const [searchText, setSearchText] = useState("");
-  
+
   const router = useRouter();
 
   const handleClear = () => {
@@ -20,8 +20,6 @@ const Navbar = () => {
     e.preventDefault();
     console.log("Searching for:", searchText);
   };
-
- 
 
   const handleSignOut = () => {
     setShowLogoutModal(true); // Show confirmation modal
@@ -113,8 +111,9 @@ const Navbar = () => {
       <div className="hidden xl:flex gap-[15px] items-center">
         {/* Search Bar */}
         <form
-          className="relative flex items-center w-full"
+          className="relative flex items-center"
           onSubmit={handleSearch}
+          style={{ marginLeft: "-40px" }} // Shifts the search bar to overlap the line
         >
           <input
             type="text"
@@ -122,24 +121,28 @@ const Navbar = () => {
             required
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
-            className="bg-white border-2 border-gray-300 rounded-full px-6 py-2 shadow-inner focus:outline-none focus:ring-2 focus:ring-gray-600 w-full"
+            className="bg-white border border-gray-300 rounded-full px-6 py-2 shadow-inner focus:outline-none focus:ring-2 focus:ring-gray-600 w-[300px]" // Adjusted width
             placeholder="Search"
             autoComplete="off"
             spellCheck="false"
           />
 
-          {/* Line */}
-          <PiLineVerticalLight
-            size={48}
-            className="absolute right-12 top-1/2 transform -translate-y-1/2 text-gray-400"
-          />
+          {/* Vertical Line */}
+          <span
+            className="absolute top-1/2 right-[50px] transform -translate-y-1/2 bg-gray-300"
+            style={{
+              width: "1px",
+              height: "100%",
+              right: searchText ? "56px" : "38px",
+            }}
+          ></span>
 
           {/* Clear button */}
           {searchText && (
             <button
               type="button"
               onClick={handleClear}
-              className="absolute right-10 top-1/2 transform -translate-y-1/2 text-gray-700"
+              className="absolute right-[38px] top-1/2 transform -translate-y-1/2 text-gray-700"
               aria-label="Clear search"
             >
               ✕
@@ -149,11 +152,11 @@ const Navbar = () => {
           {/* Search Icon */}
           <button
             type="submit"
-            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+            className="absolute right-[12px] top-1/2 transform -translate-y-1/2 text-gray-400"
             aria-label="Search"
           >
             <svg
-              className="w-5 h-5 text-gray-400"
+              className="w-5 h-5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -169,30 +172,27 @@ const Navbar = () => {
           </button>
         </form>
 
-        {/* Cart and Profile Icons */}
-        <div className="gap-4 flex justify-center items-center">
-          <Link href="/cart" className="w-[24.53px] h-[24.53px]">
+        {/* Icons (Cart and Avatar) */}
+        <div className="flex gap-4 items-center">
+          <Link href="/cart" className="w-[24px] h-[24px]">
             <Image
               className="object-contain"
               src="/cart.svg"
               alt="cart"
-              width={24.53}
-              height={24.53}
+              width={24}
+              height={24}
             />
           </Link>
-          <Link href="/profile" className="w-[24.53px] h-[24.53px]">
+          <Link href="/profile" className="w-[24px] h-[24px]">
             <Image
               className="object-contain"
               src="/avatar.svg"
               alt="profile"
-              width={24.53}
-              height={24.53}
+              width={24}
+              height={24}
             />
           </Link>
-          
         </div>
-
-       
       </div>
     </div>
   );

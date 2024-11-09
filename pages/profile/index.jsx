@@ -1,18 +1,19 @@
 "use client";
 import React, { useState } from "react";
-import { BiEdit } from "react-icons/bi";
+import { FiEdit } from "react-icons/fi";
 import { parse } from "cookie";
+import { useRouter } from "next/router";
 
 const Profile = (props) => {
   const [formData, setFormData] = useState(props.user);
   const [buttonText, setButtonText] = useState("Update Profile");
-
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [logoutMessage, setLogoutMessage] = useState("");
   const [editField, setEditField] = useState({
     name: false,
-    // email:false,
     phone: false,
-    // avPoints:false,
   });
+  const router = useRouter();
 
   const handleChange = (e) => {
     setFormData({
@@ -20,13 +21,14 @@ const Profile = (props) => {
       [e.target.name]: e.target.value,
     });
   };
+
   const handleEdit = (field) => {
-    console.log(editField);
     setEditField({
       ...editField,
       [field]: !editField[field],
     });
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formData);
@@ -47,6 +49,44 @@ const Profile = (props) => {
     }
   };
 
+  const confirmLogout = async () => {
+    try {
+      const response = await fetch("/api/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include", // Include cookies for session-based auth
+      });
+
+      if (!response.ok) throw new Error("Logout failed");
+
+      // Clear tokens or user-related data
+      localStorage.removeItem("authToken");
+      sessionStorage.removeItem("userSession");
+
+      // Show success message
+      setLogoutMessage("You have successfully logged out.");
+
+      // Redirect to login after 2 seconds
+      setTimeout(() => {
+        setLogoutMessage(""); // Clear the message
+        router.push("/signin");
+      }, 2000);
+    } catch (error) {
+      console.error("Error during logout:", error);
+      alert("Something went wrong while logging out.");
+    }
+  };
+
+  const openLogoutModal = () => {
+    setShowLogoutModal(true);
+  };
+
+  const closeLogoutModal = () => {
+    setShowLogoutModal(false);
+  };
+
   const styles = {
     body: {
       display: "flex",
@@ -55,76 +95,31 @@ const Profile = (props) => {
       alignItems: "center",
     },
     container: {
-      display: "flex",
       flexDirection: "column",
-      alignitems: "center",
       justifyContent: "center",
       height: "100vh",
-      // backgroundColor:'#fdf7f1',
       fontFamily: "Arial, sans-serif",
     },
     form: {
-      // backgroundColor:'#fff',
-      borderRadius: "10px",
-      // boxShadow:'0 2px 10px rgba(0, 0, 0, 0.1)',
       padding: "20px",
       width: "560px",
-      height: "498px",
       display: "flex",
       flexDirection: "column",
-      flexWrap: "wrap",
       justifyContent: "center",
-      alignItems: "auto",
       margin: "auto",
     },
-    label: {
-      display: "urbanist",
-      marginBottom: "8px",
-      fontWeight: "400",
-      fontSize: "24px",
-      // lineheight '24px',
-      // marginLeft:'10px',
-    },
-    labellast: {
-      display: "urbanist",
-      marginBottom: "8px",
-      fontWeight: "400",
-      fontSize: "24px",
-      position: "relative",
-      left: "25px",
-    },
+    row: { display: "flex", alignItems: "center", marginBottom: "15px" },
+    inputContainer: { flex: 1, position: "relative" },
+    label: { fontWeight: "400", fontSize: "18px", marginBottom: "5px" },
     input: {
       width: "100%",
       padding: "10px",
-      marginBottom: "15px",
       border: "1px solid #ccc",
       borderRadius: "25px",
-      boxSizing: "border-box",
       fontSize: "14px",
-      marginRight: "10px",
-    },
-    inputHalf: {
-      width: "100%",
-      padding: "10px 10px 10px 10px",
-      marginBottom: "15px 10px 15px 0px",
-      border: "1px solid #ccc",
-      borderRadius: "25px",
-      // boxSizing: 'border-box',
-      fontSize: "14px",
-      borderSpacing: "10px",
-      // marginRight: '10 px' // Added this line to increase the space between first name and last name
-    },
-    inputNumber: {
-      // width:'calc(100% - 70px)',
-      width: "100%",
-      display: "inline-block",
-    },
-    row: {
-      display: "flex",
-      justifyContent: "space-between",
     },
     button: {
-      width: "99%",
+      width: "100%",
       padding: "10px 0",
       border: "none",
       borderRadius: "25px",
@@ -134,120 +129,83 @@ const Profile = (props) => {
       cursor: "pointer",
       marginTop: "10px",
     },
-    inlineContainer: {
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      flexDirection: "column",
-    },
-    inlineText: {
-      fontSize: "14px",
-      color: "#666",
-      marginTop: "5px",
-    },
-    nameHalf: {
-      width: "50%",
-      // marginLeft: '20px',
-    },
-    firstRowField: {
-      width: "107%",
-      display: "flex",
-      alignItems: "center",
-    },
-    formField: {
-      // width: '102%',
-      // display:'flex',
+    logoutButton: {
+      width: "100%",
+      padding: "10px 0",
+      border: "none",
+      borderRadius: "25px",
+      backgroundColor: "#ff4d4d",
+      color: "white",
+      fontSize: "16px",
+      cursor: "pointer",
+      marginTop: "10px",
     },
     editIcon: {
-      // marginLeft: '10px',
       position: "relative",
-      width: "40px",
-      height: "40px",
-      // flexShrink: '0',
-      // paddingLeft:'0px',
+      top: "50%",
+      right: "10px",
+      cursor: "pointer",
       left: "10%",
-      top: "15",
-      // background: 'url(<path-to-image>) lightgray 50% / cover no-repeat',
-    },
-    editIcon2: {
-      // marginLeft: '10px',
-      position: "relative",
-      width: "40px",
-      height: "40px",
-      // flexShrink: '0',
-      // paddingLeft:'0px',
-      left: "3%",
-      // background: 'url(<path-to-image>) lightgray 50% / cover no-repeat',
+      width: "20px",
+      height: "20px",
     },
   };
+
   return (
-    <div className={styles.container}>
+    <div style={styles.container}>
       <form onSubmit={handleSubmit} style={styles.form}>
         <div style={styles.row}>
-          <div style={styles.firstRowField}>
-            <div style={styles.nameHalf}>
-              <label htmlFor="firstName" style={styles.label}>
-                First Name
-              </label>
-              <div style={{ display: "justify-content", width: "100%" }}>
-                <input
-                  type="text"
-                  name="firstName"
-                  value={formData.firstName}
-                  onChange={handleChange}
-                  style={styles.inputHalf}
-                  disabled={!editField.name}
-                />
-              </div>
-            </div>
-            <div style={styles.nameHalf}>
-              <label htmlFor="lastName" style={styles.labellast}>
-                Last Name
-              </label>
-              <div
-                style={{
-                  display: "justify-content",
-                  width: "100%",
-                  marginLeft: "10%",
-                }}
-              >
-                <input
-                  type="text"
-                  name="lastName"
-                  value={formData.lastName}
-                  onChange={handleChange}
-                  style={styles.inputHalf}
-                  disabled={!editField.name}
-                />
-              </div>
-            </div>
-            <BiEdit
-              style={styles.editIcon}
-              onClick={() => handleEdit("name")}
-              // width={"100px"}
+          <div style={{ ...styles.inputContainer, marginRight: "10px" }}>
+            <label htmlFor="firstName" style={styles.label}>
+              First Name
+            </label>
+            <input
+              type="text"
+              name="firstName"
+              value={formData.firstName}
+              onChange={handleChange}
+              style={styles.input}
+              disabled={!editField.name}
             />
           </div>
+          <div style={styles.inputContainer}>
+            <label htmlFor="lastName" style={styles.label}>
+              Last Name
+            </label>
+            <input
+              type="text"
+              name="lastName"
+              value={formData.lastName}
+              onChange={handleChange}
+              style={styles.input}
+              disabled={!editField.name}
+            />
+          </div>
+          <FiEdit style={styles.editIcon} onClick={() => handleEdit("name")} />
         </div>
-        <div style={styles.formField}>
-          <label htmlFor="email" style={styles.label}>
-            Email
-          </label>
-          <div style={{ display: "flex", alignItems: "center" }}>
+
+        <div style={styles.row}>
+          <div style={styles.inputContainer}>
+            <label htmlFor="email" style={styles.label}>
+              Email
+            </label>
             <input
               type="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
               style={styles.input}
-              // disabled={!editField.email}
+              disabled={!editField.email}
             />
           </div>
+          <FiEdit style={styles.editIcon} onClick={() => handleEdit("email")} />
         </div>
-        <div style={styles.formField}>
-          <label htmlFor="phone" style={styles.label}>
-            Phone
-          </label>
-          <div style={{ display: "flex", width: "107%" }}>
+
+        <div style={styles.row}>
+          <div style={styles.inputContainer}>
+            <label htmlFor="phone" style={styles.label}>
+              Phone
+            </label>
             <input
               type="tel"
               name="phone"
@@ -256,55 +214,78 @@ const Profile = (props) => {
               style={styles.input}
               disabled={!editField.phone}
             />
-            <BiEdit
-              style={styles.editIcon2}
-              onClick={() => handleEdit("phone")}
-            />
           </div>
+          <FiEdit style={styles.editIcon} onClick={() => handleEdit("phone")} />
         </div>
-        <div style={styles.formField}>
-          <label htmlFor="avPoints" style={styles.label}>
-            AV Points
-          </label>
-          <div style={{ display: "flex", alignItems: "center" }}>
-            {/* <div style={styles.inlineContainer}> */}
+
+        <div style={styles.row}>
+          <div style={styles.inputContainer}>
+            <label htmlFor="avPoints" style={styles.label}>
+              AV Points
+            </label>
             <input
               type="number"
               name="avPoints"
               value={formData.avPoints}
               onChange={handleChange}
-              style={{ ...styles.input, ...styles.inputNumber }}
-              // disabled={!editField.avPoints}
+              style={styles.input}
+              disabled
             />
-            {/* </div> */}
-            <br />
-          </div>
-          <div>
-            <span style={styles.inlineText}>100 AV Points = 1 Rupee</span>
           </div>
         </div>
-        <button
-          type="submit"
-          style={styles.button}
-          onClick={handleEditProfile}
-          // onMouseOver={(e) => e.target.style.backgroundColor = styles.buttonHover.backgroundColor}
-          onMouseOverCapture={(e) =>
-            (e.target.style.backgroundColor = styles.button.backgroundColor)
-          }
-        >
+
+        {/* Update Profile Button */}
+        <button type="submit" style={styles.button} onClick={handleEditProfile}>
           {buttonText}
         </button>
+
+        {/* Logout Button */}
+        <button
+          type="button"
+          style={styles.logoutButton}
+          onClick={openLogoutModal}
+        >
+          Log Out
+        </button>
+
+        {/* Logout Modal */}
+        {showLogoutModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+            <div className="bg-white p-6 rounded-lg text-center">
+              <p className="text-lg mb-4">Are you sure you want to log out?</p>
+              <div className="flex justify-center gap-4">
+                <button
+                  onClick={confirmLogout}
+                  className="px-4 py-2 bg-red-500 text-white rounded-lg"
+                >
+                  Yes
+                </button>
+                <button
+                  onClick={closeLogoutModal}
+                  className="px-4 py-2 bg-gray-300 rounded-lg"
+                >
+                  No
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Logout Success Message */}
+        {logoutMessage && (
+          <div className="fixed top-0 left-0 w-full bg-green-500 text-white text-center py-3">
+            {logoutMessage}
+          </div>
+        )}
       </form>
     </div>
   );
 };
-
 export default Profile;
 
 export async function getServerSideProps({ req, res }) {
   const { admin, db } = await import("/pages/api/firebaseAdmin");
   const cookies = req.headers.cookie;
-
   if (cookies) {
     const tokens = parse(req.headers.cookie);
     const sessionToken = tokens.sessionToken;
@@ -329,12 +310,15 @@ export async function getServerSideProps({ req, res }) {
           },
         };
       }
+
       const parsedUser = {
-        firstName: user.username?.split(" ")[0] || "",
-        lastName: user.username?.split(" ")[1] || "",
-        email: user.email || "",
-        phone: user.phone || null, // Assign null if undefined
+        firstName: user.username.split(" ")[0],
+        lastName: user.username.split(" ")[1],
+        email: user.email,
+        phone: user.phone || null,
+        avPoints: user.avPoints || 0,
       };
+
       return {
         props: { user: parsedUser },
       };

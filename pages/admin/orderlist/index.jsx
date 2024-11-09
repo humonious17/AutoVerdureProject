@@ -18,6 +18,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -25,13 +31,149 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/hooks/use-toast";
-import { Search, MoreVertical, Filter } from "lucide-react";
+import { Search, MoreVertical, X } from "lucide-react";
 
+// Order Details Component
+const OrderDetails = ({ order, onClose, onUpdateStatus }) => {
+  const [status, setStatus] = useState(order.orderStatus);
+
+  const handleStatusChange = async (newStatus) => {
+    await onUpdateStatus(order.orderId, newStatus);
+    setStatus(newStatus);
+  };
+
+  const getStatusColor = (status) => {
+    const statusColors = {
+      pending: "bg-yellow-100 text-yellow-800",
+      processing: "bg-blue-100 text-blue-800",
+      completed: "bg-green-100 text-green-800",
+      cancelled: "bg-red-100 text-red-800",
+    };
+    return statusColors[status] || "bg-gray-100 text-gray-800";
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <div>
+          <h3 className="text-lg font-semibold">Order Status</h3>
+          <div className="mt-2 flex items-center space-x-4">
+            <Select value={status} onValueChange={handleStatusChange}>
+              <SelectTrigger className="w-40">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="pending">Pending</SelectItem>
+                <SelectItem value="processing">Processing</SelectItem>
+                <SelectItem value="completed">Completed</SelectItem>
+                <SelectItem value="cancelled">Cancelled</SelectItem>
+              </SelectContent>
+            </Select>
+            <Badge className={getStatusColor(status)}>
+              {status.charAt(0).toUpperCase() + status.slice(1)}
+            </Badge>
+          </div>
+        </div>
+        <Button variant="ghost" size="icon" onClick={onClose}>
+          <X className="h-4 w-4" />
+        </Button>
+      </div>
+
+      <div className="grid grid-cols-2 gap-6">
+        <div>
+          <h3 className="text-lg font-semibold mb-2">Customer Details</h3>
+          <div className="space-y-2">
+            <p>
+              <span className="font-medium">Name:</span>{" "}
+              {order.shipping.fullName}
+            </p>
+            <p>
+              <span className="font-medium">Email:</span> {order.email}
+            </p>
+            <p>
+              <span className="font-medium">Phone:</span> {order.shipping.phone}
+            </p>
+          </div>
+        </div>
+
+        <div>
+          <h3 className="text-lg font-semibold mb-2">Shipping Address</h3>
+          <div className="space-y-2">
+            <p>{order.shipping.address1}</p>
+            {order.shipping.address2 && <p>{order.shipping.address2}</p>}
+            <p>
+              {order.shipping.city}, {order.shipping.state}{" "}
+              {order.shipping.postalCode}
+            </p>
+            <p>{order.shipping.country}</p>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h3 className="text-lg font-semibold mb-2">Order Items</h3>
+        <div className="border rounded-lg">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Product</TableHead>
+                <TableHead>Quantity</TableHead>
+                <TableHead>Price</TableHead>
+                <TableHead>Total</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {order.products.map((product, index) => (
+                <TableRow key={index}>
+                  <TableCell>
+                    <div>
+                      <p className="font-medium">{product.productName}</p>
+                      {product.variant && (
+                        <p className="text-sm text-gray-500">
+                          {product.variant}
+                        </p>
+                      )}
+                    </div>
+                  </TableCell>
+                  <TableCell>{product.productQty}</TableCell>
+                  <TableCell>Rs. {product.price}</TableCell>
+                  <TableCell>
+                    Rs. {product.price * product.productQty}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      </div>
+
+      <div className="border-t pt-4">
+        <div className="flex justify-between items-center">
+          <div className="space-y-1">
+            <p className="text-sm text-gray-500">Subtotal: Rs. {0}</p>
+            <p className="text-sm text-gray-500">Shipping: Rs. {0}</p>
+            {order.discount > 0 && (
+              <p className="text-sm text-gray-500">
+                Discount: -Rs. {order.discount / 100}
+              </p>
+            )}
+          </div>
+          <div className="text-xl font-bold">
+            Total: Rs. {order.totalAmount / 100}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Main OrderList Component
 const OrderList = ({ initialOrders }) => {
   const [orders, setOrders] = useState(initialOrders);
   const [filteredOrders, setFilteredOrders] = useState(initialOrders);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [selectedOrder, setSelectedOrder] = useState(null);
   const { toast } = useToast();
 
   // Filter and search logic
@@ -68,9 +210,15 @@ const OrderList = ({ initialOrders }) => {
     return statusColors[status] || "bg-gray-100 text-gray-800";
   };
 
+  const handleRowClick = (order, e) => {
+    // Prevent opening modal when clicking on the actions button
+    if (e.target.closest(".actions-button")) return;
+    setSelectedOrder(order);
+  };
+
   const handleUpdateStatus = async (orderId, newStatus) => {
     try {
-      const response = await fetch("/api/orders/update-status", {
+      const response = await fetch("/api/orders/updateOrderStatus", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -80,7 +228,6 @@ const OrderList = ({ initialOrders }) => {
 
       if (!response.ok) throw new Error("Failed to update status");
 
-      // Update local state
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
           order.orderId === orderId
@@ -147,7 +294,11 @@ const OrderList = ({ initialOrders }) => {
               </TableHeader>
               <TableBody>
                 {filteredOrders.map((order) => (
-                  <TableRow key={order.orderId}>
+                  <TableRow
+                    key={order.orderId}
+                    className="cursor-pointer hover:bg-gray-50"
+                    onClick={(e) => handleRowClick(order, e)}
+                  >
                     <TableCell className="font-medium">
                       {order.orderId}
                     </TableCell>
@@ -158,7 +309,7 @@ const OrderList = ({ initialOrders }) => {
                       </div>
                     </TableCell>
                     <TableCell>{order.products.length} items</TableCell>
-                    <TableCell>${order.totalAmount}</TableCell>
+                    <TableCell>Rs. {order.totalAmount / 100}</TableCell>
                     <TableCell>
                       <Badge className={getStatusColor(order.orderStatus)}>
                         {order.orderStatus}
@@ -172,7 +323,10 @@ const OrderList = ({ initialOrders }) => {
                     <TableCell className="text-right">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" className="h-8 w-8 p-0">
+                          <Button
+                            variant="ghost"
+                            className="h-8 w-8 p-0 actions-button"
+                          >
                             <MoreVertical className="h-4 w-4" />
                           </Button>
                         </DropdownMenuTrigger>
@@ -215,6 +369,24 @@ const OrderList = ({ initialOrders }) => {
           </div>
         </CardContent>
       </Card>
+
+      <Dialog
+        open={!!selectedOrder}
+        onOpenChange={() => setSelectedOrder(null)}
+      >
+        <DialogContent className="max-w-3xl">
+          <DialogHeader>
+            <DialogTitle>Order Details - #{selectedOrder?.orderId}</DialogTitle>
+          </DialogHeader>
+          {selectedOrder && (
+            <OrderDetails
+              order={selectedOrder}
+              onClose={() => setSelectedOrder(null)}
+              onUpdateStatus={handleUpdateStatus}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

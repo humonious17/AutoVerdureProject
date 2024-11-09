@@ -34,6 +34,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Image from "next/image";
+import { useToast } from "@/components/hooks/use-toast";
 
 // Utility function to format the timestamp
 const formatTimestamp = (timestamp) => {
@@ -107,8 +108,14 @@ const ProductImage = ({ src, alt, className = "" }) => {
 };
 
 const OrderDetailDialog = ({ order, open, onClose }) => {
+  const { toast } = useToast();
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState("");
+  const [uploadedImage, setUploadedImage] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [productDetails, setProductDetails] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [imageFile, setImageFile] = useState(null);
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -140,97 +147,247 @@ const OrderDetailDialog = ({ order, open, onClose }) => {
 
     if (open && order) {
       fetchProductDetails();
+      // Reset form when dialog opens
+      setRating(0);
+      setComment("");
+      setUploadedImage(null);
     }
   }, [open, order]);
+
+  const uploadToCloudinary = async (file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append(
+      "upload_preset",
+      process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET
+    );
+
+    try {
+      const response = await fetch(
+        `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to upload image");
+      }
+
+      const data = await response.json();
+      return data.secure_url;
+    } catch (error) {
+      console.error("Error uploading to Cloudinary:", error);
+      throw error;
+    }
+  };
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Show preview
+      setUploadedImage(URL.createObjectURL(file));
+      setImageFile(file);
+    }
+  };
+
+  const handleRating = (index) => {
+    if (rating === index + 1) {
+      setRating(0);
+    } else {
+      setRating(index + 1);
+    }
+  };
+
+  const handleSubmitReview = async (e) => {
+    e.preventDefault();
+
+    if (!rating) {
+      toast({
+        title: "Error",
+        description: "Please select a rating before submitting",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      // Upload image to Cloudinary if an image was selected
+      let cloudinaryUrl = null;
+      if (imageFile) {
+        cloudinaryUrl = await uploadToCloudinary(imageFile);
+      }
+
+      const response = await fetch("/api/reviews/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          orderId: order.orderId,
+          rating,
+          comment,
+          imageUrl: cloudinaryUrl,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to submit review");
+      }
+
+      toast({
+        title: "Success",
+        description: "Your review has been submitted successfully",
+      });
+
+      // Close the dialog and reset form
+      onClose();
+      setRating(0);
+      setComment("");
+      setUploadedImage(null);
+      setImageFile(null);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   if (!order) return null;
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="max-w-3xl">
-        <DialogHeader>
-          <DialogTitle>Order Details</DialogTitle>
-        </DialogHeader>
-        <div className="space-y-6">
-          {/* Order Info */}
-          <div className="grid grid-cols-2 gap-4 bg-gray-50 p-4 rounded-lg">
-            <div>
-              <h3 className="font-semibold">Order ID</h3>
-              <p className="text-sm text-gray-600">{order.orderId}</p>
-            </div>
-            <div>
-              <h3 className="font-semibold">Order Time</h3>
-              <p className="text-sm text-gray-600">
-                {formatTimestamp(order.createdAt)}
-              </p>
-            </div>
-          </div>
-
-          {/* Products */}
-          <div>
-            <h3 className="font-semibold mb-4">Products</h3>
-            {isLoading ? (
-              <div className="text-center py-4">Loading product details...</div>
-            ) : (
-              <div className="space-y-4">
-                {order.products.map((product, idx) => {
-                  const productDetail = productDetails.find(
-                    (p) => p.id === product.productId
-                  );
-                  return (
-                    <div
-                      key={idx}
-                      className="flex gap-4 bg-gray-50 p-4 rounded-lg"
-                    >
-                      <ProductImage
-                        src={product.productImage}
-                        alt={product.productName}
-                        className="h-24 w-24 flex-shrink-0"
-                      />
-                      <div className="space-y-2">
-                        <p className="font-medium">{product.productName}</p>
-                        {product && (
-                          <>
-                            <p className="text-sm text-gray-600">
-                              Type: {product.productType}
-                            </p>
-                            <p className="text-sm text-gray-600">
-                              Price: Rs. {product.price}
-                            </p>
-                            <p className="text-sm text-gray-600">
-                              Quantity: {product.productQty}
-                            </p>
-                          </>
-                        )}
-                      </div>
-                    </div>
-                  );
-                })}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6">
+          {/* Left side - Product Image and Details */}
+          <div className="space-y-6">
+            {order.products && order.products[0] && (
+              <div className="aspect-square relative overflow-hidden rounded-lg">
+                <Image
+                  src={order.products[0].productImage}
+                  alt={order.products[0].productName}
+                  layout="fill"
+                  objectFit="cover"
+                  className="rounded-lg"
+                />
               </div>
             )}
+            <div className="space-y-2">
+              <h2 className="text-2xl font-semibold">
+                {order.products[0]?.productName}
+              </h2>
+              <p className="text-gray-600">Location: {order.shipping.city}</p>
+              <p className="text-gray-600">
+                Pot Size: {order.products[0]?.size || "12 x 16 inch"}
+              </p>
+              <p className="text-gray-600">Order ID: #{order.orderId}</p>
+              <div className="bg-orange-50 text-orange-700 px-4 py-2 rounded-full inline-block">
+                Arriving in 2 days
+              </div>
+              <button className="text-purple-600 flex items-center gap-2 mt-4">
+                View guides related to your product →
+              </button>
+            </div>
           </div>
 
-          {/* Status */}
-          <div className="flex justify-between items-center bg-gray-50 p-4 rounded-lg">
-            <div>
-              <h3 className="font-semibold">Status</h3>
-              <OrderStatus status={order.status} />
-            </div>
-            <div>
-              <h3 className="font-semibold">Payment</h3>
-              <span className="text-sm text-gray-600">Paid</span>
-            </div>
-          </div>
+          {/* Right side - Review Form */}
+          <form onSubmit={handleSubmitReview} className="space-y-6">
+            <h2 className="text-2xl font-bold">Add a review</h2>
 
-          {/* Shipping */}
-          <div>
-            <h3 className="font-semibold mb-2">Shipping Address</h3>
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <p className="text-sm text-gray-600">{order.shipping.address1}</p>
-              <p className="text-sm text-gray-600">{order.shipping.address2}</p>
-              <p className="text-sm text-gray-600">{order.shipping.city}</p>
+            {/* Rating */}
+            <div className="space-y-2">
+              <label className="block text-gray-700 font-semibold">
+                Select Rating
+              </label>
+              <div className="flex gap-2">
+                {[...Array(5)].map((_, i) => (
+                  <button
+                    type="button"
+                    key={i}
+                    onClick={() => handleRating(i)}
+                    className={`w-6 h-6 flex items-center justify-center transition-colors duration-300 ${
+                      rating > i
+                        ? "bg-green-700 text-white"
+                        : "bg-gray-200 text-gray-400"
+                    } hover:scale-110`}
+                    disabled={isSubmitting}
+                  >
+                    <span className="text-xl">★</span>
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+
+            {/* Comments */}
+            <div className="space-y-2">
+              <label className="block text-gray-700 font-semibold">
+                Add Comments
+              </label>
+              <textarea
+                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                rows="4"
+                placeholder="Write your comment..."
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                disabled={isSubmitting}
+              />
+            </div>
+
+            {/* Photo Upload */}
+            <div className="space-y-2">
+              <label className="block text-gray-700 font-semibold">
+                Add Photos
+              </label>
+              <div className="relative w-full h-44 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center overflow-hidden">
+                {uploadedImage ? (
+                  <Image
+                    src={uploadedImage}
+                    alt="Review"
+                    layout="fill"
+                    objectFit="cover"
+                    className="rounded-lg"
+                  />
+                ) : (
+                  <>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        document.querySelector('input[type="file"]').click()
+                      }
+                      className="absolute flex items-center justify-center w-10 h-10 border-2 border-purple-500 text-purple-500 rounded-full hover:bg-purple-500 hover:text-white transition-colors duration-300"
+                      disabled={isSubmitting}
+                    >
+                      +
+                    </button>
+                    <input
+                      type="file"
+                      onChange={handleImageUpload}
+                      className="absolute inset-0 opacity-0 cursor-pointer"
+                      accept="image/*"
+                      disabled={isSubmitting}
+                    />
+                  </>
+                )}
+              </div>
+            </div>
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              className="w-full py-3 bg-purple-600 text-white font-bold rounded-full hover:bg-purple-700 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Submitting..." : "Submit review"}
+            </button>
+          </form>
         </div>
       </DialogContent>
     </Dialog>
@@ -298,7 +455,7 @@ const ProfileOrders = ({ orders: initialOrders }) => {
       setOrders(initialOrders);
     } else {
       const filtered = initialOrders.filter(
-        (order) => order.status.toLowerCase() === status.toLowerCase()
+        (order) => order.orderStatus.toLowerCase() === status.toLowerCase()
       );
       setOrders(filtered);
     }
@@ -411,7 +568,7 @@ const ProfileOrders = ({ orders: initialOrders }) => {
                   <TableCell>Product</TableCell>
                   <TableCell>Paid</TableCell>
                   <TableCell>
-                    <OrderStatus status={order.status} />
+                    <OrderStatus status={order.orderStatus} />
                   </TableCell>
                   <TableCell>{formatTimestamp(order.createdAt)}</TableCell>
                 </TableRow>
@@ -438,7 +595,7 @@ const ProfileOrders = ({ orders: initialOrders }) => {
                   </p>
                   <p className="text-sm text-gray-500">{order.shipping.city}</p>
                 </div>
-                <OrderStatus status={order.status} />
+                <OrderStatus status={order.orderStatus} />
               </div>
               <div className="flex items-center space-x-4">
                 {order.products && order.products.length > 0 && (
@@ -489,13 +646,25 @@ export async function getServerSideProps({ req }) {
     };
   }
 
-  const orders = await findAllProfileOrders(user.email);
+  try {
+    const orders = await findAllProfileOrders(user.email);
 
-  return {
-    props: {
-      orders: orders || [],
-    },
-  };
+    // Verify that all data is serializable
+    JSON.stringify(orders);
+
+    return {
+      props: {
+        orders: orders || [],
+      },
+    };
+  } catch (error) {
+    console.error("Error in getServerSideProps:", error);
+    return {
+      props: {
+        orders: [],
+      },
+    };
+  }
 }
 
 export default ProfileOrders;

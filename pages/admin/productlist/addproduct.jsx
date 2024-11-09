@@ -23,6 +23,9 @@ const ProductForm = () => {
     traditional: "false",
     frp: "false",
     ceramic: "false",
+    matt: "false",
+    gloss: "false",
+    art: "false",
     sizes: {
       XS: {
         selected: false,
@@ -601,6 +604,57 @@ const ProductForm = () => {
                       className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 h-4 w-4"
                     />
                     <span className="text-sm text-gray-700">Ceramic</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold text-gray-700 border-b pb-2">
+                Product Finish
+              </h3>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="flex items-center space-x-3">
+                    <input
+                      type="checkbox"
+                      name="matt"
+                      checked={formData.matt === "true"}
+                      onChange={handleChange}
+                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 h-4 w-4"
+                    />
+                    <span className="text-sm text-gray-700">Matt</span>
+                  </label>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="flex items-center space-x-3">
+                    <input
+                      type="checkbox"
+                      name="gloss"
+                      checked={formData.gloss === "true"}
+                      onChange={handleChange}
+                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 h-4 w-4"
+                    />
+                    <span className="text-sm text-gray-700">Gloss</span>
+                  </label>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="flex items-center space-x-3">
+                    <input
+                      type="checkbox"
+                      name="art"
+                      checked={formData.art === "true"}
+                      onChange={handleChange}
+                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 h-4 w-4"
+                    />
+                    <span className="text-sm text-gray-700">Art</span>
                   </label>
                 </div>
               </div>

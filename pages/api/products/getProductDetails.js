@@ -66,28 +66,48 @@ async function getOrderDetails(orderId, userEmail) {
 }
 
 export default async function handler(req, res) {
-  if (req.method !== "GET") {
-    res.setHeader("Allow", ["GET"]);
-    return res.status(405).end(`Method ${req.method} Not Allowed`);
+  if (req.method !== "POST") {
+    res.status(405).json({ error: "Method not allowed" });
+    return;
   }
 
   try {
+    // Verify user authentication
     const user = await currentUser(req);
     if (!user) {
-      return res.status(401).json({ message: "User not authenticated" });
+      res.status(401).json({ error: "Unauthorized" });
+      return;
     }
 
-    const { orderId } = req.query;
-    if (!orderId) {
-      return res.status(400).json({ message: "Order ID is required" });
+    const { productIds } = req.body;
+
+    if (!productIds || !Array.isArray(productIds)) {
+      res.status(400).json({ error: "Invalid product IDs" });
+      return;
     }
 
-    const orderDetails = await getOrderDetails(orderId, user.email);
-    return res.status(200).json(orderDetails);
-  } catch (error) {
-    console.error("API Error:", error);
-    return res.status(error.message === "Order not found" ? 404 : 500).json({
-      message: error.message || "Failed to fetch order details",
+    // Get products from Firestore
+    const products = [];
+    const productsRef = db.collection("products");
+
+    // Use Promise.all to fetch all products in parallel
+    const productPromises = productIds.map(async (productId) => {
+      const productDoc = await productsRef.doc(productId).get();
+      if (productDoc.exists) {
+        return {
+          id: productDoc.id,
+          ...productDoc.data(),
+        };
+      }
+      return null;
     });
+
+    const productResults = await Promise.all(productPromises);
+    const validProducts = productResults.filter(product => product !== null);
+
+    res.status(200).json(validProducts);
+  } catch (error) {
+    console.error("Error fetching product details:", error);
+    res.status(500).json({ error: "Failed to fetch product details" });
   }
 }

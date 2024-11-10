@@ -195,10 +195,10 @@ const Signin = (prop) => {
 
       {/* Right Section with Image */}
       <div className="flex justify-center items-center w-full">
-        <div className="w-[320.65px] h-[360px] md:w-[400px] md:h-[450px] lg:w-[548.65px] lg:h-[592px] xl:w-[715.65px] xl:h-[600px] overflow-hidden rounded-lg mx-auto">
+        <div className="w-[330.65px] h-[340px] md:w-[410px] md:h-[440px] lg:w-[558.65px] lg:h-[582px] xl:w-[725.65px] xl:h-[590px] overflow-hidden rounded-lg mx-auto">
           <video
             className="w-full h-full object-cover rounded-lg"
-            src="/signin.mp4"
+            src="/vid221.mov"
             autoPlay
             loop
             muted

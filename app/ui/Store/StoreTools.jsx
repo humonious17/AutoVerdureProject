@@ -88,7 +88,7 @@ const StoreTools = ({
         <div className="space-y-6">
           <FilterSection
             title="Product Type"
-            options={["plants", "zenpot", "grobox", "accessory"]}
+            options={["plants", "planters", "flowers", "accessory"]}
             selected={filters.type}
             onToggle={(value) => toggleFilter("type", value)}
           />

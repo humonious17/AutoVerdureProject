@@ -53,8 +53,8 @@ export const support = [
 
 export const storeNavItems = [
   { title: "all", url: "/store" },
-  { title: "Planters", url: "/store/zenpot" },
-  { title: "Flowers", url: "/store/grobox" },
+  { title: "planters", url: "/store/planters" },
+  { title: "flowers", url: "/store/flowers" },
   { title: "plants", url: "/store/plants" },
   { title: "accessory", url: "/store/accessory" },
 ];
@@ -454,7 +454,7 @@ export const plants = [
   },
 ];
 
-export const zenpot = [
+export const planters = [
   {
     title: "Anthurium",
     image: "/zenpot.png",
@@ -511,7 +511,7 @@ export const zenpot = [
   },
 ];
 
-export const grobox = [
+export const flowers = [
   {
     title: "Anthurium",
     image: "/grobox.png",

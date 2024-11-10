@@ -141,12 +141,16 @@ export async function getServerSideProps() {
   try {
     const zenpot = (await findAllProducts("zenpot")) || [];
     const grobox = (await findAllProducts("grobox")) || [];
+    const planters = (await findAllProducts("planters")) || [];
+    const flowers = (await findAllProducts("flowers")) || [];
     const plants = (await findAllProducts("plants")) || [];
     const accessory = (await findAllProducts("accessory")) || [];
 
     const allProducts = [
       ...zenpot.map((p) => (p ? { ...p, category: "zenpot" } : null)),
       ...grobox.map((p) => (p ? { ...p, category: "grobox" } : null)),
+      ...planters.map((p) => (p ? { ...p, category: "planters" } : null)),
+      ...flowers.map((p) => (p ? { ...p, category: "flowers" } : null)),
       ...plants.map((p) => (p ? { ...p, category: "plants" } : null)),
       ...accessory.map((p) => (p ? { ...p, category: "accessory" } : null)),
     ].filter(Boolean);

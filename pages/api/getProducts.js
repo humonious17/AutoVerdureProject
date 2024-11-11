@@ -14,8 +14,8 @@ export default async function handler(req, res) {
       // Flatten product data by combining different types into one array
       const allProducts = [
         ...productData.plants,
-        ...productData.zenpot,
-        ...productData.grobox,
+        ...productData.planters,
+        ...productData.flowers,
         ...productData.accessory,
       ];
 

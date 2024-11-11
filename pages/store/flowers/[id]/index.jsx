@@ -3,7 +3,7 @@ import findProduct from "/pages/api/products/findProduct";
 import findAllProducts from "/pages/api/products/findAllProducts";
 import React from "react";
 
-const SingleGroboxPage = (props) => {
+const SingleFlowersPage = (props) => {
     const productData = props.product;
     const allProducts = props.allProducts;
     return (
@@ -16,8 +16,8 @@ const SingleGroboxPage = (props) => {
 export async function getServerSideProps(context) {
     const { id } = context.params;
 
-    const product = await findProduct(id, 'grobox');
-    const allProducts = await findAllProducts('grobox');
+    const product = await findProduct(id, 'flowers');
+    const allProducts = await findAllProducts('flowers');
 
     if (!product || !allProducts) {
         return {
@@ -36,4 +36,4 @@ export async function getServerSideProps(context) {
     }
 }
 
-export default SingleGroboxPage;
+export default SingleFlowersPage;

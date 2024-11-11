@@ -88,7 +88,7 @@ const StoreTools = ({
         <div className="space-y-6">
           <FilterSection
             title="Product Type"
-            options={["plants", "zenpot", "grobox", "accessory"]}
+            options={["plants", "planters", "flowers", "accessory"]}
             selected={filters.type}
             onToggle={(value) => toggleFilter("type", value)}
           />
@@ -139,10 +139,7 @@ const FilterSection = ({ title, options, selected, onToggle }) => (
     <h3 className="font-medium">{title}</h3>
     <div className="space-y-2">
       {options.map((option) => (
-        <label
-          key={option}
-          className="flex items-center gap-2 cursor-pointer"
-        >
+        <label key={option} className="flex items-center gap-2 cursor-pointer">
           <input
             type="checkbox"
             checked={selected.includes(option)}

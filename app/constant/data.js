@@ -53,8 +53,8 @@ export const support = [
 
 export const storeNavItems = [
   { title: "all", url: "/store" },
-  { title: "Planters", url: "/store/zenpot" },
-  { title: "Flowers", url: "/store/grobox" },
+  { title: "Planters", url: "/store/planters" },
+  { title: "Flowers", url: "/store/flowers" },
   { title: "plants", url: "/store/plants" },
   { title: "accessory", url: "/store/accessory" },
 ];
@@ -64,13 +64,13 @@ export const collections = [
     title: "Planters",
     description:
       "Choose from an exceptional line of self-watering planters, based on the ingenious principles of hydroponics. Here, you'll discover the perfect harmony of nature's warmth within the confines of your home.",
-    image: "/aboutUs1.png"
+    image: "/aboutUs1.png",
   },
   {
     title: "Flowers",
     description:
       "Our arrangements are hand-made in-house by our expert florists, using the very best quality fresh flowers. Our style is artistic, modern and inspirational.",
-    video: "/flower.mp4"
+    video: "/flower.mp4",
   },
   {
     title: "Plants",

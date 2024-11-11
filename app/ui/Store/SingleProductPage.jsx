@@ -341,7 +341,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
               <span>Store</span>
             </Link>{" "}
             /{" "}
-            <Link href="/store/zenpot">
+            <Link href="/store/planters">
               <span className="text-[#000]">{productData.productName}</span>
             </Link>
           </p>
@@ -487,7 +487,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
                     currentImageUrls[(imageId + 1) % currentImageUrls.length] ||
                     fallbackImageUrl
                   }
-                  alt="grobox.png"
+                  alt="flowers.png"
                   width={86}
                   height={76}
                   unoptimized={true}
@@ -500,7 +500,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
                     currentImageUrls[(imageId + 2) % currentImageUrls.length] ||
                     fallbackImageUrl
                   }
-                  alt="grobox.png"
+                  alt="flowers.png"
                   width={86}
                   height={76}
                   unoptimized={true}
@@ -513,7 +513,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
                     currentImageUrls[(imageId + 3) % currentImageUrls.length] ||
                     fallbackImageUrl
                   }
-                  alt="grobox.png"
+                  alt="flowers.png"
                   width={86}
                   height={76}
                   unoptimized={true}
@@ -526,7 +526,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
                     currentImageUrls[(imageId + 4) % currentImageUrls.length] ||
                     fallbackImageUrl
                   }
-                  alt="grobox.png"
+                  alt="flowers.png"
                   width={86}
                   height={76}
                   unoptimized={true}
@@ -753,7 +753,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
                 </div>
               </div>
             )}
-            {productData.productType === "grobox" && (
+            {productData.productType === "flowers" && (
               <div className="mt-[21.5px] w-full sm:w-fit xl:w-full flex flex-row sm:flex-col xl:flex-row sm:gap-y-3 xl:gap-x-[22px] justify-between xl:justify-start">
                 <div className="flex gap-2 sm:gap-3 justify-between sm:justify-start xl:justify-between items-center">
                   <Image
@@ -796,7 +796,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
                 </div>
               </div>
             )}
-            {productData.productType === "zenpot" && (
+            {productData.productType === "planters" && (
               <div className="mt-[21.5px] w-full sm:w-fit xl:w-full flex flex-row sm:flex-col xl:flex-row sm:gap-y-3 xl:gap-x-[22px] justify-between xl:justify-start">
                 <div className="flex gap-2 sm:gap-3 justify-between sm:justify-start xl:justify-between items-center">
                   <Image
@@ -1003,9 +1003,9 @@ const SingleProductPage = ({ productData, allProducts }) => {
           {/* Product long description */}
           <div className="w-full text-sm sm:text-[17px] leading-[30px] flex flex-col gap-[18px]">
             <p>
-              zenpot nurtures your plant while adding a touch of serenity to
+              planters nurtures your plant while adding a touch of serenity to
               your living space elevate your gardening journey and find your
-              gardening journey and find your inner peace with the zenpot self
+              gardening journey and find your inner peace with the planters self
               watering system.
             </p>
             <ul className="w-full flex flex-col justify-start items-start">

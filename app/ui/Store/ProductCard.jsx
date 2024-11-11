@@ -5,8 +5,8 @@ import React, { useEffect, useState } from "react";
 
 const ProductCard = ({ product }) => {
   const plants = product.productType === "plants";
-  const grobox = product.productType === "grobox";
-  const zenpot = product.productType === "zenpot";
+  const flowers = product.productType === "flowers";
+  const planters = product.productType === "planters";
   const accessory = product.productType === "accessory";
   const [isHover, setHover] = useState(false);
   const productDetail = product;
@@ -105,7 +105,7 @@ const ProductCard = ({ product }) => {
               )}
             </div>
           )}
-          {grobox && (
+          {flowers && (
             <div className="hidden w-fit xl:flex flex-col gap-[12px] absolute top-[21.18px] right-[29px]">
               {product.petFriendly && (
                 <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
@@ -149,7 +149,7 @@ const ProductCard = ({ product }) => {
               )}
             </div>
           )}
-          {zenpot && (
+          {planters && (
             <div className="hidden w-fit xl:flex flex-col gap-[12px] absolute top-[21.18px] right-[29px]">
               {product.petFriendly && (
                 <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
@@ -277,7 +277,7 @@ const ProductCard = ({ product }) => {
                 ₹ {productDetail.productPrice}
               </p>
               <div className="mt-[11.92px] md:mt-0 w-[63px] text-[8.195px] md:text-xl py-[5px] md:px-[33px] font-medium border-[0.51px] rounded-[29.2px] border-[#9F9F9F] flex justify-center items-center">
-                <p>Add</p>
+                <button>Add</button>
               </div>
             </div>
           </div>

@@ -7,8 +7,8 @@ import findAllProducts from "/pages/api/products/findAllProducts";
 import TuneIcon from "@mui/icons-material/Tune";
 
 const Zenpot = (props) => {
-  const zenpot = props.products || [];
-  const [filteredProducts, setFilteredProducts] = useState(zenpot);
+  const planters = props.products || [];
+  const [filteredProducts, setFilteredProducts] = useState(planters);
   const [sortBy, setSortBy] = useState("default");
   const [showCount, setShowCount] = useState(16);
   const [displayedProductsCount, setDisplayedProductsCount] = useState(0);
@@ -19,7 +19,7 @@ const Zenpot = (props) => {
   }, [filteredProducts, showCount]);
 
   const handleFilterChange = (filters) => {
-    let filtered = [...zenpot];
+    let filtered = [...planters];
 
     if (filters.type?.length > 0) {
       filtered = filtered.filter(
@@ -43,7 +43,7 @@ const Zenpot = (props) => {
         sorted.sort((a, b) => b.productName.localeCompare(a.productName));
         break;
       default:
-        sorted = [...zenpot];
+        sorted = [...planters];
     }
 
     setFilteredProducts(sorted);
@@ -65,7 +65,7 @@ const Zenpot = (props) => {
         style={{ width: "300px" }}
       >
         <StoreTools
-          totalProducts={zenpot.length}
+          totalProducts={planters.length}
           displayedProducts={displayedProductsCount}
           onFilterChange={handleFilterChange}
           onSortChange={handleSort}
@@ -100,7 +100,7 @@ const Zenpot = (props) => {
         <div className="mt-10 mb-20 w-full flex flex-col justify-center items-center">
           <div className="max-w-[1440px] w-full grid grid-cols-2 xl:grid-cols-3 gap-12">
             {validProducts.slice(0, showCount).map((product, index) => (
-              <Link key={index} href={`/store/zenpot/${product.productId}`}>
+              <Link key={index} href={`/store/planters/${product.productId}`}>
                 <ProductCard product={product} />
               </Link>
             ))}
@@ -112,7 +112,7 @@ const Zenpot = (props) => {
 };
 
 export async function getServerSideProps() {
-  const products = await findAllProducts("zenpot");
+  const products = await findAllProducts("planters");
   if (!products) {
     return {
       redirect: {

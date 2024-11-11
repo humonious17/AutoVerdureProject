@@ -6,7 +6,7 @@ import StoreTools from "@/app/ui/Store/StoreTools";
 import findAllProducts from "/pages/api/products/findAllProducts";
 import TuneIcon from "@mui/icons-material/Tune";
 
-const Zenpot = (props) => {
+const Planters = (props) => {
   const planters = props.products || [];
   const [filteredProducts, setFilteredProducts] = useState(planters);
   const [sortBy, setSortBy] = useState("default");
@@ -129,4 +129,4 @@ export async function getServerSideProps() {
   };
 }
 
-export default Zenpot;
+export default Planters;

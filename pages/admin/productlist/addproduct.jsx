@@ -3,6 +3,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
+import ImageCropper from "./ImageCropper";
+import { Volume, Weight } from "lucide-react";
 
 const ProductForm = () => {
   const initialFormData = {
@@ -35,6 +37,10 @@ const ProductForm = () => {
         depth: 0,
         ih: 0,
         il: 0,
+        outerHeight: 0,
+        outerDiameter: 0,
+        weight: 0,
+        volume: 0,
       },
       S: {
         selected: false,
@@ -44,6 +50,10 @@ const ProductForm = () => {
         depth: 0,
         ih: 0,
         il: 0,
+        outerHeight: 0,
+        outerDiameter: 0,
+        weight: 0,
+        volume: 0,
       },
       M: {
         selected: false,
@@ -53,6 +63,10 @@ const ProductForm = () => {
         depth: 0,
         ih: 0,
         il: 0,
+        outerHeight: 0,
+        outerDiameter: 0,
+        weight: 0,
+        volume: 0,
       },
       L: {
         selected: false,
@@ -62,6 +76,10 @@ const ProductForm = () => {
         depth: 0,
         ih: 0,
         il: 0,
+        outerHeight: 0,
+        outerDiameter: 0,
+        weight: 0,
+        volume: 0,
       },
       XL: {
         selected: false,
@@ -71,6 +89,10 @@ const ProductForm = () => {
         depth: 0,
         ih: 0,
         il: 0,
+        outerHeight: 0,
+        outerDiameter: 0,
+        weight: 0,
+        volume: 0,
       },
     },
     colors: {
@@ -85,6 +107,12 @@ const ProductForm = () => {
     defaultSize: "",
     defaultColor: "",
   };
+
+  const [cropperData, setCropperData] = useState({
+    isOpen: false,
+    file: null,
+    imageIndex: null,
+  });
 
   const [formData, setFormData] = useState(initialFormData);
   useEffect(() => {
@@ -200,8 +228,29 @@ const ProductForm = () => {
 
     const file = e.target.files[0];
     if (file) {
-      await uploadToCloudinary(file, index);
+      setCropperData({
+        isOpen: true,
+        file: file,
+        imageIndex: index,
+      });
     }
+  };
+
+  const handleCropCancel = () => {
+    setCropperData({
+      isOpen: false,
+      file: null,
+      imageIndex: null,
+    });
+  };
+
+  const handleCropSave = async (croppedFile) => {
+    setCropperData({
+      isOpen: false,
+      file: null,
+      imageIndex: null,
+    });
+    await uploadToCloudinary(croppedFile, cropperData.imageIndex);
   };
 
   const uploadToCloudinary = async (file, index) => {
@@ -801,6 +850,86 @@ const ProductForm = () => {
                                 />
                               </div>
                             </div>
+
+                            <div className="grid grid-cols-2 gap-4">
+                              <div className="space-y-2">
+                                <label className="block text-xs font-medium text-gray-500">
+                                  Outer Height (cm)
+                                </label>
+                                <input
+                                  type="number"
+                                  value={formData.sizes[size].outerHeight}
+                                  onChange={(e) =>
+                                    handleSizeDimensionChange(
+                                      size,
+                                      "outerHeight",
+                                      e.target.value
+                                    )
+                                  }
+                                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
+                                />
+                              </div>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4">
+                              <div className="space-y-2">
+                                <label className="block text-xs font-medium text-gray-500">
+                                  Outer Diameter (cm)
+                                </label>
+                                <input
+                                  type="number"
+                                  value={formData.sizes[size].outerDiameter}
+                                  onChange={(e) =>
+                                    handleSizeDimensionChange(
+                                      size,
+                                      "outerDiameter",
+                                      e.target.value
+                                    )
+                                  }
+                                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
+                                />
+                              </div>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4">
+                              <div className="space-y-2">
+                                <label className="block text-xs font-medium text-gray-500">
+                                  Weight (grams)
+                                </label>
+                                <input
+                                  type="number"
+                                  value={formData.sizes[size].weight}
+                                  onChange={(e) =>
+                                    handleSizeDimensionChange(
+                                      size,
+                                      "weight",
+                                      e.target.value
+                                    )
+                                  }
+                                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
+                                />
+                              </div>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4">
+                              <div className="space-y-2">
+                                <label className="block text-xs font-medium text-gray-500">
+                                  Volume (L)
+                                </label>
+                                <input
+                                  type="number"
+                                  value={formData.sizes[size].volume}
+                                  onChange={(e) =>
+                                    handleSizeDimensionChange(
+                                      size,
+                                      "volume",
+                                      e.target.value
+                                    )
+                                  }
+                                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
+                                />
+                              </div>
+                            </div>
                           </div>
 
                           {/* Default Size Radio */}
@@ -935,6 +1064,13 @@ const ProductForm = () => {
               </button>
             </div>
           </form>
+          {cropperData.isOpen && (
+            <ImageCropper
+              file={cropperData.file}
+              onSave={handleCropSave}
+              onCancel={handleCropCancel}
+            />
+          )}
         </div>
       </div>
     </div>

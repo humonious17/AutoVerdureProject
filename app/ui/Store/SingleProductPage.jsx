@@ -12,6 +12,7 @@ import { setProducts } from "@/features/productsSlice/productSlice";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import Reviewfom from "@/pages/Reviewfom";
+import { set } from "react-hook-form";
 
 const SingleProductPage = ({ productData, allProducts }) => {
   useEffect(() => {
@@ -50,6 +51,18 @@ const SingleProductPage = ({ productData, allProducts }) => {
   );
   const [innerDimensions, setInnerDimensions] = useState(
     "Please Select a size to see it's Inner dimensions"
+  );
+  const [outerHeight, setOuterHeight] = useState(
+    "Please Select a size to see it's Outer Height"
+  );
+  const [outerDiameter, setOuterDiameter] = useState(
+    "Please Select a size to see it's Out Diameter"
+  );
+  const [weight, setWeight] = useState(
+    "Please Select a size to see it's Weight"
+  );
+  const [volume, setVolume] = useState(
+    "Please Select a size to see it's Volume"
   );
 
   const colors = {
@@ -103,6 +116,14 @@ const SingleProductPage = ({ productData, allProducts }) => {
       const { ih = 0, il = 0 } = selectedSizeData;
       const dimensionString = `${width}cm x ${height}cm x ${depth}cm`;
       const InnerDimensionString = `${ih}cm x ${il}cm`;
+      const outerHeightString = `${selectedSizeData.outerHeight}cm`;
+      const outerDiameterString = `${selectedSizeData.outerDiameter}cm`;
+      const weightString = `${selectedSizeData.weight}g`;
+      const volumeString = `${selectedSizeData.volume}L`;
+      setOuterHeight(outerHeightString);
+      setOuterDiameter(outerDiameterString);
+      setWeight(weightString);
+      setVolume(volumeString);
       setDimensions(dimensionString);
       setInnerDimensions(InnerDimensionString);
       //console.log("new dimensions: " + dimensionString);
@@ -646,9 +667,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
                               : "bg-[#9A5CF5] bg-opacity-20 hover:bg-opacity-100 text-gray hover:text-[#fff] hover:shadow-md"
                           }`}
                         >
-                          <p className="uppercase font-semibold">
-                            {finishOption.toLowerCase()}
-                          </p>
+                          <p className="font-semibold">{finishOption}</p>
                         </button>
                       ) : null
                     )}
@@ -950,6 +969,22 @@ const SingleProductPage = ({ productData, allProducts }) => {
                       <li className="decoration-dotted flex justify-start items-center">
                         <div className="w-[5px] h-[5px] rounded-full bg-[#5B5B5B] mr-[13.9px]" />
                         Dimensions - {dimensions}
+                      </li>
+                      <li className="decoration-dotted flex justify-start items-center">
+                        <div className="w-[5px] h-[5px] rounded-full bg-[#5B5B5B] mr-[13.9px]" />
+                        Outer Height - {outerHeight}
+                      </li>
+                      <li className="decoration-dotted flex justify-start items-center">
+                        <div className="w-[5px] h-[5px] rounded-full bg-[#5B5B5B] mr-[13.9px]" />
+                        Outer Diameter - {outerDiameter}
+                      </li>
+                      <li className="decoration-dotted flex justify-start items-center">
+                        <div className="w-[5px] h-[5px] rounded-full bg-[#5B5B5B] mr-[13.9px]" />
+                        Weight - {weight}
+                      </li>
+                      <li className="decoration-dotted flex justify-start items-center">
+                        <div className="w-[5px] h-[5px] rounded-full bg-[#5B5B5B] mr-[13.9px]" />
+                        Volume - {volume}
                       </li>
                     </ul>
                   )}

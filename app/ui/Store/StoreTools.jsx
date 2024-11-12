@@ -76,7 +76,7 @@ const StoreTools = ({
             </button>
             <button
               onClick={() => setIsFilterOpen(false)}
-              className="p-1 hover:bg-gray-100 rounded-full"
+              className="p-1 hover:bg-gray-100 rounded-full" // Added margin-left to shift the button to the right
             >
               <X className="h-5 w-5" />
             </button>

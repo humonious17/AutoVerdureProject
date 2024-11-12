@@ -25,8 +25,8 @@ export default function BlogPost({ blog }) {
     <>
       <div className="container mx-auto p-6 mt-14 max-w-2xl">
         <div className="text-center mb-8">
-          <span className="bg-green-200 text-green-800 px-2 py-1 rounded-full text-xs uppercase tracking-wide">
-            Green Living
+          <span className="bg-green-200 text-green-800 px-2 py-1 rounded-lg text-xs uppercase tracking-wide">
+          {blog.category || "General"} 
           </span>
           <h1
             className="font-urbanist text-[64px] font-normal leading-[76.8px] tracking-[-0.025em] text-center mt-4 mb-2"
@@ -34,7 +34,7 @@ export default function BlogPost({ blog }) {
           >
             {blog.title}
           </h1>
-          <p className="font-bold text-black">By Arka</p>
+          <p className="font-bold text-black">{blog.authorName || "Unknown Author"}</p>
           <p className="text-gray-500 text-sm">
             {new Date().toLocaleDateString()}
           </p>
@@ -95,7 +95,7 @@ export default function BlogPost({ blog }) {
       {/* </div> */}
 
       {/* Related Blog */}
-      <div className=" container mx-auto p-12 text-center">
+      <div className=" container mx-auto p-16 max-w-screen-2xl text-center">
       <Displayblogs
         title="Related Blog"
         description="Our blog is filled with informative and inspiring content on all

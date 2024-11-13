@@ -13,7 +13,8 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import Reviewfom from "@/pages/Reviewfom";
 
-const SingleProductPage = ({ productData, allProducts }) => {
+
+const SingleProductPage = ({ productData, allProducts, productId  }) => {
   useEffect(() => {
     const script1 = document.createElement("script");
     script1.src =
@@ -51,6 +52,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
   const [innerDimensions, setInnerDimensions] = useState(
     "Please Select a size to see it's Inner dimensions"
   );
+  
 
   const colors = {
     White: {
@@ -1099,6 +1101,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
             <Testimonial />
             <Testimonial />
             <Testimonial />
+            
           </div>
         </div>
       </div>

@@ -10,7 +10,6 @@ const TopSegment = () => {
           Store
         </p>
         <StoreNavbar />
-        
       </div>
     </div>
   );

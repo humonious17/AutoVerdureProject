@@ -81,35 +81,38 @@ const Store = ({ initialProducts }) => {
         {/* Sticky Header */}
         <TopSegment />
 
-       {/* Sorting and Filtering Section */}
-<div className="sticky top-0 z-30 bg-gray-50 w-full">
-  <div className="px-4 py-6 md:px-8">
-    <div className="flex justify-between items-center">
-      {/* Filter Toggle Button with Grid/List Icons */}
-      <div className="flex items-center gap-4">
-        <button
-          onClick={() => setIsFilterOpen(!isFilterOpen)}
-          className="flex items-center gap-2 px-4 py-2 bg-white rounded-lg border"
+        {/* Sorting and Filtering Section */}
+        <div
+          className="my-3 sticky top-0 z-30 w-full"
+          style={{ backgroundColor: "#9A5CF50F" }}
         >
-          <TuneIcon />
-          Filters
-        </button>
-        {/* Grid and List View Icons */}
-        <Image
-          className="object-contain cursor-pointer"
-          src="/gridRound.svg"
-          alt="gridRound"
-          width={28}
-          height={28}
-        />
-        <Image
-          className="object-contain cursor-pointer"
-          src="/list.svg"
-          alt="list"
-          width={24}
-          height={24}
-        />
-      </div>
+          <div className="px-4 py-6 md:px-8">
+            <div className="flex justify-between items-center">
+              {/* Filter Toggle Button with Grid/List Icons */}
+              <div className="flex items-center gap-4">
+                <button
+                  onClick={() => setIsFilterOpen(!isFilterOpen)}
+                  className="flex items-center gap-2 px-4 py-2 bg-white rounded-lg border"
+                >
+                  <TuneIcon />
+                  Filters
+                </button>
+                {/* Grid and List View Icons */}
+                <Image
+                  className="object-contain cursor-pointer"
+                  src="/gridRound.svg"
+                  alt="gridRound"
+                  width={28}
+                  height={28}
+                />
+                <Image
+                  className="object-contain cursor-pointer"
+                  src="/list.svg"
+                  alt="list"
+                  width={24}
+                  height={24}
+                />
+              </div>
               {/* Sort and Show Count Controls */}
               <div className="flex items-center gap-4">
                 <select

@@ -5,6 +5,7 @@ import TopSegment from "@/app/ui/Store/TopSegment";
 import StoreTools from "@/app/ui/Store/StoreTools";
 import findAllProducts from "/pages/api/products/findAllProducts";
 import TuneIcon from "@mui/icons-material/Tune";
+import Image from "next/image";
 
 const Store = ({ initialProducts }) => {
   const [filteredProducts, setFilteredProducts] = useState(initialProducts);
@@ -80,19 +81,35 @@ const Store = ({ initialProducts }) => {
         {/* Sticky Header */}
         <TopSegment />
 
-        {/* Sorting and Filtering Section */}
-        <div className="sticky top-0 z-30 bg-gray-50 w-full">
-          <div className="px-4 py-6 md:px-8">
-            <div className="flex justify-between items-center">
-              {/* Filter Toggle Button */}
-              <button
-                onClick={() => setIsFilterOpen(!isFilterOpen)}
-                className="flex items-center gap-2 px-4 py-2 bg-white rounded-lg border"
-              >
-                <TuneIcon />
-                Filters
-              </button>
-
+       {/* Sorting and Filtering Section */}
+<div className="sticky top-0 z-30 bg-gray-50 w-full">
+  <div className="px-4 py-6 md:px-8">
+    <div className="flex justify-between items-center">
+      {/* Filter Toggle Button with Grid/List Icons */}
+      <div className="flex items-center gap-4">
+        <button
+          onClick={() => setIsFilterOpen(!isFilterOpen)}
+          className="flex items-center gap-2 px-4 py-2 bg-white rounded-lg border"
+        >
+          <TuneIcon />
+          Filters
+        </button>
+        {/* Grid and List View Icons */}
+        <Image
+          className="object-contain cursor-pointer"
+          src="/gridRound.svg"
+          alt="gridRound"
+          width={28}
+          height={28}
+        />
+        <Image
+          className="object-contain cursor-pointer"
+          src="/list.svg"
+          alt="list"
+          width={24}
+          height={24}
+        />
+      </div>
               {/* Sort and Show Count Controls */}
               <div className="flex items-center gap-4">
                 <select

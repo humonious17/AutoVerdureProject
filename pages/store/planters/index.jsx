@@ -5,6 +5,7 @@ import TopSegment from "@/app/ui/Store/TopSegment";
 import StoreTools from "@/app/ui/Store/StoreTools";
 import findAllProducts from "/pages/api/products/findAllProducts";
 import TuneIcon from "@mui/icons-material/Tune";
+import Image from "next/image";
 
 const Planters = (props) => {
   const planters = props.products || [];
@@ -53,7 +54,10 @@ const Planters = (props) => {
     setShowCount(parseInt(count));
   };
 
-  const validProducts = filteredProducts || [];
+  const validProducts = filteredProducts.filter(
+    (product) => product && product.productId && product.category
+  );
+
 
   return (
     <div className="w-full bg-[#FFFCF8] min-h-screen">
@@ -85,25 +89,71 @@ const Planters = (props) => {
       >
         <TopSegment />
 
-        {/* Filter Toggle Button */}
-        <div className="sticky top-0 z-30 bg-gray-50 w-full px-4 py-6 md:px-8">
-          <button
-            onClick={() => setIsFilterOpen(!isFilterOpen)}
-            className="flex items-center gap-2 px-4 py-2 bg-white rounded-lg border"
-          >
-            <TuneIcon className="text-gray-500" />
-            Filters
-          </button>
+        
+       {/* Sorting and Filtering Section */}
+<div className="sticky top-0 z-30 bg-gray-50 w-full">
+  <div className="px-4 py-6 md:px-8">
+    <div className="flex justify-between items-center">
+      {/* Filter Toggle Button with Grid/List Icons */}
+      <div className="flex items-center gap-4">
+        <button
+          onClick={() => setIsFilterOpen(!isFilterOpen)}
+          className="flex items-center gap-2 px-4 py-2 bg-white rounded-lg border"
+        >
+          <TuneIcon />
+          Filters
+        </button>
+        {/* Grid and List View Icons */}
+        <Image
+          className="object-contain cursor-pointer"
+          src="/gridRound.svg"
+          alt="gridRound"
+          width={28}
+          height={28}
+        />
+        <Image
+          className="object-contain cursor-pointer"
+          src="/list.svg"
+          alt="list"
+          width={24}
+          height={24}
+        />
+      </div>
+
+              {/* Sort and Show Count Controls */}
+              <div className="flex items-center gap-4">
+                <select
+                  value={sortBy}
+                  onChange={(e) => handleSort(e.target.value)}
+                  className="py-2 px-3 text-sm border rounded-lg bg-white"
+                >
+                  <option value="default">Sort by</option>
+                  <option value="name-asc">Name (A-Z)</option>
+                  <option value="name-desc">Name (Z-A)</option>
+                </select>
+                <select
+                  value={showCount}
+                  onChange={(e) => handleShowCountChange(e.target.value)}
+                  className="py-2 px-3 text-sm border rounded-lg bg-white"
+                >
+                  <option value={16}>Show 16</option>
+                  <option value={32}>Show 32</option>
+                  <option value={64}>Show 64</option>
+                </select>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Products Grid */}
         <div className="mt-10 mb-20 w-full flex flex-col justify-center items-center">
           <div className="max-w-[1440px] w-full grid grid-cols-2 xl:grid-cols-3 gap-12">
-            {validProducts.slice(0, showCount).map((product, index) => (
-              <Link key={index} href={`/store/planters/${product.productId}`}>
-                <ProductCard product={product} />
-              </Link>
+          {filteredProducts.map((product, index) => (
+            <Link key={index} href={`/store/planters/${product.productId}`}>
+            <ProductCard product={product} />
+           </Link>
             ))}
+
           </div>
         </div>
       </div>

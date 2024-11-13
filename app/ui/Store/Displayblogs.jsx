@@ -38,8 +38,8 @@ export default function Blogs({ title, description }) {
   };
 
   return (
-    <div className="container mx-auto p-12 text-center">
-      <h2 className="text-4xl font-medium mb-4">{title}</h2>
+    <div className="container mx-auto p-12 mt-10 text-center">
+      <h2 className="text-4xl font-medium mb-8">{title}</h2>
       <p className="text-gray-600 max-w-4xl mx-auto mb-10 line-clamp-2">
         {description}
       </p>
@@ -47,11 +47,11 @@ export default function Blogs({ title, description }) {
       {/* Scrollable Blog Cards Container with Hidden Scroll Bar */}
       <div className="overflow-hidden relative">
         <div
-          className="flex flex-col md:flex-row gap-4 overflow-x-auto no-scrollbar"
+          className="flex flex-col md:flex-row gap-8 overflow-x-auto no-scrollbar"
           ref={containerRef}
         >
           {blogs.map((blog) => (
-            <div key={blog.id} className="flex-none w-full md:w-1/3">
+            <div key={blog.id} className=" flex-none w-full md:w-[31%]">
               <BlogCard blog={blog} />
             </div>
           ))}

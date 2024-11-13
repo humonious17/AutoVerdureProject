@@ -30,16 +30,19 @@ const Payment = (props) => {
         const parsedShippingDetails = JSON.parse(
           decodeURIComponent(shippingDetails)
         );
+        const parsedProducts = JSON.parse(
+          decodeURIComponent(router.query.products)
+        );
 
         const orderPayload = {
           orderId: orderId,
-          products: JSON.parse(decodeURIComponent(router.query.products)),
+          products: parsedProducts,
           shipping: {
             fullName: parsedShippingDetails.fullName,
             address1: `${parsedShippingDetails.houseNumber} ${parsedShippingDetails.streetName}`,
             address2: `${parsedShippingDetails.city}, ${parsedShippingDetails.country}`,
             city: parsedShippingDetails.city,
-            state: "", // Add if needed
+            state: "",
             postalCode: parsedShippingDetails.zipCode,
             country: parsedShippingDetails.country,
             phone: parsedShippingDetails.phone,
@@ -47,6 +50,7 @@ const Payment = (props) => {
           email: email,
           totalAmount: amount,
           paymentStatus: "completed",
+          isBuyNow: router.query.buyNow === "true",
         };
 
         const orderResult = await fetch("/api/addOrder", {
@@ -59,7 +63,6 @@ const Payment = (props) => {
 
         if (orderResult.ok) {
           router.push("/checkout/successful");
-          // Send confirmation email after order creation
         } else {
           setError("Failed to create order. Please contact support.");
           router.push("/checkout/failed");

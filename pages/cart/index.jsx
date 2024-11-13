@@ -37,7 +37,7 @@ const Cart = ({ products = [] }) => {
       setTimeout(() => setShowAlert(false), 3000);
       return;
     }
-    router.push("/checkout");
+    router.push("/checkout/guest");
   };
 
   const removeCartItem = async (cartObjId) => {

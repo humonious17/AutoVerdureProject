@@ -1,51 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import Image from "next/image";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import findCartProducts from "@/lib/server/findCartProducts";
-
-const Input = ({ label, placeholder, type, name, value, onChange, error }) => {
-  const [isVisible, setIsVisible] = useState(false);
-
-  return (
-    <div className="w-full flex flex-col gap-y-3">
-      <label className="text-2xl leading-6 capitalize font-normal text-[#070707]">
-        {label}
-      </label>
-      <div className={`w-full text-base px-4 py-3 leading-[25.6px] rounded-[84px] border-[1px] ${
-        error ? 'border-red-500' : 'border-[#070707]'
-      } text-[#070707] bg-[#FFFFFF] font-medium flex gap-5 justify-between`}>
-        <input
-          className="w-full h-fit text-base focus:outline-none"
-          placeholder={placeholder}
-          type={isVisible ? "text" : type}
-          name={name}
-          value={value}
-          onChange={onChange}
-          required
-        />
-        {type === "password" && (
-          <Image
-            className="cursor-pointer"
-            onClick={() => setIsVisible(!isVisible)}
-            src="/eye.svg"
-            alt="eye"
-            width={24}
-            height={24}
-          />
-        )}
-      </div>
-      {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
-    </div>
-  );
-};
 
 const Shipping = (props) => {
   const { email, cartProducts } = props;
   const router = useRouter();
+  const { query } = router;
+  const isBuyNow = Boolean(query.productId);
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [fieldErrors, setFieldErrors] = useState({});
-  
   const [formData, setFormData] = useState({
     fullName: "",
     streetName: "",
@@ -57,21 +24,30 @@ const Shipping = (props) => {
   });
 
   useEffect(() => {
-    if (!email) {
-      router.push("/checkout/guest");
+    // Check if we have either email or user is logged in
+    if (!email && !localStorage.getItem("userEmail")) {
+      router.push({
+        pathname: "/checkout/guest",
+        query: isBuyNow ? query : {},
+      });
+      return;
     }
-    if (!cartProducts || cartProducts.length === 0) {
+
+    // Only check for cart products if it's not a Buy Now flow
+    if (!isBuyNow && (!cartProducts || cartProducts.length === 0)) {
       router.push("/cart");
     }
-  }, [router, email, cartProducts]);
+  }, [router, email, cartProducts, isBuyNow, query]);
 
   const validateForm = () => {
     const errors = {};
     const fields = Object.keys(formData);
-    
-    fields.forEach(field => {
+
+    fields.forEach((field) => {
       if (!formData[field].trim()) {
-        errors[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} is required`;
+        errors[field] = `${
+          field.charAt(0).toUpperCase() + field.slice(1)
+        } is required`;
       }
     });
 
@@ -89,23 +65,21 @@ const Shipping = (props) => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
-    // Clear error when user starts typing
-    if (fieldErrors[name]) {
-      setFieldErrors(prev => ({
-        ...prev,
-        [name]: ""
-      }));
-    }
   };
 
   const calculateTotal = () => {
-    return cartProducts.reduce((total, product) => {
-      return total + (product.price * product.productQty);
-    }, 0);
+    if (isBuyNow) {
+      return parseFloat(query.productPrice || 0);
+    }
+    return (
+      cartProducts?.reduce((total, product) => {
+        return total + product.price * product.productQty;
+      }, 0) || 0
+    );
   };
 
   const handleSubmit = async (e) => {
@@ -120,17 +94,31 @@ const Shipping = (props) => {
 
     try {
       const total = calculateTotal();
-      
-      // Format products for order creation
+
+      // Create products object based on checkout type
       const products = {
-        selectedProducts: cartProducts.map(product => ({
-          price: product.price,
-          productQty: product.productQty,
-          productId: product.productId,
-          productName: product.productName,
-          productType: product.productType,
-          productImage: product.productImage,
-        })),
+        selectedProducts: isBuyNow
+          ? [
+              {
+                price: parseFloat(query.productPrice),
+                productQty: parseInt(query.productQuantity || 1),
+                productId: query.productId,
+                productName: query.productName,
+                productColor: query.productColor,
+                productSize: query.productSize,
+                productStyle: query.productStyle,
+                productType: query.productType,
+                productImage: query.productImage,
+              },
+            ]
+          : cartProducts.map((product) => ({
+              price: product.price,
+              productQty: product.productQty,
+              productId: product.productId,
+              productName: product.productName,
+              productType: product.productType,
+              productImage: product.productImage,
+            })),
       };
 
       const result = await fetch("/api/createRazorpayOrder", {
@@ -139,10 +127,11 @@ const Shipping = (props) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          amount: total * 100, // Convert to paise
+          amount: total * 100,
           products,
           shippingDetails: formData,
-          email,
+          email: email || localStorage.getItem("userEmail"),
+          isBuyNow,
         }),
       });
 
@@ -153,7 +142,9 @@ const Shipping = (props) => {
       const { id: orderId } = await result.json();
 
       // Encode data for URL
-      const encodedShippingDetails = encodeURIComponent(JSON.stringify(formData));
+      const encodedShippingDetails = encodeURIComponent(
+        JSON.stringify(formData)
+      );
       const encodedProducts = encodeURIComponent(JSON.stringify(products));
 
       router.push({
@@ -163,7 +154,8 @@ const Shipping = (props) => {
           shippingDetails: encodedShippingDetails,
           products: encodedProducts,
           amount: total * 100,
-          email,
+          email: email || localStorage.getItem("userEmail"),
+          buyNow: isBuyNow,
         },
       });
     } catch (error) {
@@ -192,8 +184,8 @@ const Shipping = (props) => {
               {error}
             </div>
           )}
-          
-          {Object.keys(formData).map(field => (
+
+          {Object.keys(formData).map((field) => (
             <Input
               key={field}
               name={field}
@@ -210,7 +202,7 @@ const Shipping = (props) => {
             type="submit"
             disabled={isLoading}
             className={`mt-[42px] sm:mt-[52px] w-full text-base px-6 py-[17px] rounded-[30px] border-[1px] bg-[#070707] border-[#070707] text-[#FFFFFF] font-bold ${
-              isLoading ? 'opacity-50 cursor-not-allowed' : ''
+              isLoading ? "opacity-50 cursor-not-allowed" : ""
             }`}
           >
             {isLoading ? "Processing..." : "Continue to Payment"}
@@ -221,21 +213,28 @@ const Shipping = (props) => {
   );
 };
 
-export async function getServerSideProps({ req }) {
+export async function getServerSideProps({ req, query }) {
   const currentUser = require("@/lib/server/currentUser").default;
   const user = await currentUser(req);
 
-  // Get cart products
-  const cartId = req.cookies.cartId || null;
-  const cartProducts = await findCartProducts(cartId);
+  // Check if this is a Buy Now flow
+  const isBuyNow = Boolean(query.productId);
 
-  if (!cartProducts || cartProducts.length === 0) {
-    return {
-      redirect: {
-        destination: "/cart",
-        permanent: false,
-      },
-    };
+  // Only fetch cart products if it's not a Buy Now flow
+  let cartProducts = [];
+  if (!isBuyNow) {
+    const cartId = req.cookies.cartId || null;
+    cartProducts = await findCartProducts(cartId);
+
+    // Only redirect if it's a cart checkout and there are no products
+    if (!cartProducts || cartProducts.length === 0) {
+      return {
+        redirect: {
+          destination: "/cart",
+          permanent: false,
+        },
+      };
+    }
   }
 
   return {
@@ -247,6 +246,3 @@ export async function getServerSideProps({ req }) {
 }
 
 export default Shipping;
-
-
- 

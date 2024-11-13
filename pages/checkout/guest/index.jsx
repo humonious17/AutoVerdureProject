@@ -67,6 +67,8 @@ const GuestCheckout = (props) => {
   const [formData, setFormData] = useState({
     email: "",
   });
+  const { query } = router;
+  const isBuyNow = Boolean(query.productId); // Check if it's a direct purchase
 
   useEffect(() => {
     importScript("https://accounts.google.com/gsi/client");
@@ -88,9 +90,17 @@ const GuestCheckout = (props) => {
       return;
     }
     setError(false);
-    // Replace the dispatch action with local storage or similar logic
     localStorage.setItem("userEmail", formData.email);
-    router.push("/checkout/shipping");
+
+    // Pass all query parameters to maintain buy now context
+    if (isBuyNow) {
+      router.push({
+        pathname: "/checkout/shipping",
+        query: { ...query, email: formData.email, buyNow: true },
+      });
+    } else {
+      router.push("/checkout/shipping");
+    }
   };
 
   return (

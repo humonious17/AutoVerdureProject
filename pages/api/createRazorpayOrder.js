@@ -8,7 +8,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { products, shippingDetails, email } = req.body;
+    const { products, shippingDetails, email, isBuyNow } = req.body;
 
     // Validate required data
     if (
@@ -35,6 +35,13 @@ export default async function handler(req, res) {
         quantity: product.productQty,
         price: product.price,
         itemTotal,
+        ...(isBuyNow
+          ? {
+              color: product.productColor,
+              size: product.productSize,
+              style: product.productStyle,
+            }
+          : {}),
       };
     });
 
@@ -69,6 +76,8 @@ export default async function handler(req, res) {
     // Store order details in Firebase
     const orderRef = db.collection("orders").doc(razorpayOrder.id);
     await orderRef.set({
+      orderType: isBuyNow ? "direct" : "cart",
+      items: orderItems,
       orderStatus: "created",
       orderId: razorpayOrder.id,
       razorpayOrderId: razorpayOrder.id,
@@ -101,17 +110,9 @@ export default async function handler(req, res) {
     });
   } catch (error) {
     console.error("Error creating Razorpay order:", error);
-
-    // Send appropriate error response based on error type
-    if (error.statusCode) {
-      // Razorpay specific errors
-      return res.status(error.statusCode).json({
-        error: error.error.description || "Razorpay error occurred",
-      });
-    }
-
     return res.status(500).json({
       error: "Failed to create order. Please try again.",
     });
   }
 }
+

@@ -312,7 +312,16 @@ const SingleProductPage = ({ productData, allProducts }) => {
     }
     setError("");
 
-    // Assuming we have a function to validate payment details
+    const payload = {
+      productId: productData.productId,
+      productName: productData.productName,
+      productPrice: price,
+      productColor: selectedColor,
+      productSize: size,
+      productQuantity: stockQuantity,
+      productStyle: style,
+    };
+
     const isPaymentValid = validatePaymentDetails();
     if (!isPaymentValid) {
       setError(
@@ -321,7 +330,10 @@ const SingleProductPage = ({ productData, allProducts }) => {
       return;
     }
 
-    router.push("/checkout/guest");
+    router.push({
+      pathname: "/checkout/guest",
+      query: { ...payload },
+    });
   };
 
   // Example of a payment validation function

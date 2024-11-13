@@ -1127,7 +1127,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
               <Link
                 className="w-full"
                 key={index}
-                href={`/store/${product.productName}/${product.productId}`}
+                href={`/store/${product.productType}/${product.productId}`}
               >
                 <ProductCard product={product} />
               </Link>
@@ -1143,9 +1143,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
 
           {/* Testimonial cards */}
           <div className="mt-10 sm:mt-[80.99px] xl:mt-[59.99px] w-full h-full flex gap-x-[30px] justify-center items-center overflow-x-scroll sm:overflow-hidden">
-            <Testimonial />
-            <Testimonial />
-            <Testimonial />
+            <Testimonial productId={productData.productId} />
           </div>
         </div>
       </div>

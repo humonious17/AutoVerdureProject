@@ -9,11 +9,17 @@ const Profile = (props) => {
   const [buttonText, setButtonText] = useState("Update Profile");
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [logoutMessage, setLogoutMessage] = useState("");
+  const [redeemMessage, setRedeemMessage] = useState("");
   const [editField, setEditField] = useState({
     name: false,
     phone: false,
   });
   const router = useRouter();
+
+  const redeemPoints = async () => {
+    const redemptionValue = formData.avPoints * 10; // 1 point = 10rs
+    setRedeemMessage(`You can redeem Rs. ${redemptionValue} on your next order.`);
+  };
 
   const handleChange = (e) => {
     setFormData({
@@ -149,6 +155,23 @@ const Profile = (props) => {
       width: "20px",
       height: "20px",
     },
+    redeemButton: {
+      width: "100%",
+      padding: "10px 0",
+      border: "none",
+      borderRadius: "25px",
+      backgroundColor: "#4CAF50",
+      color: "white",
+      fontSize: "16px",
+      cursor: "pointer",
+      marginTop: "10px",
+    },
+    redeemMessage: {
+      marginTop: "15px",
+      fontSize: "14px",
+      color: "#4CAF50",
+      textAlign: "center",
+    },
   };
 
   return (
@@ -227,13 +250,19 @@ const Profile = (props) => {
               type="number"
               name="avPoints"
               value={formData.avPoints}
-              onChange={handleChange}
+              readOnly
               style={styles.input}
               disabled
             />
           </div>
         </div>
 
+        <button type="button" style={styles.redeemButton} onClick={redeemPoints}>
+          Redeem Points
+        </button>
+
+        {redeemMessage && <div style={styles.redeemMessage}>{redeemMessage}</div>}
+        
         {/* Update Profile Button */}
         <button type="submit" style={styles.button} onClick={handleEditProfile}>
           {buttonText}

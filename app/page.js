@@ -66,57 +66,57 @@ export default function Home() {
     <div className="w-full px-4 md:px-10 pb-[100px] bg-[#FFFCF8] flex flex-col justify-center items-center overflow-hidden">
       {/* Hero */}
       <div className="w-screen flex flex-col-reverse md:flex-row xl:flex-col justify-center items-center overflow-hidden hero-container">
-        <div
-          className="max-w-[361px] xl:max-w-[622px] -mt-[57px] md:mt-[123px] xl:mt-[170px] z-10 justify-center items-start gap-6 content-container"
-          style={{
-            paddingRight: "12px",
-            marginLeft: "115px",
-            marginTop: "235px",
-          }}
-        >
-          <p className="text-[50px] md:text-[64px] leading-[60px] md:leading-[76.8px] -tracking-[1.25px] md:-tracking-[1.6px] font-normal text-primaryGrayscale hero-title container">
-            Exquisite & Sustainable <br /> Self-Watering Planters
-          </p>
-          <p
-            className="mt-3 xl:mt-[20px] text-sm md:text-base leading-6 xl:text-center font-normal text-secondaryGrayscale hero-description"
-            style={{
-              color: "#3D3D3D",
-              color: "color(display-p3 0.2375 0.2375 0.2375)",
-              textAlign: "center",
-              fontFamily: "Urbanist",
-              fontSize: "16px",
-              fontStyle: "normal",
-              fontWeight: 425,
-              lineHeight: "24px",
-            }}
-          >
-            Relax & experience rich greenery year-round with Auto Verdure&apos;s
-            live indoor & outdoor hydroponic kits. Let our planters nurture your
-            plants, save your time, & enhance your lifestyle to make urban
-            farming simple & joyous
-          </p>
+  <div
+    className="max-w-[361px] md:max-w-[500px] xl:max-w-[622px] md:mr-8 mt-[157px] -ml-[80px] md:mt-[120px] xl:mt-[170px] z-10 gap-6 content-container lg:ml-[115px] lg:mt-[235px] "
+    style={{
+      paddingRight: "12px", // only apply padding right
+    }}
+  >
+    {/* Title */}
+    <p className="text-[40px] md:text-[50px] xl:text-[64px] leading-[50px] md:leading-[60px] xl:leading-[76.8px] tracking-tight font-normal text-primaryGrayscale hero-title text-left  lg:text-center xl:text-center">
+      Exquisite & Sustainable <br /> Self-Watering Planters
+    </p>
+    
+    {/* Description */}
+    <p
+      className="mt-3 xl:mt-[20px] text-sm md:text-base xl:text-lg leading-6 text-left font-normal text-secondaryGrayscale hero-description text-left lg:text-center xl:text-center"
+      style={{
+        color: "#3D3D3D",
+        fontFamily: "Urbanist",
+        fontSize: "16px",
+        fontWeight: 425,
+        lineHeight: "24px",
+      }}
+    >
+      Relax & experience rich greenery year-round with Auto Verdure's live indoor & outdoor hydroponic kits. Let our planters nurture your plants, save your time, & enhance your lifestyle to make urban farming simple & joyous.
+    </p>
 
-          {/* Buttons */}
-          <div className="mt-3 md:mt-8 w-full text-base font-medium flex gap-7 justify-center xl:justify-center items-center hero-buttons">
-            <Link href="/store" passHref>
-              <button className="shop-now px-[42px] py-[18px] rounded-[100px] text-white bg-primaryMain">
-                Shop now
-              </button>
-            </Link>
-            <Link href="/about-us" passHref>
-              <button
-                className="learn-more px-[42px] py-[18px] text-primaryGrayscale border-[1px] border-primaryGrayscale rounded-[100px] bg-transparent"
-                style={{
-                  borderRadius: "100px",
-                  border: "1px solid var(--Greyscale-Black, #3D3D3D)",
-                }}
-              >
-                Learn More
-              </button>
-            </Link>
-          </div>
-        </div>
-      </div>
+    {/* Buttons */}
+    <div className="mt-3 md:mt-8 w-full text-base font-medium flex gap-7 justify-start xl:justify-center lg:justify-center md:justify-center  items-center hero-buttons">
+  <Link href="/store" passHref>
+    <button className="shop-now px-6 md:px-[42px] py-2 md:py-[18px] sm:px-[42px] sm:py-[18px] rounded-[100px] text-white bg-primaryMain text-sm md:text-base">
+      Shop now
+    </button>
+  </Link>
+  <Link href="/about-us" passHref>
+    <button
+      className="learn-more px-6 md:px-[42px] py-2 md:py-[18px] sm:px-[42px] sm:py-[18px] text-primaryGrayscale border-[1px] border-primaryGrayscale rounded-[100px] bg-transparent text-sm md:text-base"
+      style={{
+        borderRadius: "100px",
+        border: "1px solid var(--Greyscale-Black, #3D3D3D)",
+      }}
+    >
+      Learn More
+    </button>
+  </Link>
+</div>
+
+  </div>
+
+  
+</div>
+
+      
       {/* Image */}
       <div className="w-[267px] h-[447px] absolute top-0 right-[15px] md:right-[40px] image-container">
         <Image
@@ -253,7 +253,7 @@ export default function Home() {
 
       {/* How Does it Work */}
       <div
-        className="mt-[15px] md:mt-[72px] xl:mt-[149.5px] w-full h-fit md:max-w-[754px] xl:max-w-[1098px] flex xl:gap-[98px] flex-col md:flex-row justify-center items-center"
+        className="mt-[15px] md:mt-[132px] xl:mt-[149.5px] w-full h-fit md:max-w-[754px] xl:max-w-[1098px] flex xl:gap-[98px] flex-col md:flex-row justify-center items-center"
         style={{ paddingLeft: "4%" }}
       >
         <div className="w-full md:-mt-[210px] max-w-[361px] xl:max-w-[630px] flex flex-col">
@@ -347,7 +347,7 @@ export default function Home() {
         </div>
 
         <div className="hidden md:flex flex-col xl:w-full justify-center items-center">
-  <div className="w-[240px] h-[240px] flex flex-col justify-center items-center rounded-full bg-[#F3F0F1] border-[3px] border-primaryMain overflow-hidden">
+  <div className="w-[240px] h-[240px] md:w-[195px] md:h-[195px] flex flex-col justify-center items-center rounded-full bg-[#F3F0F1] border-[3px] border-primaryMain overflow-hidden">
     <Image
       className="object-cover"
       src="https://res.cloudinary.com/dguzhztdt/image/upload/v1729191093/Auto%20Verdure%20media%20%28website%29/Product%20Media/DSC04309_l5wrqp.jpg"
@@ -356,7 +356,7 @@ export default function Home() {
       height={240}
     />
   </div>
-  <div className="w-[240px] h-[240px] flex flex-col justify-center items-center relative bottom-[90px] left-[160px] rounded-full bg-[#F3F0F1] border-[3px] border-primaryMain overflow-hidden">
+  <div className="w-[240px] h-[240px] md:w-[195px] md:h-[195px] flex flex-col justify-center items-center relative bottom-[90px] left-[160px] rounded-full bg-[#F3F0F1] border-[3px] border-primaryMain overflow-hidden">
     <Image
       className="object-cover"
       src="/pest1.jpg"
@@ -365,7 +365,7 @@ export default function Home() {
       height={240}
     />
   </div>
-  <div className="w-[240px] h-[240px] flex flex-col justify-center items-center relative bottom-[170px] left-[20px] rounded-full bg-[#F3F0F1] border-[3px] border-primaryMain overflow-hidden">
+  <div className="w-[240px] h-[240px] md:w-[195px] md:h-[195px] flex flex-col justify-center items-center relative bottom-[170px] left-[20px] rounded-full bg-[#F3F0F1] border-[3px] border-primaryMain overflow-hidden">
     <Image
       className="object-cover"
       src="/DSC0431555.JPG"
@@ -386,7 +386,7 @@ export default function Home() {
           {/* Video Container */}
           <div className="relative w-[366px] h-full xl:w-[604px] xl:h-[521px] xl:flex-1 overflow-hidden">
             <video
-              className="w-full h-full rounded-[16px] object-cover"
+              className="w-full h-full rounded-[16px] object-cover "
              src="/home1.mp4"
               alt="video"
               // width={604}
@@ -405,7 +405,7 @@ export default function Home() {
                 warmth!
               </p>
               <p className="text-sm leading-6 font-normal text-secondaryGrayscale mt-3">
-                Here, you&apos;ll discover the perfect harmony of nature&apos;s warmth<br/>
+                Here, you&apos;ll discover the perfect harmony of nature&apos;s warmth
                 within the confines of your home.
               </p>
             </div>
@@ -413,7 +413,7 @@ export default function Home() {
             {/* Image Grid */}
             <div className="w-full h-[432px] xl:h-full flex gap-[21.5px] justify-between xl:justify-normal xl:gap-6 mt-6">
               <video
-                className="object-cover w-[192px] h-[205px] xl:w-[192px] xl:h-[205px] rounded-[16px]"
+                className="object-cover w-[192px] h-[205px] xl:w-[192px] xl:h-[205px] rounded-[16px] md:w[192px] md:h-[180px]"
                 
                  src="https://res.cloudinary.com/dguzhztdt/video/upload/f_mp4/v1729091741/Auto%20Verdure%20media%20%28website%29/Plants/IMG_7939_wsnkj9.mov"
                 alt="video"
@@ -424,7 +424,7 @@ export default function Home() {
                 muted
               />
               <Image
-                className="w-[192px] h-[205px] xl:w-[192px] xl:h-[205px] rounded-[16px]"
+                className="w-[192px] h-[205px] xl:w-[192px] xl:h-[205px] rounded-[16px] md:w[192px] md:h-[180px]"
                 src="https://res.cloudinary.com/dguzhztdt/image/upload/f_auto/v1729091744/Auto%20Verdure%20media%20%28website%29/Plants/IMG_1297_cy22gd.heic"
                 alt="image2"
                 width={192}
@@ -434,7 +434,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="mt-[58px] hidden w-full md:flex flex-col justify-center items-center">
+        <div className="mt-[58px] hidden w-full md:flex flex-col justify-center items-center md:mt-[100px]">
           <Link href="/about-us" passHref>
             <button className="text-base px-[42px] py-[18px] rounded-[100px] border-[1px] border-primaryGrayscale font-normal text-primaryGrayscale">
               About Us

@@ -1,52 +1,86 @@
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-const CollectionCard = ({ title, description, image, video}) => {
-  const [lineClamp, setLineClamp] = useState(2);
-  const [isHover, setIsHover] = useState(false)
+const CollectionCard = ({ title, description, image, video }) => {
+  const [isHover, setIsHover] = useState(false);
+  const [isLargeScreen, setIsLargeScreen] = useState(false);
   const isVideo = Boolean(video);
-  
+
+  useEffect(() => {
+    // Check if the screen size is medium or larger
+    const handleResize = () => {
+      setIsLargeScreen(window.innerWidth >= 768);
+    };
+    handleResize(); // Initial check
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
-    <div className="w-fit h-fit md:h-fit p-3 md:p-0 md:flex flex-row-reverse rounded-xl md:rounded-[32.1px] xl:rounded-[56px] md:overflow-hidden bg-[#F8F8F8] border-[2.86px] hover:border-[2.86px] hover:border-primaryMain" onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}>
-       <div className="transition-all duration-400 ease-in-out" style={{height: (isHover ? `${199 + 28 + (Math.ceil(description.length / 14) * 23)}px` : '274px')}}> 
-       {isVideo ? (
+    <div
+      className="w-full sm:w-fit p-4 sm:p-3 md:p-0 flex flex-col sm:flex-col md:flex-row-reverse rounded-xl md:rounded-[32.1px] xl:rounded-[56px] md:overflow-hidden bg-[#F8F8F8] border-[2.86px] hover:border-primaryMain"
+      onMouseEnter={() => isLargeScreen && setIsHover(true)}
+      onMouseLeave={() => isLargeScreen && setIsHover(false)}
+    >
+      <div
+        className="transition-all duration-400 ease-in-out"
+        style={{
+          height: isHover
+            ? `${199 + 28 + Math.ceil(description.length / 14) * 23}px`
+            : "274px",
+        }}
+      >
+        {isVideo ? (
           <video
-            className="object-cover md:w-[203.231px] md:h-full xl:w-[355px]"
+            className="object-cover w-full sm:w-[203.231px] h-auto sm:h-[180px] md:w-[203.231px] md:h-full xl:w-[355px]"
             src={video}
-            width={203.231}
-            height="100%"
             autoPlay
             loop
             muted
           ></video>
         ) : (
           <Image
-            className="object-cover md:w-[203.231px] md:h-full xl:w-[355px]"
+            className="object-cover w-full sm:w-[203.231px] h-auto sm:h-[180px] md:w-[203.231px] md:h-full xl:w-[355px]"
             src={image}
             alt="media"
-            width={147.347}
-            height={157.183}
-            unoptimized={true}
+            width={203}
+            height={274}
+            unoptimized
             priority
           />
         )}
       </div>
-      <div className="mt-[16.94px] w-[119px] xl:w-[202px] md:mx-[36.64px] xl:mx-16 xl:mt-[40px]">
-        <p className="text-[15.237px] md:text-[21.754px] xl:text-[38px] leading-[19.888px] md:leading-[28.281px] xl:leading-[49.4px] text-[#0E0E0E] font-normal">
+      {/* Reduced gap between image and text for small screens */}
+      <div className="mt-2 -sm:mt-2 md:mt-5 w-full sm:w-full md:w-[119px] xl:w-[202px] sm:mx-0 md:mx-[36.64px] xl:mx-16 xl:mt-[40px]">
+        <p className="text-base sm:text-[15.237px] md:text-[21.754px] xl:text-[38px] leading-tight text-[#0E0E0E] font-normal">
           {title}
         </p>
-        <div className="transition-all duration-400 ease-in-out" style={{height: (isHover ? `${28 + (Math.ceil(description.length / 14) * 23)}px` : '75px'), display: '-webkit-box', WebkitBoxOrient: 'vertical', WebkitLineClamp: (isHover ? 'unset' : 2), overflow: 'hidden', textOverflow: 'ellipsis' }}>
-          <p className="mt-[8.12px] md:mt-[9.47px] xl:mt-[16.8px] mb-2 md:mb-[5.57px] xl:mb-[10px] text-[8px] md:text-[9.732px] xl:text-[17px] leading-[12.029px] md:leading-[17.174px] xl:leading-[30px] text-[#5B5B5B] font-normal transition-all duration-400 ease-in-out">
+        <div
+          className="transition-all duration-400 ease-in-out"
+          style={{
+            height: isHover
+              ? `${28 + Math.ceil(description.length / 14) * 23}px`
+              : "75px",
+            display: "-webkit-box",
+            WebkitBoxOrient: "vertical",
+            WebkitLineClamp: isHover ? "unset" : 2,
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+          }}
+        >
+          <p className="mt-2 sm:mt-1 md:mt-[15.47px] xl:mt-[20.8px] text-sm sm:text-[9.732px] md:text-[9.732px] xl:text-[17px] leading-tight text-[#5B5B5B] font-normal transition-all duration-400 ease-in-out">
             {description}
           </p>
         </div>
-        <Link href={'/store/' + title.toLowerCase()} >
-          <p className="flex items-center md:pb-[5px] md:border-b-[1px] md:border-[#BBBBBB] text-[6.817px] md:text-[9.732px] xl:text-[17px] leading-[0.02px] md:leading-[11.45px] xl:leading-5 text-[#0E0E0E] font-normal" style={{marginTop: '20px', marginBottom: '60px'}}>
+        <Link href={"/store/" + title.toLowerCase()}>
+          <p
+            className="flex items-center mt-4 sm:mt-4 md:mt-[30px] mb-8 sm:mb-8 md:mb-[60px] text-sm sm:text-[6.817px] md:text-[9.732px] xl:text-[17px] leading-tight text-[#0E0E0E] font-normal border-b sm:border-b-0 md:border-b-[1px] border-[#BBBBBB]"
+          >
             Buy Now{" "}
             <span>
               <Image
-                className="object-contain ml-[2px] md:w-[10.305px] md:h-[10.877px] xl:w-[18px] xl:h-[19px]"
+                className="object-contain ml-2 sm:ml-2 md:w-[10.305px] md:h-[10.877px] xl:w-[18px] xl:h-[19px]"
                 src="/buyNow.svg"
                 alt="img"
                 width={7.21}

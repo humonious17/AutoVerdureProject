@@ -1,13 +1,15 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import BlogCard from '@/pages/Blogs/BlogCard'; // Adjust the path as needed
 import Link from 'next/link';
 import Image from 'next/image';
 
 export default function Blogs({ title, description }) {
   const [blogs, setBlogs] = useState([]);
-  const containerRef = useRef(null);
+  const [currentIndex, setCurrentIndex] = useState(0); // Track the current index for pagination
+  const [windowWidth, setWindowWidth] = useState(0); // Track window width for responsiveness
 
   useEffect(() => {
+    // Fetch the blogs on component mount
     const fetchBlogs = async () => {
       try {
         const res = await fetch('/api/addblogs?limit=6'); // Fetch 6 blogs
@@ -17,25 +19,51 @@ export default function Blogs({ title, description }) {
         console.error("Error fetching blogs:", error);
       }
     };
-
     fetchBlogs();
+
+    // Update window width on client side
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    // Make sure to run this only in the client-side
+    if (typeof window !== 'undefined') {
+      // Initial window width check
+      handleResize();
+      // Attach resize event listener
+      window.addEventListener('resize', handleResize);
+    }
+
+    // Cleanup event listener on unmount
+    return () => {
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('resize', handleResize);
+      }
+    };
   }, []);
 
-  // Scroll Left Function
-  const scrollLeft = () => {
-    if (containerRef.current) {
-      const cardWidth = containerRef.current.children[0].offsetWidth;
-      containerRef.current.scrollBy({ left: -cardWidth, behavior: 'smooth' });
+  // Show next 3 blogs for large screens
+  const handleNext = () => {
+    if (currentIndex + 3 < blogs.length) {
+      setCurrentIndex(currentIndex + 3);
     }
   };
 
-  // Scroll Right Function
-  const scrollRight = () => {
-    if (containerRef.current) {
-      const cardWidth = containerRef.current.children[0].offsetWidth;
-      containerRef.current.scrollBy({ left: cardWidth, behavior: 'smooth' });
+  // Show previous 3 blogs for large screens
+  const handlePrevious = () => {
+    if (currentIndex - 3 >= 0) {
+      setCurrentIndex(currentIndex - 3);
     }
   };
+
+  // Determine the number of blogs per row based on the window width
+  let blogsPerRow = 6; // Default for small screens
+  if (windowWidth >= 768) {
+    blogsPerRow = 6; // Medium screens
+  }
+  if (windowWidth >= 1024) {
+    blogsPerRow = 3; // Large screens
+  }
 
   return (
     <div className="container mx-auto p-12 mt-10 text-center">
@@ -44,39 +72,38 @@ export default function Blogs({ title, description }) {
         {description}
       </p>
 
-      {/* Scrollable Blog Cards Container with Hidden Scroll Bar */}
+      {/* Blog Cards Container */}
       <div className="overflow-hidden relative">
-        <div
-          className="flex flex-col md:flex-row gap-8 overflow-x-auto no-scrollbar"
-          ref={containerRef}
-        >
-          {blogs.map((blog) => (
-            <div key={blog.id} className=" flex-none w-full md:w-[31%]">
+        <div className={`grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8`}>
+          {blogs.slice(currentIndex, currentIndex + blogsPerRow).map((blog) => (
+            <div key={blog.id} className="flex-none">
               <BlogCard blog={blog} />
             </div>
           ))}
         </div>
       </div>
 
-      {/* Scroll Buttons */}
-      <div className="mt-8 w-full flex gap-10 justify-center items-center">
-        <Image
-          src="/leftArrow1.svg"
-          alt="Scroll left"
-          width={13}
-          height={26}
-          onClick={scrollLeft}
-          className="cursor-pointer"
-        />
-        <Image
-          src="/rightArrow1.svg"
-          alt="Scroll right"
-          width={13}
-          height={26}
-          onClick={scrollRight}
-          className="cursor-pointer"
-        />
-      </div>
+      {/* Pagination Buttons for Large Screens */}
+      {windowWidth >= 1024 && (
+        <div className="mt-8 w-full flex gap-10 justify-center items-center">
+          <Image
+            src="/leftArrow1.svg"
+            alt="Scroll left"
+            width={13}
+            height={26}
+            onClick={handlePrevious}
+            className="cursor-pointer"
+          />
+          <Image
+            src="/rightArrow1.svg"
+            alt="Scroll right"
+            width={13}
+            height={26}
+            onClick={handleNext}
+            className="cursor-pointer"
+          />
+        </div>
+      )}
 
       {/* Centered Explore More Button */}
       <div className="flex justify-center mt-10">

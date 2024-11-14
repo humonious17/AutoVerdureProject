@@ -194,7 +194,7 @@ const Signin = (prop) => {
       </div>
 
       {/* Right Section with Image */}
-      <div className="flex justify-center items-center w-full">
+      <div className="flex justify-center items-center w-full md:w-[560px] lg:w-[710px]">
         <div className="w-[330.65px] h-[340px] md:w-[410px] md:h-[440px] lg:w-[558.65px] lg:h-[582px] xl:w-[725.65px] xl:h-[590px] overflow-hidden rounded-lg mx-auto">
           <video
             className="w-full h-full object-cover rounded-lg"
@@ -248,4 +248,4 @@ export async function getServerSideProps({ req, res }) {
   return {
     props: { user: null },
   };
-}zz
+}

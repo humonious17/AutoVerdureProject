@@ -454,20 +454,33 @@ export default function Home() {
 
         {/* Video and Image */}
         <div className="md:hidden mt-8 w-full flex flex-col gap-8">
-          <div className="max-w-[361px] h-[180.5px] rounded-[14.1px] bg-primaryMain"></div>
+          <div className="max-w-[361px] h-[180.5px] rounded-[14.1px] "><video
+              className="w-full h-full rounded-[16px] object-cover "
+             src="/home1.mp4"
+              alt="video"
+              // width={604}
+              // height={521}
+              loop
+              autoPlay
+              muted
+            /></div>
 
           <div className="w-full flex justify-between">
-            <Image
-              src="/aboutImg3.png"
-              alt="img"
+          
+            <video className="object-cover rounded-[16px]"
+               src="https://res.cloudinary.com/dguzhztdt/video/upload/f_mp4/v1729091741/Auto%20Verdure%20media%20%28website%29/Plants/IMG_7939_wsnkj9.mov"
+               alt="video"
               width={171.765}
               height={183.395}
-              className="rounded-[16px]"
+              
               style={{ width: "171.765px", height: "183.395px" }}
+              loop
+               autoPlay
+               muted
             />
             <Image
               className="rounded-[16px]"
-              src="/aboutImg3.png"
+              src="https://res.cloudinary.com/dguzhztdt/image/upload/f_auto/v1729091744/Auto%20Verdure%20media%20%28website%29/Plants/IMG_1297_cy22gd.heic"
               alt="img"
               width={171.765}
               height={183.395}

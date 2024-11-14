@@ -709,7 +709,7 @@ allure
                     </p>
                   </div>
                 </div>
-                <div className="text-[13px] leading-4 tracking-[0.56px] uppercase text-[#333] rounded-[40px] px-[14px] py-[13px] absolute top-[24.05px] left-[24.5px] font-normal bg-white">
+                <div className="text-[13px] leading-s4 tracking-[0.56px] uppercase text-[#333] rounded-[40px] px-[14px] py-[13px] absolute top-[24.05px] left-[24.5px] font-normal bg-white">
                   <p>In Stock</p>
                 </div>
               </div>

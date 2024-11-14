@@ -1,4 +1,4 @@
-import { db } from "@/pages/api/firebaseAdmin";
+{/*import { db } from "@/pages/api/firebaseAdmin";
 import Image from "next/image";
 import Contact from "@/app/ui/Contact";
 import Displayblogs from "@/app/ui/Store/Displayblogs";
@@ -70,7 +70,7 @@ export default function BlogPost({ blog }) {
           }}
         />
 
-        {/* <div className="ml-4 mt-6"> */}
+        {/* <div className="ml-4 mt-6"> 
           <p
             className="text-bold mb-2"
             style={{ color: "#3D3D3D", fontFamily: "Urbanist" }}
@@ -94,7 +94,7 @@ export default function BlogPost({ blog }) {
         </div>
       {/* </div> */}
 
-      {/* Related Blog */}
+      {/* Related Blog 
       <div className=" container mx-auto p-12 text-center">
       <Displayblogs
         title="Related Blog"
@@ -105,10 +105,11 @@ export default function BlogPost({ blog }) {
       />
       </div>
 
-      {/* Contact Us */}
+      {/* Contact Us 
       <div className="mt-8 mb-24">
         <Contact />
       </div>
     </>
   );
 }
+*/}

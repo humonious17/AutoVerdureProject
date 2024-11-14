@@ -62,7 +62,20 @@ const Payment = (props) => {
         });
 
         if (orderResult.ok) {
-          router.push("/checkout/successful");
+          const orderSummary = {
+            orderId: orderId,
+            email: email,
+            totalAmount: amount,
+            shipping: orderPayload.shipping,
+            products: parsedProducts,
+          };
+
+          router.push({
+            pathname: "/checkout/successful",
+            query: {
+              orderSummary: encodeURIComponent(JSON.stringify(orderSummary)),
+            },
+          });
         } else {
           setError("Failed to create order. Please contact support.");
           router.push("/checkout/failed");

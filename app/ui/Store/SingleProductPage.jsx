@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
-import Testimonial from "../Testimonial";
+import Testimonials from "../Testimonial";
 import CartOverview from "../Cart/cartOverview";
 import { setProducts } from "@/features/productsSlice/productSlice";
 import { useRouter } from "next/router";
@@ -699,7 +699,8 @@ const SingleProductPage = ({ productData, allProducts }) => {
                     height={32}
                   />
                   <p className="text-sm xl:text-[18px] leading-7 font-medium text-[#0C0C0C]">
-                    Earn 9999 Points with this purchase
+                    Earn {Math.floor(price / 100)} Points with this purchase{" "}
+                    {/* AV Points */}
                   </p>
                 </div>
                 <Image
@@ -711,6 +712,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
                 />
               </div>
 
+              {/* Login/Signup Information */}
               <div className="text-xs font-medium leading-6 underline text-[#0000EE]">
                 <p>(Login/Signup)</p>
               </div>
@@ -1142,10 +1144,8 @@ const SingleProductPage = ({ productData, allProducts }) => {
           </p>
 
           {/* Testimonial cards */}
-          <div className="mt-10 sm:mt-[80.99px] xl:mt-[59.99px] w-full h-full flex gap-x-[30px] justify-center items-center overflow-x-scroll sm:overflow-hidden">
-            <Testimonial />
-            <Testimonial />
-            <Testimonial />
+          <div className="mt-10 sm:mt-[80.99px] xl:mt-[59.99px] w-full h-full">
+            <Testimonials productId={productData.productId} />
           </div>
         </div>
       </div>

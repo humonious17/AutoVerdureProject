@@ -4,6 +4,13 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import findCartProducts from "@/lib/server/findCartProducts";
 
+const countryCodes = [
+  { code: "+1", country: "US" },
+  { code: "+91", country: "IN" },
+  { code: "+44", country: "UK" },
+  // Add more country codes as needed
+];
+
 const Shipping = (props) => {
   const { email, cartProducts } = props;
   const router = useRouter();
@@ -21,6 +28,7 @@ const Shipping = (props) => {
     phone: "",
     country: "",
     zipCode: "",
+    countryCode: "+91", // Default country code
   });
 
   useEffect(() => {
@@ -185,18 +193,48 @@ const Shipping = (props) => {
             </div>
           )}
 
-          {Object.keys(formData).map((field) => (
-            <Input
-              key={field}
-              name={field}
-              label={field.split(/(?=[A-Z])/).join(" ")}
-              placeholder={field.split(/(?=[A-Z])/).join(" ")}
-              type={field === "phone" || field === "zipCode" ? "tel" : "text"}
-              value={formData[field]}
+          {Object.keys(formData).map(
+            (field) =>
+              field !== "phone" &&
+              field !== "countryCode" && (
+                <Input
+                  key={field}
+                  name={field}
+                  label={field.split(/(?=[A-Z])/).join(" ")}
+                  placeholder={field.split(/(?=[A-Z])/).join(" ")}
+                  type={field === "zipCode" ? "tel" : "text"}
+                  value={formData[field]}
+                  onChange={handleInputChange}
+                  error={fieldErrors[field]}
+                  className="rounded-full"
+                />
+              )
+          )}
+
+          <div className="flex gap-4">
+            <select
+              name="countryCode"
+              value={formData.countryCode}
               onChange={handleInputChange}
-              error={fieldErrors[field]}
+              className="w-1/4 p-3 rounded-full border border-gray-300"
+            >
+              {countryCodes.map((code) => (
+                <option key={code.code} value={code.code}>
+                  {code.country} ({code.code})
+                </option>
+              ))}
+            </select>
+            <Input
+              name="phone"
+              label="Phone"
+              placeholder="Enter your phone number"
+              type="tel"
+              value={formData.phone}
+              onChange={handleInputChange}
+              error={fieldErrors.phone}
+              className="w-3/4 rounded-full"
             />
-          ))}
+          </div>
 
           <button
             type="submit"

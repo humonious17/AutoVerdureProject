@@ -1,23 +1,29 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { sendEmail } from "@/pages/api/sendEmail"; // Adjust this import path if needed
-import { useEffect } from "react";
-/*
-useEffect(() => {
-  const sendConfirmationEmail = async () => {
-    try {
-      sendEmail();
-    } catch (error) {
-      console.error("Failed to send confirmation email:", error);
-    }
-  };
-
-  sendConfirmationEmail();
-}, []);*/
+import { useRouter } from "next/router";
 
 const Successful = () => {
+  const router = useRouter();
+  const [orderDetails, setOrderDetails] = useState(null);
+
+  useEffect(() => {
+    if (router.query.orderSummary) {
+      try {
+        const summary = JSON.parse(
+          decodeURIComponent(router.query.orderSummary)
+        );
+        // Ensure products is always an array
+        summary.products = Array.isArray(summary.products)
+          ? summary.products
+          : [summary.products];
+        setOrderDetails(summary);
+      } catch (error) {
+        console.error("Error parsing order summary:", error);
+      }
+    }
+  }, [router.query]);
+
   return (
     <div className="mb-[95px] sm:mb-[58px] xl:mb-[105px] w-full px-11 sm:px-5 flex flex-col justify-center items-center">
       {/* Title */}
@@ -26,7 +32,7 @@ const Successful = () => {
           Thank you for your purchase!
         </p>
         <p className="w-[266px] sm:w-full text-sm leading-[22.4px] font-medium text-[#8E8F94]">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          Your order has been confirmed and will be shipped soon.
         </p>
       </div>
 
@@ -42,13 +48,57 @@ const Successful = () => {
           />
         </div>
 
-        <div className="mt-[47px] sm:mt-0 w-full px-6 py-7 rounded-2xl flex flex-col gap-y-[57px] bg-[#FFFFFF]">
+        <div className="mt-[47px] sm:mt-0 w-full px-6 py-7 rounded-2xl flex flex-col gap-y-6 bg-[#FFFFFF] shadow-sm">
           <p className="text-[32px] leading-8 font-normal capitalize text-[#070707]">
             Hurray! Your order is confirmed.
           </p>
-          <p className="text-sm leading-[26.2px] font-normal text-[#8C8C8C]">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          </p>
+
+          {orderDetails && (
+            <div className="flex flex-col gap-y-4">
+              <div className="border-b pb-4">
+                <h3 className="font-semibold text-lg mb-2">Order Summary</h3>
+                <div className="space-y-2 text-sm text-gray-600">
+                  <p>Order ID: {orderDetails.orderId}</p>
+                  <p>Email: {orderDetails.email}</p>
+                  <p>
+                    Total Amount: ₹
+                    {(parseFloat(orderDetails.totalAmount) / 100).toFixed(2)}
+                  </p>
+                </div>
+              </div>
+
+              <div className="border-b pb-4">
+                <h3 className="font-semibold text-lg mb-2">Shipping Details</h3>
+                <div className="space-y-1 text-sm text-gray-600">
+                  <p>{orderDetails.shipping.fullName}</p>
+                  <p>{orderDetails.shipping.address1}</p>
+                  <p>{orderDetails.shipping.address2}</p>
+                  <p>{orderDetails.shipping.postalCode}</p>
+                  <p>Phone: {orderDetails.shipping.phone}</p>
+                </div>
+              </div>
+
+              <div className="border-b pb-4">
+                <h3 className="font-semibold text-lg mb-2">Products</h3>
+                <div className="space-y-2">
+                  {orderDetails.products && orderDetails.products.length > 0 ? (
+                    orderDetails.products.map((product, index) => (
+                      <div
+                        key={index}
+                        className="flex justify-between text-sm text-gray-600"
+                      >
+                        <span>{product.name || "Product"}</span>
+                        <span>₹{product.price || "0"}</span>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-sm text-gray-600">No products found</p>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+
           <Link href="/store" passHref>
             <button className="w-full py-[17px] text-base leading-[20.8px] font-bold rounded-[30px] bg-[#070707] text-white flex justify-center items-center">
               Back to Shopping

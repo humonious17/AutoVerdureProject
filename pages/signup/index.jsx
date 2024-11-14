@@ -73,6 +73,7 @@ const Signin = (prop) => {
     email: "",
     phone: "",
     password: "",
+    avPoints: 0,
   });
 
   const handleChange = (e) => {
@@ -92,6 +93,7 @@ const Signin = (prop) => {
     form.append("email", formData.email);
     form.append("phone", formData.phone);
     form.append("hashedPassword", hashedPassword);
+    form.append("avPoints", formData.avPoints);
 
     try {
       const response = await fetch("/api/addPwdSession", {

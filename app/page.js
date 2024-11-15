@@ -119,15 +119,15 @@ export default function Home() {
 
       
       {/* Image */}
-      <div className="absolute top-0 right-[45px] md:right-[40px] image-container">
+      <div className="absolute top-0 right-[45px] md:right-[60px] image-container">
   <Image
-    className="w-full h-auto sm:w-[230px] sm:h-[350px] md:w-[267px] md:h-[447px] xl:hidden pot-image"
+    className=" xl:hidden pot-image"
     src="/bgImage1.png"
     alt="bgImage"
     width={267}
     height={447}
   />
-</div>
+  </div>
 
 
       <div className="w-full h-[776px] absolute top-0 right-[20px] bg-transparent">

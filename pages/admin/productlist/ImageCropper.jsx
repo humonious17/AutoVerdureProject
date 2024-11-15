@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { X, Move, ZoomIn, ZoomOut, RotateCw } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -9,11 +9,37 @@ const ImageCropper = ({ file, onSave, onCancel }) => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const [imageDimensions, setImageDimensions] = useState({
+    width: 0,
+    height: 0,
+  });
   const imageRef = useRef(null);
   const containerRef = useRef(null);
 
   // Create object URL for the image file
   const imageUrl = file ? URL.createObjectURL(file) : null;
+
+  // Load image dimensions when file changes
+  useEffect(() => {
+    if (file) {
+      const img = new Image();
+      img.onload = () => {
+        setImageDimensions({ width: img.width, height: img.height });
+        // Reset transformations when new image is loaded
+        setPosition({ x: 0, y: 0 });
+        setScale(1);
+        setRotation(0);
+      };
+      img.src = imageUrl;
+    }
+
+    // Cleanup URL when component unmounts or file changes
+    return () => {
+      if (imageUrl) {
+        URL.revokeObjectURL(imageUrl);
+      }
+    };
+  }, [file]);
 
   const handleDragStart = (e) => {
     e.preventDefault();
@@ -54,12 +80,13 @@ const ImageCropper = ({ file, onSave, onCancel }) => {
   const handleSave = async () => {
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");
+
+    // Keep canvas at 550x550 for display
     canvas.width = 550;
     canvas.height = 550;
 
-    // Draw background
-    ctx.fillStyle = "white";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    // Draw background (transparent)
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // Save context state
     ctx.save();
@@ -71,14 +98,23 @@ const ImageCropper = ({ file, onSave, onCancel }) => {
     ctx.rotate((rotation * Math.PI) / 180);
     ctx.scale(scale, scale);
 
+    // Calculate scaling to fit image within canvas while maintaining aspect ratio
+    const scaleFactor = Math.min(
+      550 / imageDimensions.width,
+      550 / imageDimensions.height
+    );
+
     // Draw image centered
     const img = imageRef.current;
+    const scaledWidth = imageDimensions.width * scaleFactor;
+    const scaledHeight = imageDimensions.height * scaleFactor;
+
     ctx.drawImage(
       img,
-      -275 + position.x / scale,
-      -275 + position.y / scale,
-      550,
-      550
+      -scaledWidth / 2 + position.x / scale,
+      -scaledHeight / 2 + position.y / scale,
+      scaledWidth,
+      scaledHeight
     );
 
     // Restore context state
@@ -87,11 +123,13 @@ const ImageCropper = ({ file, onSave, onCancel }) => {
     // Convert to blob
     canvas.toBlob(
       async (blob) => {
-        const croppedFile = new File([blob], file.name, { type: "image/jpeg" });
-        onSave(croppedFile);
+        const processedFile = new File([blob], file.name, {
+          type: file.type || "image/jpeg",
+        });
+        onSave(processedFile);
       },
-      "image/jpeg",
-      0.95
+      file.type || "image/jpeg",
+      1.0
     );
   };
 
@@ -118,15 +156,6 @@ const ImageCropper = ({ file, onSave, onCancel }) => {
           onMouseUp={handleDragEnd}
           onMouseLeave={handleDragEnd}
         >
-          <div className="absolute inset-0 grid grid-cols-3 grid-rows-3 pointer-events-none">
-            {[...Array(9)].map((_, i) => (
-              <div
-                key={i}
-                className="border border-gray-300 border-opacity-30"
-              />
-            ))}
-          </div>
-
           {file && (
             <img
               ref={imageRef}
@@ -136,9 +165,10 @@ const ImageCropper = ({ file, onSave, onCancel }) => {
               style={{
                 transform: `translate(-50%, -50%) translate(${position.x}px, ${position.y}px) rotate(${rotation}deg) scale(${scale})`,
                 maxWidth: "none",
-                width: "550px",
-                height: "550px",
-                objectFit: "cover",
+                width: "auto",
+                height: "auto",
+                maxHeight: "550px",
+                objectFit: "contain",
               }}
               draggable="false"
             />

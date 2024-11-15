@@ -16,7 +16,7 @@ const AboutUs = () => {
       <div className="max-w-[219px] md:max-w-[382px] w-full relative">
         <div>
           <Image
-            className="object-contain absolute -top-[20.5px] -left-[70px] md:top-6 md:-left-[120px] xl:-left-[247px] -rotate-45 md:rotate-45 transform scale-x-100 md:-scale-x-100"
+            className="object-contain absolute -top-[10.5px] -left-[70px] md:top-6  md:-left-[120px] xl:-left-[247px] -rotate-45 md:rotate-45 transform scale-x-100 md:-scale-x-100"
             src="/leaf.png"
             alt="leaf"
             unoptimized={true}
@@ -110,59 +110,68 @@ const AboutUs = () => {
               </div>
 
               <div className="mt-[37.3px] md:mt-8 w-full text-base font-medium flex gap-7 justify-center xl:justify-start items-center">
-                <button className="px-[42px] py-[18px] text-white rounded-[100px] bg-primaryMain">
-                  Shop now
-                </button>
-                <button className="px-[42px] py-[18px] text-primaryGrayscale border-[1px] border-primaryGrayscale rounded-[100px] bg-transparent">
-                  Contact Us
-                </button>
-              </div>
-            </div>
-          </div>
+  <button className="px-[32px] py-[12px] text-[14px] sm:text-[16px] text-white rounded-[100px] bg-primaryMain">
+    <Link href="/store">
+      Shop now
+    </Link>
+  </button>
+  <button className="px-[32px] py-[12px] text-[14px] sm:text-[16px] text-primaryGrayscale border-[1px] border-primaryGrayscale rounded-[100px] bg-transparent">
+    <Link href="/contact">
+      Contact Us
+    </Link>
+  </button>
+</div>
 
-          <div className="mt-[63px] md:mt-[128.5px] xl:mt-0 w-full flex flex-col gap-[17.66px] md:gap-[21px] justify-center items-center overflow-hidden xl:overflow-visible">
-            <div className="w-full h-[209.376px] md:h-[249px] flex relative">
-              <div className="object-contain w-[375px] h-[249px] md:w-[379px] md:h-[249px] md:ml-[15%] lg:ml-[25%] rounded-2xl">
-              <Image
-                  className="rounded-2xl w-full h-full"
-                  src="/DSC04361.JPG"
-                  alt="img"
-                  width={375}
-                  height={249}
-                />
-                
-              </div>
-              <Image
-                className="hidden md:flex xl:hidden object-contain absolute top-[72.46px] right-[100px] lg:right-[180px] -rotate-45 transform -scale-y-100"
-                src="/leaf.png"
-                alt="leaf"
-                width={58}
-                height={41}
-              />
-            </div>
-            <div className="w-full h-[209.376px] md:h-[249px] flex relative">
-              <Image
-                className="object-contain absolute top-[61.38px] md:top-[73px] md:left-[110px] lg:left-[250px] xl:left-[100px] rotate-45 transform -scale-x-100"
-                src="/leaf.png"
-                alt="leaf"
-                width={58}
-                height={41}
-              />
-              <div className="w-[375px] h-[249px] md:w-[379px] md:h-[249px] xl:w-full ml-[136.22px] md:ml-[35%] lg:ml-[45%] rounded-2xl">
-              <video
-                  className="w-full h-full rounded-2xl object-cover"
-                  src="/signin.mp4"
-                  alt="video"
-                  width={375}
-                  height={249}
-                  loop
-                  autoPlay
-                  muted
-                />
-              </div>
             </div>
           </div>
-        </div>
+          <div className="mt-[63px] md:mt-[128.5px] xl:mt-0 w-full flex flex-col gap-[17.66px] md:gap-[21px] justify-center items-center overflow-hidden xl:overflow-visible">
+  {/* First Section - Image */}
+  <div className="w-full h-[209.376px] md:h-[249px] flex relative mb-[20px] sm:mb-[30px] rounded-2xl overflow-hidden">
+    <div className="object-contain w-[375px] h-[249px] md:w-[379px] md:h-[249px] md:ml-[15%] lg:ml-[25%] rounded-2xl overflow-hidden">
+      <Image
+        className="rounded-2xl w-full h-full object-cover"
+        src="/DSC04361.JPG"
+        alt="img"
+        width={375}
+        height={249}
+      />
+    </div>
+    <Image
+      className="hidden md:flex xl:hidden object-contain absolute top-[75.46px] right-[100px] lg:right-[200px] -rotate-45 transform -scale-y-100"
+      src="/leaf.png"
+      alt="leaf"
+      width={58}
+      height={41}
+    />
+  </div>
+
+  {/* Second Section - Video */}
+  <div className="w-full h-[229.376px] md:h-[249px] flex relative rounded-2xl overflow-hidden">
+    <Image
+      className="object-contain sm:h-[189px] absolute top-[61.38px] md:top-[73px] md:left-[110px] lg:left-[250px] xl:left-[100px] rotate-45 transform -scale-x-100"
+      src="/leaf.png"
+      alt="leaf"
+      width={58}
+      height={41}
+    />
+    <div className="w-[375px] h-[249px] md:w-[279px] lg:w-[400px] xl:w-[600px] md:h-[249px] ml-[136.22px] md:ml-[35%] lg:ml-[45%] rounded-2xl overflow-hidden">
+      <video
+        className="w-full h-full rounded-2xl object-cover"
+        src="/signin.mp4"
+        alt="video"
+        width={375}
+        height={249}
+        loop
+        autoPlay
+        muted
+      />
+    </div>
+  </div>
+</div>
+
+
+
+</div>
 
         <div className="mt-[62.59px] md:mt-[80px] xl:mt-[116px] w-full flex flex-col gap-8">
           <div className="flex flex-col gap-5 justify-center items-center">
@@ -196,23 +205,25 @@ const AboutUs = () => {
               />
             </div>
 
-            <div className="w-full flex md:hidden gap-[21.47px] justify-between">
-              <Image
-                src="/aboutImg4.png"
+            <div className="w-full flex md:hidden gap-[21.47px] justify-center">
+              <Image className="rounded-2xl"
+                src="/aboutUSImg5.png"
                 alt="img"
-                width={171.765}
+                width={191.765}
                 height={183.395}
               />
               <Image
                 src="/aboutImg4.png"
                 alt="img"
-                width={171.765}
+                width={191.765}
                 height={183.395}
               />
             </div>
 
-            <button className="md:mt-4 px-[42px] py-[18px] text-base font-normal text-white rounded-[100px] bg-primaryMain">
+            <button className="md:mt-4 px-[42px] py-[18px]  text-base font-normal text-white rounded-[100px] bg-primaryMain">
+            <Link href="/store">
               Shop now
+              </Link>
             </button>
           </div>
         </div>
@@ -322,13 +333,18 @@ const AboutUs = () => {
         </div>
 
         <div className="mt-[52px] md:mt-8 w-full text-base font-medium flex gap-7 justify-center items-center">
-          <button className="px-[42px] py-[18px] rounded-[100px] text-white bg-primaryMain">
-            Shop now
-          </button>
-          <button className="px-[42px] py-[18px] text-primaryGrayscale border-[1px] border-primaryGrayscale rounded-[100px] bg-transparent">
-            Learn More
-          </button>
-        </div>
+  <button className="px-[32px] py-[12px] sm:px-[32px] sm:py-[15px] text-[14px] sm:text-[16px] rounded-[100px] text-white bg-primaryMain">
+    <Link href="/store">
+      Shop now
+    </Link>
+  </button>
+  <button className="px-[32px] py-[12px] sm:px-[42px] sm:py-[15px] text-[14px] sm:text-[16px] text-primaryGrayscale border-[1px] border-primaryGrayscale rounded-[100px] bg-transparent">
+    <Link href="/resources">
+      Learn More
+    </Link>
+  </button>
+</div>
+
       </div>
 
       {/* FAQ */}

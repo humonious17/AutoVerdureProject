@@ -261,7 +261,20 @@ body, html {
   body {
     @apply bg-background text-foreground;
   }
+
+
+@media (max-width: 440px) {
+  .hero-container {
+    padding-left: 15%;
+    
+  }
+ 
 }
 
-
-
+@media (max-width: 380px) {
+  .hero-container {
+    padding-left: 30%;
+    
+  }
+}
+}

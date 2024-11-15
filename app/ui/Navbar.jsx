@@ -1,14 +1,15 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation"; // Use this import for `useRouter` in the app directory
-import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import React, { useState, useEffect, useRef } from "react";
 import { navItems } from "../constant/data";
 import { usePathname } from "next/navigation";
-import { PiLineVerticalLight } from "react-icons/pi";
 
 const Navbar = () => {
   const [searchText, setSearchText] = useState("");
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const mobileMenuRef = useRef(null); // Reference to mobile menu for detecting clicks outside
 
   const router = useRouter();
 
@@ -19,14 +20,6 @@ const Navbar = () => {
   const handleSearch = (e) => {
     e.preventDefault();
     console.log("Searching for:", searchText);
-  };
-
-  const handleSignOut = () => {
-    setShowLogoutModal(true); // Show confirmation modal
-  };
-
-  const closeLogoutModal = () => {
-    setShowLogoutModal(false);
   };
 
   let pathname = usePathname();
@@ -42,6 +35,17 @@ const Navbar = () => {
     pathname = "home";
   }
 
+  // Close the menu if clicked outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
+        setIsMobileMenuOpen(false); // Close the menu if clicked outside
+      }
+    };
+
+    
+  }, [isMobileMenuOpen]);
+
   return (
     <div
       className="w-full px-4 py-[19px] md:pl-[51px] md:pr-[27.53px] xl:pl-[77.34px] xl:pr-[77.34px] bg-transparent z-10 flex justify-between items-center absolute top-0"
@@ -50,7 +54,7 @@ const Navbar = () => {
       {/* Logo and Company Name */}
       <Link
         href="/"
-        className="gap-[10px] no-underline text-black flex justify-center items-center"
+        className="gap-[10px] no-underline text-black flex justify-center items-center z-50"
       >
         <div className="object-contain w-[48.475px] h-[44px]">
           <Image
@@ -67,12 +71,37 @@ const Navbar = () => {
         </p>
       </Link>
 
-      {/* Hamburger Icon */}
-      <div className="xl:hidden w-[32px] h-[32px] object-contain cursor-pointer">
-        <Image src="/hamburger.svg" alt="hamburger" width={32} height={32} />
-      </div>
+      {/* Hamburger Icon (Mobile) */}
+      <div
+  className="xl:hidden w-[32px] h-[32px] object-contain cursor-pointer flex items-center justify-center"
+  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} // Toggle mobile menu
+>
+  {isMobileMenuOpen ? (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={2}
+      stroke="currentColor"
+      className="w-6 h-6"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M6 18L18 6M6 6l12 12"
+      />
+    </svg>
+  ) : (
+    <Image
+      src="/hamburger.svg" // Hamburger icon file
+      alt="open menu"
+      width={32}
+      height={32}
+    />
+  )}
+</div>
 
-      {/* Nav Items */}
+      {/* Nav Items (Desktop) */}
       <div className="hidden xl:block" style={{ marginLeft: "90px" }}>
         <ul className="gap-16 flex justify-center items-center">
           {navItems.map((item, index) => (
@@ -82,34 +111,67 @@ const Navbar = () => {
               href={item.url}
             >
               <li
-                className={
-                  item.title === pathname
-                    ? "font-bold capitalize"
-                    : "font-normal hover:font-bold capitalize"
-                }
+                className={item.title === pathname ? "font-bold capitalize" : "font-normal hover:font-bold capitalize"}
               >
                 {item.title}
               </li>
-              <div
-                className={
-                  item.title === "contact" ? "flex hover:font-bold" : "hidden"
-                }
-              >
-                <Image
-                  src="/downArrow.svg"
-                  alt="downArrow"
-                  width={16}
-                  height={16}
-                />
-              </div>
+              {item.title === "contact" && (
+                <div className="flex hover:font-bold">
+                  <Image src="/downArrow.svg" alt="downArrow" width={16} height={16} />
+                </div>
+              )}
             </Link>
           ))}
         </ul>
       </div>
 
-      {/* Search Bar, Cart, User Avatar */}
+  {/* Mobile Menu */}
+{isMobileMenuOpen && (
+  <div
+    ref={mobileMenuRef}
+    className="xl:hidden absolute top-full right-0 bg-#FFF-800 p-4 z-20 flex flex-col items-center w-[50%] max-w-[120px] shadow-md border rounded-3xl"
+    style={{ transform: "translateX(0)" }}
+  >
+    <ul className="flex flex-col items-left gap-4">
+      {navItems.map((item, index) => (
+        <li
+          key={index}
+          className={item.title === pathname ? "font-bold capitalize" : "font-normal hover:font-bold capitalize"}
+        >
+          <Link href={item.url} className="text-black no-underline">
+            {item.title}
+          </Link>
+        </li>
+      ))}
+    </ul>
+
+    {/* Cart and Profile Options */}
+    <div className="flex gap-4 mt-4">
+      <Link href="/cart" className="w-[24px] h-[24px]">
+        <Image
+          className="object-contain"
+          src="/cart.svg"
+          alt="cart"
+          width={24}
+          height={24}
+        />
+      </Link>
+      <Link href="/profile" className="w-[24px] h-[24px]">
+        <Image
+          className="object-contain"
+          src="/avatar.svg"
+          alt="profile"
+          width={24}
+          height={24}
+        />
+      </Link>
+    </div>
+  </div>
+)}
+
+      {/* Search Bar, Cart, User Avatar (Desktop) */}
       <div className="hidden xl:flex gap-[15px] items-center">
-        {/* Search Bar */}
+        {/* Search Bar (Desktop) */}
         <form
           className="relative flex items-center"
           onSubmit={handleSearch}

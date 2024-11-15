@@ -69,7 +69,8 @@ export default function Home() {
   <div
     className="max-w-[361px] md:max-w-[500px] xl:max-w-[622px] md:mr-8 mt-[157px] -ml-[80px] md:mt-[120px] xl:mt-[170px] z-10 gap-6 content-container lg:ml-[115px] lg:mt-[235px] "
     style={{
-      paddingRight: "12px", // only apply padding right
+      paddingRight: "12px",
+        // only apply padding right
     }}
   >
     {/* Title */}
@@ -118,15 +119,17 @@ export default function Home() {
 
       
       {/* Image */}
-      <div className="w-[267px] h-[447px] absolute top-0 right-[15px] md:right-[40px] image-container">
-        <Image
-          className="w-full h-full xl:hidden pot-image"
-          src="/bgImage1.png"
-          alt="bgImage"
-          width={267}
-          height={447}
-        />
-      </div>
+      <div className="absolute top-0 right-[45px] md:right-[40px] image-container">
+  <Image
+    className="w-full h-auto sm:w-[230px] sm:h-[350px] md:w-[267px] md:h-[447px] xl:hidden pot-image"
+    src="/bgImage1.png"
+    alt="bgImage"
+    width={267}
+    height={447}
+  />
+</div>
+
+
       <div className="w-full h-[776px] absolute top-0 right-[20px] bg-transparent">
       <div className="h-full w-full relative overflow-hidden">
           <Image
@@ -465,28 +468,25 @@ export default function Home() {
               muted
             /></div>
 
-          <div className="w-full flex justify-between">
-          
-            <video className="object-cover rounded-[16px]"
-               src="https://res.cloudinary.com/dguzhztdt/video/upload/f_mp4/v1729091741/Auto%20Verdure%20media%20%28website%29/Plants/IMG_7939_wsnkj9.mov"
-               alt="video"
-              width={171.765}
-              height={183.395}
-              
-              style={{ width: "171.765px", height: "183.395px" }}
-              loop
-               autoPlay
-               muted
-            />
-            <Image
-              className="rounded-[16px]"
-              src="https://res.cloudinary.com/dguzhztdt/image/upload/f_auto/v1729091744/Auto%20Verdure%20media%20%28website%29/Plants/IMG_1297_cy22gd.heic"
-              alt="img"
-              width={171.765}
-              height={183.395}
-              style={{ width: "171.765px", height: "183.395px" }}
-            />
-          </div>
+<div className="w-full flex justify-between gap-6">
+  <video
+    className="object-cover rounded-[16px] w-[171.765px] h-[183.395px] sm:w-[140px] sm:h-[150px]"
+    src="https://res.cloudinary.com/dguzhztdt/video/upload/f_mp4/v1729091741/Auto%20Verdure%20media%20%28website%29/Plants/IMG_7939_wsnkj9.mov"
+    alt="video"
+    loop
+    autoPlay
+    muted
+  />
+  <Image
+    className="rounded-[16px] w-[171.765px] h-[183.395px] sm:w-[140px] sm:h-[150px]"
+    src="https://res.cloudinary.com/dguzhztdt/image/upload/f_auto/v1729091744/Auto%20Verdure%20media%20%28website%29/Plants/IMG_1297_cy22gd.heic"
+    alt="img"
+    width={171.765}
+    height={183.395}
+    style={{ width: "171.765px", height: "183.395px" }}
+  />
+</div>
+
 
           <div className="w-full flex flex-col justify-center items-center">
             <button className="text-base px-[42px] py-[18px] rounded-[100px] border-[1px] font-normal text-primaryGrayscale">

@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import Image from "next/image";
@@ -15,6 +16,26 @@ import Chatbot from "./ChatBot";
 import { useSwipeable } from 'react-swipeable';
 
 import Blogs from "@/pages/Blogs";
+
+const Page = () => {
+  return (
+    <div>
+      <div
+        style={{
+          height: "495px",
+          width: "8px",
+          marginLeft: "84.35%",
+          background: "#FFFCF8",
+          top: "0px",
+          animation: "shrinkHeightRight 2s forwards",
+          animationDelay: "0.2s",
+        }}
+      >
+        <p>It&apos;s a beautiful day!</p>
+      </div>
+    </div>
+  );
+};
 
 export default function Home() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -80,7 +101,7 @@ export default function Home() {
     
     {/* Description */}
     <p
-      className="mt-3 xl:mt-[20px] text-sm md:text-base xl:text-lg leading-6 text-left font-normal text-secondaryGrayscale hero-description text-left lg:text-center xl:text-center"
+      className="mt-3 xl:mt-[20px] text-sm md:text-base xl:text-lg leading-6 text-left font-normal text-secondaryGrayscale hero-description lg:text-center xl:text-center"
       style={{
         color: "#3D3D3D",
         fontFamily: "Urbanist",
@@ -167,7 +188,9 @@ export default function Home() {
               animation: "shrinkHeightRight 2s forwards",
               animationDelay: "0.2s",
             }}
-          ></div>
+          >
+            <p>It&apos;s a beautiful day!</p>
+          </div>
           <div
             className="absolute"
             style={{

@@ -68,7 +68,7 @@ export default function Blogs({ title, description }) {
   return (
     <div className="container mx-auto p-12 mt-10 text-center">
       <h2 className="text-4xl font-medium mb-8">{title}</h2>
-      <p className="text-gray-600 max-w-4xl mx-auto mb-10 line-clamp-2">
+      <p className="text-gray-600 max-w-4xl mx-auto mb-10 ">
         {description}
       </p>
 

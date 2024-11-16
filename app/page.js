@@ -161,7 +161,7 @@ export default function Home() {
             style={{
               width: "100%",
               maxWidth: "100%",
-              transform: "translateX(28px)",
+              transform: "translateX(0px)", // Shifted slightly left
             }}
             src="/sam222.png"
             alt="bgImage"

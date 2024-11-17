@@ -142,7 +142,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-
       {/* Image */}
       <div className="absolute top-0 right-[45px] md:right-[60px] image-container">
         <Image
@@ -154,19 +153,21 @@ export default function Home() {
         />
       </div>
 
-      <div className="w-full h-[776px] absolute top-0 right-[20px] bg-transparent">
+      <div className="w-full h-[766px] absolute top-0 right-[20px] bg-transparent">
         <div className="h-full w-full relative overflow-hidden">
           <Image
             className="w-full h-full hidden xl:flex top-0 object-cover"
             style={{
               width: "100%",
               maxWidth: "100%",
+              height: "100%",
+              objectFit: "cover",
               transform: "translateX(12px)",
             }}
-            src="/sam222.png"
+            src="/sam222long.png"
             alt="bgImage"
             width={1550}
-            height={776}
+            height={766}
           />
           <div
             className="h-[90px] w-[10px] absolute z-15"
@@ -218,8 +219,6 @@ export default function Home() {
           ></div>
         </div>
       </div>
-
-      {/* <div className="w-full px-4 md:px-10 pb-[100px] bg-[#FFFCF8] flex flex-col justify-center items-center overflow-hidden" style={{"paddingLeft":"2.5rem"}}> */}
       {/* Shop The New Collection */}
       <div
         className="mt-[78px] md:mt-[114px] xl:mt-[120px] max-w-[361px] md:max-w-[754px] xl:max-w-[1200px] w-full flex flex-col md:justify-center md:items-center"
@@ -242,7 +241,6 @@ export default function Home() {
           ))}
         </div>
       </div>
-
       {/* Hydroponic Kits */}
       <div
         className="mt-[20.32px] md:mt-[112.85px] xl:mt-[120px] md:max-w-[754px] w-full xl:max-w-[1200px] flex flex-col justify-center items-center"
@@ -277,7 +275,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-
       {/* How Does it Work */}
       <div
         className="mt-[15px] md:mt-[132px] xl:mt-[149.5px] w-full h-fit md:max-w-[754px] xl:max-w-[1098px] flex xl:gap-[98px] flex-col md:flex-row justify-center items-center"
@@ -403,7 +400,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-
       {/* Join the Auto Verdure Movement */}
       <div className="mt-[107.5px] md:mt-[72px] max-w-[361px] md:max-w-[754px] xl:max-w-[1226px] w-full h-full">
         <div

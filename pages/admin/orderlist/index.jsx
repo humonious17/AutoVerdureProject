@@ -33,9 +33,47 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/hooks/use-toast";
 import { Search, MoreVertical, X } from "lucide-react";
 
+// Helper functions to normalize data
+const normalizeOrderItems = (order) => {
+  // Handle both products and items arrays
+  const items = order.products || order.items || [];
+  return items.map((item) => ({
+    productName: item.productName || item.name,
+    productQty: item.productQty || item.quantity || 1,
+    price: item.price || item.itemTotal || 0,
+    variant: item.productColor
+      ? `${item.productColor} - ${item.productSize}`
+      : "",
+  }));
+};
+
+const normalizeAddress = (shipping) => {
+  if (!shipping) return {};
+
+  return {
+    fullName: shipping.fullName || "",
+    address1: shipping.address1 || shipping.houseNumber || "",
+    address2: shipping.address2 || shipping.streetName || "",
+    city: shipping.city || "",
+    state: shipping.state || "",
+    postalCode: shipping.postalCode || shipping.zipCode || "",
+    country: shipping.country || "",
+    phone: shipping.phone || "",
+  };
+};
+
+const normalizeAmount = (order) => {
+  // Handle different amount fields and formats
+  const amount = order.totalAmount || order.amount || 0;
+  // If amount is already in smallest currency unit (paise), divide by 100
+  return amount > 1000 ? amount / 100 : amount;
+};
+
 // Order Details Component
 const OrderDetails = ({ order, onClose, onUpdateStatus }) => {
-  const [status, setStatus] = useState(order.orderStatus);
+  const [status, setStatus] = useState(order.orderStatus || order.status);
+  const normalizedItems = normalizeOrderItems(order);
+  const normalizedShipping = normalizeAddress(order.shipping);
 
   const handleStatusChange = async (newStatus) => {
     await onUpdateStatus(order.orderId, newStatus);
@@ -48,8 +86,16 @@ const OrderDetails = ({ order, onClose, onUpdateStatus }) => {
       processing: "bg-blue-100 text-blue-800",
       completed: "bg-green-100 text-green-800",
       cancelled: "bg-red-100 text-red-800",
+      created: "bg-purple-100 text-purple-800",
     };
     return statusColors[status] || "bg-gray-100 text-gray-800";
+  };
+
+  const calculateSubtotal = () => {
+    return normalizedItems.reduce(
+      (sum, item) => sum + item.price * item.productQty,
+      0
+    );
   };
 
   return (
@@ -63,6 +109,7 @@ const OrderDetails = ({ order, onClose, onUpdateStatus }) => {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
+                <SelectItem value="created">Created</SelectItem>
                 <SelectItem value="pending">Pending</SelectItem>
                 <SelectItem value="processing">Processing</SelectItem>
                 <SelectItem value="completed">Completed</SelectItem>
@@ -85,13 +132,14 @@ const OrderDetails = ({ order, onClose, onUpdateStatus }) => {
           <div className="space-y-2">
             <p>
               <span className="font-medium">Name:</span>{" "}
-              {order.shipping.fullName}
+              {normalizedShipping.fullName}
             </p>
             <p>
               <span className="font-medium">Email:</span> {order.email}
             </p>
             <p>
-              <span className="font-medium">Phone:</span> {order.shipping.phone}
+              <span className="font-medium">Phone:</span>{" "}
+              {normalizedShipping.phone}
             </p>
           </div>
         </div>
@@ -99,13 +147,18 @@ const OrderDetails = ({ order, onClose, onUpdateStatus }) => {
         <div>
           <h3 className="text-lg font-semibold mb-2">Shipping Address</h3>
           <div className="space-y-2">
-            <p>{order.shipping.address1}</p>
-            {order.shipping.address2 && <p>{order.shipping.address2}</p>}
+            {normalizedShipping.address1 && (
+              <p>{normalizedShipping.address1}</p>
+            )}
+            {normalizedShipping.address2 && (
+              <p>{normalizedShipping.address2}</p>
+            )}
             <p>
-              {order.shipping.city}, {order.shipping.state}{" "}
-              {order.shipping.postalCode}
+              {normalizedShipping.city}
+              {normalizedShipping.state && `, ${normalizedShipping.state}`}{" "}
+              {normalizedShipping.postalCode}
             </p>
-            <p>{order.shipping.country}</p>
+            <p>{normalizedShipping.country}</p>
           </div>
         </div>
       </div>
@@ -123,23 +176,19 @@ const OrderDetails = ({ order, onClose, onUpdateStatus }) => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {order.products.map((product, index) => (
+              {normalizedItems.map((item, index) => (
                 <TableRow key={index}>
                   <TableCell>
                     <div>
-                      <p className="font-medium">{product.productName}</p>
-                      {product.variant && (
-                        <p className="text-sm text-gray-500">
-                          {product.variant}
-                        </p>
+                      <p className="font-medium">{item.productName}</p>
+                      {item.variant && (
+                        <p className="text-sm text-gray-500">{item.variant}</p>
                       )}
                     </div>
                   </TableCell>
-                  <TableCell>{product.productQty}</TableCell>
-                  <TableCell>Rs. {product.price}</TableCell>
-                  <TableCell>
-                    Rs. {product.price * product.productQty}
-                  </TableCell>
+                  <TableCell>{item.productQty}</TableCell>
+                  <TableCell>Rs. {item.price}</TableCell>
+                  <TableCell>Rs. {item.price * item.productQty}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -150,7 +199,9 @@ const OrderDetails = ({ order, onClose, onUpdateStatus }) => {
       <div className="border-t pt-4">
         <div className="flex justify-between items-center">
           <div className="space-y-1">
-            <p className="text-sm text-gray-500">Subtotal: Rs. {0}</p>
+            <p className="text-sm text-gray-500">
+              Subtotal: Rs. {calculateSubtotal()}
+            </p>
             <p className="text-sm text-gray-500">Shipping: Rs. {0}</p>
             {order.discount > 0 && (
               <p className="text-sm text-gray-500">
@@ -159,7 +210,7 @@ const OrderDetails = ({ order, onClose, onUpdateStatus }) => {
             )}
           </div>
           <div className="text-xl font-bold">
-            Total: Rs. {order.totalAmount / 100}
+            Total: Rs. {normalizeAmount(order)}
           </div>
         </div>
       </div>
@@ -182,18 +233,19 @@ const OrderList = ({ initialOrders }) => {
 
     // Status filter
     if (statusFilter !== "all") {
-      result = result.filter((order) => order.orderStatus === statusFilter);
+      result = result.filter(
+        (order) => (order.orderStatus || order.status) === statusFilter
+      );
     }
 
     // Search filter
     if (searchTerm) {
+      const searchLower = searchTerm.toLowerCase();
       result = result.filter(
         (order) =>
-          order.orderId.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          order.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          order.shipping.fullName
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase())
+          order.orderId.toLowerCase().includes(searchLower) ||
+          order.email.toLowerCase().includes(searchLower) ||
+          (order.shipping?.fullName || "").toLowerCase().includes(searchLower)
       );
     }
 
@@ -206,12 +258,12 @@ const OrderList = ({ initialOrders }) => {
       processing: "bg-blue-100 text-blue-800",
       completed: "bg-green-100 text-green-800",
       cancelled: "bg-red-100 text-red-800",
+      created: "bg-purple-100 text-purple-800",
     };
     return statusColors[status] || "bg-gray-100 text-gray-800";
   };
 
   const handleRowClick = (order, e) => {
-    // Prevent opening modal when clicking on the actions button
     if (e.target.closest(".actions-button")) return;
     setSelectedOrder(order);
   };
@@ -231,7 +283,7 @@ const OrderList = ({ initialOrders }) => {
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
           order.orderId === orderId
-            ? { ...order, orderStatus: newStatus }
+            ? { ...order, orderStatus: newStatus, status: newStatus }
             : order
         )
       );
@@ -270,6 +322,7 @@ const OrderList = ({ initialOrders }) => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Orders</SelectItem>
+                <SelectItem value="created">Created</SelectItem>
                 <SelectItem value="pending">Pending</SelectItem>
                 <SelectItem value="processing">Processing</SelectItem>
                 <SelectItem value="completed">Completed</SelectItem>
@@ -304,15 +357,23 @@ const OrderList = ({ initialOrders }) => {
                     </TableCell>
                     <TableCell>
                       <div>
-                        <p className="font-medium">{order.shipping.fullName}</p>
+                        <p className="font-medium">
+                          {order.shipping?.fullName}
+                        </p>
                         <p className="text-sm text-gray-500">{order.email}</p>
                       </div>
                     </TableCell>
-                    <TableCell>{order.products.length} items</TableCell>
-                    <TableCell>Rs. {order.totalAmount / 100}</TableCell>
                     <TableCell>
-                      <Badge className={getStatusColor(order.orderStatus)}>
-                        {order.orderStatus}
+                      {order.products?.length || order.items?.length || 0} items
+                    </TableCell>
+                    <TableCell>Rs. {normalizeAmount(order)}</TableCell>
+                    <TableCell>
+                      <Badge
+                        className={getStatusColor(
+                          order.orderStatus || order.status
+                        )}
+                      >
+                        {order.orderStatus || order.status}
                       </Badge>
                     </TableCell>
                     <TableCell>

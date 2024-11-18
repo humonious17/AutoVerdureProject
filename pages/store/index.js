@@ -78,8 +78,11 @@ const Store = ({ initialProducts }) => {
           isFilterOpen ? "ml-[300px]" : "ml-0"
         }`}
       >
+        <br />
+        <br />
         {/* Sticky Header */}
         <TopSegment />
+        <br />
 
         {/* Sorting and Filtering Section */}
         <div
@@ -99,14 +102,14 @@ const Store = ({ initialProducts }) => {
                 </button>
                 {/* Grid and List View Icons */}
                 <Image
-                  className="object-contain cursor-pointer"
+                  className="object-contain cursor-pointer md:block sm:hidden"
                   src="/gridRound.svg"
                   alt="gridRound"
                   width={28}
                   height={28}
                 />
                 <Image
-                  className="object-contain cursor-pointer"
+                  className="object-contain cursor-pointer md:block sm:hidden"
                   src="/list.svg"
                   alt="list"
                   width={24}
@@ -140,7 +143,13 @@ const Store = ({ initialProducts }) => {
 
         {/* Products Grid */}
         <div className="p-4 md:p-8 flex justify-center">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 max-w-[1440px]">
+          <div
+            className={`grid gap-12 max-w-[1440px] ${
+              isFilterOpen
+                ? "grid-cols-1 sm:grid-cols-1 md:grid-cols-3" // Single column on mobile when filter is open
+                : "sm:grid-cols-2 md:grid-cols-3"
+            }`}
+          >
             {validProducts.slice(0, showCount).map((product, index) => (
               <Link
                 key={product.productId || index}

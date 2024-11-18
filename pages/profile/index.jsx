@@ -18,7 +18,9 @@ const Profile = (props) => {
 
   const redeemPoints = async () => {
     const redemptionValue = formData.avPoints * 10; // 1 point = 10rs
-    setRedeemMessage(`You can redeem Rs. ${redemptionValue} on your next order.`);
+    setRedeemMessage(
+      `You can redeem Rs. ${redemptionValue} on your next order.`
+    );
   };
 
   const handleChange = (e) => {
@@ -175,141 +177,168 @@ const Profile = (props) => {
   };
 
   return (
-    <div style={styles.container}>
-      <form onSubmit={handleSubmit} style={styles.form}>
-        <div style={styles.row}>
-          <div style={{ ...styles.inputContainer, marginRight: "10px" }}>
-            <label htmlFor="firstName" style={styles.label}>
-              First Name
-            </label>
-            <input
-              type="text"
-              name="firstName"
-              value={formData.firstName}
-              onChange={handleChange}
-              style={styles.input}
-              disabled={!editField.name}
-            />
+    <div className="min-h-screen w-full px-4 py-6 md:py-8">
+      <form onSubmit={handleSubmit} className="max-w-lg mx-auto space-y-6">
+        {/* Name Fields */}
+        <div className="space-y-4 md:space-y-0 md:flex md:gap-4">
+          <div className="relative flex-1">
+            <label className="block text-sm font-medium mb-1">First Name</label>
+            <div className="relative">
+              <input
+                type="text"
+                name="firstName"
+                value={formData.firstName}
+                onChange={handleChange}
+                className="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-purple-500"
+                disabled={!editField.name}
+              />
+              <button
+                type="button"
+                onClick={() => handleEdit("name")}
+                className="absolute right-2 top-1/2 -translate-y-1/2"
+              >
+                <FiEdit className="w-4 h-4 text-gray-500" />
+              </button>
+            </div>
           </div>
-          <div style={styles.inputContainer}>
-            <label htmlFor="lastName" style={styles.label}>
-              Last Name
-            </label>
+          <div className="relative flex-1">
+            <label className="block text-sm font-medium mb-1">Last Name</label>
             <input
               type="text"
               name="lastName"
               value={formData.lastName}
               onChange={handleChange}
-              style={styles.input}
+              className="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-purple-500"
               disabled={!editField.name}
             />
           </div>
-          <FiEdit style={styles.editIcon} onClick={() => handleEdit("name")} />
         </div>
 
-        <div style={styles.row}>
-          <div style={styles.inputContainer}>
-            <label htmlFor="email" style={styles.label}>
-              Email
-            </label>
+        {/* Email Field */}
+        <div className="relative">
+          <label className="block text-sm font-medium mb-1">Email</label>
+          <div className="relative">
             <input
               type="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
-              style={styles.input}
+              className="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-purple-500"
               disabled={!editField.email}
             />
+            <button
+              type="button"
+              onClick={() => handleEdit("email")}
+              className="absolute right-2 top-1/2 -translate-y-1/2"
+            >
+              <FiEdit className="w-4 h-4 text-gray-500" />
+            </button>
           </div>
-          <FiEdit style={styles.editIcon} onClick={() => handleEdit("email")} />
         </div>
 
-        <div style={styles.row}>
-          <div style={styles.inputContainer}>
-            <label htmlFor="phone" style={styles.label}>
-              Phone
-            </label>
+        {/* Phone Field */}
+        <div className="relative">
+          <label className="block text-sm font-medium mb-1">Phone</label>
+          <div className="relative">
             <input
               type="tel"
               name="phone"
               value={formData.phone}
               onChange={handleChange}
-              style={styles.input}
+              className="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-purple-500"
               disabled={!editField.phone}
             />
-          </div>
-          <FiEdit style={styles.editIcon} onClick={() => handleEdit("phone")} />
-        </div>
-
-        <div style={styles.row}>
-          <div style={styles.inputContainer}>
-            <label htmlFor="avPoints" style={styles.label}>
-              AV Points
-            </label>
-            <input
-              type="number"
-              name="avPoints"
-              value={formData.avPoints}
-              readOnly
-              style={styles.input}
-              disabled
-            />
+            <button
+              type="button"
+              onClick={() => handleEdit("phone")}
+              className="absolute right-2 top-1/2 -translate-y-1/2"
+            >
+              <FiEdit className="w-4 h-4 text-gray-500" />
+            </button>
           </div>
         </div>
 
-        <button type="button" style={styles.redeemButton} onClick={redeemPoints}>
-          Redeem Points
-        </button>
+        {/* Points Field */}
+        <div>
+          <label className="block text-sm font-medium mb-1">AV Points</label>
+          <input
+            type="number"
+            name="avPoints"
+            value={formData.avPoints}
+            className="w-full px-4 py-2 rounded-lg border bg-gray-50"
+            disabled
+          />
+        </div>
 
-        {redeemMessage && <div style={styles.redeemMessage}>{redeemMessage}</div>}
-        
-        {/* Update Profile Button */}
-        <button type="submit" style={styles.button} onClick={handleEditProfile}>
-          {buttonText}
-        </button>
+        {/* Action Buttons */}
+        <div className="space-y-3 pt-4">
+          <button
+            type="button"
+            onClick={redeemPoints}
+            className="w-full py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors"
+          >
+            Redeem Points
+          </button>
 
-        {/* Logout Button */}
-        <button
-          type="button"
-          style={styles.logoutButton}
-          onClick={openLogoutModal}
-        >
-          Log Out
-        </button>
+          {redeemMessage && (
+            <p className="text-green-600 text-center text-sm">
+              {redeemMessage}
+            </p>
+          )}
 
-        {/* Logout Modal */}
-        {showLogoutModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-            <div className="bg-white p-6 rounded-lg text-center">
-              <p className="text-lg mb-4">Are you sure you want to log out?</p>
-              <div className="flex justify-center gap-4">
-                <button
-                  onClick={confirmLogout}
-                  className="px-4 py-2 bg-red-500 text-white rounded-lg"
-                >
-                  Yes
-                </button>
-                <button
-                  onClick={closeLogoutModal}
-                  className="px-4 py-2 bg-gray-300 rounded-lg"
-                >
-                  No
-                </button>
-              </div>
+          <button
+            type="submit"
+            onClick={handleEditProfile}
+            className="w-full py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors"
+          >
+            {buttonText}
+          </button>
+
+          <button
+            type="button"
+            onClick={openLogoutModal}
+            className="w-full py-3 bg-black hover:bg-gray-800 text-white rounded-lg transition-colors"
+          >
+            Log Out
+          </button>
+        </div>
+      </form>
+
+      {/* Logout Modal */}
+      {showLogoutModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-sm">
+            <p className="text-lg text-center mb-6">
+              Are you sure you want to log out?
+            </p>
+            <div className="flex gap-4">
+              <button
+                onClick={confirmLogout}
+                className="flex-1 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg"
+              >
+                Yes
+              </button>
+              <button
+                onClick={closeLogoutModal}
+                className="flex-1 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg"
+              >
+                No
+              </button>
             </div>
           </div>
-        )}
+        </div>
+      )}
 
-        {/* Logout Success Message */}
-        {logoutMessage && (
-          <div className="fixed top-0 left-0 w-full bg-green-500 text-white text-center py-3">
-            {logoutMessage}
-          </div>
-        )}
-      </form>
+      {/* Logout Message */}
+      {logoutMessage && (
+        <div className="fixed top-0 left-0 right-0 bg-green-500 text-white py-3 text-center animate-fade-in-down">
+          {logoutMessage}
+        </div>
+      )}
     </div>
   );
 };
+
 export default Profile;
 
 export async function getServerSideProps({ req, res }) {

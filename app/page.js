@@ -14,6 +14,7 @@ import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import Chatbot from "./ChatBot";
 import { useSwipeable } from 'react-swipeable';
+import Power from "./ui/Home/Power";
 
 import Blogs from "@/pages/Blogs";
 
@@ -189,7 +190,6 @@ export default function Home() {
               animationDelay: "0.2s",
             }}
           >
-            <p>It&apos;s a beautiful day!</p>
           </div>
           <div
             className="absolute"
@@ -252,7 +252,7 @@ export default function Home() {
             <p>Why are our hydroponic kits the best for you?</p>
           </div>
 
-          <div className="mt-12 md:mt-[38px] xl:mt-12 w-full flex flex-col md:grid md:grid-cols-2 xl:grid-cols-3 gap-y-[41px] md:gap-x-[22px] md:gap-y-[47px] xl:grid-x-[41px] xl:grid-y-12 justify-center items-center">
+          <div className="hidden mt-12 md:mt-[38px] xl:mt-12 w-full flex flex-col md:grid md:grid-cols-2 xl:grid-cols-3 gap-y-[41px] md:gap-x-[22px] md:gap-y-[47px] xl:grid-x-[41px] xl:grid-y-12 justify-center items-center hydrophonic-kit">
             {hydroponics.map((hydroponic, index) => (
               <HydroponicCard
                 key={index}
@@ -261,11 +261,24 @@ export default function Home() {
               />
             ))}
           </div>
-
-          <div className="my-8 md:hidden w-full flex gap-x-[9px] justify-center items-center">
-            <div className="w-[13px] h-[13px] rounded-full bg-primaryMain"></div>
-            <div className="w-[13px] h-[13px] rounded-full bg-[#D9D9D9]"></div>
-          </div>
+            <div className="relative w-full h-[350px] mt-10 mb-8 flex justify-center items-center md:hidden">
+      {/* Mobile View */}
+      {hydroponics.map((card, index) => (
+        <div
+          key={index}
+          className={`absolute transition-opacity duration-10000 ease-in-out ${
+            index === currentIndex ? "opacity-100 z-10" : "opacity-0 z-0"
+          }`}
+          style={{
+            transform: `translateY(${index === currentIndex ? 0 : 10}px)`,
+            transition: "transform 0.9s ease-in-out",
+          }}
+        >
+          <HydroponicCard data={card} isActive={index === currentIndex} />
+        </div>
+      ))}
+    </div>
+          
 
           <div className="md:mt-[72.12px] w-full flex flex-col justify-center items-center">
             <Link href="/about-us" passHref>
@@ -493,7 +506,7 @@ export default function Home() {
 
 <div className="w-full flex justify-between gap-6">
   <video
-    className="object-cover rounded-[16px] w-[171.765px] h-[183.395px] sm:w-[140px] sm:h-[150px]"
+    className="object-cover rounded-[16px] w-[171.765px] h-[183.395px] "
     src="https://res.cloudinary.com/dguzhztdt/video/upload/f_mp4/v1729091741/Auto%20Verdure%20media%20%28website%29/Plants/IMG_7939_wsnkj9.mov"
     alt="video"
     loop
@@ -520,7 +533,7 @@ export default function Home() {
 
         <div className="mt-[59.11px] w-full flex flex-col md:gap-y-7 justify-center items-center">
           <div className="w-full flex flex-col md:flex-row-reverse md:gap-[56.67px] justify-center">
-            <div className="w-full md:w-[405px] xl:w-[646.67px] flex flex-col justify-center items-center md:justify-start md:items-start">
+            <div className=" w-full md:w-[405px] xl:w-[646.66px] hidden md:flex flex-col justify-center items-center md:justify-start md:items-start">
               <Image
                 className="rounded-[16px]"
                 src="/imag.jpg"
@@ -615,6 +628,7 @@ allure
               </div>
             </div>
           </div>
+          <Power/>
         </div>
 
         {/* Why should you switch from traditional pots to hydroponics? */}

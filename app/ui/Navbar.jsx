@@ -129,7 +129,7 @@ const Navbar = () => {
 {isMobileMenuOpen && (
   <div
     ref={mobileMenuRef}
-    className="xl:hidden absolute top-full right-0 bg-#FFF-800 p-4 z-20 flex flex-col items-center w-[50%] max-w-[120px] shadow-md border rounded-3xl"
+    className="xl:hidden absolute top-full right-0 bg-white p-4 z-60 flex flex-col items-center w-[50%] max-w-[120px] shadow-md border rounded-3xl"
     style={{ transform: "translateX(0)" }}
   >
     <ul className="flex flex-col items-left gap-4">

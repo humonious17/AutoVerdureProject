@@ -86,7 +86,7 @@ const Store = ({ initialProducts }) => {
         <TopSegment />
 
         {/* Controls Bar */}
-        <div className="sticky top-0 z-20 bg-white border-b border-gray-200 shadow-sm">
+        <div className="sticky top-0 z-20 bg-[white] border-b border-gray-200 shadow-sm">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
             <div className="flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between">
               <div className="flex items-center gap-4">

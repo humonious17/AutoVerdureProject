@@ -1,14 +1,17 @@
 import React from "react";
 import StoreNavbar from "./StoreNavbar";
-import StoreTools from "./StoreTools";
 
 const TopSegment = () => {
   return (
-    <div className="w-full flex flex-col justify-center items-center bg-[#FFFCF8] overflow-hidden">
-      <div className="mt-[63px] w-full flex flex-col justify-center items-center md:justify-start md:items-start">
-        <p className="px-6 sm:px-[44px] xl:px-[64px] w-full text-[38px] leading-[52px] font-normal text-[#0E0E0E]">
-          Store
-        </p>
+    <div className="w-full bg-white">
+      <div className="mt-[63px] max-w-7xl mx-auto">
+        <div className="px-4 sm:px-6 py-6 sm:py-8">
+          <div className="flex items-center justify-between">
+            <h1 className="text-2xl sm:text-3xl font-semibold text-gray-900">
+              Store
+            </h1>
+          </div>
+        </div>
         <StoreNavbar />
       </div>
     </div>

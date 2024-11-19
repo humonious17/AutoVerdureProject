@@ -4,14 +4,14 @@ import Link from "next/link";
 import TopSegment from "@/app/ui/Store/TopSegment";
 import StoreTools from "@/app/ui/Store/StoreTools";
 import findAllProducts from "/pages/api/products/findAllProducts";
-import TuneIcon from "@mui/icons-material/Tune";
-import Image from "next/image";
+import { Sliders, Grid, List } from "lucide-react";
 
 const Store = ({ initialProducts }) => {
   const [filteredProducts, setFilteredProducts] = useState(initialProducts);
   const [sortBy, setSortBy] = useState("default");
   const [showCount, setShowCount] = useState(16);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [viewMode, setViewMode] = useState("grid");
 
   const handleFilterChange = (filters) => {
     let filtered = [...initialProducts];
@@ -27,7 +27,6 @@ const Store = ({ initialProducts }) => {
   const handleSort = (sortType) => {
     setSortBy(sortType);
     let sorted = [...filteredProducts].filter(Boolean);
-
     switch (sortType) {
       case "name-asc":
         sorted.sort((a, b) => a.productName.localeCompare(b.productName));
@@ -38,12 +37,11 @@ const Store = ({ initialProducts }) => {
       default:
         sorted = [...initialProducts].filter(Boolean);
     }
-
     setFilteredProducts(sorted);
   };
 
   const handleShowCountChange = (count) => {
-    setShowCount(parseInt(count));
+    setShowCount(Number(count));
   };
 
   const validProducts = filteredProducts.filter(
@@ -51,13 +49,12 @@ const Store = ({ initialProducts }) => {
   );
 
   return (
-    <div className="w-full bg-[#FFFCF8] min-h-screen">
+    <div className="min-h-screen bg-gray-50">
       {/* Filter Sidebar */}
       <div
-        className={`fixed top-0 left-0 h-screen bg-white transform transition-transform duration-300 ease-in-out z-40 ${
+        className={`fixed top-0 left-0 h-screen bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-40 w-full sm:w-80 ${
           isFilterOpen ? "translate-x-0" : "-translate-x-full"
         }`}
-        style={{ width: "300px" }}
       >
         <StoreTools
           totalProducts={validProducts.length}
@@ -72,56 +69,63 @@ const Store = ({ initialProducts }) => {
         />
       </div>
 
-      {/* Main Content Wrapper */}
+      {/* Overlay when filter is open on mobile */}
+      {isFilterOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-30 sm:hidden"
+          onClick={() => setIsFilterOpen(false)}
+        />
+      )}
+
+      {/* Main Content */}
       <div
-        className={`flex flex-col transition-all duration-300 ease-in-out ${
-          isFilterOpen ? "ml-[300px]" : "ml-0"
+        className={`transition-all duration-300 ease-in-out ${
+          isFilterOpen ? "sm:ml-80" : "ml-0"
         }`}
       >
-        <br />
-        <br />
-        {/* Sticky Header */}
         <TopSegment />
-        <br />
 
-        {/* Sorting and Filtering Section */}
-        <div
-          className="my-3 sticky top-0 z-30 w-full"
-          style={{ backgroundColor: "#9A5CF50F" }}
-        >
-          <div className="px-4 py-6 md:px-8">
-            <div className="flex justify-between items-center">
-              {/* Filter Toggle Button with Grid/List Icons */}
+        {/* Controls Bar */}
+        <div className="sticky top-0 z-20 bg-white border-b border-gray-200 shadow-sm">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
+            <div className="flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between">
               <div className="flex items-center gap-4">
                 <button
                   onClick={() => setIsFilterOpen(!isFilterOpen)}
-                  className="flex items-center gap-2 px-4 py-2 bg-white rounded-lg border"
+                  className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
                 >
-                  <TuneIcon />
+                  <Sliders className="w-4 h-4" />
                   Filters
                 </button>
-                {/* Grid and List View Icons */}
-                <Image
-                  className="object-contain cursor-pointer md:block sm:hidden"
-                  src="/gridRound.svg"
-                  alt="gridRound"
-                  width={28}
-                  height={28}
-                />
-                <Image
-                  className="object-contain cursor-pointer md:block sm:hidden"
-                  src="/list.svg"
-                  alt="list"
-                  width={24}
-                  height={24}
-                />
+                <div className="hidden sm:flex items-center gap-2 border rounded-lg p-1 bg-gray-50">
+                  <button
+                    onClick={() => setViewMode("grid")}
+                    className={`p-2 rounded ${
+                      viewMode === "grid"
+                        ? "bg-white shadow-sm"
+                        : "text-gray-500 hover:text-gray-700"
+                    }`}
+                  >
+                    <Grid className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => setViewMode("list")}
+                    className={`p-2 rounded ${
+                      viewMode === "list"
+                        ? "bg-white shadow-sm"
+                        : "text-gray-500 hover:text-gray-700"
+                    }`}
+                  >
+                    <List className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
-              {/* Sort and Show Count Controls */}
+
               <div className="flex items-center gap-4">
                 <select
                   value={sortBy}
                   onChange={(e) => handleSort(e.target.value)}
-                  className="py-2 px-3 text-sm border rounded-lg bg-white"
+                  className="px-4 py-2 text-sm border border-gray-300 rounded-lg bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                 >
                   <option value="default">Sort by</option>
                   <option value="name-asc">Name (A-Z)</option>
@@ -130,7 +134,7 @@ const Store = ({ initialProducts }) => {
                 <select
                   value={showCount}
                   onChange={(e) => handleShowCountChange(e.target.value)}
-                  className="py-2 px-3 text-sm border rounded-lg bg-white"
+                  className="px-4 py-2 text-sm border border-gray-300 rounded-lg bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                 >
                   <option value={16}>Show 16</option>
                   <option value={32}>Show 32</option>
@@ -142,21 +146,23 @@ const Store = ({ initialProducts }) => {
         </div>
 
         {/* Products Grid */}
-        <div className="p-4 md:p-8 flex justify-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
           <div
-            className={`grid gap-12 max-w-[1440px] ${
-              isFilterOpen
-                ? "grid-cols-1 sm:grid-cols-1 md:grid-cols-3" // Single column on mobile when filter is open
-                : "sm:grid-cols-2 md:grid-cols-3"
+            className={`grid gap-6 sm:gap-8 ${
+              viewMode === "grid"
+                ? isFilterOpen
+                  ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+                  : "grid-cols-2 sm:grid-cols-3 lg:grid-cols-3"
+                : "grid-cols-1"
             }`}
           >
             {validProducts.slice(0, showCount).map((product, index) => (
               <Link
                 key={product.productId || index}
                 href={`/store/${product.category}/${product.productId}`}
-                className="flex justify-center"
+                className="transform transition-transform hover:scale-[1.02]"
               >
-                <ProductCard product={product} />
+                <ProductCard product={product} viewMode={viewMode} />
               </Link>
             ))}
           </div>
@@ -186,10 +192,10 @@ export async function getServerSideProps() {
       },
     };
   } catch (error) {
+    console.error("Error fetching products:", error);
     return {
-      redirect: {
-        destination: "/",
-        permanent: false,
+      props: {
+        initialProducts: [],
       },
     };
   }

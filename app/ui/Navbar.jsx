@@ -38,12 +38,13 @@ const Navbar = () => {
   // Close the menu if clicked outside
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
+      if (
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(event.target)
+      ) {
         setIsMobileMenuOpen(false); // Close the menu if clicked outside
       }
     };
-
-    
   }, [isMobileMenuOpen]);
 
   return (
@@ -73,33 +74,33 @@ const Navbar = () => {
 
       {/* Hamburger Icon (Mobile) */}
       <div
-  className="xl:hidden w-[32px] h-[32px] object-contain cursor-pointer flex items-center justify-center"
-  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} // Toggle mobile menu
->
-  {isMobileMenuOpen ? (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      strokeWidth={2}
-      stroke="currentColor"
-      className="w-6 h-6"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M6 18L18 6M6 6l12 12"
-      />
-    </svg>
-  ) : (
-    <Image
-      src="/hamburger.svg" // Hamburger icon file
-      alt="open menu"
-      width={32}
-      height={32}
-    />
-  )}
-</div>
+        className="xl:hidden w-[32px] h-[32px] object-contain cursor-pointer flex items-center justify-center"
+        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} // Toggle mobile menu
+      >
+        {isMobileMenuOpen ? (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={2}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        ) : (
+          <Image
+            src="/hamburger.svg" // Hamburger icon file
+            alt="open menu"
+            width={32}
+            height={32}
+          />
+        )}
+      </div>
 
       {/* Nav Items (Desktop) */}
       <div className="hidden xl:block" style={{ marginLeft: "90px" }}>
@@ -111,13 +112,22 @@ const Navbar = () => {
               href={item.url}
             >
               <li
-                className={item.title === pathname ? "font-bold capitalize" : "font-normal hover:font-bold capitalize"}
+                className={
+                  item.title === pathname
+                    ? "font-bold capitalize"
+                    : "font-normal hover:font-bold capitalize"
+                }
               >
                 {item.title}
               </li>
               {item.title === "contact" && (
                 <div className="flex hover:font-bold">
-                  <Image src="/downArrow.svg" alt="downArrow" width={16} height={16} />
+                  <Image
+                    src="/downArrow.svg"
+                    alt="downArrow"
+                    width={16}
+                    height={16}
+                  />
                 </div>
               )}
             </Link>
@@ -125,49 +135,53 @@ const Navbar = () => {
         </ul>
       </div>
 
-  {/* Mobile Menu */}
-{isMobileMenuOpen && (
-  <div
-    ref={mobileMenuRef}
-    className="xl:hidden absolute top-full right-0 bg-white p-4 z-60 flex flex-col items-center w-[50%] max-w-[120px] shadow-md border rounded-3xl"
-    style={{ transform: "translateX(0)" }}
-  >
-    <ul className="flex flex-col items-left gap-4">
-      {navItems.map((item, index) => (
-        <li
-          key={index}
-          className={item.title === pathname ? "font-bold capitalize" : "font-normal hover:font-bold capitalize"}
+      {/* Mobile Menu */}
+      {isMobileMenuOpen && (
+        <div
+          ref={mobileMenuRef}
+          className="xl:hidden absolute top-full right-0 bg-white p-4 z-60 flex flex-col items-center w-[50%] max-w-[120px] shadow-md border rounded-3xl"
+          style={{ transform: "translateX(0)" }}
         >
-          <Link href={item.url} className="text-black no-underline">
-            {item.title}
-          </Link>
-        </li>
-      ))}
-    </ul>
+          <ul className="flex flex-col items-left gap-4">
+            {navItems.map((item, index) => (
+              <li
+                key={index}
+                className={
+                  item.title === pathname
+                    ? "font-bold capitalize"
+                    : "font-normal hover:font-bold capitalize"
+                }
+              >
+                <Link href={item.url} className="text-black no-underline">
+                  {item.title}
+                </Link>
+              </li>
+            ))}
+          </ul>
 
-    {/* Cart and Profile Options */}
-    <div className="flex gap-4 mt-4">
-      <Link href="/cart" className="w-[24px] h-[24px]">
-        <Image
-          className="object-contain"
-          src="/cart.svg"
-          alt="cart"
-          width={24}
-          height={24}
-        />
-      </Link>
-      <Link href="/profile" className="w-[24px] h-[24px]">
-        <Image
-          className="object-contain"
-          src="/avatar.svg"
-          alt="profile"
-          width={24}
-          height={24}
-        />
-      </Link>
-    </div>
-  </div>
-)}
+          {/* Cart and Profile Options */}
+          <div className="flex gap-4 mt-4">
+            <Link href="/cart" className="w-[24px] h-[24px]">
+              <Image
+                className="object-contain"
+                src="/cart.svg"
+                alt="cart"
+                width={24}
+                height={24}
+              />
+            </Link>
+            <Link href="/profile" className="w-[24px] h-[24px]">
+              <Image
+                className="object-contain"
+                src="/avatar.svg"
+                alt="profile"
+                width={24}
+                height={24}
+              />
+            </Link>
+          </div>
+        </div>
+      )}
 
       {/* Search Bar, Cart, User Avatar (Desktop) */}
       <div className="hidden xl:flex gap-[15px] items-center">

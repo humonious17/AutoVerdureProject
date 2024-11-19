@@ -186,74 +186,109 @@ const SingleProductPage = ({ productData, allProducts }) => {
     });
   };
 
-  const MainImageSection = () => (
-    <div className="w-full sm:flex sm:flex-col sm:w-[50%] xl:w-[624px]">
-      <div className="h-[550px] w-full relative">
-        {!loading && (
-          <>
-            <Image
-              className="object-cover w-full h-full rounded-[44px]"
-              src={currentImageUrls[imageId] || fallbackImageUrl} // Main image based on imageId
-              alt={productData.productName}
-              width={550}
-              height={550}
-              unoptimized={true}
-            />
-            {currentImageUrls.length > 1 && (
-              <>
-                <button
-                  className="absolute top-1/2 left-[29px] transform -translate-y-1/2 cursor-pointer"
-                  onClick={() => handleNextImageClick("left")} // Left arrow click
+  const MainImageSection = () => {
+    // Scroll to top when changing images on mobile
+    const handleImageChange = (index) => {
+      setImageId(index);
+      if (window.innerWidth < 640) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    };
+
+    return (
+      <div className="w-full flex flex-col sm:w-1/2 xl:w-[624px]">
+        {/* Main Image Container */}
+        <div className="relative w-full aspect-square sm:h-[550px]">
+          {!loading && (
+            <>
+              <Image
+                className="object-cover w-full h-full rounded-2xl sm:rounded-[44px]"
+                src={currentImageUrls[imageId] || fallbackImageUrl}
+                alt={productData.productName}
+                width={550}
+                height={550}
+                unoptimized={true}
+                priority
+              />
+
+              {/* Navigation Arrows - Hidden on mobile */}
+              {currentImageUrls.length > 1 && (
+                <div className="hidden sm:block">
+                  <button
+                    className="absolute top-1/2 left-4 sm:left-[29px] -translate-y-1/2 p-2 bg-white/50 rounded-full hover:bg-white/80 transition-colors"
+                    onClick={() => handleNextImageClick("left")}
+                    aria-label="Previous image"
+                  >
+                    <Image
+                      src="/leftArrow1Purple.svg"
+                      height={32}
+                      width={25}
+                      alt="Previous"
+                    />
+                  </button>
+                  <button
+                    className="absolute top-1/2 right-4 sm:right-[29px] -translate-y-1/2 p-2 bg-white/50 rounded-full hover:bg-white/80 transition-colors"
+                    onClick={() => handleNextImageClick("right")}
+                    aria-label="Next image"
+                  >
+                    <Image
+                      src="/rightArrow1Purple.svg"
+                      height={32}
+                      width={25}
+                      alt="Next"
+                    />
+                  </button>
+                </div>
+              )}
+
+              {/* Mobile Dot Indicators */}
+              {currentImageUrls.length > 1 && (
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 sm:hidden">
+                  {currentImageUrls.map((_, index) => (
+                    <button
+                      key={index}
+                      className={`w-2 h-2 rounded-full transition-colors ${
+                        imageId === index ? "bg-primaryMain" : "bg-gray-300"
+                      }`}
+                      onClick={() => handleImageChange(index)}
+                      aria-label={`Go to image ${index + 1}`}
+                    />
+                  ))}
+                </div>
+              )}
+            </>
+          )}
+        </div>
+
+        {/* Thumbnail Grid */}
+        {currentImageUrls.length > 1 && (
+          <div className="mt-4 sm:mt-5 w-full grid grid-cols-4 gap-2 sm:gap-x-[6px] xl:grid-cols-2 xl:gap-x-4 xl:gap-y-6">
+            {!loading &&
+              currentImageUrls.map((url, index) => (
+                <div
+                  key={index}
+                  className="relative aspect-square sm:h-[76px] xl:h-[264px] cursor-pointer"
+                  onClick={() => handleImageChange(index)}
                 >
                   <Image
-                    src="/leftArrow1Purple.svg"
-                    height={32}
-                    width={25}
-                    alt="Previous"
+                    className={`object-cover w-full h-full rounded-lg sm:rounded-[22px] transition-all ${
+                      imageId === index
+                        ? "border-2 border-primaryMain ring-2 ring-primaryMain ring-opacity-50"
+                        : "hover:opacity-80"
+                    }`}
+                    src={url || fallbackImageUrl}
+                    alt={`${productData.productName}-${index + 1}`}
+                    width={86}
+                    height={76}
+                    unoptimized={true}
                   />
-                </button>
-                <button
-                  className="absolute top-1/2 right-[29px] transform -translate-y-1/2 cursor-pointer"
-                  onClick={() => handleNextImageClick("right")} // Right arrow click
-                >
-                  <Image
-                    src="/rightArrow1Purple.svg"
-                    height={32}
-                    width={25}
-                    alt="Next"
-                  />
-                </button>
-              </>
-            )}
-          </>
+                </div>
+              ))}
+          </div>
         )}
       </div>
-
-      {currentImageUrls.length > 1 && (
-        <div className="mt-[20px] w-full grid grid-cols-4 xl:grid-cols-2 gap-x-[6px] xl:gap-x-4 xl:gap-y-[24px] justify-center items-center">
-          {!loading &&
-            currentImageUrls.map((url, index) => (
-              <div
-                key={index}
-                className="w-full h-[76px] xl:h-[264px] cursor-pointer"
-                onClick={() => setImageId(index)} // Update main image to the clicked thumbnail
-              >
-                <Image
-                  className={`object-cover w-full h-full rounded-[22px] ${
-                    imageId === index ? "border-2 border-primaryMain" : ""
-                  }`}
-                  src={url || fallbackImageUrl} // Always use the URL from the original array
-                  alt={`${productData.productName}-${index + 1}`}
-                  width={86}
-                  height={76}
-                  unoptimized={true}
-                />
-              </div>
-            ))}
-        </div>
-      )}
-    </div>
-  );
+    );
+  };
 
   const show3dModel = () => {
     setShowModel(true);
@@ -364,7 +399,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
       </Head>
       <div className="pt-[13px] sm:pt-[29px] xl:pt-[96.5px] pb-[221px] flex flex-col justify-center items-center">
         {/* Navigation */}
-        <div className="w-full text-[17px] leading-[30px] text-[#5B5B5B] font-normal flex justify-center items-center sm:justify-normal sm:items-start">
+        <div className="w-full text-[17px] leading-[30px] text-[#5B5B5B] font-normal flex justify-center items-center sm:justify-normal sm:items-start mt-[63px]">
           <p className="flex gap-[19px]">
             <Link href="/">
               <span>Home</span>

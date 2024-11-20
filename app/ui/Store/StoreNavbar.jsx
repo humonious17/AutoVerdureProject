@@ -13,7 +13,7 @@ const StoreNavbar = () => {
   }
 
   return (
-    <nav className="w-full bg-white shadow-sm">
+    <nav className="w-full bg-[#FFFBF7] shadow-sm">
       {/* Mobile View */}
       <div className="block lg:hidden">
         <div className="max-w-7xl mx-auto">

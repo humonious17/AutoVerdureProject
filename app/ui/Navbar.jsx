@@ -98,7 +98,7 @@ const Navbar = () => {
     fixed 
     top-0 
     transition-all 
-    duration-150 
+    duration-50 
     ease-in-out 
     ${
       isScrolled
@@ -210,7 +210,7 @@ const Navbar = () => {
           pt-[100px] 
           px-6 
           transition-all 
-          duration-300 
+          duration-150 
           ease-in-out
           ${
             isMobileMenuOpen

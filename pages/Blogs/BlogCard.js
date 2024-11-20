@@ -13,7 +13,7 @@ const BlogCard = ({ blog }) => {
     <Link href={`/Blogs/${blog.id}`} className="block mb-6">
       <div className="object-cover w-full rounded-3xl overflow-hidden">
         {/* Image Section for Other Blogs */}
-        <div className="w-full h-[280px] md:h-[194.158px] xl:h-[240px]">
+        <div className="w-full h-[200px] md:h-[194.158px] xl:h-[240px]">
           {blog.imageUrl && (
             <Image
               className="object-cover w-full h-full rounded-3xl"

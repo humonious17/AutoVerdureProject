@@ -2,84 +2,126 @@
 
 import Image from "next/image";
 import React from "react";
-import AboutUsCard from "../ui/About Us/AboutUsCard";
+import AboutUsCard from "../ui/AboutUs/AboutUsCard";
 import { aboutUs } from "../constant/data";
-import FAQ from "../ui/About Us/FAQ";
+import FAQ from "../ui/AboutUs/FAQ";
 import Link from "next/link";
 import { CldVideoPlayer } from "next-cloudinary";
 import "next-cloudinary/dist/cld-video-player.css";
-
+import { useState } from "react";
+  
 const AboutUs = () => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const toggleReadMore = () => {
+    setIsExpanded((prev) => !prev);
+  };
   return (
-    <div className="w-full px-4 pt-[44px] pb-[124px] md:px-[28px] md:py-[116px] xl:px-[119.99px] xl:pt-[114px] xl:pb-[151px] 2xl:px-[200px] 2xl:py-[116px] bg-[#FFFCF8] flex flex-col justify-center items-center">
-      {/* Title */}
-      <div className="max-w-[219px] md:max-w-[382px] w-full relative">
-        <div>
-          <Image
-            className="object-contain absolute -top-[10.5px] -left-[70px] md:top-6  md:-left-[120px] xl:-left-[247px] -rotate-45 md:rotate-45 transform scale-x-100 md:-scale-x-100"
-            src="/leaf.png"
-            alt="leaf"
-            unoptimized={true}
-            width={58}
-            height={41}
-          />
+    <div className="w-full px-4 pt-[80px] pb-[124px] md:px-[28px] md:py-[116px] xl:px-[119.99px] xl:pt-[114px] xl:pb-[151px] 2xl:px-[200px] 2xl:py-[116px] bg-[#FFFCF8] flex flex-col justify-center items-center">
+    {/* Title */}
+    <div className="max-w-[219px] md:max-w-[382px] w-full relative  "> 
+      <div>
+        <Image
+          className="object-contain absolute -top-[10.5px] -left-[70px] md:top-6 md:-left-[120px] xl:-left-[247px] -rotate-45 md:rotate-45 transform scale-x-100 md:-scale-x-100"
+          src="/leaf.png"
+          alt="leaf"
+          unoptimized={true}
+          width={58}
+          height={41}
+        />
+      </div>
+      <div className="flex flex-col justify-center items-center">
+        <div className="text-[40px]  md:text-[70px] leading-[48px] md:leading-[80px] -tracking-[1px] md:-tracking-[1.75px] font-normal text-primaryGrayscale">
+          <p>About Us</p>
         </div>
-        <div className="flex flex-col justify-center items-center">
-          <div className="text-[40px] md:text-[70px] leading-[48px] md:leading-[80px] -tracking-[1px] md:-tracking-[1.75px] font-normal text-primaryGrayscale">
-            <p>About Us</p>
-          </div>
-          <div className="mt-3 md:mt-6 text-base font-medium">
-            <p className="text-secondaryGrayscale">
-              <Link href="/">
-                <span className="text-primaryMain">Home</span>
-              </Link>{" "}
-              / About Us
-            </p>
-          </div>
-        </div>
-        <div>
-          <Image
-            className="object-contain absolute top-[38.5px] -right-[70px] md:-top-[10px] md:-right-[118px] xl:top-[41.5px] xl:-right-[222px] rotate-45 md:-rotate-45"
-            src="/leaf.png"
-            alt="leaf"
-            width={58}
-            height={41}
-          />
+        <div className="mt-3 md:mt-6 text-base font-medium">
+          <p className="text-secondaryGrayscale ">
+            <Link href="/">
+              <span className="text-primaryMain">Home</span>
+            </Link>{" "}
+            / About Us
+          </p>
         </div>
       </div>
+      <div>
+        <Image
+          className="object-contain absolute top-[38.5px] -right-[70px] md:-top-[10px] md:-right-[118px] xl:top-[41.5px] xl:-right-[222px] rotate-45 md:-rotate-45"
+          src="/leaf.png"
+          alt="leaf"
+          width={58}
+          height={41}
+        />
+      </div>
+    </div>
+  
+  
 
       {/* Horizontal Line */}
       <div className="mt-16 md:mt-[72px] xl:mt-[72.5px] w-full border-[1px] border-black border-opacity-[11%]" />
-
-      {/* About Us Content */}
       <div className="mt-[45px] md:mt-[100.5px] w-full">
-        <div className="xl:pr-[156px] xl:flex">
-          <div className="w-full md:px-[32px] xl:px-0">
-            <div className="w-full md:text-center xl:text-left">
-              <p className="text-[50px] leading-[60px] -tracking-[1.25px] font-normal text-primaryGrayscale">
-                Experience the perfect <br /> harmony{" "}
-              </p>
-              <p className="mt-5 pr-[27px] md:px-0 text-sm font-normal leading-6 text-[#3D3D3D]">
-                Welcome to Auto Verdure, your gateway to a thriving indoor
-                garden! We&apos;re thrilled to introduce you to our exceptional line
-                of self-watering pots, based on the ingenious principles of
-                hydroponics. Here, you&apos;ll discover the perfect harmony of
-                nature&apos;s warmth within the confines of your home.
-              </p>
-              <p className="mt-5 pr-[27px] md:px-0 text-sm font-normal leading-6 text-[#3D3D3D]">
-                Perfection has no end, but we are dedicated to a long-term
-                commitment in India to work for continuous improvement and
-                innovation for our clientele. We will be glad if you choose
-                Autoverdure and promise you a captivating experience.
-              </p>
-              <p className="mt-6 pr-[27px] md:px-0 text-sm font-normal leading-6 text-[#3D3D3D]">
-                Our knowledgeable staff are dedicated to helping our customers
-                find the perfect plant for their needs, whether it&apos;s a
-                low-maintenance succulent or a lush indoor tree. We also offer a
-                range of plant care products and accessories to help our
-                customers keep their plants healthy and thriving.
-              </p>
-            </div>
+      <div className="xl:pr-[156px] xl:flex">
+        <div className="w-full md:px-[32px] xl:px-0">
+          <div className="w-full md:text-center xl:text-left">
+            <p className="text-[50px] leading-[60px] -tracking-[1.25px] font-normal text-primaryGrayscale">
+              Experience the perfect <br /> harmony{" "}
+            </p>
+            <p className="mt-5 pr-[27px] md:px-0 text-sm font-normal leading-6 text-[#3D3D3D]">
+              Welcome to Auto Verdure, your gateway to a thriving indoor
+              garden! We&apos;re thrilled to introduce you to our exceptional line
+              of self-watering pots, based on the ingenious principles of
+              hydroponics. Here, you&apos;ll discover the perfect harmony of
+              nature&apos;s warmth within the confines of your home.
+            </p>
+            {/* "Read More" section for mobile */}
+            {!isExpanded && (
+              <button
+                className="mt-3 text-primaryMain md:hidden"
+                onClick={toggleReadMore}
+              >
+               <div className="mt-3 text-base text-black font-medium flex items-center gap-2">
+            <p>Read More</p>
+            <Image src="/rightArrow.svg" alt="Read More Arrow" width={20} height={20} />
+          </div>
+              </button>
+            )}
+            {isExpanded && (
+              <>
+                <p className="mt-5 pr-[27px] md:px-0 text-sm font-normal leading-6 text-[#3D3D3D]">
+                  Perfection has no end, but we are dedicated to a long-term
+                  commitment in India to work for continuous improvement and
+                  innovation for our clientele. We will be glad if you choose
+                  Autoverdure and promise you a captivating experience.
+                </p>
+                <p className="mt-6 pr-[27px] md:px-0 text-sm font-normal leading-6 text-[#3D3D3D]">
+                  Our knowledgeable staff are dedicated to helping our customers
+                  find the perfect plant for their needs, whether it&apos;s a
+                  low-maintenance succulent or a lush indoor tree. We also offer a
+                  range of plant care products and accessories to help our
+                  customers keep their plants healthy and thriving.
+                </p>
+                <button
+                  className="mt-3 text-black md:hidden"
+                  onClick={toggleReadMore}
+                >
+                  Show Less
+                </button>
+              </>
+            )}
+            {/* Show 2nd and 3rd paragraph by default for non-mobile */}
+            <p className="hidden md:block mt-5 pr-[27px] md:px-0 text-sm font-normal leading-6 text-[#3D3D3D]">
+              Perfection has no end, but we are dedicated to a long-term
+              commitment in India to work for continuous improvement and
+              innovation for our clientele. We will be glad if you choose
+              Autoverdure and promise you a captivating experience.
+            </p>
+            <p className="hidden md:block mt-6 pr-[27px] md:px-0 text-sm font-normal leading-6 text-[#3D3D3D]">
+              Our knowledgeable staff are dedicated to helping our customers
+              find the perfect plant for their needs, whether it&apos;s a
+              low-maintenance succulent or a lush indoor tree. We also offer a
+              range of plant care products and accessories to help our
+              customers keep their plants healthy and thriving.
+            </p>
+          </div>
 
             <div className="mt-[37px] w-full">
               <div className="w-full flex gap-6 justify-center xl:justify-start items-center">
@@ -126,8 +168,8 @@ const AboutUs = () => {
           </div>
           <div className="mt-[63px] md:mt-[128.5px] xl:mt-0 w-full flex flex-col gap-[17.66px] md:gap-[21px] justify-center items-center overflow-hidden xl:overflow-visible">
   {/* First Section - Image */}
-  <div className="w-full h-[209.376px] md:h-[249px] flex relative mb-[20px] sm:mb-[30px] rounded-2xl overflow-hidden">
-    <div className="object-contain w-[375px] h-[249px] md:w-[379px] md:h-[249px] md:ml-[15%] lg:ml-[25%] rounded-2xl overflow-hidden">
+  <div className="w-full h-[209.376px] md:h-[249px] flex relative mb-[15px] sm:mb-[30px] rounded-2xl overflow-hidden">
+    <div className="object-contain w-[385px] h-[210px] md:w-[379px] md:h-[249px] md:ml-[15%] lg:ml-[25%] rounded-2xl">
       <Image
         className="rounded-2xl w-full h-full object-cover"
         src="/DSC04361.JPG"
@@ -154,12 +196,12 @@ const AboutUs = () => {
       width={58}
       height={41}
     />
-    <div className="w-[375px] h-[249px] md:w-[279px] lg:w-[400px] xl:w-[600px] md:h-[249px] ml-[136.22px] md:ml-[35%] lg:ml-[45%] rounded-2xl overflow-hidden">
+    <div className="w-[315px] h-[210px] md:w-[279px] lg:w-[400px] xl:w-[600px] md:h-[249px] ml-[136.22px] md:ml-[35%] lg:ml-[45%] rounded-2xl overflow-hidden">
       <video
         className="w-full h-full rounded-2xl object-cover"
         src="/signin.mp4"
         alt="video"
-        width={375}
+        width={315}
         height={249}
         loop
         autoPlay
@@ -207,13 +249,13 @@ const AboutUs = () => {
 
             <div className="w-full flex md:hidden gap-[21.47px] justify-center">
               <Image className="rounded-2xl"
-                src="/aboutUSImg5.png"
+                src="/aboutImg5.jpg"
                 alt="img"
                 width={191.765}
                 height={183.395}
               />
-              <Image
-                src="/aboutImg4.png"
+              <Image className="rounded-2xl"
+                src="/cas.jpg"
                 alt="img"
                 width={191.765}
                 height={183.395}

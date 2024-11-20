@@ -96,7 +96,7 @@ const Accessory = (props) => {
           onShowCountChange={handleShowCountChange}
           sortBy={sortBy}
           showCount={showCount}
-          setIsFilterOpen={setIsFilterOpen}  
+          setIsFilterOpen={setIsFilterOpen}
         />
       </div>
 
@@ -108,36 +108,35 @@ const Accessory = (props) => {
       >
         <TopSegment />
 
-         
-       {/* Sorting and Filtering Section */}
-<div className="sticky top-0 z-30 bg-gray-50 w-full">
-  <div className="px-4 py-6 md:px-8">
-    <div className="flex justify-between items-center">
-      {/* Filter Toggle Button with Grid/List Icons */}
-      <div className="flex items-center gap-4">
-        <button
-          onClick={() => setIsFilterOpen(!isFilterOpen)}
-          className="flex items-center gap-2 px-4 py-2 bg-white rounded-lg border"
-        >
-          <TuneIcon />
-          Filters
-        </button>
-        {/* Grid and List View Icons */}
-        <Image
-          className="object-contain cursor-pointer"
-          src="/gridRound.svg"
-          alt="gridRound"
-          width={28}
-          height={28}
-        />
-        <Image
-          className="object-contain cursor-pointer"
-          src="/list.svg"
-          alt="list"
-          width={24}
-          height={24}
-        />
-      </div>
+        {/* Sorting and Filtering Section */}
+        <div className="sticky top-0 z-30 bg-gray-50 w-full">
+          <div className="px-4 py-6 md:px-8">
+            <div className="flex justify-between items-center">
+              {/* Filter Toggle Button with Grid/List Icons */}
+              <div className="flex items-center gap-4">
+                <button
+                  onClick={() => setIsFilterOpen(!isFilterOpen)}
+                  className="flex items-center gap-2 px-4 py-2 bg-white rounded-lg border"
+                >
+                  <TuneIcon />
+                  Filters
+                </button>
+                {/* Grid and List View Icons */}
+                <Image
+                  className="object-contain cursor-pointer"
+                  src="/gridRound.svg"
+                  alt="gridRound"
+                  width={28}
+                  height={28}
+                />
+                <Image
+                  className="object-contain cursor-pointer"
+                  src="/list.svg"
+                  alt="list"
+                  width={24}
+                  height={24}
+                />
+              </div>
 
               {/* Sort and Show Count Controls */}
               <div className="flex items-center gap-4">
@@ -167,10 +166,10 @@ const Accessory = (props) => {
         {/* Products Grid */}
         <div className="mt-10 mb-20 w-full flex flex-col justify-center items-center">
           <div className="max-w-[1440px] w-full grid grid-cols-2 xl:grid-cols-3 gap-12">
-          {filteredProducts.map((product, index) => (
-            <Link key={index} href={`/store/accessory/${product.productId}`}>
-             <ProductCard product={product} />
-             </Link>
+            {filteredProducts.map((product, index) => (
+              <Link key={index} href={`/store/accessory/${product.productId}`}>
+                <ProductCard product={product} />
+              </Link>
             ))}
 
             {/* {validProducts.length === 0 && (

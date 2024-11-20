@@ -9,15 +9,19 @@ export default function Blogs({ title, description }) {
   const [windowWidth, setWindowWidth] = useState(0);
   const [touchStart, setTouchStart] = useState(null);
   const [touchEnd, setTouchEnd] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
+        setIsLoading(true);
         const res = await fetch("/api/addblogs?limit=6");
         const data = await res.json();
         setBlogs(data.slice(0, 6));
       } catch (error) {
         console.error("Error fetching blogs:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchBlogs();
@@ -38,7 +42,6 @@ export default function Blogs({ title, description }) {
     };
   }, []);
 
-  // Handle touch events for mobile swipe
   const handleTouchStart = (e) => {
     setTouchStart(e.touches[0].clientX);
   };
@@ -67,12 +70,10 @@ export default function Blogs({ title, description }) {
 
   const handleNext = () => {
     if (windowWidth >= 1024) {
-      // Desktop behavior - move 3 at a time
       if (currentIndex + 3 < blogs.length) {
         setCurrentIndex(currentIndex + 3);
       }
     } else {
-      // Mobile behavior - move 1 at a time
       if (currentIndex < blogs.length - 1) {
         setCurrentIndex(currentIndex + 1);
       }
@@ -81,67 +82,150 @@ export default function Blogs({ title, description }) {
 
   const handlePrevious = () => {
     if (windowWidth >= 1024) {
-      // Desktop behavior - move 3 at a time
       if (currentIndex - 3 >= 0) {
         setCurrentIndex(currentIndex - 3);
       }
     } else {
-      // Mobile behavior - move 1 at a time
       if (currentIndex > 0) {
         setCurrentIndex(currentIndex - 1);
       }
     }
   };
 
-  // Determine display mode based on screen size
   const isMobile = windowWidth < 1024;
-  const blogsToShow = isMobile ? 1 : 3;
+
+  if (isLoading) {
+    return (
+      <div className="container mx-auto p-4 md:p-12 mt-10 text-center">
+        <h2 className="text-4xl font-medium mb-8">{title}</h2>
+        <p className="text-gray-600 max-w-4xl mx-auto mb-10">{description}</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {[1, 2, 3].map((placeholder) => (
+            <div key={placeholder} className="animate-pulse">
+              <div className="bg-gray-200 h-48 rounded-lg mb-4"></div>
+              <div className="bg-gray-200 h-4 rounded w-3/4 mb-2"></div>
+              <div className="bg-gray-200 h-4 rounded w-1/2"></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto p-4 md:p-12 mt-10 text-center">
       <h2 className="text-4xl font-medium mb-8">{title}</h2>
       <p className="text-gray-600 max-w-4xl mx-auto mb-10">{description}</p>
 
-      {/* Blog Cards Container */}
-      <div className="relative overflow-hidden">
-        <div
-          className={`${
-            isMobile
-              ? "flex transition-transform duration-300 ease-in-out"
-              : "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-          }`}
-          style={
-            isMobile
-              ? {
-                  transform: `translateX(-${currentIndex * 100}%)`,
+      <div className="relative group">
+        {/* Navigation Arrows - Positioned absolutely */}
+        {blogs.length > 0 && (
+          <>
+            <button
+              onClick={handlePrevious}
+              className={`
+                absolute left-0 top-1/2 -translate-y-1/2 z-10 
+                opacity-0 group-hover:opacity-100 
+                transition-all duration-300 ease-in-out
+                bg-gray-100 bg-opacity-50 hover:bg-opacity-80 
+                p-2 rounded-full
+                ${currentIndex === 0 ? "cursor-not-allowed" : "cursor-pointer"}
+              `}
+              disabled={currentIndex === 0}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="text-gray-700 w-6 h-6"
+              >
+                <path d="M15 18l-6-6 6-6" />
+              </svg>
+            </button>
+            <button
+              onClick={handleNext}
+              className={`
+                absolute right-0 top-1/2 -translate-y-1/2 z-10 
+                opacity-0 group-hover:opacity-100 
+                transition-all duration-300 ease-in-out
+                bg-gray-100 bg-opacity-50 hover:bg-opacity-80 
+                p-2 rounded-full
+                ${
+                  (isMobile && currentIndex === blogs.length - 1) ||
+                  (!isMobile && currentIndex + 3 >= blogs.length)
+                    ? "cursor-not-allowed"
+                    : "cursor-pointer"
                 }
-              : {}
-          }
-          onTouchStart={isMobile ? handleTouchStart : undefined}
-          onTouchMove={isMobile ? handleTouchMove : undefined}
-          onTouchEnd={isMobile ? handleTouchEnd : undefined}
-        >
-          {blogs.map((blog, index) => (
-            <div
-              key={blog.id}
-              className={`${
-                isMobile ? "w-full flex-shrink-0 px-4" : "flex-none"
-              }`}
-              style={
-                isMobile
-                  ? {
-                      display: index === currentIndex ? "block" : "block",
-                    }
-                  : {}
+              `}
+              disabled={
+                (isMobile && currentIndex === blogs.length - 1) ||
+                (!isMobile && currentIndex + 3 >= blogs.length)
               }
             >
-              <BlogCard blog={blog} />
-            </div>
-          ))}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="text-gray-700 w-6 h-6"
+              >
+                <path d="M9 18l6-6-6-6" />
+              </svg>
+            </button>
+          </>
+        )}
+
+        {/* Blog Cards Container */}
+        <div className="overflow-hidden">
+          <div
+            className={`${
+              isMobile
+                ? "flex transition-transform duration-300 ease-in-out w-full"
+                : "grid grid-cols-3 gap-8"
+            }`}
+            style={
+              isMobile
+                ? {
+                    transform: `translateX(-${currentIndex * 100}%)`,
+                  }
+                : {}
+            }
+            onTouchStart={isMobile ? handleTouchStart : undefined}
+            onTouchMove={isMobile ? handleTouchMove : undefined}
+            onTouchEnd={isMobile ? handleTouchEnd : undefined}
+          >
+            {isMobile
+              ? // Mobile Layout
+                blogs.map((blog) => (
+                  <div
+                    key={blog?.id || Math.random()}
+                    className="w-full flex-shrink-0"
+                  >
+                    <BlogCard blog={blog} />
+                  </div>
+                ))
+              : // Desktop Layout - Show only 3 items
+                blogs.slice(currentIndex, currentIndex + 3).map((blog) => (
+                  <div key={blog?.id || Math.random()}>
+                    <BlogCard blog={blog} />
+                  </div>
+                ))}
+          </div>
         </div>
 
         {/* Navigation Dots for Mobile */}
-        {isMobile && (
+        {isMobile && blogs.length > 0 && (
           <div className="flex justify-center gap-2 mt-6">
             {blogs.map((_, index) => (
               <button
@@ -154,33 +238,6 @@ export default function Blogs({ title, description }) {
             ))}
           </div>
         )}
-
-        {/* Navigation Arrows */}
-        <div className="mt-8 w-full flex gap-10 justify-center items-center">
-          <Image
-            src="/leftArrow1.svg"
-            alt="Scroll left"
-            width={13}
-            height={26}
-            onClick={handlePrevious}
-            className={`cursor-pointer ${
-              currentIndex === 0 ? "opacity-50" : ""
-            }`}
-          />
-          <Image
-            src="/rightArrow1.svg"
-            alt="Scroll right"
-            width={13}
-            height={26}
-            onClick={handleNext}
-            className={`cursor-pointer ${
-              (isMobile && currentIndex === blogs.length - 1) ||
-              (!isMobile && currentIndex + 3 >= blogs.length)
-                ? "opacity-50"
-                : ""
-            }`}
-          />
-        </div>
       </div>
 
       {/* Explore More Button */}

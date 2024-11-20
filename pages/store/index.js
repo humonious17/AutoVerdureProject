@@ -12,6 +12,7 @@ const Store = ({ initialProducts }) => {
   const [sortBy, setSortBy] = useState("default");
   const [showCount, setShowCount] = useState(16);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [hoveredProductId, setHoveredProductId] = useState(null);
 
   const handleFilterChange = (filters) => {
     let filtered = [...initialProducts];
@@ -51,10 +52,10 @@ const Store = ({ initialProducts }) => {
   );
 
   return (
-    <div className="w-full bg-[#FFFCF8] min-h-screen">
+    <div className="w-full bg-[#FFFCF8] min-h-screen relative">
       {/* Filter Sidebar - Full screen on mobile */}
       <div
-        className={`fixed top-0 left-0 h-screen bg-white transform transition-transform duration-300 ease-in-out z-40 w-full sm:w-[300px] ${
+        className={`fixed top-0 left-0 h-screen bg-white transform transition-transform duration-300 ease-in-out z-50 w-full sm:w-[300px] ${
           isFilterOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -71,23 +72,30 @@ const Store = ({ initialProducts }) => {
         />
       </div>
 
+      {isFilterOpen && (
+        <div
+          onClick={() => setIsFilterOpen(false)}
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 sm:hidden"
+        />
+      )}
+
       {/* Main Content */}
       <div
-        className={`flex flex-col transition-all duration-300 ease-in-out ${
+        className={`flex flex-col transition-all duration-300 ease-in-out relative z-10 ${
           isFilterOpen ? "sm:ml-[300px]" : "ml-0"
         }`}
       >
         <TopSegment />
 
-        {/* Sticky Header with Controls */}
-        <div className="sticky top-0 z-30 w-full bg-[#9A5CF50F]">
+        {/* Header with Controls */}
+        <div className="w-full bg-[#9A5CF50F] mt-5">
           <div className="px-3 py-4 sm:px-8 sm:py-6">
             <div className="flex flex-col sm:flex-row sm:justify-between gap-4 sm:items-center">
               {/* Filter Toggle and View Options */}
               <div className="flex items-center justify-between sm:justify-start gap-4">
                 <button
                   onClick={() => setIsFilterOpen(!isFilterOpen)}
-                  className="flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 bg-white rounded-lg border text-sm sm:text-base"
+                  className="flex items-center gap-2 xl:ml-8 px-3 py-1.5 sm:px-4 sm:py-2 bg-white rounded-lg border text-sm sm:text-base"
                 >
                   <TuneIcon />
                   Filters
@@ -108,6 +116,10 @@ const Store = ({ initialProducts }) => {
                     height={24}
                   />
                 </div>
+                <span className="text-sm text-gray-600">
+                  Showing {validProducts.slice(0, showCount).length} of{" "}
+                  {validProducts.length} products
+                </span>
               </div>
 
               {/* Sort and Show Count Controls */}
@@ -140,7 +152,7 @@ const Store = ({ initialProducts }) => {
           <div
             className={`grid gap-4 sm:gap-12 w-full max-w-[1440px] ${
               isFilterOpen
-                ? "grid-cols-2 sm:grid-cols-2 md:grid-cols-3" // Keep 2 columns on mobile even when filter is open
+                ? "grid-cols-2 sm:grid-cols-2 md:grid-cols-3"
                 : "grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3"
             }`}
           >
@@ -148,9 +160,22 @@ const Store = ({ initialProducts }) => {
               <Link
                 key={product.productId || index}
                 href={`/store/${product.category}/${product.productId}`}
-                className="flex justify-center"
+                className="flex justify-center relative"
+                onMouseEnter={() => setHoveredProductId(product.productId)}
+                onMouseLeave={() => setHoveredProductId(null)}
               >
-                <ProductCard product={product} />
+                <div
+                  className={`w-full transition-all duration-300 ease-in-out ${
+                    hoveredProductId === product.productId
+                      ? "scale-105 z-20 shadow-xl"
+                      : "scale-100 z-10"
+                  }`}
+                >
+                  <ProductCard
+                    product={product}
+                    isExpanded={hoveredProductId === product.productId}
+                  />
+                </div>
               </Link>
             ))}
           </div>

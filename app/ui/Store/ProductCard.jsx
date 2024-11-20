@@ -67,16 +67,12 @@ const ProductCard = ({ product, viewType = "grid" }) => {
           {/* Product Icons */}
           {(plants || flowers || planters || accessory) && (
             <div
-              className={`w-fit flex 
-              ${
-                isListView
-                  ? "flex-row gap-[6px] sm:gap-[12px]"
-                  : "flex-row sm:flex-col gap-[6px] sm:gap-[12px]"
-              }
-              absolute top-[10px] right-[10px] sm:top-[21.18px] sm:right-[29px]`}
+              className={`w-fit flex flex-wrap gap-[6px] sm:gap-[12px] 
+      ${isListView ? "flex-row sm:flex-col" : "flex-row sm:flex-col"}
+      absolute top-[10px] right-[10px] sm:top-[21.18px] sm:right-[29px]`}
             >
               {product.petFriendly && (
-                <div className="w-[32px] h-[32px] sm:w-[52px] sm:h-[52px] p-[6px] sm:p-[10px] rounded-xl sm:rounded-2xl bg-[#FFFFFF]">
+                <div className="w-[28px] h-[28px] sm:w-[52px] sm:h-[52px] p-[4px] sm:p-[10px] rounded-xl sm:rounded-2xl bg-[#FFFFFF]">
                   <Image
                     src="/veterinary.png"
                     alt="veterinary"
@@ -87,7 +83,7 @@ const ProductCard = ({ product, viewType = "grid" }) => {
                 </div>
               )}
               {product.petUnfriendly && (
-                <div className="w-[32px] h-[32px] sm:w-[52px] sm:h-[52px] p-[6px] sm:p-[10px] rounded-xl sm:rounded-2xl bg-[#FFFFFF]">
+                <div className="w-[28px] h-[28px] sm:w-[52px] sm:h-[52px] p-[4px] sm:p-[10px] rounded-xl sm:rounded-2xl bg-[#FFFFFF]">
                   <Image
                     src="/noPets.png"
                     alt="noPets"
@@ -98,7 +94,7 @@ const ProductCard = ({ product, viewType = "grid" }) => {
                 </div>
               )}
               {product.lessLight && (
-                <div className="w-[32px] h-[32px] sm:w-[52px] sm:h-[52px] p-[6px] sm:p-[10px] rounded-xl sm:rounded-2xl bg-[#FFFFFF]">
+                <div className="w-[28px] h-[28px] sm:w-[52px] sm:h-[52px] p-[4px] sm:p-[10px] rounded-xl sm:rounded-2xl bg-[#FFFFFF]">
                   <Image
                     src="/noLight.png"
                     alt="noLight"
@@ -109,7 +105,7 @@ const ProductCard = ({ product, viewType = "grid" }) => {
                 </div>
               )}
               {product.moreLight && (
-                <div className="w-[32px] h-[32px] sm:w-[52px] sm:h-[52px] p-[6px] sm:p-[10px] rounded-xl sm:rounded-2xl bg-[#FFFFFF]">
+                <div className="w-[28px] h-[28px] sm:w-[52px] sm:h-[52px] p-[4px] sm:p-[10px] rounded-xl sm:rounded-2xl bg-[#FFFFFF]">
                   <Image
                     src="/brightness.png"
                     alt="brightness"

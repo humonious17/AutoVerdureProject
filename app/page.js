@@ -15,6 +15,8 @@ import React, { useState, useEffect } from "react";
 import Chatbot from "./ChatBot";
 import { useSwipeable } from "react-swipeable";
 import Power from "./ui/Home/Power"
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
 
 import Blogs from "@/pages/Blogs";
 
@@ -33,6 +35,155 @@ const Page = () => {
         }}
       >
         <p>It&apos;s a beautiful day!</p>
+      </div>
+    </div>
+  );
+};
+
+const ProductShowcase = () => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const products = [
+    {
+      name: "Zenpot",
+      price: "$349.99 USD",
+      image: "https://res.cloudinary.com/dguzhztdt/image/upload/v1729112257/Auto%20Verdure%20media%20%28website%29/Product%20Media/DSC04194_huxt74.jpg"
+    },
+    {
+      name: "Plant 1",
+      price: "$349.99 USD",
+      image: "https://res.cloudinary.com/dguzhztdt/image/upload/v1729112260/Auto%20Verdure%20media%20%28website%29/Product%20Media/DSC04179_kzpxk9.jpg"
+    },
+    {
+      name: "Plant 2",
+      price: "$149.99 USD",
+      image: "https://res.cloudinary.com/dguzhztdt/image/upload/v1729111922/Auto%20Verdure%20media%20%28website%29/Product%20Media/DSC04256_ovnhay.jpg"
+    },
+    {
+      name: "Plant 3",
+      price: "$49.99 USD",
+      image: "https://res.cloudinary.com/dguzhztdt/image/upload/v1729112038/Auto%20Verdure%20media%20%28website%29/Product%20Media/DSC04216_l3p7h3.jpg"
+    },
+    {
+      name: "Plant 4",
+      price: "$29.99 USD",
+      image: "https://res.cloudinary.com/dguzhztdt/image/upload/v1729111759/Auto%20Verdure%20media%20%28website%29/Product%20Media/DSC04291_ird64g.jpg"
+    }
+  ];
+
+  const nextSlide = () => {
+    setCurrentIndex((prev) => (prev + 1) % products.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentIndex((prev) => (prev - 1 + products.length) % products.length);
+  };
+
+  return (
+    <div className="mt-16 md:mt-36 xl:mt-56 max-w-[361px] md:max-w-[754px] xl:max-w-[1312px] w-full flex flex-col justify-center items-center">
+      <div className="w-full flex justify-between items-center">
+        <p className="text-2xl md:text-4xl xl:text-[38px] leading-[49.4px] font-normal text-[#0E0E0E]">
+          Loved by buyers
+        </p>
+        <div className="flex gap-2 xl:pb-3 xl:border-b xl:border-[#BBBBBB]">
+          <Link href="/store" passHref>
+            <p className="hidden xl:flex">Browse all products</p>
+          </Link>
+          <Image src="/rightArr.svg" alt="img" width={18} height={19} />
+        </div>
+      </div>
+
+      {/* Mobile Layout */}
+      <div className="xl:hidden w-full relative mt-8">
+        <div className="relative w-full h-[400px] rounded-[44px]">
+          <Image
+            className="object-cover rounded-[44px] w-full h-full"
+            src={products[currentIndex].image}
+            alt={products[currentIndex].name}
+            width={361}
+            height={400}
+          />
+          <div className="text-xs leading-4 tracking-wider uppercase text-[#333] rounded-[40px] px-4 py-3 absolute top-6 left-6 bg-white">
+            <p>In Stock</p>
+          </div>
+        </div>
+        
+        <div className="mt-6">
+          <p className="text-xl leading-6 text-[#000]">{products[currentIndex].name}</p>
+          <p className="mt-3 text-base leading-5 text-[#0E0E0E]">{products[currentIndex].price}</p>
+        </div>
+
+        <div className="absolute top-1/2 -translate-y-1/2 w-full flex justify-between px-4">
+          <button 
+            onClick={prevSlide}
+            className="bg-white rounded-full p-2 shadow-lg"
+          >
+            <ChevronLeft className="w-6 h-6" />
+          </button>
+          <button 
+            onClick={nextSlide}
+            className="bg-white rounded-full p-2 shadow-lg"
+          >
+            <ChevronRight className="w-6 h-6" />
+          </button>
+        </div>
+      </div>
+
+      {/* Desktop Layout (unchanged) */}
+      <div className="mt-6 hidden xl:flex w-full h-fit gap-10">
+        {/* Main large image container */}
+        <div className="rounded-[44px] flex-1 h-[796px]">
+          <div className="relative h-full w-full">
+            <div className="h-full w-full">
+              <Image
+                className="object-cover rounded-[44px] w-full h-full"
+                src={products[0].image}
+                alt={products[0].name}
+                width={636}
+                height={796}
+              />
+              <div className="mt-10">
+                <p className="text-[21px] leading-[25.2px] text-[#000]">
+                  {products[0].name}
+                </p>
+                <p className="mt-[13.96px] text-[17px] leading-5 text-[#0E0E0E]">
+                  {products[0].price}
+                </p>
+              </div>
+            </div>
+            <div className="text-[13px] leading-4 tracking-[0.56px] uppercase text-[#333] rounded-[40px] px-[14px] py-[13px] absolute top-6 left-6 bg-white">
+              <p>In Stock</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Grid for smaller images */}
+        <div className="grid grid-cols-2 gap-8">
+          {products.slice(1).map((product, index) => (
+            <div key={index} className="w-[298px] h-[315px] rounded-[44px]">
+              <div className="relative w-full h-full">
+                <Image
+                  className="object-cover rounded-[44px] w-full h-full"
+                  src={product.image}
+                  alt={product.name}
+                  width={298}
+                  height={315}
+                />
+                <div className="text-[13px] leading-4 tracking-[0.56px] uppercase text-[#333] rounded-[40px] px-[14px] py-[13px] absolute top-6 left-6 bg-white">
+                  <p>In Stock</p>
+                </div>
+              </div>
+              <div className="mt-10">
+                <p className="text-[21px] leading-[25.2px] text-[#000]">
+                  {product.name}
+                </p>
+                <p className="mt-[13.96px] text-[17px] leading-5 text-[#0E0E0E]">
+                  {product.price}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -708,155 +859,7 @@ export default function Home() {
         </div>
 
         {/* Loved By Buyers */}
-        <div className="mt-[65px] md:mt-[144px] xl:mt-[226px] max-w-[361px] md:max-w-[754px] xl:max-w-[1312px] w-full flex flex-col justify-center items-center">
-          <div className="w-full flex justify-between items-center">
-            <p className="text-2xl md:text-4xl xl:text-[38px] leading-[49.4px] xl:leading-[49.4px] font-normal text-[#0E0E0E]">
-              Loved by buyers
-            </p>
-            <div className="flex gap-[9.14px] xl:pb-3 xl:border-b-[1px] xl:border-[#BBBBBB]">
-              <Link href="/store" passHref>
-                <p className="hidden xl:flex">Browse all products</p>
-              </Link>
-              <Image src="/rightArr.svg" alt="img" width={18} height={19} />
-            </div>
-          </div>
-
-          <div className="xl:hidden w-full grid grid-cols-1 md:grid-cols-2 md:gap-x-[36.45px]">
-            <Loved />
-            <Loved />
-            <Loved />
-            <Loved />
-            <Loved />
-            <Loved />
-          </div>
-
-          <div className="mt-[26.94px] hidden xl:flex w-full h-fit gap-[39px]">
-            {/* Main large image container */}
-            <div className="rounded-[44px] flex-1 h-[796px]">
-              <div className="relative h-full w-full">
-                <div className="h-full w-full">
-                  <Image
-                    className="object-cover rounded-[44px] w-full h-full"
-                    src="https://res.cloudinary.com/dguzhztdt/image/upload/v1729112257/Auto%20Verdure%20media%20%28website%29/Product%20Media/DSC04194_huxt74.jpg"
-                    alt="Zenpot"
-                    width={636}
-                    height={796}
-                  />
-                  <div className="mt-10">
-                    <p className="text-[21px] leading-[25.2px] text-[#000]">
-                      Zenpot
-                    </p>
-                    <p className="mt-[13.96px] text-[17px] leading-5 text-[#0E0E0E]">
-                      $349.99 USD
-                    </p>
-                  </div>
-                </div>
-                <div className="text-[13px] leading-s4 tracking-[0.56px] uppercase text-[#333] rounded-[40px] px-[14px] py-[13px] absolute top-[24.05px] left-[24.5px] font-normal bg-white">
-                  <p>In Stock</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Grid for smaller images */}
-            <div className="grid grid-cols-2 gap-8">
-              {/* First Image */}
-              <div className="w-[298px] h-[315px] rounded-[44px]">
-                <div className="relative w-full h-full">
-                  <Image
-                    className="object-cover rounded-[44px] w-full h-full"
-                    src="https://res.cloudinary.com/dguzhztdt/image/upload/v1729112260/Auto%20Verdure%20media%20%28website%29/Product%20Media/DSC04179_kzpxk9.jpg"
-                    alt="Plant 2"
-                    width={298}
-                    height={315}
-                  />
-                  <div className="text-[13px] leading-4 tracking-[0.56px] uppercase text-[#333] rounded-[40px] px-[14px] py-[13px] absolute top-[24.05px] left-[24.5px] font-normal bg-white">
-                    <p>In Stock</p>
-                  </div>
-                </div>
-                <div className="mt-10">
-                  <p className="text-[21px] leading-[25.2px] text-[#000]">
-                    Plant 1
-                  </p>
-                  <p className="mt-[13.96px] text-[17px] leading-5 text-[#0E0E0E]">
-                    $349.99 USD
-                  </p>
-                </div>
-              </div>
-
-              {/* Second Image */}
-              <div className="w-[298px] h-[315px] rounded-[44px]">
-                <div className="relative w-full h-full">
-                  <Image
-                    className="object-cover rounded-[44px] w-full h-full"
-                    src="https://res.cloudinary.com/dguzhztdt/image/upload/v1729111922/Auto%20Verdure%20media%20%28website%29/Product%20Media/DSC04256_ovnhay.jpg"
-                    alt="Plant 3"
-                    width={298}
-                    height={315}
-                  />
-                  <div className="text-[13px] leading-4 tracking-[0.56px] uppercase text-[#333] rounded-[40px] px-[14px] py-[13px] absolute top-[24.05px] left-[24.5px] font-normal bg-white">
-                    <p>In Stock</p>
-                  </div>
-                </div>
-                <div className="mt-10">
-                  <p className="text-[21px] leading-[25.2px] text-[#000]">
-                    Plant 2
-                  </p>
-                  <p className="mt-[13.96px] text-[17px] leading-5 text-[#0E0E0E]">
-                    $149.99 USD
-                  </p>
-                </div>
-              </div>
-
-              {/* Third Image */}
-              <div className="w-[298px] h-[315px] rounded-[44px]">
-                <div className="relative w-full h-full">
-                  <Image
-                    className="object-cover rounded-[44px] w-full h-full mt-16"
-                    src="https://res.cloudinary.com/dguzhztdt/image/upload/v1729112038/Auto%20Verdure%20media%20%28website%29/Product%20Media/DSC04216_l3p7h3.jpg"
-                    alt="Plant 1"
-                    width={298}
-                    height={315}
-                  />
-                  <div className="text-[13px] leading-4 tracking-[0.56px] uppercase text-[#333] rounded-[40px] px-[14px] py-[13px] absolute top-[24.05px] left-[24.5px] font-normal bg-white">
-                    <p>In Stock</p>
-                  </div>
-                </div>
-                <div className="mt-10">
-                  <p className="text-[21px] leading-[25.2px] text-[#000]">
-                    Plant 3
-                  </p>
-                  <p className="mt-[13.96px] text-[17px] leading-5 text-[#0E0E0E]">
-                    $49.99 USD
-                  </p>
-                </div>
-              </div>
-
-              {/* Fourth Image */}
-              <div className="w-[298px] h-[315px] rounded-[44px]">
-                <div className="relative w-full h-full">
-                  <Image
-                    className="object-cover rounded-[44px] w-full h-full mt-16"
-                    src="https://res.cloudinary.com/dguzhztdt/image/upload/v1729111759/Auto%20Verdure%20media%20%28website%29/Product%20Media/DSC04291_ird64g.jpg"
-                    alt="Plant 4"
-                    width={298}
-                    height={315}
-                  />
-                  <div className="text-[13px] leading-4 tracking-[0.56px] uppercase text-[#333] rounded-[40px] px-[14px] py-[13px] absolute top-[24.05px] left-[24.5px] font-normal bg-white">
-                    <p>In Stock</p>
-                  </div>
-                </div>
-                <div className="mt-10">
-                  <p className="text-[21px] leading-[25.2px] text-[#000]">
-                    Plant 4
-                  </p>
-                  <p className="mt-[13.96px] text-[17px] leading-5 text-[#0E0E0E]">
-                    $29.99 USD
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <ProductShowcase />
 
         {/* Join THE AV Family  World's first customizable hydroponic pots. */}
         <div className="mt-[80px] md:mt-[160px] max-w-[361px] md:max-w-[754px] xl:max-w-[991px] w-full flex flex-col justify-center items-center mx-auto">

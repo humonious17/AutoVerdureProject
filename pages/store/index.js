@@ -4,14 +4,14 @@ import Link from "next/link";
 import TopSegment from "@/app/ui/Store/TopSegment";
 import StoreTools from "@/app/ui/Store/StoreTools";
 import findAllProducts from "/pages/api/products/findAllProducts";
-import { Sliders, Grid, List } from "lucide-react";
+import TuneIcon from "@mui/icons-material/Tune";
+import Image from "next/image";
 
 const Store = ({ initialProducts }) => {
   const [filteredProducts, setFilteredProducts] = useState(initialProducts);
   const [sortBy, setSortBy] = useState("default");
   const [showCount, setShowCount] = useState(16);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [viewMode, setViewMode] = useState("grid");
 
   const handleFilterChange = (filters) => {
     let filtered = [...initialProducts];
@@ -27,6 +27,7 @@ const Store = ({ initialProducts }) => {
   const handleSort = (sortType) => {
     setSortBy(sortType);
     let sorted = [...filteredProducts].filter(Boolean);
+
     switch (sortType) {
       case "name-asc":
         sorted.sort((a, b) => a.productName.localeCompare(b.productName));
@@ -37,11 +38,12 @@ const Store = ({ initialProducts }) => {
       default:
         sorted = [...initialProducts].filter(Boolean);
     }
+
     setFilteredProducts(sorted);
   };
 
   const handleShowCountChange = (count) => {
-    setShowCount(Number(count));
+    setShowCount(parseInt(count));
   };
 
   const validProducts = filteredProducts.filter(
@@ -49,10 +51,10 @@ const Store = ({ initialProducts }) => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Filter Sidebar */}
+    <div className="w-full bg-[#FFFCF8] min-h-screen">
+      {/* Filter Sidebar - Full screen on mobile */}
       <div
-        className={`fixed top-0 left-0 h-screen bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-40 w-full sm:w-80 ${
+        className={`fixed top-0 left-0 h-screen bg-white transform transition-transform duration-300 ease-in-out z-40 w-full sm:w-[300px] ${
           isFilterOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -69,63 +71,51 @@ const Store = ({ initialProducts }) => {
         />
       </div>
 
-      {/* Overlay when filter is open on mobile */}
-      {isFilterOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-30 sm:hidden"
-          onClick={() => setIsFilterOpen(false)}
-        />
-      )}
-
       {/* Main Content */}
       <div
-        className={`transition-all duration-300 ease-in-out ${
-          isFilterOpen ? "sm:ml-80" : "ml-0"
+        className={`flex flex-col transition-all duration-300 ease-in-out ${
+          isFilterOpen ? "sm:ml-[300px]" : "ml-0"
         }`}
       >
         <TopSegment />
 
-        {/* Controls Bar */}
-        <div className="sticky top-0 z-20 bg-[white] border-b border-gray-200 shadow-sm">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
-            <div className="flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between">
-              <div className="flex items-center gap-4">
+        {/* Sticky Header with Controls */}
+        <div className="sticky top-0 z-30 w-full bg-[#9A5CF50F]">
+          <div className="px-3 py-4 sm:px-8 sm:py-6">
+            <div className="flex flex-col sm:flex-row sm:justify-between gap-4 sm:items-center">
+              {/* Filter Toggle and View Options */}
+              <div className="flex items-center justify-between sm:justify-start gap-4">
                 <button
                   onClick={() => setIsFilterOpen(!isFilterOpen)}
-                  className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
+                  className="flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 bg-white rounded-lg border text-sm sm:text-base"
                 >
-                  <Sliders className="w-4 h-4" />
+                  <TuneIcon />
                   Filters
                 </button>
-                <div className="hidden sm:flex items-center gap-2 border rounded-lg p-1 bg-gray-50">
-                  <button
-                    onClick={() => setViewMode("grid")}
-                    className={`p-2 rounded ${
-                      viewMode === "grid"
-                        ? "bg-white shadow-sm"
-                        : "text-gray-500 hover:text-gray-700"
-                    }`}
-                  >
-                    <Grid className="w-4 h-4" />
-                  </button>
-                  <button
-                    onClick={() => setViewMode("list")}
-                    className={`p-2 rounded ${
-                      viewMode === "list"
-                        ? "bg-white shadow-sm"
-                        : "text-gray-500 hover:text-gray-700"
-                    }`}
-                  >
-                    <List className="w-4 h-4" />
-                  </button>
+                <div className="hidden sm:flex items-center gap-4">
+                  <Image
+                    className="object-contain cursor-pointer"
+                    src="/gridRound.svg"
+                    alt="gridRound"
+                    width={28}
+                    height={28}
+                  />
+                  <Image
+                    className="object-contain cursor-pointer"
+                    src="/list.svg"
+                    alt="list"
+                    width={24}
+                    height={24}
+                  />
                 </div>
               </div>
 
-              <div className="flex items-center gap-4">
+              {/* Sort and Show Count Controls */}
+              <div className="flex items-center justify-between sm:justify-end gap-3 sm:gap-4">
                 <select
                   value={sortBy}
                   onChange={(e) => handleSort(e.target.value)}
-                  className="px-4 py-2 text-sm border border-gray-300 rounded-lg bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className="py-1.5 px-2 sm:py-2 sm:px-3 text-sm border rounded-lg bg-white flex-1 sm:flex-none"
                 >
                   <option value="default">Sort by</option>
                   <option value="name-asc">Name (A-Z)</option>
@@ -134,7 +124,7 @@ const Store = ({ initialProducts }) => {
                 <select
                   value={showCount}
                   onChange={(e) => handleShowCountChange(e.target.value)}
-                  className="px-4 py-2 text-sm border border-gray-300 rounded-lg bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className="py-1.5 px-2 sm:py-2 sm:px-3 text-sm border rounded-lg bg-white flex-1 sm:flex-none"
                 >
                   <option value={16}>Show 16</option>
                   <option value={32}>Show 32</option>
@@ -146,23 +136,21 @@ const Store = ({ initialProducts }) => {
         </div>
 
         {/* Products Grid */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+        <div className="p-3 sm:p-8 flex justify-center">
           <div
-            className={`grid gap-6 sm:gap-8 ${
-              viewMode === "grid"
-                ? isFilterOpen
-                  ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
-                  : "grid-cols-2 sm:grid-cols-3 lg:grid-cols-3"
-                : "grid-cols-1"
+            className={`grid gap-4 sm:gap-12 w-full max-w-[1440px] ${
+              isFilterOpen
+                ? "grid-cols-2 sm:grid-cols-2 md:grid-cols-3" // Keep 2 columns on mobile even when filter is open
+                : "grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3"
             }`}
           >
             {validProducts.slice(0, showCount).map((product, index) => (
               <Link
                 key={product.productId || index}
                 href={`/store/${product.category}/${product.productId}`}
-                className="transform transition-transform hover:scale-[1.02]"
+                className="flex justify-center"
               >
-                <ProductCard product={product} viewMode={viewMode} />
+                <ProductCard product={product} />
               </Link>
             ))}
           </div>
@@ -192,10 +180,10 @@ export async function getServerSideProps() {
       },
     };
   } catch (error) {
-    console.error("Error fetching products:", error);
     return {
-      props: {
-        initialProducts: [],
+      redirect: {
+        destination: "/",
+        permanent: false,
       },
     };
   }

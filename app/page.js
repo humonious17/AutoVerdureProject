@@ -621,6 +621,7 @@ export default function Home() {
               className="w-full h-full rounded-[16px] object-cover "
               src="/home1.mp4"
               alt="video"
+              playsInline
               // width={604}
               // height={521}
               loop
@@ -650,6 +651,7 @@ export default function Home() {
                 alt="video"
                 // width={604}
                 // height={521}
+                playsInline
                 loop
                 autoPlay
                 muted
@@ -690,6 +692,7 @@ export default function Home() {
               className="w-full h-full rounded-[16px] object-cover "
               src="/home1.mp4"
               alt="video"
+              playsInline
               // width={604}
               // height={521}
               loop
@@ -706,6 +709,7 @@ export default function Home() {
               loop
               autoPlay
               muted
+              playsInline
             />
             <Image
               className="rounded-[16px] w-[171.765px] h-[183.395px] sm:w-[140px] sm:h-[150px]"
@@ -798,6 +802,7 @@ export default function Home() {
                 alt="video"
                 // width={604}
                 // height={521}
+                playsInline
                 loop
                 autoPlay
                 muted

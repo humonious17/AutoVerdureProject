@@ -1,70 +1,100 @@
-import { useState, useEffect } from 'react';
-import BlogCard from '@/pages/Blogs/BlogCard'; // Adjust the path as needed
-import Link from 'next/link';
-import Image from 'next/image';
+import { useState, useEffect } from "react";
+import BlogCard from "@/pages/Blogs/BlogCard";
+import Link from "next/link";
+import Image from "next/image";
 
 export default function Blogs({ title, description }) {
   const [blogs, setBlogs] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(0); // Track the current index for pagination
-  const [windowWidth, setWindowWidth] = useState(0); // Track window width for responsiveness
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [windowWidth, setWindowWidth] = useState(0);
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch the blogs on component mount
     const fetchBlogs = async () => {
       try {
-        const res = await fetch('/api/addblogs?limit=6'); // Fetch 6 blogs
+        setIsLoading(true);
+        const res = await fetch("/api/addblogs?limit=6");
         const data = await res.json();
-        setBlogs(data.slice(0, 6)); // Limit to 6 blogs
+        setBlogs(data.slice(0, 6));
       } catch (error) {
         console.error("Error fetching blogs:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchBlogs();
 
-    // Update window width on client side
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
     };
 
-    // Make sure to run this only in the client-side
-    if (typeof window !== 'undefined') {
-      // Initial window width check
+    if (typeof window !== "undefined") {
       handleResize();
-      // Attach resize event listener
-      window.addEventListener('resize', handleResize);
+      window.addEventListener("resize", handleResize);
     }
 
-    // Cleanup event listener on unmount
     return () => {
-      if (typeof window !== 'undefined') {
-        window.removeEventListener('resize', handleResize);
+      if (typeof window !== "undefined") {
+        window.removeEventListener("resize", handleResize);
       }
     };
   }, []);
 
-  // Show next 3 blogs for large screens
+  const handleTouchStart = (e) => {
+    setTouchStart(e.touches[0].clientX);
+  };
+
+  const handleTouchMove = (e) => {
+    setTouchEnd(e.touches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (isLeftSwipe && currentIndex < blogs.length - 1) {
+      handleNext();
+    }
+    if (isRightSwipe && currentIndex > 0) {
+      handlePrevious();
+    }
+
+    setTouchStart(null);
+    setTouchEnd(null);
+  };
+
   const handleNext = () => {
-    if (currentIndex + 3 < blogs.length) {
-      setCurrentIndex(currentIndex + 3);
+    if (windowWidth >= 1024) {
+      if (currentIndex + 3 < blogs.length) {
+        setCurrentIndex(currentIndex + 3);
+      }
+    } else {
+      if (currentIndex < blogs.length - 1) {
+        setCurrentIndex(currentIndex + 1);
+      }
     }
   };
 
-  // Show previous 3 blogs for large screens
   const handlePrevious = () => {
-    if (currentIndex - 3 >= 0) {
-      setCurrentIndex(currentIndex - 3);
+    if (windowWidth >= 1024) {
+      if (currentIndex - 3 >= 0) {
+        setCurrentIndex(currentIndex - 3);
+      }
+    } else {
+      if (currentIndex > 0) {
+        setCurrentIndex(currentIndex - 1);
+      }
     }
   };
 
-  // Determine the number of blogs per row based on the window width
-  let blogsPerRow = 6; // Default for small screens
-  if (windowWidth >= 768) {
-    blogsPerRow = 6; // Medium screens
-  }
-  if (windowWidth >= 1024) {
-    blogsPerRow = 3; // Large screens
-  }
+  const isMobile = windowWidth < 1024;
 
+<<<<<<< HEAD
   return (
     <div className=" mx-auto p-1 mt-10 text-center">
       <h2 className="text-4xl font-medium mb-8">{title}</h2>
@@ -78,34 +108,155 @@ export default function Blogs({ title, description }) {
           {blogs.slice(currentIndex, currentIndex + blogsPerRow).map((blog) => (
             <div key={blog.id} className="flex-none">
               <BlogCard blog={blog} />
+=======
+  if (isLoading) {
+    return (
+      <div className="container mx-auto p-4 md:p-12 mt-10 text-center">
+        <h2 className="text-4xl font-medium mb-8">{title}</h2>
+        <p className="text-gray-600 max-w-4xl mx-auto mb-10">{description}</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {[1, 2, 3].map((placeholder) => (
+            <div key={placeholder} className="animate-pulse">
+              <div className="bg-gray-200 h-48 rounded-lg mb-4"></div>
+              <div className="bg-gray-200 h-4 rounded w-3/4 mb-2"></div>
+              <div className="bg-gray-200 h-4 rounded w-1/2"></div>
+>>>>>>> 3d37cb6524779967f345e96757c6f638189c1093
             </div>
           ))}
         </div>
       </div>
+    );
+  }
 
-      {/* Pagination Buttons for Large Screens */}
-      {windowWidth >= 1024 && (
-        <div className="mt-8 w-full flex gap-10 justify-center items-center">
-          <Image
-            src="/leftArrow1.svg"
-            alt="Scroll left"
-            width={13}
-            height={26}
-            onClick={handlePrevious}
-            className="cursor-pointer"
-          />
-          <Image
-            src="/rightArrow1.svg"
-            alt="Scroll right"
-            width={13}
-            height={26}
-            onClick={handleNext}
-            className="cursor-pointer"
-          />
+  return (
+    <div className="container mx-auto p-4 md:p-12 mt-10 text-center">
+      <h2 className="text-4xl font-medium mb-8">{title}</h2>
+      <p className="text-gray-600 max-w-4xl mx-auto mb-10">{description}</p>
+
+      <div className="relative group">
+        {/* Navigation Arrows - Positioned absolutely */}
+        {blogs.length > 0 && (
+          <>
+            <button
+              onClick={handlePrevious}
+              className={`
+                absolute left-0 top-1/2 -translate-y-1/2 z-10 
+                opacity-0 group-hover:opacity-100 
+                transition-all duration-300 ease-in-out
+                bg-gray-100 bg-opacity-50 hover:bg-opacity-80 
+                p-2 rounded-full
+                ${currentIndex === 0 ? "cursor-not-allowed" : "cursor-pointer"}
+              `}
+              disabled={currentIndex === 0}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="text-gray-700 w-6 h-6"
+              >
+                <path d="M15 18l-6-6 6-6" />
+              </svg>
+            </button>
+            <button
+              onClick={handleNext}
+              className={`
+                absolute right-0 top-1/2 -translate-y-1/2 z-10 
+                opacity-0 group-hover:opacity-100 
+                transition-all duration-300 ease-in-out
+                bg-gray-100 bg-opacity-50 hover:bg-opacity-80 
+                p-2 rounded-full
+                ${
+                  (isMobile && currentIndex === blogs.length - 1) ||
+                  (!isMobile && currentIndex + 3 >= blogs.length)
+                    ? "cursor-not-allowed"
+                    : "cursor-pointer"
+                }
+              `}
+              disabled={
+                (isMobile && currentIndex === blogs.length - 1) ||
+                (!isMobile && currentIndex + 3 >= blogs.length)
+              }
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="text-gray-700 w-6 h-6"
+              >
+                <path d="M9 18l6-6-6-6" />
+              </svg>
+            </button>
+          </>
+        )}
+
+        {/* Blog Cards Container */}
+        <div className="overflow-hidden">
+          <div
+            className={`${
+              isMobile
+                ? "flex transition-transform duration-300 ease-in-out w-full"
+                : "grid grid-cols-3 gap-8"
+            }`}
+            style={
+              isMobile
+                ? {
+                    transform: `translateX(-${currentIndex * 100}%)`,
+                  }
+                : {}
+            }
+            onTouchStart={isMobile ? handleTouchStart : undefined}
+            onTouchMove={isMobile ? handleTouchMove : undefined}
+            onTouchEnd={isMobile ? handleTouchEnd : undefined}
+          >
+            {isMobile
+              ? // Mobile Layout
+                blogs.map((blog) => (
+                  <div
+                    key={blog?.id || Math.random()}
+                    className="w-full flex-shrink-0"
+                  >
+                    <BlogCard blog={blog} />
+                  </div>
+                ))
+              : // Desktop Layout - Show only 3 items
+                blogs.slice(currentIndex, currentIndex + 3).map((blog) => (
+                  <div key={blog?.id || Math.random()}>
+                    <BlogCard blog={blog} />
+                  </div>
+                ))}
+          </div>
         </div>
-      )}
 
-      {/* Centered Explore More Button */}
+        {/* Navigation Dots for Mobile */}
+        {isMobile && blogs.length > 0 && (
+          <div className="flex justify-center gap-2 mt-6">
+            {blogs.map((_, index) => (
+              <button
+                key={index}
+                className={`h-2 rounded-full transition-all ${
+                  index === currentIndex ? "w-6 bg-blue-600" : "w-2 bg-gray-300"
+                }`}
+                onClick={() => setCurrentIndex(index)}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Explore More Button */}
       <div className="flex justify-center mt-10">
         <div className="w-fit px-10 py-4 text-base font-normal border border-primaryGrayscale rounded-full cursor-pointer">
           <Link href="/resources">Explore More</Link>

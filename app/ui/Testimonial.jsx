@@ -1,12 +1,142 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Star, Quote } from "lucide-react";
+
+const ReviewCard = ({ review }) => {
+  return (
+    <div className="w-full flex-shrink-0 px-4">
+      <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 max-w-lg mx-auto relative group">
+        {/* Quote Icon */}
+        <div className="absolute top-4 right-4 text-gray-200 opacity-50 group-hover:opacity-100 transition-opacity">
+          <Quote size={40} strokeWidth={1} />
+        </div>
+
+        {/* Rating and Date */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex space-x-1">
+            {[...Array(5)].map((_, i) => (
+              <Star
+                key={i}
+                className={`w-5 h-5 ${
+                  i < review.rating ? "text-emerald-500" : "text-gray-300"
+                }`}
+                fill={i < review.rating ? "currentColor" : "none"}
+              />
+            ))}
+          </div>
+          <span className="text-sm text-gray-400">
+            {review.date || "2 days ago"}
+          </span>
+        </div>
+
+        {/* Review Content */}
+        <div className="space-y-4">
+          <h3 className="font-semibold text-xl text-gray-800">
+            {review.title || "Best on the market"}
+          </h3>
+
+          <div className="flex gap-6">
+            {review.imageUrl && (
+              <div className="w-36 h-36 relative group">
+                <Image
+                  src={review.imageUrl}
+                  alt={review.productName || "Product Image"}
+                  fill
+                  className="rounded-xl object-cover shadow-md transition-transform duration-300 group-hover:scale-105"
+                />
+              </div>
+            )}
+
+            <div className="flex-1">
+              <p className="text-gray-600 text-sm leading-relaxed mb-3">
+                {review.comment ||
+                  "I love the product because the support is great!"}
+              </p>
+              <div className="flex items-center space-x-3">
+                {review.userAvatar && (
+                  <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-all">
+                    <Image
+                      src={review.userAvatar}
+                      alt="User Avatar"
+                      width={40}
+                      height={40}
+                      className="object-cover"
+                    />
+                  </div>
+                )}
+                <p className="text-sm font-medium text-gray-800">
+                  {review.userName || "Anonymous"}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const ReviewSlider = ({ reviews }) => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % reviews.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + reviews.length) % reviews.length);
+  };
+
+  return (
+    <div className="relative overflow-hidden w-full">
+      <div
+        className="flex transition-transform duration-500 ease-in-out"
+        style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+      >
+        {reviews.map((review) => (
+          <ReviewCard key={review.id} review={review} />
+        ))}
+      </div>
+
+      {/* Navigation Controls */}
+      <div className="flex justify-center items-center mt-6 space-x-4">
+        <button
+          onClick={prevSlide}
+          className="bg-gray-100 rounded-full p-2 hover:bg-gray-200 transition-colors"
+        >
+          <ChevronLeft className="w-5 h-5 text-gray-600" />
+        </button>
+
+        <div className="flex space-x-2">
+          {reviews.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentSlide(index)}
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                index === currentSlide
+                  ? "bg-emerald-500 w-6"
+                  : "bg-gray-300 hover:bg-gray-400"
+              }`}
+            />
+          ))}
+        </div>
+
+        <button
+          onClick={nextSlide}
+          className="bg-gray-100 rounded-full p-2 hover:bg-gray-200 transition-colors"
+        >
+          <ChevronRight className="w-5 h-5 text-gray-600" />
+        </button>
+      </div>
+    </div>
+  );
+};
 
 const Testimonials = ({ productId }) => {
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -25,18 +155,10 @@ const Testimonials = ({ productId }) => {
     fetchReviews();
   }, [productId]);
 
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % reviews.length);
-  };
-
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + reviews.length) % reviews.length);
-  };
-
   if (loading) {
     return (
       <div className="w-full flex justify-center items-center min-h-[200px]">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900" />
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-emerald-500" />
       </div>
     );
   }
@@ -58,94 +180,10 @@ const Testimonials = ({ productId }) => {
   }
 
   return (
-    <div className="w-full bg-gray-50 py-12">
+    <div className="w-full bg-[#FFFCF8] py-12">
       <div className="max-w-6xl mx-auto px-6">
-        <div className="relative">
-          {/* Navigation Buttons */}
-          <button
-            onClick={prevSlide}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 bg-white rounded-full p-2 shadow-lg hover:bg-gray-50 z-10 transition-transform duration-200 hover:scale-110"
-            aria-label="Previous review"
-          >
-            <ChevronLeft className="w-5 h-5 text-gray-600" />
-          </button>
 
-          <button
-            onClick={nextSlide}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 bg-white rounded-full p-2 shadow-lg hover:bg-gray-50 z-10 transition-transform duration-200 hover:scale-110"
-            aria-label="Next review"
-          >
-            <ChevronRight className="w-5 h-5 text-gray-600" />
-          </button>
-
-          {/* Reviews Carousel */}
-          <div className="overflow-hidden">
-            <div
-              className="flex transition-transform duration-500 ease-in-out"
-              style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-            >
-              {reviews.map((review, index) => (
-                <div key={review.id} className="w-full flex-shrink-0 px-4">
-                  <div className="bg-white rounded-xl p-6 shadow-sm mx-auto max-w-lg relative">
-                    <div className="absolute inset-0 bg-gray-200 rounded-xl blur-lg opacity-50"></div>
-                    <div className="relative z-10">
-                      {/* Rating and Date */}
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="flex gap-0.5">
-                          {[...Array(5)].map((_, i) => (
-                            <svg
-                              key={i}
-                              className={`w-4 h-4 ${
-                                i < review.rating
-                                  ? "text-green-500"
-                                  : "text-gray-200"
-                              }`}
-                              fill="currentColor"
-                              viewBox="0 0 20 20"
-                            >
-                              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                            </svg>
-                          ))}
-                        </div>
-                        <span className="text-sm text-gray-500">
-                          2 days ago
-                        </span>
-                      </div>
-
-                      {/* Review Title */}
-                      <h3 className="font-medium text-lg mb-4">
-                        Best on the market
-                      </h3>
-
-                      {/* Review Content */}
-                      <div className="flex gap-6">
-                        {review.imageUrl && (
-                          <div className="w-32 h-32 relative rounded-lg overflow-hidden flex-shrink-0 bg-gray-100">
-                            <Image
-                              src={review.imageUrl}
-                              alt={review.productName}
-                              fill
-                              className="object-cover"
-                            />
-                          </div>
-                        )}
-                        <div className="flex-1">
-                          <p className="text-gray-600 text-sm leading-relaxed mb-3">
-                            {review.comment ||
-                              "I love the product because the support is great! Please."}
-                          </p>
-                          <p className="text-sm font-medium text-gray-900">
-                            {review.userName || "Anonymous"}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+        <ReviewSlider reviews={reviews} />
       </div>
     </div>
   );

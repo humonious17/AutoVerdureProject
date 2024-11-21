@@ -198,7 +198,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
     return (
       <div className="w-full flex flex-col sm:w-1/2 xl:w-[624px]">
         {/* Main Image Container */}
-        <div className="relative w-full aspect-square sm:h-[550px]">
+        <div className="relative w-full aspect-square sm:h-[394px]">
           {!loading && (
             <>
               <Image
@@ -267,7 +267,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
               currentImageUrls.map((url, index) => (
                 <div
                   key={index}
-                  className="relative aspect-square sm:h-[76px] xl:h-[264px] cursor-pointer"
+                  className="relative aspect-square sm:h-[86px] xl:h-[264px] cursor-pointer"
                   onClick={() => handleImageChange(index)}
                 >
                   <Image
@@ -279,7 +279,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
                     src={url || fallbackImageUrl}
                     alt={`${productData.productName}-${index + 1}`}
                     width={86}
-                    height={76}
+                    height={86}
                     unoptimized={true}
                   />
                 </div>
@@ -399,7 +399,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
       </Head>
       <div className="pt-[13px] sm:pt-[29px] xl:pt-[96.5px] pb-[221px] flex flex-col justify-center items-center">
         {/* Navigation */}
-        <div className="w-full text-[17px] leading-[30px] text-[#5B5B5B] font-normal flex justify-center items-center sm:justify-normal sm:items-start mt-[63px]">
+        <div className="w-full text-[17px] leading-[30px] text-[#5B5B5B] font-normal flex justify-center items-center sm:justify-normal sm:items-start mt-[63px] sm:mt-0">
           <p className="flex gap-[19px]">
             <Link href="/">
               <span>Home</span>
@@ -426,7 +426,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
         <div className="mt-[27.79px] sm:mt-[17.3px] xl:mt-[51.5px] xl:max-w-[1312px] w-full flex flex-col sm:flex-row sm:gap-x-[30.5px] xl:gap-x-16 justify-center items-center sm:items-start">
           {/* Product Image */}
           <div className="w-full sm:flex sm:flex-col sm:w-[50%] xl:w-[624px]">
-            <div className="h-[550px] w-full relative">
+            <div className="xl:h-[550px] sm: h-[394px] w-full relative">
               <Image
                 className="object-cover w-full h-full rounded-[44px]"
                 src={currentImageUrls[imageId] || fallbackImageUrl}
@@ -548,7 +548,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
             </div>
 
             <div className="mt-[20px] w-full grid grid-cols-4 xl:grid-cols-2 gap-x-[6px] xl:gap-x-4 xl:gap-y-[24px] justify-center items-center">
-              <div className="w-full h-[76px] xl:h-[264px]">
+              <div className="w-full h-[86px] xl:h-[264px]">
                 <Image
                   className="object-cover w-full h-full rounded-[22px]"
                   src={
@@ -557,11 +557,11 @@ const SingleProductPage = ({ productData, allProducts }) => {
                   }
                   alt="flowers.png"
                   width={86}
-                  height={76}
+                  height={86}
                   unoptimized={true}
                 />
               </div>
-              <div className="w-full h-[76px] xl:h-[264px]">
+              <div className="w-full h-[86px] xl:h-[264px]">
                 <Image
                   className="object-cover w-full h-full rounded-[22px]"
                   src={
@@ -570,11 +570,11 @@ const SingleProductPage = ({ productData, allProducts }) => {
                   }
                   alt="flowers.png"
                   width={86}
-                  height={76}
+                  height={86}
                   unoptimized={true}
                 />
               </div>
-              <div className="w-full h-[76px] xl:h-[264px]">
+              <div className="w-full h-[86px] xl:h-[264px]">
                 <Image
                   className="object-cover w-full h-full rounded-[22px]"
                   src={
@@ -583,11 +583,11 @@ const SingleProductPage = ({ productData, allProducts }) => {
                   }
                   alt="flowers.png"
                   width={86}
-                  height={76}
+                  height={86}
                   unoptimized={true}
                 />
               </div>
-              <div className="w-full h-[76px] xl:h-[264px]">
+              <div className="w-full h-[86px] xl:h-[264px]">
                 <Image
                   className="object-cover w-full h-full rounded-[22px]"
                   src={
@@ -596,7 +596,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
                   }
                   alt="flowers.png"
                   width={86}
-                  height={76}
+                  height={86}
                   unoptimized={true}
                 />
               </div>

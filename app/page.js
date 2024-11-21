@@ -14,9 +14,9 @@ import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import Chatbot from "./ChatBot";
 import { useSwipeable } from "react-swipeable";
-import Power from "./ui/Home/Power"
+import Power from "./ui/Home/Power";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-
+import "./globals.css";
 
 import Blogs from "@/pages/Blogs";
 
@@ -36,6 +36,41 @@ const Page = () => {
       >
         <p>It&apos;s a beautiful day!</p>
       </div>
+      <div className="relative">
+        <Image
+          className="object-cover"
+          style={{ transform: "translateX(12px)" }}
+          src="/sam222long.png"
+          alt="bgImage"
+          width={1550}
+          height={766}
+          onContextMenu={(e) => e.preventDefault()} // Disable right-click context menu
+        />
+        <div
+          className="h-[90px] w-[10px] absolute z-15"
+          style={{
+            height: "560px",
+            width: "10px",
+            marginLeft: "23.5%",
+            background: "#FFFCF8",
+            top: "0px",
+            animation: "shrinkHeight 2s forwards",
+            animationDelay: "0.2s",
+          }}
+        ></div>
+        <div
+          className="h-[90px] w-[20px] absolute z-15"
+          style={{
+            height: "495px",
+            width: "8px",
+            marginLeft: "84.35%",
+            background: "#FFFCF8",
+            top: "0px",
+            animation: "shrinkHeightRight 2s forwards",
+            animationDelay: "0.2s",
+          }}
+        ></div>
+      </div>
     </div>
   );
 };
@@ -47,28 +82,33 @@ const ProductShowcase = () => {
     {
       name: "Zenpot",
       price: "$349.99 USD",
-      image: "https://res.cloudinary.com/dguzhztdt/image/upload/v1729112257/Auto%20Verdure%20media%20%28website%29/Product%20Media/DSC04194_huxt74.jpg"
+      image:
+        "https://res.cloudinary.com/dguzhztdt/image/upload/v1729112257/Auto%20Verdure%20media%20%28website%29/Product%20Media/DSC04194_huxt74.jpg",
     },
     {
       name: "Plant 1",
       price: "$349.99 USD",
-      image: "https://res.cloudinary.com/dguzhztdt/image/upload/v1729112260/Auto%20Verdure%20media%20%28website%29/Product%20Media/DSC04179_kzpxk9.jpg"
+      image:
+        "https://res.cloudinary.com/dguzhztdt/image/upload/v1729112260/Auto%20Verdure%20media%20%28website%29/Product%20Media/DSC04179_kzpxk9.jpg",
     },
     {
       name: "Plant 2",
       price: "$149.99 USD",
-      image: "https://res.cloudinary.com/dguzhztdt/image/upload/v1729111922/Auto%20Verdure%20media%20%28website%29/Product%20Media/DSC04256_ovnhay.jpg"
+      image:
+        "https://res.cloudinary.com/dguzhztdt/image/upload/v1729111922/Auto%20Verdure%20media%20%28website%29/Product%20Media/DSC04256_ovnhay.jpg",
     },
     {
       name: "Plant 3",
       price: "$49.99 USD",
-      image: "https://res.cloudinary.com/dguzhztdt/image/upload/v1729112038/Auto%20Verdure%20media%20%28website%29/Product%20Media/DSC04216_l3p7h3.jpg"
+      image:
+        "https://res.cloudinary.com/dguzhztdt/image/upload/v1729112038/Auto%20Verdure%20media%20%28website%29/Product%20Media/DSC04216_l3p7h3.jpg",
     },
     {
       name: "Plant 4",
       price: "$29.99 USD",
-      image: "https://res.cloudinary.com/dguzhztdt/image/upload/v1729111759/Auto%20Verdure%20media%20%28website%29/Product%20Media/DSC04291_ird64g.jpg"
-    }
+      image:
+        "https://res.cloudinary.com/dguzhztdt/image/upload/v1729111759/Auto%20Verdure%20media%20%28website%29/Product%20Media/DSC04291_ird64g.jpg",
+    },
   ];
 
   const nextSlide = () => {
@@ -107,20 +147,24 @@ const ProductShowcase = () => {
             <p>In Stock</p>
           </div>
         </div>
-        
+
         <div className="mt-6">
-          <p className="text-xl leading-6 text-[#000]">{products[currentIndex].name}</p>
-          <p className="mt-3 text-base leading-5 text-[#0E0E0E]">{products[currentIndex].price}</p>
+          <p className="text-xl leading-6 text-[#000]">
+            {products[currentIndex].name}
+          </p>
+          <p className="mt-3 text-base leading-5 text-[#0E0E0E]">
+            {products[currentIndex].price}
+          </p>
         </div>
 
         <div className="absolute top-1/2 -translate-y-1/2 w-full flex justify-between px-4">
-          <button 
+          <button
             onClick={prevSlide}
             className="bg-white rounded-full p-2 shadow-lg"
           >
             <ChevronLeft className="w-6 h-6" />
           </button>
-          <button 
+          <button
             onClick={nextSlide}
             className="bg-white rounded-full p-2 shadow-lg"
           >
@@ -320,6 +364,7 @@ export default function Home() {
             alt="bgImage"
             width={1550}
             height={766}
+            onContextMenu={(e) => e.preventDefault()} // Disable right-click context menu
           />
           <div
             className="h-[90px] w-[10px] absolute z-15"
@@ -412,24 +457,23 @@ export default function Home() {
               />
             ))}
           </div>
-            <div className="relative w-full h-[350px] mt-10 mb-8 flex justify-center items-center md:hidden">
-      {/* Mobile View */}
-      {hydroponics.map((card, index) => (
-        <div
-          key={index}
-          className={`absolute transition-opacity duration-10000 ease-in-out ${
-            index === currentIndex ? "opacity-100 z-10" : "opacity-0 z-0"
-          }`}
-          style={{
-            transform: `translateY(${index === currentIndex ? 0 : 10}px)`,
-            transition: "transform 0.9s ease-in-out",
-          }}
-        >
-          <HydroponicCard data={card} isActive={index === currentIndex} />
-        </div>
-      ))}
-    </div>
-          
+          <div className="relative w-full h-[350px] mt-10 mb-8 flex justify-center items-center md:hidden">
+            {/* Mobile View */}
+            {hydroponics.map((card, index) => (
+              <div
+                key={index}
+                className={`absolute transition-opacity duration-10000 ease-in-out ${
+                  index === currentIndex ? "opacity-100 z-10" : "opacity-0 z-0"
+                }`}
+                style={{
+                  transform: `translateY(${index === currentIndex ? 0 : 10}px)`,
+                  transition: "transform 0.9s ease-in-out",
+                }}
+              >
+                <HydroponicCard data={card} isActive={index === currentIndex} />
+              </div>
+            ))}
+          </div>
 
           <div className="md:mt-[72.12px] w-full flex flex-col justify-center items-center">
             <Link href="/about-us" passHref>
@@ -773,7 +817,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <Power/>
+          <Power />
         </div>
 
         {/* Why should you switch from traditional pots to hydroponics? */}

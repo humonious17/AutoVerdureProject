@@ -52,11 +52,11 @@ export const support = [
 ];
 
 export const storeNavItems = [
-  { title: "all", url: "/store" },
-  { title: "planters", url: "/store/planters" },
-  { title: "flowers", url: "/store/flowers" },
-  { title: "plants", url: "/store/plants" },
-  { title: "accessory", url: "/store/accessory" },
+  { title: "All", url: "/store" },
+  { title: "Planters", url: "/store/planters" },
+  { title: "Flowers", url: "/store/flowers" },
+  { title: "Plants", url: "/store/plants" },
+  { title: "Accessory", url: "/store/accessory" },
 ];
 
 export const collections = [

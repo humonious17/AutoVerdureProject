@@ -34,19 +34,19 @@ export default function BlogPost({ blog }) {
           </h1>
           <p className="font-bold text-black">{blog.authorName || "Unknown Author"}</p>
           <p className="text-gray-500 text-sm">
-            {new Date().toLocaleDateString()}
+            {new Date().toLocaleDateString("en-GB")}
           </p>
         </div>
 
         {/* Blog Image */}
         {blog.imageUrl && (
           <div className="flex justify-center mb-6 ">
-            <Image
+            <Image className="rounded-3xl w-[364px] h-[218px] sm:w-[681px] sm:h-[419px] xl:w-[833px] xl:h-[498px]"
               src={blog.imageUrl}
               alt={blog.title}
-              width={833}
-              height={300}
-              className="rounded-3xl"
+              width={364}
+              height={218}
+             
             />
           </div>
         )}
@@ -62,7 +62,7 @@ export default function BlogPost({ blog }) {
           style={{ color: "#3D3D3D", fontFamily: "Urbanist" }}
           dangerouslySetInnerHTML={{
             __html: blog.content.replace(
-              /<p>/g,
+              
               '<p style="margin-bottom: 16px;">'
             ),
           }}

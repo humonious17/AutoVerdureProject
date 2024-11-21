@@ -339,10 +339,10 @@ export default function Home() {
         </div>
       </div>
       {/* Image */}
-      <div className="absolute top-0 right-[45px] md:right-[60px] image-container">
+      <div className="absolute top-0 right-[45px] md:right-[20px] image-container">
         <Image
           className=" xl:hidden pot-image"
-          src="/bgImage1.png"
+          src="/homebg.png"
           alt="bgImage"
           width={267}
           height={447}

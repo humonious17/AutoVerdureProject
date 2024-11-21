@@ -10,14 +10,14 @@ const MainBlog = ({ blog }) => {
     };
   return (
     <Link href={`/Blogs/${blog.id}`}>
-    <div className="pt-2 pb-[50px] md:pt-[30px] md:pb-[40px] xl:pt-16 xl:pb-[60px] md:px-[23px] xl:px-[1px] 2xl:px-[20px] w-full flex flex-col justify-center items-center">
+    <div className="pt-2 pb-[50px] md:pt-[30px] md:pb-[40px] xl:pt-16 xl:pb-[60px] md:px-[11px] xl:px-[1px] 2xl:px-[20px] w-full flex flex-col justify-center items-center">
       <div className="w-full flex flex-col md:flex-row gap-6 md:gap-[33px]">
         {/* Image Section */}
       
-        <div className="w-full h-[226px] md:w-[337px] md:h-[351px] xl:w-[550px] xl:h-[343px] 2xl:w-[600px] rounded-3xl">
+        <div className="w-full h-[226px] md:w-[367px] md:h-[351px] xl:w-[550px] xl:h-[343px] 2xl:w-[600px] rounded-3xl">
       
           <Image
-            className="object-cover w-full h-[226px] md:w-[337px] md:h-[351px] xl:w-[550px] xl:h-[343px] 2xl:w-[600px] rounded-3xl"
+            className="object-cover w-full h-[226px] md:w-[367px] md:h-[321px] xl:w-[550px] xl:h-[343px] 2xl:w-[600px] rounded-3xl"
             src={blog.imageUrl}
             alt="blogImage"
             width={1000}

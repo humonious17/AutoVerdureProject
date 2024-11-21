@@ -94,6 +94,21 @@ export default function Blogs({ title, description }) {
 
   const isMobile = windowWidth < 1024;
 
+<<<<<<< HEAD
+  return (
+    <div className=" mx-auto p-1 mt-10 text-center">
+      <h2 className="text-4xl font-medium mb-8">{title}</h2>
+      <p className="text-gray-600 max-w-4xl mx-auto mb-10 ">
+        {description}
+      </p>
+
+      {/* Blog Cards Container */}
+      <div className="overflow-hidden relative">
+        <div className={`grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8`}>
+          {blogs.slice(currentIndex, currentIndex + blogsPerRow).map((blog) => (
+            <div key={blog.id} className="flex-none">
+              <BlogCard blog={blog} />
+=======
   if (isLoading) {
     return (
       <div className="container mx-auto p-4 md:p-12 mt-10 text-center">
@@ -105,6 +120,7 @@ export default function Blogs({ title, description }) {
               <div className="bg-gray-200 h-48 rounded-lg mb-4"></div>
               <div className="bg-gray-200 h-4 rounded w-3/4 mb-2"></div>
               <div className="bg-gray-200 h-4 rounded w-1/2"></div>
+>>>>>>> 3d37cb6524779967f345e96757c6f638189c1093
             </div>
           ))}
         </div>

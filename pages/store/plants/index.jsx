@@ -192,7 +192,7 @@ const Plants = (props) => {
         <div className="mt-10 mb-20 w-full flex flex-col justify-center items-center">
           <div className="max-w-[1440px] w-full grid grid-cols-2 xl:grid-cols-3 gap-12">
             {filteredProducts.map((product, index) => (
-              <Link key={index} href={`/store/${product.category}/${product.productId}`}>
+              <Link key={index} href={`/store/plants/${product.productId}`}>
                 <ProductCard product={product} />
               </Link>
             ))}

@@ -383,9 +383,9 @@ export default function Home() {
           <div
             className="h-[90px] w-[20px] absolute z-15"
             style={{
-              height: "495px",
-              width: "8px",
-              marginLeft: "84.35%",
+              height: "0px",
+              width: "4px",
+              marginLeft: "80%",
               background: "#FFFCF8",
               top: "0px",
               animation: "shrinkHeightRight 2s forwards",

@@ -47,7 +47,7 @@ const ContactUs = () => {
   };
 
   return (
-    <div className="w-full px-4 pt-[44px] pb-[144px] md:px-[28px] md:py-[116px] xl:px-[119.99px] xl:pt-[114px] xl:pb-[151px] 2xl:px-[200px] 2xl:py-[116px] bg-[#FFFCF8] flex flex-col justify-center items-center">
+    <div className="w-full px-4 pt-[44px] pb-[144px] md:px-[28px] md:py-[116px] xl:px-[119.99px] xl:pt-[114px] xl:pb-[151px] 2xl:px-[200px] 2xl:py-[116px] bg-[#FFFCF8] flex flex-col justify-center items-center mt-[50px]">
       {/* Title */}
       <div className="max-w-[219px] md:max-w-[382px] w-full relative">
         <div>

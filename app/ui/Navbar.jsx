@@ -494,7 +494,7 @@ const Navbar = () => {
                     left-0 
                     right-0 
                     mt-2 
-                    bg-white 
+                    bg-[#FFFBF7] 
                     rounded-lg 
                     shadow-lg 
                     border 
@@ -631,7 +631,7 @@ const Navbar = () => {
               setShowSearchSuggestions(true);
             }}
             className={`
-              bg-white 
+              bg-[#FFFBF7] 
               border 
               border-gray-300 
               rounded-full 
@@ -722,7 +722,7 @@ const Navbar = () => {
                 left-0 
                 right-0 
                 mt-2 
-                bg-white 
+                bg-[#FFFBF7] 
                 rounded-lg 
                 shadow-lg 
                 border 

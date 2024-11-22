@@ -55,7 +55,7 @@ const Store = ({ initialProducts }) => {
     <div className="w-full bg-[#FFFCF8] min-h-screen relative">
       {/* Filter Sidebar - Full screen on mobile */}
       <div
-        className={`fixed top-0 left-0 h-screen bg-white transform transition-transform duration-300 ease-in-out z-50 w-full sm:w-[300px] ${
+        className={`fixed top-0 left-0 h-screen bg-[#FFFBF7] transform transition-transform duration-300 ease-in-out z-50 w-full sm:w-[300px] ${
           isFilterOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -95,7 +95,7 @@ const Store = ({ initialProducts }) => {
               <div className="flex items-center justify-between sm:justify-start gap-4">
                 <button
                   onClick={() => setIsFilterOpen(!isFilterOpen)}
-                  className="flex items-center gap-2 xl:ml-8 px-3 py-1.5 sm:px-4 sm:py-2 bg-white rounded-lg border text-sm sm:text-base"
+                  className="flex items-center gap-2 xl:ml-8 px-3 py-1.5 sm:px-4 sm:py-2 bg-[#FFFBF7] rounded-lg border text-sm sm:text-base"
                 >
                   <TuneIcon />
                   Filters
@@ -127,7 +127,7 @@ const Store = ({ initialProducts }) => {
                 <select
                   value={sortBy}
                   onChange={(e) => handleSort(e.target.value)}
-                  className="py-1.5 px-2 sm:py-2 sm:px-3 text-sm border rounded-lg bg-white flex-1 sm:flex-none"
+                  className="py-1.5 px-2 sm:py-2 sm:px-3 text-sm border rounded-lg bg-[#FFFBF7] flex-1 sm:flex-none"
                 >
                   <option value="default">Sort by</option>
                   <option value="name-asc">Name (A-Z)</option>
@@ -136,7 +136,7 @@ const Store = ({ initialProducts }) => {
                 <select
                   value={showCount}
                   onChange={(e) => handleShowCountChange(e.target.value)}
-                  className="py-1.5 px-2 sm:py-2 sm:px-3 text-sm border rounded-lg bg-white flex-1 sm:flex-none"
+                  className="py-1.5 px-2 sm:py-2 sm:px-3 text-sm border rounded-lg bg-[#FFFBF7] flex-1 sm:flex-none"
                 >
                   <option value={16}>Show 16</option>
                   <option value={32}>Show 32</option>

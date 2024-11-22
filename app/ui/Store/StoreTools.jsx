@@ -90,7 +90,7 @@ const StoreTools = ({
   };
 
   return (
-    <div className="h-full flex flex-col bg-white shadow-lg rounded-lg">
+    <div className="h-full flex flex-col bg-[#FFFBF7] shadow-lg rounded-lg">
       {/* Header */}
       <div className="p-4 border-b">
         <div className="flex items-center justify-between">

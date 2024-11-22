@@ -10,9 +10,9 @@ const Explore = () => {
         </p>
         <p className="xl:w-[805px] text-sm leading-6 font-normal text-secondaryGrayscale md:text-center">
           At Auto Verdure, we know that selecting the right plants for your
-          space can be a daunting task. That&apos;s why we offer personalized plant
-          consultation services to help you make informed decisions about your
-          indoor and outdoor greenery.
+          space can be a daunting task. That&apos;s why we offer personalized
+          plant consultation services to help you make informed decisions about
+          your indoor and outdoor greenery.
         </p>
         <div className="mt-6 w-fit px-[42px] py-[18px] rounded-[100px] text-base bg-primaryMain text-white font-normal cursor-pointer">
           <p>Contact us</p>

@@ -435,6 +435,7 @@ export default function Home() {
                 description={collection.description}
                 image={collection.image}
                 video={collection.video}
+                playsInline
               />
             </div>
           ))}

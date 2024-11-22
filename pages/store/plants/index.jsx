@@ -83,7 +83,7 @@ const Plants = (props) => {
   };
 
   const validProducts = filteredProducts.filter(
-    (product) => product && product.productId && product.category
+    (product) => product && product.productId && product.productType
   );
 
   // Debugging valid products

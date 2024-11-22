@@ -635,20 +635,11 @@ export default function Home() {
             <video
               className="w-full h-full rounded-[16px] object-cover "
               src="/home1.mp4"
+              autoPlay
               alt="video"
               playsInline
               loop
               muted
-              webkit-playsinline="true"
-              x5-playsinline="true"
-              onContextMenu={(e) => e.preventDefault()}
-              style={{
-                WebkitUserSelect: "none",
-                userSelect: "none",
-                pointerEvents: "none",
-                WebkitTouchCallout: "none",
-                WebkitUserDrag: "none",
-              }}
             />
           </div>
 
@@ -673,19 +664,10 @@ export default function Home() {
                 alt="video"
                 // width={604}
                 // height={521}
+                autoPlay
                 playsInline
                 loop
                 muted
-                webkit-playsinline="true"
-                x5-playsinline="true"
-                onContextMenu={(e) => e.preventDefault()}
-                style={{
-                  WebkitUserSelect: "none",
-                  userSelect: "none",
-                  pointerEvents: "none",
-                  WebkitTouchCallout: "none",
-                  WebkitUserDrag: "none",
-                }}
               />
               <Image
                 className="w-[192px] h-[205px] xl:w-[192px] xl:h-[205px] rounded-[16px] md:w[192px] md:h-[180px]"
@@ -749,16 +731,6 @@ export default function Home() {
               playsInline
               loop
               muted
-              webkit-playsinline="true"
-              x5-playsinline="true"
-              onContextMenu={(e) => e.preventDefault()}
-              style={{
-                WebkitUserSelect: "none",
-                userSelect: "none",
-                pointerEvents: "none",
-                WebkitTouchCallout: "none",
-                WebkitUserDrag: "none",
-              }}
             />
             <Image
               className="rounded-[16px] w-[171.765px] h-[183.395px] sm:w-[140px] sm:h-[150px]"

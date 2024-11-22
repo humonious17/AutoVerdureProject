@@ -143,8 +143,8 @@ const Cart = ({ products = [] }) => {
                     </h2>
                   </div>
                   <div className="col-span-6">
-                    <div className="grid grid-cols-3 gap-4">
-                      <div className="text-sm font-medium text-gray-500 text-right">
+                    <div className="grid grid-cols-3 gap-8 md:gap-4">
+                      <div className="text-sm font-medium text-gray-500 text-right hidden md:block ">
                         Price
                       </div>
                       <div className="text-sm font-medium text-gray-500 text-center">
@@ -187,27 +187,28 @@ const Cart = ({ products = [] }) => {
                           className="py-6"
                         >
                           <div className="grid grid-cols-12 gap-4 items-center">
-                            <div className="col-span-6 flex items-center space-x-4">
-                              <div className="relative h-24 w-24 flex-shrink-0 group">
-                                <Image
-                                  src={item.productImage}
-                                  alt={item.productName}
-                                  fill
-                                  className="object-cover rounded-lg transition-transform group-hover:scale-105"
-                                />
-                              </div>
-                              <div className="min-w-0">
-                                <h3 className="text-lg font-medium text-gray-900 truncate">
-                                  {item.productName}
-                                </h3>
-                              </div>
+                          <div className="col-span-6 flex flex-col md:flex-row items-center space-x-2">
+  <div className="relative h-24 w-24 flex flex-shrink-0 group">
+    <Image
+      src={item.productImage}
+      alt={item.productName}
+      fill
+      className="object-cover rounded-lg transition-transform group-hover:scale-105"
+    />
+  </div>
+  <div className="min-w-0">
+    <h3 className="text-lg font-medium text-gray-900 truncate">
+      {item.productName}
+    </h3>
+  </div>
                             </div>
 
                             <div className="col-span-6">
-                              <div className="grid grid-cols-3 gap-4 items-center">
-                                <div className="text-gray-900 font-medium text-right">
-                                  {formatPrice(item.price)}
-                                </div>
+  <div className="grid grid-cols-3 gap-4 items-center">
+    {/* Hidden for mobile screens and shown on medium and larger screens */}
+    <div className="text-gray-900 font-medium text-right hidden md:block">
+      {formatPrice(item.price)}
+    </div>
 
                                 <div className="flex items-center justify-center">
                                   <motion.button

@@ -17,6 +17,7 @@ const Cart = ({ products = [] }) => {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
 
+  // Existing useEffect and handler functions remain the same
   useEffect(() => {
     setCartItems(products);
   }, [products]);
@@ -91,7 +92,7 @@ const Cart = ({ products = [] }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 my-20">
+    <div className="min-h-screen bg-[#FFFBF7] pt-6 md:pt-20 pb-20">
       <AnimatePresence>
         {showAlert && (
           <motion.div
@@ -112,11 +113,11 @@ const Cart = ({ products = [] }) => {
         )}
       </AnimatePresence>
 
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="max-w-7xl mx-auto px-4 py-4 md:py-8 mt-[55px]">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-8 flex items-center justify-between"
+          className="mb-6 md:mb-8 flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0"
         >
           <Link
             href="/"
@@ -125,26 +126,28 @@ const Cart = ({ products = [] }) => {
             <ArrowLeft className="h-5 w-5 mr-2" />
             <span>Continue Shopping</span>
           </Link>
-          <h1 className="text-3xl font-bold text-gray-900">Shopping Cart</h1>
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
+            Shopping Cart
+          </h1>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
           <div className="lg:col-span-2">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="bg-white rounded-xl shadow-sm overflow-hidden"
+              className="bg-[#FFFBF7] rounded-xl shadow-lg overflow-hidden"
             >
-              <div className="p-6">
-                <div className="grid grid-cols-12 gap-4 pb-6 border-b">
-                  <div className="col-span-6">
-                    <h2 className="text-2xl font-semibold text-gray-900">
+              <div className="p-4 md:p-6">
+                <div className="grid grid-cols-12 gap-4 pb-4 md:pb-6 border-b">
+                  <div className="col-span-12 md:col-span-6">
+                    <h2 className="text-xl md:text-2xl font-semibold text-gray-900">
                       Products
                     </h2>
                   </div>
-                  <div className="col-span-6">
-                    <div className="grid grid-cols-3 gap-8 md:gap-4">
-                      <div className="text-sm font-medium text-gray-500 text-right hidden md:block ">
+                  <div className="hidden md:block md:col-span-6">
+                    <div className="grid grid-cols-3 gap-4">
+                      <div className="text-sm font-medium text-gray-500 text-right">
                         Price
                       </div>
                       <div className="text-sm font-medium text-gray-500 text-center">
@@ -163,7 +166,7 @@ const Cart = ({ products = [] }) => {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -20 }}
-                      className="py-32 text-center"
+                      className="py-16 md:py-32 text-center"
                     >
                       <p className="text-gray-500 text-lg">
                         Your cart is empty
@@ -184,33 +187,40 @@ const Cart = ({ products = [] }) => {
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: -20 }}
-                          className="py-6"
+                          className="py-4 md:py-6"
                         >
-                          <div className="grid grid-cols-12 gap-4 items-center">
-                          <div className="col-span-6 flex flex-col md:flex-row items-center space-x-2">
-  <div className="relative h-24 w-24 flex flex-shrink-0 group">
-    <Image
-      src={item.productImage}
-      alt={item.productName}
-      fill
-      className="object-cover rounded-lg transition-transform group-hover:scale-105"
-    />
-  </div>
-  <div className="min-w-0">
-    <h3 className="text-lg font-medium text-gray-900 truncate">
-      {item.productName}
-    </h3>
-  </div>
+                          <div className="flex flex-col md:grid md:grid-cols-12 gap-4">
+                            {/* Mobile: Product Image and Name */}
+                            <div className="flex items-start space-x-4 md:col-span-6">
+                              <div className="relative h-24 w-24 flex-shrink-0 rounded-lg overflow-hidden">
+                                <Image
+                                  src={item.productImage}
+                                  alt={item.productName}
+                                  fill
+                                  className="object-cover"
+                                />
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <h3 className="text-lg font-medium text-gray-900 truncate">
+                                  {item.productName}
+                                </h3>
+                                {/* Mobile: Price */}
+                                <p className="mt-1 text-sm font-medium text-gray-500 md:hidden">
+                                  {formatPrice(item.price)}
+                                </p>
+                              </div>
                             </div>
 
-                            <div className="col-span-6">
-  <div className="grid grid-cols-3 gap-4 items-center">
-    {/* Hidden for mobile screens and shown on medium and larger screens */}
-    <div className="text-gray-900 font-medium text-right hidden md:block">
-      {formatPrice(item.price)}
-    </div>
+                            {/* Mobile: Quantity and Actions */}
+                            <div className="flex items-center justify-between mt-4 md:mt-0 md:col-span-6">
+                              <div className="flex items-center space-x-4 md:grid md:grid-cols-3 md:gap-4 md:items-center w-full">
+                                {/* Desktop: Price */}
+                                <div className="hidden md:block text-gray-900 font-medium text-right">
+                                  {formatPrice(item.price)}
+                                </div>
 
-                                <div className="flex items-center justify-center">
+                                {/* Quantity Controls */}
+                                <div className="flex items-center">
                                   <motion.button
                                     whileTap={{ scale: 0.95 }}
                                     onClick={() =>
@@ -240,8 +250,9 @@ const Cart = ({ products = [] }) => {
                                   </motion.button>
                                 </div>
 
-                                <div className="flex items-center justify-between">
-                                  <span className="text-gray-900 font-medium">
+                                {/* Subtotal and Remove */}
+                                <div className="flex items-center justify-between md:justify-end space-x-4">
+                                  <span className="text-gray-900 font-medium whitespace-nowrap">
                                     {formatPrice(item.price * item.productQty)}
                                   </span>
                                   <motion.button
@@ -268,42 +279,45 @@ const Cart = ({ products = [] }) => {
             </motion.div>
           </div>
 
+          {/* Cart Summary - Fixed at bottom for mobile */}
           <div className="lg:col-span-1">
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="bg-white rounded-xl shadow-sm p-6 sticky top-8"
+              className="bg-[#FFFBF7] rounded-xl shadow-lg p-6 lg:sticky lg:top-8 fixed bottom-0 left-0 right-0 lg:relative"
             >
-              <h2 className="text-2xl font-semibold text-gray-900 mb-6">
-                Cart Summary
-              </h2>
-              <div className="space-y-4">
-                <div className="flex justify-between pb-4 border-b">
-                  <span className="text-gray-600">Subtotal</span>
-                  <span className="text-gray-900 font-medium">
-                    {formatPrice(subtotal)}
-                  </span>
-                </div>
-                <div className="flex justify-between pb-4">
-                  <span className="text-gray-900 font-semibold">Total</span>
-                  <motion.span
-                    key={subtotal}
-                    initial={{ scale: 1.1 }}
-                    animate={{ scale: 1 }}
-                    className="text-purple-600 font-semibold text-xl"
+              <div className="max-w-7xl mx-auto">
+                <h2 className="text-xl md:text-2xl font-semibold text-gray-900 mb-4 md:mb-6">
+                  Cart Summary
+                </h2>
+                <div className="space-y-4">
+                  <div className="flex justify-between pb-4 border-b">
+                    <span className="text-gray-600">Subtotal</span>
+                    <span className="text-gray-900 font-medium">
+                      {formatPrice(subtotal)}
+                    </span>
+                  </div>
+                  <div className="flex justify-between pb-4">
+                    <span className="text-gray-900 font-semibold">Total</span>
+                    <motion.span
+                      key={subtotal}
+                      initial={{ scale: 1.1 }}
+                      animate={{ scale: 1 }}
+                      className="text-purple-600 font-semibold text-xl"
+                    >
+                      {formatPrice(subtotal)}
+                    </motion.span>
+                  </div>
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={handleCheckout}
+                    className="w-full bg-black text-white py-4 rounded-full hover:bg-gray-800 transition-colors relative overflow-hidden group"
                   >
-                    {formatPrice(subtotal)}
-                  </motion.span>
+                    <span className="relative z-10">Proceed to Checkout</span>
+                    <div className="absolute inset-0 h-full w-full bg-gray-800 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
+                  </motion.button>
                 </div>
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={handleCheckout}
-                  className="w-full bg-black text-white py-4 rounded-full hover:bg-gray-800 transition-colors relative overflow-hidden group"
-                >
-                  <span className="relative z-10">Proceed to Checkout</span>
-                  <div className="absolute inset-0 h-full w-full bg-gray-800 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
-                </motion.button>
               </div>
             </motion.div>
           </div>

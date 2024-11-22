@@ -28,7 +28,7 @@ const CollectionCard = ({ title, description, image, video }) => {
         style={{
           height: isLargeScreen
             ? isHover
-              ? `${214 +28+ Math.ceil(description.length / 14) * 23}px` // Increased from 199 to 214 (+15px)
+              ? `${214 + 28 + Math.ceil(description.length / 14) * 23}px` // Increased from 199 to 214 (+15px)
               : "290px" // Increased from 274 to 289 (+15px)
             : "190px", // Mobile height remains unchanged
         }}
@@ -40,6 +40,7 @@ const CollectionCard = ({ title, description, image, video }) => {
             autoPlay
             loop
             muted
+            playsInline
           ></video>
         ) : (
           <Image

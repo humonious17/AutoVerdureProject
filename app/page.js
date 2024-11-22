@@ -436,7 +436,6 @@ export default function Home() {
                 image={collection.image}
                 video={collection.video}
                 playsInline
-                playsinline
                 loop
                 muted
                 webkit-playsinline="true"
@@ -638,7 +637,6 @@ export default function Home() {
               src="/home1.mp4"
               alt="video"
               playsInline
-              playsinline
               loop
               muted
               webkit-playsinline="true"
@@ -676,7 +674,6 @@ export default function Home() {
                 // width={604}
                 // height={521}
                 playsInline
-                playsinline
                 loop
                 muted
                 webkit-playsinline="true"
@@ -729,7 +726,6 @@ export default function Home() {
               // width={604}
               // height={521}
               playsInline
-              playsinline
               loop
               muted
               webkit-playsinline="true"
@@ -751,7 +747,6 @@ export default function Home() {
               src="https://res.cloudinary.com/dguzhztdt/video/upload/f_mp4/v1729091741/Auto%20Verdure%20media%20%28website%29/Plants/IMG_7939_wsnkj9.mov"
               alt="video"
               playsInline
-              playsinline
               loop
               muted
               webkit-playsinline="true"
@@ -857,7 +852,6 @@ export default function Home() {
                 // width={604}
                 // height={521}
                 playsInline
-                playsinline
                 loop
                 muted
                 webkit-playsinline="true"

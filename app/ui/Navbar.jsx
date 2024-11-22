@@ -452,7 +452,7 @@ const Navbar = () => {
                   placeholder:transition-opacity
                   focus:placeholder:opacity-75
                 "
-                placeholder="Search (Ctrl + K)"
+                placeholder="Search"
               />
               <button
                 type="submit"
@@ -649,7 +649,7 @@ const Navbar = () => {
               placeholder:transition-opacity
               focus:placeholder:opacity-75
             `}
-            placeholder="Search (Ctrl + K)"
+            placeholder="Search"
             autoComplete="off"
             spellCheck="false"
           />

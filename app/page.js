@@ -289,10 +289,9 @@ export default function Home() {
       {/* Hero */}
       <div className="w-screen flex flex-col-reverse md:flex-row xl:flex-col justify-center items-center overflow-hidden hero-container">
         <div
-          className="max-w-[361px] md:max-w-[500px] xl:max-w-[622px] md:mr-8 mt-[157px] -ml-[80px] md:mt-[120px] xl:mt-[170px] z-10 gap-6 content-container lg:ml-[115px] lg:mt-[235px] "
+          className="max-w-[361px] md:max-w-[500px] xl:max-w-[622px] md:mr-8 mt-[157px] -ml-7 sm:mx-auto md:-ml-[80px] xl:mt-[170px] z-10 gap-6 content-container lg:ml-[115px] lg:mt-[235px]"
           style={{
             paddingRight: "12px",
-            // only apply padding right
           }}
         >
           {/* Title */}
@@ -318,7 +317,7 @@ export default function Home() {
           </p>
 
           {/* Buttons */}
-          <div className="mt-3 md:mt-8 w-full text-base font-medium flex gap-7 justify-start xl:justify-center lg:justify-center md:justify-center  items-center hero-buttons">
+          <div className="mt-3 md:mt-8 w-full text-base font-medium flex gap-7 justify-start xl:justify-center lg:justify-center md:justify-center items-center hero-buttons">
             <Link href="/store" passHref>
               <button className="shop-now px-6 md:px-[42px] py-2 md:py-[18px] sm:px-[42px] sm:py-[18px] rounded-[100px] text-white bg-primaryMain text-sm md:text-base">
                 Shop now
@@ -341,14 +340,17 @@ export default function Home() {
       {/* Image */}
       <div className="absolute top-0 right-[45px] md:right-[20px] image-container">
         <Image
-          className=" xl:hidden pot-image"
+          className="xl:hidden pot-image scale-[1.65] origin-center transform-gpu"
           src="/homebg.png"
           alt="bgImage"
-          width={267}
-          height={447}
+          width={350}
+          height={587}
+          style={{
+            objectFit: "cover",
+            objectPosition: "center",
+          }}
         />
       </div>
-
       <div className="w-full h-[766px] absolute top-0 right-[20px] bg-transparent">
         <div className="h-full w-full relative overflow-hidden">
           <Image
@@ -364,7 +366,7 @@ export default function Home() {
             alt="bgImage"
             width={1550}
             height={766}
-            onContextMenu={(e) => e.preventDefault()} // Disable right-click context menu
+            onContextMenu={(e) => e.preventDefault()}
           />
           <div
             className="h-[90px] w-[10px] absolute z-15"

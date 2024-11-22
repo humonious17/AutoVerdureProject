@@ -436,6 +436,9 @@ export default function Home() {
                 image={collection.image}
                 video={collection.video}
                 playsInline
+                playsinline
+                loop
+                muted
                 webkit-playsinline="true"
                 x5-playsinline="true"
                 onContextMenu={(e) => e.preventDefault()}
@@ -635,13 +638,11 @@ export default function Home() {
               src="/home1.mp4"
               alt="video"
               playsInline
+              playsinline
+              loop
+              muted
               webkit-playsinline="true"
               x5-playsinline="true"
-              // width={604}
-              // height={521}
-              loop
-              autoPlay
-              muted
               onContextMenu={(e) => e.preventDefault()}
               style={{
                 WebkitUserSelect: "none",
@@ -675,11 +676,11 @@ export default function Home() {
                 // width={604}
                 // height={521}
                 playsInline
+                playsinline
+                loop
+                muted
                 webkit-playsinline="true"
                 x5-playsinline="true"
-                loop
-                autoPlay
-                muted
                 onContextMenu={(e) => e.preventDefault()}
                 style={{
                   WebkitUserSelect: "none",
@@ -728,11 +729,11 @@ export default function Home() {
               // width={604}
               // height={521}
               playsInline
+              playsinline
+              loop
+              muted
               webkit-playsinline="true"
               x5-playsinline="true"
-              loop
-              autoPlay
-              muted
               onContextMenu={(e) => e.preventDefault()}
               style={{
                 WebkitUserSelect: "none",
@@ -750,11 +751,11 @@ export default function Home() {
               src="https://res.cloudinary.com/dguzhztdt/video/upload/f_mp4/v1729091741/Auto%20Verdure%20media%20%28website%29/Plants/IMG_7939_wsnkj9.mov"
               alt="video"
               playsInline
+              playsinline
+              loop
+              muted
               webkit-playsinline="true"
               x5-playsinline="true"
-              loop
-              autoPlay
-              muted
               onContextMenu={(e) => e.preventDefault()}
               style={{
                 WebkitUserSelect: "none",
@@ -856,17 +857,13 @@ export default function Home() {
                 // width={604}
                 // height={521}
                 playsInline
+                playsinline
+                loop
+                muted
                 webkit-playsinline="true"
                 x5-playsinline="true"
-                loop
-                autoPlay
-                muted
-                width={293.34}
-                height={300}
                 onContextMenu={(e) => e.preventDefault()}
                 style={{
-                  width: "293.34px",
-                  height: "300px",
                   WebkitUserSelect: "none",
                   userSelect: "none",
                   pointerEvents: "none",

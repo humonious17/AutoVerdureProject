@@ -436,6 +436,16 @@ export default function Home() {
                 image={collection.image}
                 video={collection.video}
                 playsInline
+                webkit-playsinline="true"
+                x5-playsinline="true"
+                onContextMenu={(e) => e.preventDefault()}
+                style={{
+                  WebkitUserSelect: "none",
+                  userSelect: "none",
+                  pointerEvents: "none",
+                  WebkitTouchCallout: "none",
+                  WebkitUserDrag: "none",
+                }}
               />
             </div>
           ))}
@@ -625,11 +635,21 @@ export default function Home() {
               src="/home1.mp4"
               alt="video"
               playsInline
+              webkit-playsinline="true"
+              x5-playsinline="true"
               // width={604}
               // height={521}
               loop
               autoPlay
               muted
+              onContextMenu={(e) => e.preventDefault()}
+              style={{
+                WebkitUserSelect: "none",
+                userSelect: "none",
+                pointerEvents: "none",
+                WebkitTouchCallout: "none",
+                WebkitUserDrag: "none",
+              }}
             />
           </div>
 
@@ -655,9 +675,19 @@ export default function Home() {
                 // width={604}
                 // height={521}
                 playsInline
+                webkit-playsinline="true"
+                x5-playsinline="true"
                 loop
                 autoPlay
                 muted
+                onContextMenu={(e) => e.preventDefault()}
+                style={{
+                  WebkitUserSelect: "none",
+                  userSelect: "none",
+                  pointerEvents: "none",
+                  WebkitTouchCallout: "none",
+                  WebkitUserDrag: "none",
+                }}
               />
               <Image
                 className="w-[192px] h-[205px] xl:w-[192px] xl:h-[205px] rounded-[16px] md:w[192px] md:h-[180px]"
@@ -695,12 +725,22 @@ export default function Home() {
               className="w-full h-full rounded-[16px] object-cover "
               src="/home1.mp4"
               alt="video"
-              playsInline
               // width={604}
               // height={521}
+              playsInline
+              webkit-playsinline="true"
+              x5-playsinline="true"
               loop
               autoPlay
               muted
+              onContextMenu={(e) => e.preventDefault()}
+              style={{
+                WebkitUserSelect: "none",
+                userSelect: "none",
+                pointerEvents: "none",
+                WebkitTouchCallout: "none",
+                WebkitUserDrag: "none",
+              }}
             />
           </div>
 
@@ -709,10 +749,20 @@ export default function Home() {
               className="object-cover rounded-[16px] w-[171.765px] h-[183.395px] "
               src="https://res.cloudinary.com/dguzhztdt/video/upload/f_mp4/v1729091741/Auto%20Verdure%20media%20%28website%29/Plants/IMG_7939_wsnkj9.mov"
               alt="video"
+              playsInline
+              webkit-playsinline="true"
+              x5-playsinline="true"
               loop
               autoPlay
               muted
-              playsInline
+              onContextMenu={(e) => e.preventDefault()}
+              style={{
+                WebkitUserSelect: "none",
+                userSelect: "none",
+                pointerEvents: "none",
+                WebkitTouchCallout: "none",
+                WebkitUserDrag: "none",
+              }}
             />
             <Image
               className="rounded-[16px] w-[171.765px] h-[183.395px] sm:w-[140px] sm:h-[150px]"
@@ -806,12 +856,23 @@ export default function Home() {
                 // width={604}
                 // height={521}
                 playsInline
+                webkit-playsinline="true"
+                x5-playsinline="true"
                 loop
                 autoPlay
                 muted
                 width={293.34}
                 height={300}
-                style={{ width: "293.34px", height: "300px" }}
+                onContextMenu={(e) => e.preventDefault()}
+                style={{
+                  width: "293.34px",
+                  height: "300px",
+                  WebkitUserSelect: "none",
+                  userSelect: "none",
+                  pointerEvents: "none",
+                  WebkitTouchCallout: "none",
+                  WebkitUserDrag: "none",
+                }}
               />
               <div className="mt-[30px] w-[237px]">
                 <p className="text-2xl leading-[48px] -tracking-[0.6px] text-primaryMain font-bold">
@@ -933,6 +994,14 @@ export default function Home() {
               alt="leftArrow1"
               width={13}
               height={26}
+              onContextMenu={(e) => e.preventDefault()}
+              style={{
+                WebkitUserSelect: "none",
+                userSelect: "none",
+                pointerEvents: "none",
+                WebkitTouchCallout: "none",
+                WebkitUserDrag: "none",
+              }}
             />
             <Testimonial />
             <Image
@@ -941,6 +1010,14 @@ export default function Home() {
               alt="rightArrow1"
               width={13}
               height={26}
+              onContextMenu={(e) => e.preventDefault()}
+              style={{
+                WebkitUserSelect: "none",
+                userSelect: "none",
+                pointerEvents: "none",
+                WebkitTouchCallout: "none",
+                WebkitUserDrag: "none",
+              }}
             />
           </div>
 
@@ -953,6 +1030,14 @@ export default function Home() {
                   alt="img"
                   width={505}
                   height={413}
+                  onContextMenu={(e) => e.preventDefault()}
+                  style={{
+                    WebkitUserSelect: "none",
+                    userSelect: "none",
+                    pointerEvents: "none",
+                    WebkitTouchCallout: "none",
+                    WebkitUserDrag: "none",
+                  }}
                 />
                 <Image
                   className="object-contain w-[505px] h-[413px]"
@@ -960,6 +1045,14 @@ export default function Home() {
                   alt="img"
                   width={505}
                   height={413}
+                  onContextMenu={(e) => e.preventDefault()}
+                  style={{
+                    WebkitUserSelect: "none",
+                    userSelect: "none",
+                    pointerEvents: "none",
+                    WebkitTouchCallout: "none",
+                    WebkitUserDrag: "none",
+                  }}
                 />
                 <Image
                   className="object-contain w-[505px] h-[413px]"
@@ -967,6 +1060,14 @@ export default function Home() {
                   alt="img"
                   width={505}
                   height={413}
+                  onContextMenu={(e) => e.preventDefault()}
+                  style={{
+                    WebkitUserSelect: "none",
+                    userSelect: "none",
+                    pointerEvents: "none",
+                    WebkitTouchCallout: "none",
+                    WebkitUserDrag: "none",
+                  }}
                 />
               </div>
             </Link>
@@ -977,12 +1078,28 @@ export default function Home() {
                 alt="leftArrow1"
                 width={13}
                 height={26}
+                onContextMenu={(e) => e.preventDefault()}
+                style={{
+                  WebkitUserSelect: "none",
+                  userSelect: "none",
+                  pointerEvents: "none",
+                  WebkitTouchCallout: "none",
+                  WebkitUserDrag: "none",
+                }}
               />
               <Image
                 src="/rightArrow1.svg"
                 alt="rightArrow1"
                 width={13}
                 height={26}
+                onContextMenu={(e) => e.preventDefault()}
+                style={{
+                  WebkitUserSelect: "none",
+                  userSelect: "none",
+                  pointerEvents: "none",
+                  WebkitTouchCallout: "none",
+                  WebkitUserDrag: "none",
+                }}
               />
             </div>
           </div>
@@ -1012,6 +1129,14 @@ export default function Home() {
                 alt="img"
                 width={80}
                 height={80}
+                onContextMenu={(e) => e.preventDefault()}
+                style={{
+                  WebkitUserSelect: "none",
+                  userSelect: "none",
+                  pointerEvents: "none",
+                  WebkitTouchCallout: "none",
+                  WebkitUserDrag: "none",
+                }}
               />
 
               <p className="text-2xl leading-[28.8px] -tracking-[0.6px] font-[600] text-primaryGrayscale">
@@ -1031,6 +1156,14 @@ export default function Home() {
                 alt="img"
                 width={80}
                 height={80}
+                onContextMenu={(e) => e.preventDefault()}
+                style={{
+                  WebkitUserSelect: "none",
+                  userSelect: "none",
+                  pointerEvents: "none",
+                  WebkitTouchCallout: "none",
+                  WebkitUserDrag: "none",
+                }}
               />
 
               <p className="text-2xl leading-[28.8px] -tracking-[0.6px] font-[600] text-primaryGrayscale">
@@ -1049,6 +1182,14 @@ export default function Home() {
                 alt="img"
                 width={80}
                 height={80}
+                onContextMenu={(e) => e.preventDefault()}
+                style={{
+                  WebkitUserSelect: "none",
+                  userSelect: "none",
+                  pointerEvents: "none",
+                  WebkitTouchCallout: "none",
+                  WebkitUserDrag: "none",
+                }}
               />
 
               <p className="text-2xl leading-[28.8px] -tracking-[0.6px] font-[600] text-primaryGrayscale">

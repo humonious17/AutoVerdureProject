@@ -698,6 +698,7 @@ export default function Home() {
               alt="video"
               // width={604}
               // height={521}
+              autoPlay
               playsInline
               loop
               muted
@@ -709,6 +710,7 @@ export default function Home() {
               className="object-cover rounded-[16px] w-[171.765px] h-[183.395px] "
               src="https://res.cloudinary.com/dguzhztdt/video/upload/f_mp4/v1729091741/Auto%20Verdure%20media%20%28website%29/Plants/IMG_7939_wsnkj9.mov"
               alt="video"
+              autoPlay
               playsInline
               loop
               muted
@@ -782,6 +784,7 @@ export default function Home() {
                 alt="image"
                 width={646.66}
                 height={300}
+                playsInline
                 style={{ width: "646.66px", height: "300px" }}
               />
               <div className="mt-[30px] w-full">
@@ -804,10 +807,10 @@ export default function Home() {
                 alt="video"
                 // width={604}
                 // height={521}
+                autoPlay
                 playsInline
                 loop
                 muted
-                autoPlay
               />
               <div className="mt-[30px] w-[237px]">
                 <p className="text-2xl leading-[48px] -tracking-[0.6px] text-primaryMain font-bold">

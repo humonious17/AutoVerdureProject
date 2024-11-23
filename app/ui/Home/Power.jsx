@@ -46,6 +46,8 @@ const ContentSections = () => {
     {
       id: 3,
       video: "/expert.mp4",
+      autoPlay: true,
+      playsInline: true,
       title: "Expert Guidance",
       description:
         "And YES, Just Like you, we are Passionate about Plants- We Bring you Expert Guidance to provide proper care to your Plants.",
@@ -54,7 +56,6 @@ const ContentSections = () => {
 
   return (
     <div className="w-full flex flex-col justify-center">
-
       {/* First Row (Mobile View Only) */}
       <div className="block md:hidden w-full">
         {sections.slice(0, 2).map((section, index) => (
@@ -142,8 +143,7 @@ const ContentSections = () => {
           </div>
         ))}
       </div>
-
-      </div>
+    </div>
   );
 };
 

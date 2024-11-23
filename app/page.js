@@ -438,16 +438,7 @@ export default function Home() {
                 playsInline
                 loop
                 muted
-                webkit-playsinline="true"
-                x5-playsinline="true"
-                onContextMenu={(e) => e.preventDefault()}
-                style={{
-                  WebkitUserSelect: "none",
-                  userSelect: "none",
-                  pointerEvents: "none",
-                  WebkitTouchCallout: "none",
-                  WebkitUserDrag: "none",
-                }}
+                autoPlay
               />
             </div>
           ))}
@@ -710,16 +701,6 @@ export default function Home() {
               playsInline
               loop
               muted
-              webkit-playsinline="true"
-              x5-playsinline="true"
-              onContextMenu={(e) => e.preventDefault()}
-              style={{
-                WebkitUserSelect: "none",
-                userSelect: "none",
-                pointerEvents: "none",
-                WebkitTouchCallout: "none",
-                WebkitUserDrag: "none",
-              }}
             />
           </div>
 
@@ -826,16 +807,7 @@ export default function Home() {
                 playsInline
                 loop
                 muted
-                webkit-playsinline="true"
-                x5-playsinline="true"
-                onContextMenu={(e) => e.preventDefault()}
-                style={{
-                  WebkitUserSelect: "none",
-                  userSelect: "none",
-                  pointerEvents: "none",
-                  WebkitTouchCallout: "none",
-                  WebkitUserDrag: "none",
-                }}
+                autoPlay
               />
               <div className="mt-[30px] w-[237px]">
                 <p className="text-2xl leading-[48px] -tracking-[0.6px] text-primaryMain font-bold">
@@ -1067,7 +1039,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="md:mt-[72.12px] w-full flex flex-col justify-center items-center">
+          <div className="mt-[20px] md:mt-[72.12px] w-full flex flex-col justify-center items-center">
             <Link
               href="/community"
               className="text-base px-[42px] py-[18px] rounded-[100px] border-[1px] font-normal border-primaryGrayscale hover:bg-[#000000] text-primaryGrayscale hover:text-[#ffffff] ease-in-out duration-500"

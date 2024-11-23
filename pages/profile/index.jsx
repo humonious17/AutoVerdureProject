@@ -189,7 +189,7 @@ const Profile = (props) => {
                 name="firstName"
                 value={formData.firstName}
                 onChange={handleChange}
-                className="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-purple-500"
+                className="w-full px-4 py-2 rounded-full border focus:ring-2 focus:ring-purple-500"
                 disabled={!editField.name}
               />
               <button
@@ -208,7 +208,7 @@ const Profile = (props) => {
               name="lastName"
               value={formData.lastName}
               onChange={handleChange}
-              className="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-purple-500"
+              className="w-full px-4 py-2 rounded-full border focus:ring-2 focus:ring-purple-500"
               disabled={!editField.name}
             />
           </div>
@@ -223,7 +223,7 @@ const Profile = (props) => {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-purple-500"
+              className="w-full px-4 py-2 rounded-full border focus:ring-2 focus:ring-purple-500"
               disabled={!editField.email}
             />
             <button
@@ -245,7 +245,7 @@ const Profile = (props) => {
               name="phone"
               value={formData.phone}
               onChange={handleChange}
-              className="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-purple-500"
+              className="w-full px-4 py-2 rounded-full border focus:ring-2 focus:ring-purple-500"
               disabled={!editField.phone}
             />
             <button
@@ -265,7 +265,7 @@ const Profile = (props) => {
             type="number"
             name="avPoints"
             value={formData.avPoints}
-            className="w-full px-4 py-2 rounded-lg border bg-gray-50"
+            className="w-full px-4 py-2 rounded-full border bg-gray-50"
             disabled
           />
         </div>
@@ -275,7 +275,7 @@ const Profile = (props) => {
           <button
             type="button"
             onClick={redeemPoints}
-            className="w-full py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors"
+            className="w-full py-3 bg-green-600 hover:bg-green-700 text-white rounded-full transition-colors"
           >
             Redeem Points
           </button>
@@ -289,7 +289,7 @@ const Profile = (props) => {
           <button
             type="submit"
             onClick={handleEditProfile}
-            className="w-full py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors"
+            className="w-full py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-full transition-colors"
           >
             {buttonText}
           </button>
@@ -297,7 +297,7 @@ const Profile = (props) => {
           <button
             type="button"
             onClick={openLogoutModal}
-            className="w-full py-3 bg-black hover:bg-gray-800 text-white rounded-lg transition-colors"
+            className="w-full py-3 bg-black hover:bg-gray-800 text-white rounded-full transition-colors"
           >
             Log Out
           </button>
@@ -307,20 +307,20 @@ const Profile = (props) => {
       {/* Logout Modal */}
       {showLogoutModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-sm">
+          <div className="bg-white rounded-full p-6 w-full max-w-sm">
             <p className="text-lg text-center mb-6">
               Are you sure you want to log out?
             </p>
             <div className="flex gap-4">
               <button
                 onClick={confirmLogout}
-                className="flex-1 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg"
+                className="flex-1 py-2 bg-red-500 hover:bg-red-600 text-white rounded-full"
               >
                 Yes
               </button>
               <button
                 onClick={closeLogoutModal}
-                className="flex-1 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg"
+                className="flex-1 py-2 bg-gray-200 hover:bg-gray-300 rounded-full"
               >
                 No
               </button>

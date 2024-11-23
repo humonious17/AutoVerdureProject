@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 "use client";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
@@ -33,13 +34,13 @@ const Input = ({ label, placeholder, type, name, value, onChange }) => {
   const [isVisible, setIsVisible] = useState(false);
 
   return (
-    <div className="w-full flex flex-col gap-y-3">
-      <label className="text-2xl leading-6 capitalize font-normal text-[#070707]">
+    <div className="w-full flex flex-col gap-y-2">
+      <label className="text-xl sm:text-2xl leading-6 capitalize font-normal text-[#070707]">
         {label}
       </label>
-      <div className="w-full text-base px-4 py-3 leading-[25.6px] rounded-[84px] border-[1px] border-[#070707] text-[#070707] bg-[#FFFFFF] font-medium flex gap-5 justify-between">
+      <div className="w-full text-base px-3 sm:px-4 py-2.5 sm:py-3 leading-[25.6px] rounded-[84px] border-[1px] border-[#070707] text-[#070707] bg-[#FFFFFF] font-medium flex gap-3 sm:gap-5 justify-between">
         <input
-          className="w-full h-fit text-base focus:outline-none"
+          className="w-full h-fit text-sm sm:text-base focus:outline-none"
           placeholder={placeholder}
           type={isVisible ? "text" : type}
           name={name}
@@ -48,7 +49,7 @@ const Input = ({ label, placeholder, type, name, value, onChange }) => {
         />
         {type === "password" && (
           <Image
-            className="cursor-pointer"
+            className="cursor-pointer w-5 h-5 sm:w-6 sm:h-6"
             onClick={() => setIsVisible(!isVisible)}
             src="/eye.svg"
             alt="eye"
@@ -107,22 +108,23 @@ const Signin = (prop) => {
       console.error("Error submitting form:", error);
     }
   };
+
   return (
-    <div className="pt-[80px] mt-[55px] mb-[41px] lg:mb-[152px] lg:pl-[70px] w-full flex flex-col lg:flex-row lg:gap-[57px] xl:gap-x-[152px] justify-center lg:justify-start items-start overflow-x-hidden">
+    <div className="px-4 sm:px-0 pt-16 sm:pt-[80px] mt-8 sm:mt-[55px] mb-8 sm:mb-[41px] lg:mb-[152px] lg:pl-[70px] w-full flex flex-col lg:flex-row lg:gap-[57px] xl:gap-x-[152px] justify-center lg:justify-start items-start overflow-x-hidden">
       {/* Left Section with Text */}
-      <div className="mb-[46px] lg:mb-0 w-full lg:w-[560px] px-11 sm:px-[50px] lg:px-0 flex flex-col justify-center items-start">
+      <div className="mb-8 sm:mb-[46px] lg:mb-0 w-full lg:w-[560px] px-0 sm:px-[50px] lg:px-0 flex flex-col justify-center items-start">
         {/* Title */}
-        <div className="w-full flex flex-col gap-y-3">
-          <p className="text-[32px] leading-8 font-normal capitalize text-[#070707]">
+        <div className="w-full flex flex-col gap-y-2 sm:gap-y-3">
+          <p className="text-2xl sm:text-[32px] leading-8 font-normal capitalize text-[#070707]">
             Welcome back
           </p>
-          <p className="w-[266px] sm:w-full text-sm leading-[22.4px] font-medium text-[#8E8F94]">
+          <p className="w-full text-sm leading-[22.4px] font-medium text-[#8E8F94]">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit.
           </p>
         </div>
 
         {/* Google and Apple Authentication */}
-        <div className="mt-[42px] sm:mt-[52px] w-full flex flex-col justify-start sm:flex-row gap-y-4 sm:gap-x-4">
+        <div className="mt-8 sm:mt-[52px] w-full flex flex-col justify-center sm:flex-row gap-y-4 sm:gap-x-4">
           <div
             id="g_id_onload"
             data-client_id="39593396169-ppn7dc7v4huovmuromku2k01s26kngfa.apps.googleusercontent.com"
@@ -145,9 +147,9 @@ const Signin = (prop) => {
         </div>
 
         {/* Or */}
-        <div className="my-8 w-[560px] flex gap-x-2 items-center">
+        <div className="my-6 sm:my-8 w-full sm:w-[560px] flex gap-x-2 items-center">
           <div className="w-full h-[1px] bg-[#E4E4E4]" />
-          <p className="text-base leading-[25.6px] font-medium text-[#070707]">
+          <p className="text-sm sm:text-base leading-[25.6px] font-medium text-[#070707] whitespace-nowrap px-2">
             or
           </p>
           <div className="w-full h-[1px] bg-[#E4E4E4]" />
@@ -156,7 +158,7 @@ const Signin = (prop) => {
         {/* Form */}
         <div className="w-full">
           <form
-            className="w-full flex flex-col gap-y-6"
+            className="w-full flex flex-col gap-y-4 sm:gap-y-6"
             onSubmit={handleSubmit}
           >
             <Input
@@ -178,13 +180,13 @@ const Signin = (prop) => {
 
             <button
               type="submit"
-              className="mt-[42px] sm:mt-[52px] w-full text-base px-6 py-[17px] rounded-[30px] border-[1px] bg-[#070707] border-[#070707] text-[#FFFFFF] font-[600]"
+              className="mt-8 sm:mt-[52px] w-full text-sm sm:text-base px-4 sm:px-6 py-3 sm:py-[17px] rounded-[30px] border-[1px] bg-[#070707] border-[#070707] text-[#FFFFFF] font-[600]"
             >
               {buttonText}
             </button>
 
-            <p className="mt-4 sm:mt-6 text-sm leading-[18.2px] text-[#8E8F94] font-medium text-center">
-              Don’t have an account?
+            <p className="mt-4 sm:mt-6 text-xs sm:text-sm leading-[18.2px] text-[#8E8F94] font-medium text-center">
+              Don't have an account?
               <Link href="/signup">
                 <span className="text-[#070707]"> Sign Up</span>
               </Link>
@@ -195,10 +197,11 @@ const Signin = (prop) => {
 
       {/* Right Section with Image */}
       <div className="flex justify-center items-center w-full md:w-[560px] lg:w-[710px]">
-        <div className="w-[330.65px] h-[340px] md:w-[410px] md:h-[440px] lg:w-[558.65px] lg:h-[582px] xl:w-[725.65px] xl:h-[590px] overflow-hidden rounded-lg mx-auto">
+        <div className="w-full h-[280px] sm:w-[330.65px] sm:h-[340px] md:w-[410px] md:h-[440px] lg:w-[558.65px] lg:h-[582px] xl:w-[725.65px] xl:h-[590px] overflow-hidden  shadow-lg rounded-lg">
           <video
             className="w-full h-full object-cover rounded-lg"
             src="/vid221.mov"
+            playsInline
             autoPlay
             loop
             muted

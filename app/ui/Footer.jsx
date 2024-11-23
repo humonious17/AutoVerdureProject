@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const Footer = () => {
   return (
-    <div className="pl-4 pr-[85px] md:px-[41px] lg:px-[80px] xl:px-[119px] pb-[45px] bg-[#FFFCF8]">
+    <div className="pl-4 pr-[85px] md:px-[41px] lg:px-[80px] xl:px-[119px] pb-[45px] bg-[#FFFCF8] mt-[20px] ml-[20px]">
       {/* Border */}
       <div className="hidden md:flex mb-[73px] border-t-[1px] border-tertiaryBg" />
       <div className="xl:gap-x-[78px] grid grid-cols-1 md:grid-cols-2 xl:flex xl:justify-around">
@@ -117,7 +117,12 @@ const Footer = () => {
 
         {/* Newsletter */}
         <div className="w-full md:w-[290px] xl:w-[287px] h-fit mt-[52px] md:mt-[43px] xl:mt-0 flex flex-col justify-center md:justify-normal items-center">
-          <p className="text-base font-medium text-secondaryMain" style={{color: "#6F6E73"}}>Newsletter</p>
+          <p
+            className="text-base font-medium text-secondaryMain"
+            style={{ color: "#6F6E73" }}
+          >
+            Newsletter
+          </p>
 
           <div className="w-full mt-[18px] pl-[18px] pr-2 py-[7px] flex border-black border-opacity-[14%] rounded-[100px] border-[1px]">
             <form className="w-full flex justify-center items-center">

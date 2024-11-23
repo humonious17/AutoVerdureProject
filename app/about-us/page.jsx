@@ -232,37 +232,29 @@ const AboutUs = () => {
                 src="https://res.cloudinary.com/dguzhztdt/video/upload/f_mp4/v1729091619/Auto%20Verdure%20media%20%28website%29/About_us_video_1_rpqf9t.mov"
                 alt="video"
                 playsInline
-                width={315.326}
-                height={209.376}
-                colors={{
-                  accent: "#f0f10f0",
-                  base: "#f0f1f0",
-                  text: "#000000",
-                }}
+                width={315}
+                height={209}
                 loop
                 autoPlay
                 muted
               />
             </div>
 
-            <div className="w-full flex md:hidden gap-[21.47px] justify-center">
-              <Image
-                className="rounded-2xl"
-                src="/aboutImg5.jpg"
-                alt="img"
-                width={191.765}
-                height={183.395}
-              />
-              <Image
-                className="rounded-2xl"
-                src="/cas.jpg"
-                alt="img"
-                width={191.765}
-                height={183.395}
-              />
+            <div className="w-[100%] flex md:hidden gap-[21.47px] justify-center">
+              <div className="relative w-[191.765px] h-[183.395px] rounded-2xl overflow-hidden">
+                <Image
+                  src="/aboutImg5.jpg"
+                  alt="img"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <div className="relative w-[191.765px] h-[183.395px] rounded-2xl overflow-hidden">
+                <Image src="/cas.jpg" alt="img" fill className="object-cover" />
+              </div>
             </div>
 
-            <button className="md:mt-4 px-[42px] py-[18px]  text-base font-normal text-white rounded-[100px] bg-primaryMain">
+            <button className="md:mt-4 px-[42px] py-[18px] text-base font-normal text-white rounded-[100px] bg-primaryMain">
               <Link href="/store">Shop now</Link>
             </button>
           </div>

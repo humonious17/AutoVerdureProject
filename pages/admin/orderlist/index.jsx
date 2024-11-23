@@ -22,20 +22,33 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogFooter,
 } from "@/components/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/hooks/use-toast";
-import { Search, MoreVertical, X } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Search,
+  MoreVertical,
+  X,
+  Download,
+  Printer,
+  CreditCard,
+  Calendar,
+  Filter,
+  RefreshCcw,
+} from "lucide-react";
 
-// Helper functions to normalize data
+// Previous helper functions remain the same
 const normalizeOrderItems = (order) => {
-  // Handle both products and items arrays
   const items = order.products || order.items || [];
   return items.map((item) => ({
     productName: item.productName || item.name,
@@ -49,7 +62,6 @@ const normalizeOrderItems = (order) => {
 
 const normalizeAddress = (shipping) => {
   if (!shipping) return {};
-
   return {
     fullName: shipping.fullName || "",
     address1: shipping.address1 || shipping.houseNumber || "",
@@ -63,21 +75,54 @@ const normalizeAddress = (shipping) => {
 };
 
 const normalizeAmount = (order) => {
-  // Handle different amount fields and formats
   const amount = order.totalAmount || order.amount || 0;
-  // If amount is already in smallest currency unit (paise), divide by 100
   return amount > 1000 ? amount / 100 : amount;
 };
 
-// Order Details Component
-const OrderDetails = ({ order, onClose, onUpdateStatus }) => {
+// New helper function for date formatting
+const formatDate = (date) => {
+  if (!date) return "N/A";
+
+  // Handle Firestore Timestamp
+  if (date.seconds) {
+    return new Date(date.seconds * 1000).toLocaleString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  }
+
+  // Handle regular date string
+  return new Date(date).toLocaleString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+};
+
+// Enhanced OrderDetails Component
+const OrderDetails = ({ order, onClose, onUpdateStatus, onUpdateNotes }) => {
   const [status, setStatus] = useState(order.orderStatus || order.status);
+  const [notes, setNotes] = useState(order.notes || "");
+  const [paymentStatus, setPaymentStatus] = useState(
+    order.paymentStatus || "pending"
+  );
   const normalizedItems = normalizeOrderItems(order);
   const normalizedShipping = normalizeAddress(order.shipping);
+  const [isEditing, setIsEditing] = useState(false);
 
   const handleStatusChange = async (newStatus) => {
     await onUpdateStatus(order.orderId, newStatus);
     setStatus(newStatus);
+  };
+
+  const handleNotesChange = async () => {
+    await onUpdateNotes(order.orderId, notes);
+    setIsEditing(false);
   };
 
   const getStatusColor = (status) => {
@@ -87,6 +132,9 @@ const OrderDetails = ({ order, onClose, onUpdateStatus }) => {
       completed: "bg-green-100 text-green-800",
       cancelled: "bg-red-100 text-red-800",
       created: "bg-purple-100 text-purple-800",
+      paid: "bg-green-100 text-green-800",
+      unpaid: "bg-red-100 text-red-800",
+      refunded: "bg-gray-100 text-gray-800",
     };
     return statusColors[status] || "bg-gray-100 text-gray-800";
   };
@@ -101,24 +149,45 @@ const OrderDetails = ({ order, onClose, onUpdateStatus }) => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <div>
-          <h3 className="text-lg font-semibold">Order Status</h3>
-          <div className="mt-2 flex items-center space-x-4">
-            <Select value={status} onValueChange={handleStatusChange}>
-              <SelectTrigger className="w-40">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="created">Created</SelectItem>
-                <SelectItem value="pending">Pending</SelectItem>
-                <SelectItem value="processing">Processing</SelectItem>
-                <SelectItem value="completed">Completed</SelectItem>
-                <SelectItem value="cancelled">Cancelled</SelectItem>
-              </SelectContent>
-            </Select>
-            <Badge className={getStatusColor(status)}>
-              {status.charAt(0).toUpperCase() + status.slice(1)}
-            </Badge>
+        <div className="space-y-4">
+          <div>
+            <h3 className="text-lg font-semibold">Order Status</h3>
+            <div className="mt-2 flex items-center space-x-4">
+              <Select value={status} onValueChange={handleStatusChange}>
+                <SelectTrigger className="w-40">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="created">Created</SelectItem>
+                  <SelectItem value="pending">Pending</SelectItem>
+                  <SelectItem value="processing">Processing</SelectItem>
+                  <SelectItem value="completed">Completed</SelectItem>
+                  <SelectItem value="cancelled">Cancelled</SelectItem>
+                </SelectContent>
+              </Select>
+              <Badge className={getStatusColor(status)}>
+                {status.charAt(0).toUpperCase() + status.slice(1)}
+              </Badge>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold">Payment Status</h3>
+            <div className="mt-2 flex items-center space-x-4">
+              <Select value={paymentStatus} onValueChange={setPaymentStatus}>
+                <SelectTrigger className="w-40">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="pending">Pending</SelectItem>
+                  <SelectItem value="paid">Paid</SelectItem>
+                  <SelectItem value="refunded">Refunded</SelectItem>
+                </SelectContent>
+              </Select>
+              <Badge className={getStatusColor(paymentStatus)}>
+                {paymentStatus.charAt(0).toUpperCase() + paymentStatus.slice(1)}
+              </Badge>
+            </div>
           </div>
         </div>
         <Button variant="ghost" size="icon" onClick={onClose}>
@@ -160,6 +229,35 @@ const OrderDetails = ({ order, onClose, onUpdateStatus }) => {
             </p>
             <p>{normalizedShipping.country}</p>
           </div>
+        </div>
+      </div>
+
+      <div>
+        <h3 className="text-lg font-semibold mb-2">Order Notes</h3>
+        <div className="space-y-2">
+          {isEditing ? (
+            <>
+              <Textarea
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                className="min-h-[100px]"
+                placeholder="Add notes about this order..."
+              />
+              <div className="flex justify-end space-x-2">
+                <Button variant="outline" onClick={() => setIsEditing(false)}>
+                  Cancel
+                </Button>
+                <Button onClick={handleNotesChange}>Save Notes</Button>
+              </div>
+            </>
+          ) : (
+            <div
+              className="min-h-[100px] p-3 border rounded-md cursor-pointer hover:bg-gray-50"
+              onClick={() => setIsEditing(true)}
+            >
+              {notes || "Click to add notes..."}
+            </div>
+          )}
         </div>
       </div>
 
@@ -214,20 +312,35 @@ const OrderDetails = ({ order, onClose, onUpdateStatus }) => {
           </div>
         </div>
       </div>
+
+      <DialogFooter>
+        <div className="flex space-x-2">
+          <Button variant="outline" onClick={() => window.print()}>
+            <Printer className="w-4 h-4 mr-2" />
+            Print Order
+          </Button>
+          <Button>
+            <Download className="w-4 h-4 mr-2" />
+            Download Invoice
+          </Button>
+        </div>
+      </DialogFooter>
     </div>
   );
 };
 
-// Main OrderList Component
+// Enhanced OrderList Component
 const OrderList = ({ initialOrders }) => {
   const [orders, setOrders] = useState(initialOrders);
   const [filteredOrders, setFilteredOrders] = useState(initialOrders);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [selectedOrder, setSelectedOrder] = useState(null);
+  const [selectedOrders, setSelectedOrders] = useState([]);
+  const [dateRange, setDateRange] = useState({ start: "", end: "" });
   const { toast } = useToast();
 
-  // Filter and search logic
+  // Enhanced filter and search logic
   useEffect(() => {
     let result = orders;
 
@@ -236,6 +349,18 @@ const OrderList = ({ initialOrders }) => {
       result = result.filter(
         (order) => (order.orderStatus || order.status) === statusFilter
       );
+    }
+
+    // Date range filter
+    if (dateRange.start && dateRange.end) {
+      const start = new Date(dateRange.start).getTime();
+      const end = new Date(dateRange.end).getTime();
+      result = result.filter((order) => {
+        const orderDate = order.createdAt?.seconds
+          ? order.createdAt.seconds * 1000
+          : new Date(order.createdAt).getTime();
+        return orderDate >= start && orderDate <= end;
+      });
     }
 
     // Search filter
@@ -250,7 +375,7 @@ const OrderList = ({ initialOrders }) => {
     }
 
     setFilteredOrders(result);
-  }, [statusFilter, searchTerm, orders]);
+  }, [statusFilter, searchTerm, dateRange, orders]);
 
   const getStatusColor = (status) => {
     const statusColors = {
@@ -264,7 +389,11 @@ const OrderList = ({ initialOrders }) => {
   };
 
   const handleRowClick = (order, e) => {
-    if (e.target.closest(".actions-button")) return;
+    if (
+      e.target.closest(".actions-button") ||
+      e.target.closest("input[type='checkbox']")
+    )
+      return;
     setSelectedOrder(order);
   };
 
@@ -290,7 +419,7 @@ const OrderList = ({ initialOrders }) => {
 
       toast({
         title: "Status updated",
-        description: `Order ${orderId} status changed to ${newStatus}`,
+        description: "Order status has been updated successfully",
       });
     } catch (error) {
       toast({
@@ -301,21 +430,110 @@ const OrderList = ({ initialOrders }) => {
     }
   };
 
+  const handleUpdateNotes = async (orderId, notes) => {
+    try {
+      const response = await fetch("/api/orders/updateOrderNotes", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ orderId, notes }),
+      });
+
+      if (!response.ok) throw new Error("Failed to update notes");
+
+      setOrders((prevOrders) =>
+        prevOrders.map((order) =>
+          order.orderId === orderId ? { ...order, notes } : order
+        )
+      );
+
+      toast({
+        title: "Notes updated",
+        description: "Order notes have been saved successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error updating notes",
+        description: "Please try again later",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleBulkAction = async (action) => {
+    if (selectedOrders.length === 0) {
+      toast({
+        title: "No orders selected",
+        description: "Please select at least one order to perform this action",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      const updates = selectedOrders.map((orderId) =>
+        handleUpdateStatus(orderId, action)
+      );
+      await Promise.all(updates);
+
+      toast({
+        title: "Bulk action completed",
+        description: `Updated ${selectedOrders.length} orders to ${action}`,
+      });
+      setSelectedOrders([]);
+    } catch (error) {
+      toast({
+        title: "Error performing bulk action",
+        description: "Some orders may not have been updated",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleRefresh = async () => {
+    try {
+      const response = await fetch("/api/orders");
+      const data = await response.json();
+      setOrders(data);
+      toast({
+        title: "Orders refreshed",
+        description: "Order list has been updated with latest data",
+      });
+    } catch (error) {
+      toast({
+        title: "Error refreshing orders",
+        description: "Please try again later",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <div className="container mx-auto py-8">
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-          <CardTitle className="text-2xl font-bold">Order Management</CardTitle>
-          <div className="flex space-x-2">
-            <div className="flex w-72 items-center space-x-2">
+        <CardHeader className="space-y-4">
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-2xl font-bold">
+              Order Management
+            </CardTitle>
+            <Button variant="outline" onClick={handleRefresh}>
+              <RefreshCcw className="w-4 h-4 mr-2" />
+              Refresh
+            </Button>
+          </div>
+
+          <div className="flex flex-wrap gap-4">
+            <div className="flex items-center space-x-2">
               <Search className="w-4 h-4 text-gray-400" />
               <Input
                 placeholder="Search orders..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="flex-1"
+                className="w-72"
               />
             </div>
+
             <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger className="w-40">
                 <SelectValue placeholder="Filter by status" />
@@ -329,18 +547,92 @@ const OrderList = ({ initialOrders }) => {
                 <SelectItem value="cancelled">Cancelled</SelectItem>
               </SelectContent>
             </Select>
+
+            <div className="flex items-center space-x-2">
+              <Calendar className="w-4 h-4 text-gray-400" />
+              <Input
+                type="date"
+                value={dateRange.start}
+                onChange={(e) =>
+                  setDateRange((prev) => ({ ...prev, start: e.target.value }))
+                }
+                className="w-40"
+              />
+              <span>to</span>
+              <Input
+                type="date"
+                value={dateRange.end}
+                onChange={(e) =>
+                  setDateRange((prev) => ({ ...prev, end: e.target.value }))
+                }
+                className="w-40"
+              />
+            </div>
           </div>
+
+          {selectedOrders.length > 0 && (
+            <div className="flex items-center space-x-4 bg-gray-50 p-4 rounded-lg">
+              <span className="text-sm text-gray-600">
+                {selectedOrders.length} orders selected
+              </span>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handleBulkAction("processing")}
+              >
+                Mark as Processing
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handleBulkAction("completed")}
+              >
+                Mark as Completed
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handleBulkAction("cancelled")}
+              >
+                Cancel Orders
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setSelectedOrders([])}
+              >
+                Clear Selection
+              </Button>
+            </div>
+          )}
         </CardHeader>
+
         <CardContent>
           <div className="rounded-md border">
             <Table>
               <TableHeader>
                 <TableRow>
+                  <TableHead className="w-12">
+                    <Checkbox
+                      checked={
+                        selectedOrders.length === filteredOrders.length &&
+                        filteredOrders.length > 0
+                      }
+                      onCheckedChange={(checked) => {
+                        setSelectedOrders(
+                          checked
+                            ? filteredOrders.map((order) => order.orderId)
+                            : []
+                        );
+                      }}
+                    />
+                  </TableHead>
                   <TableHead>Order ID</TableHead>
                   <TableHead>Customer</TableHead>
                   <TableHead>Products</TableHead>
                   <TableHead>Total Amount</TableHead>
                   <TableHead>Status</TableHead>
+                  <TableHead>Payment</TableHead>
                   <TableHead>Date</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
@@ -352,6 +644,18 @@ const OrderList = ({ initialOrders }) => {
                     className="cursor-pointer hover:bg-gray-50"
                     onClick={(e) => handleRowClick(order, e)}
                   >
+                    <TableCell>
+                      <Checkbox
+                        checked={selectedOrders.includes(order.orderId)}
+                        onCheckedChange={(checked) => {
+                          setSelectedOrders((prev) =>
+                            checked
+                              ? [...prev, order.orderId]
+                              : prev.filter((id) => id !== order.orderId)
+                          );
+                        }}
+                      />
+                    </TableCell>
                     <TableCell className="font-medium">
                       {order.orderId}
                     </TableCell>
@@ -377,10 +681,16 @@ const OrderList = ({ initialOrders }) => {
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      {new Date(
-                        order.createdAt?.seconds * 1000
-                      ).toLocaleDateString()}
+                      <Badge
+                        className={getStatusColor(
+                          order.paymentStatus || "pending"
+                        )}
+                      >
+                        <CreditCard className="w-3 h-3 mr-1 inline" />
+                        {order.paymentStatus || "Pending"}
+                      </Badge>
                     </TableCell>
+                    <TableCell>{formatDate(order.createdAt)}</TableCell>
                     <TableCell className="text-right">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
@@ -413,6 +723,11 @@ const OrderList = ({ initialOrders }) => {
                           >
                             Cancel Order
                           </DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem onClick={() => window.print()}>
+                            Print Order
+                          </DropdownMenuItem>
+                          <DropdownMenuItem>Download Invoice</DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </TableCell>
@@ -420,7 +735,7 @@ const OrderList = ({ initialOrders }) => {
                 ))}
                 {filteredOrders.length === 0 && (
                   <TableRow>
-                    <TableCell colSpan={7} className="text-center py-8">
+                    <TableCell colSpan={9} className="text-center py-8">
                       No orders found
                     </TableCell>
                   </TableRow>
@@ -444,6 +759,7 @@ const OrderList = ({ initialOrders }) => {
               order={selectedOrder}
               onClose={() => setSelectedOrder(null)}
               onUpdateStatus={handleUpdateStatus}
+              onUpdateNotes={handleUpdateNotes}
             />
           )}
         </DialogContent>

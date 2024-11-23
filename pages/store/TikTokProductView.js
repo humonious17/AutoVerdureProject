@@ -22,6 +22,7 @@ const TikTokProductView = ({ products, onClose }) => {
   const [isLiked, setIsLiked] = useState(false);
   const [showAddedToCart, setShowAddedToCart] = useState(false);
   const containerRef = useRef(null);
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
 
   // Spring animation for drag feedback
   const [{ y }, api] = useSpring(() => ({
@@ -132,9 +133,46 @@ const TikTokProductView = ({ products, onClose }) => {
     config: config.wobbly,
   });
 
-  const handleAddToCart = () => {
-    setShowAddedToCart(true);
-    setTimeout(() => setShowAddedToCart(false), 2000);
+  const handleAddToCart = async () => {
+    const currentProduct = products[currentIndex];
+
+    if (isAddingToCart) return;
+
+    setIsAddingToCart(true);
+
+    try {
+      const response = await fetch("/api/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          productId: currentProduct.productId,
+          productColor: currentProduct.defaultColor || "default",
+          productSize: currentProduct.defaultSize || "default",
+          productQuantity: 1,
+          productPrice: currentProduct.productPrice,
+          productName: currentProduct.productName,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to add to cart");
+      }
+
+      const data = await response.json();
+
+      // Show success toast
+      setShowAddedToCart(true);
+      setTimeout(() => setShowAddedToCart(false), 2000);
+    } catch (error) {
+      // Show error toast
+      setShowAddedToCart(true);
+      setTimeout(() => setShowAddedToCart(false), 2000);
+      console.error("Error adding to cart:", error);
+    } finally {
+      setIsAddingToCart(false);
+    }
   };
 
   const currentProduct = products[currentIndex];

@@ -6,6 +6,8 @@ import StoreTools from "@/app/ui/Store/StoreTools";
 import findAllProducts from "/pages/api/products/findAllProducts";
 import TuneIcon from "@mui/icons-material/Tune";
 import Image from "next/image";
+import { LayoutGrid, Smartphone } from "lucide-react";
+import TikTokProductView from "./TikTokProductView";
 
 const Store = ({ initialProducts }) => {
   const [filteredProducts, setFilteredProducts] = useState(initialProducts);
@@ -13,6 +15,7 @@ const Store = ({ initialProducts }) => {
   const [showCount, setShowCount] = useState(16);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [hoveredProductId, setHoveredProductId] = useState(null);
+  const [viewMode, setViewMode] = useState("grid");
 
   const handleFilterChange = (filters) => {
     let filtered = [...initialProducts];
@@ -35,6 +38,16 @@ const Store = ({ initialProducts }) => {
         break;
       case "name-desc":
         sorted.sort((a, b) => b.productName.localeCompare(a.productName));
+        break;
+      case "price-low":
+        sorted.sort(
+          (a, b) => (parseFloat(a.price) || 0) - (parseFloat(b.price) || 0)
+        );
+        break;
+      case "price-high":
+        sorted.sort(
+          (a, b) => (parseFloat(b.price) || 0) - (parseFloat(a.price) || 0)
+        );
         break;
       default:
         sorted = [...initialProducts].filter(Boolean);
@@ -100,22 +113,33 @@ const Store = ({ initialProducts }) => {
                   <TuneIcon />
                   Filters
                 </button>
-                <div className="hidden sm:flex items-center gap-4">
-                  <Image
-                    className="object-contain cursor-pointer"
-                    src="/gridRound.svg"
-                    alt="gridRound"
-                    width={28}
-                    height={28}
-                  />
-                  <Image
-                    className="object-contain cursor-pointer"
-                    src="/list.svg"
-                    alt="list"
-                    width={24}
-                    height={24}
-                  />
+
+                {/* View Mode Toggles */}
+                <div className="flex items-center gap-4">
+                  <button
+                    onClick={() => setViewMode("grid")}
+                    className={`p-2 rounded-lg transition-colors ${
+                      viewMode === "grid"
+                        ? "bg-purple-100 text-purple-600"
+                        : "text-gray-600"
+                    }`}
+                    aria-label="Grid View"
+                  >
+                    <LayoutGrid className="w-5 h-5" />
+                  </button>
+                  <button
+                    onClick={() => setViewMode("tiktok")}
+                    className={`p-2 rounded-lg sm:hidden transition-colors ${
+                      viewMode === "tiktok"
+                        ? "bg-purple-100 text-purple-600"
+                        : "text-gray-600"
+                    }`}
+                    aria-label="TikTok Style View"
+                  >
+                    <Smartphone className="w-5 h-5" />
+                  </button>
                 </div>
+
                 <span className="text-sm text-gray-600">
                   Showing {validProducts.slice(0, showCount).length} of{" "}
                   {validProducts.length} products
@@ -132,6 +156,8 @@ const Store = ({ initialProducts }) => {
                   <option value="default">Sort by</option>
                   <option value="name-asc">Name (A-Z)</option>
                   <option value="name-desc">Name (Z-A)</option>
+                  <option value="price-low">Price (Low to High)</option>
+                  <option value="price-high">Price (High to Low)</option>
                 </select>
                 <select
                   value={showCount}
@@ -147,39 +173,50 @@ const Store = ({ initialProducts }) => {
           </div>
         </div>
 
-        {/* Products Grid */}
-        <div className="p-3 sm:p-8 flex justify-center">
-          <div
-            className={`grid gap-4 sm:gap-12 w-full max-w-[1440px] ${
-              isFilterOpen
-                ? "grid-cols-2 sm:grid-cols-2 md:grid-cols-3"
-                : "grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3"
-            }`}
-          >
-            {validProducts.slice(0, showCount).map((product, index) => (
-              <Link
-                key={product.productId || index}
-                href={`/store/${product.category}/${product.productId}`}
-                className="flex justify-center relative"
-                onMouseEnter={() => setHoveredProductId(product.productId)}
-                onMouseLeave={() => setHoveredProductId(null)}
-              >
-                <div
-                  className={`w-full transition-all duration-300 ease-in-out ${
-                    hoveredProductId === product.productId
-                      ? "scale-105 z-20 shadow-xl"
-                      : "scale-100 z-10"
-                  }`}
+        {/* Products Display */}
+        {viewMode === "grid" ? (
+          // Grid View
+          <div className="p-3 sm:p-8 flex justify-center">
+            <div
+              className={`grid gap-4 sm:gap-12 w-full max-w-[1440px] ${
+                isFilterOpen
+                  ? "grid-cols-2 sm:grid-cols-2 md:grid-cols-3"
+                  : "grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3"
+              }`}
+            >
+              {validProducts.slice(0, showCount).map((product, index) => (
+                <Link
+                  key={product.productId || index}
+                  href={`/store/${product.category}/${product.productId}`}
+                  className="flex justify-center relative"
+                  onMouseEnter={() => setHoveredProductId(product.productId)}
+                  onMouseLeave={() => setHoveredProductId(null)}
                 >
-                  <ProductCard
-                    product={product}
-                    isExpanded={hoveredProductId === product.productId}
-                  />
-                </div>
-              </Link>
-            ))}
+                  <div
+                    className={`w-full transition-all duration-300 ease-in-out ${
+                      hoveredProductId === product.productId
+                        ? "scale-105 z-20 shadow-xl"
+                        : "scale-100 z-10"
+                    }`}
+                  >
+                    <ProductCard
+                      product={product}
+                      isExpanded={hoveredProductId === product.productId}
+                    />
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
+        ) : (
+          // TikTok Style View (mobile only)
+          <div className="block sm:hidden">
+            <TikTokProductView
+              products={validProducts.slice(0, showCount)}
+              onClose={() => setViewMode("grid")}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
@@ -205,6 +242,7 @@ export async function getServerSideProps() {
       },
     };
   } catch (error) {
+    console.error("Error fetching products:", error);
     return {
       redirect: {
         destination: "/",

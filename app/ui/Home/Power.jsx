@@ -46,11 +46,10 @@ const ContentSections = () => {
     {
       id: 3,
       video: "/expert.mp4",
-      autoPlay: true,
-      playsInline: true,
       title: "Expert Guidance",
       description:
         "And YES, Just Like you, we are Passionate about Plants- We Bring you Expert Guidance to provide proper care to your Plants.",
+
     },
   ];
 
@@ -79,6 +78,7 @@ const ContentSections = () => {
                     className="object-cover rounded-[16px]"
                     src={section.video}
                     alt={section.title}
+                    playsInline
                     loop
                     autoPlay
                     muted
@@ -122,6 +122,7 @@ const ContentSections = () => {
                     className="object-cover rounded-[16px]"
                     src={section.video}
                     alt={section.title}
+                    playsInline
                     loop
                     autoPlay
                     muted

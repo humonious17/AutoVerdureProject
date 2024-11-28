@@ -72,21 +72,20 @@ const OrderStatus = ({ status, className = "" }) => {
     failed: { icon: AlertCircle, color: "text-gray-500", bg: "bg-gray-50" },
   };
 
-  const config = status
-    ? statusConfig[status.toLowerCase()]
-    : statusConfig.pending;
-  const StatusIcon = config.icon;
+  // Default to pending status if status is undefined or not in config
+  const normalizedStatus = status?.toLowerCase() || "pending";
+  const config = statusConfig[normalizedStatus] || statusConfig.pending;
+  const StatusIcon = config.icon || Clock; // Fallback to Clock icon
 
   return (
     <span
       className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm ${config.color} ${config.bg} ${className}`}
     >
       <StatusIcon className="h-4 w-4" />
-      {status || "Pending"}
+      {normalizedStatus || "Pending"}
     </span>
   );
 };
-
 const ProductImage = ({ src, alt, className = "" }) => {
   return (
     <div
@@ -578,6 +577,7 @@ const ProfileOrders = ({ orders: initialOrders }) => {
         </div>
 
         {/* Mobile Cards */}
+        {/* Mobile Cards */}
         <div className="md:hidden space-y-4">
           {orders.map((order) => (
             <div
@@ -588,12 +588,16 @@ const ProfileOrders = ({ orders: initialOrders }) => {
               <div className="flex justify-between items-start mb-3">
                 <div>
                   <p className="font-medium">
-                    {order.products[0].productName +
-                      (order.products.length === 1
-                        ? ""
-                        : ` + ${order.products.length - 1} more`)}
+                    {order.products && order.products.length > 0
+                      ? order.products[0].productName +
+                        (order.products.length === 1
+                          ? ""
+                          : ` + ${order.products.length - 1} more`)
+                      : "No products"}
                   </p>
-                  <p className="text-sm text-gray-500">{order.shipping.city}</p>
+                  <p className="text-sm text-gray-500">
+                    {order.shipping?.city || "No location"}
+                  </p>
                 </div>
                 <OrderStatus status={order.orderStatus} />
               </div>
@@ -601,14 +605,14 @@ const ProfileOrders = ({ orders: initialOrders }) => {
                 {order.products && order.products.length > 0 && (
                   <Image
                     src={order.products[0].productImage}
-                    alt={order.products[0].productName}
+                    alt={order.products[0].productName || "Product Image"}
                     width={50}
                     height={50}
                     className="rounded-lg"
                   />
                 )}
                 <div className="text-sm text-gray-500">
-                  {formatTimestamp(order.createdAt)}
+                  {formatTimestamp(order.createdAt) || "No date"}
                 </div>
               </div>
             </div>

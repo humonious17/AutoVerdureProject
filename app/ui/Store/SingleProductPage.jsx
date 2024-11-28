@@ -534,7 +534,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
               {showModel ? (
                 <model-viewer
                   alt="Neil Armstrong's Spacesuit from the Smithsonian Digitization Programs Office and National Air and Space Museum"
-                  src="https://res.cloudinary.com/dgzqokaju/image/upload/v1721140844/op3_mnxc5v.glb"
+                  src="https://res.cloudinary.com/dmumadujz/image/upload/v1732633660/nmembisa7gopuog3by16.glb"
                   ar
                   environment-image="shared-assets/environments/moon_1k.hdr"
                   poster="shared-assets/models/NeilArmstrong.webp"
@@ -607,7 +607,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75">
               <div className="relative w-4/5 h-4/5">
                 <model-viewer
-                  src="https://res.cloudinary.com/dgzqokaju/image/upload/v1721140844/op3_mnxc5v.glb"
+                  src="https://res.cloudinary.com/dmumadujz/image/upload/v1732633660/nmembisa7gopuog3by16.glb"
                   alt="3d Model"
                   auto-rotate
                   camera-controls

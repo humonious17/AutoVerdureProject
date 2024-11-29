@@ -35,14 +35,21 @@ async function addUserSession(userDetails) {
       .doc(userDetails.email)
       .get();
 
-    if (!userQuerySnapshot.empty) {
+    if (userQuerySnapshot.exists) {
       await db.collection("users").doc(userDetails.email).update(userData);
     } else {
-      userData["admin"] = false;
+      // For new users, add additional fields
+      userData = {
+        ...userData,
+        admin: false,
+        phone: null,
+        avPoints: 0,
+      };
       await db.collection("users").doc(userDetails.email).set(userData);
     }
     return userData.sessionToken;
   } catch (error) {
+    console.error("Error adding user session:", error);
     return false;
   }
 }
@@ -61,24 +68,30 @@ export default async function handler(req, res) {
       );
       const { keys } = await response.json();
       const decodedToken = jwt.decode(data.credential, keys[0].n);
+
+      // Verify client ID
       if (
         decodedToken.aud !==
         "39593396169-ppn7dc7v4huovmuromku2k01s26kngfa.apps.googleusercontent.com"
       ) {
         return res.status(401).json({ error: "Invalid token" });
       }
+
       const sessionToken = await addUserSession(decodedToken);
 
       if (!sessionToken) {
-        res
-          .status(401)
+        return res
+          .status(500)
           .json({ error: "Something went wrong while adding session" });
       } else {
         setCookie(res, sessionToken);
-        res.status(200).json({ message: "Session created successfully" });
+        return res
+          .status(200)
+          .json({ message: "Session created successfully" });
       }
     } catch (e) {
-      res.status(401).json({ error: "Invalid token" });
+      console.error("Authentication error:", e);
+      return res.status(401).json({ error: "Invalid token" });
     }
   } else {
     res.setHeader("Allow", ["POST"]);

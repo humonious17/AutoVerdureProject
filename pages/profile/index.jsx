@@ -307,7 +307,7 @@ const Profile = (props) => {
       {/* Logout Modal */}
       {showLogoutModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-full p-6 w-full max-w-sm">
+          <div className="bg-white rounded-lg p-6 w-full max-w-sm">
             <p className="text-lg text-center mb-6">
               Are you sure you want to log out?
             </p>
@@ -371,7 +371,10 @@ export async function getServerSideProps({ req, res }) {
 
       const parsedUser = {
         firstName: user.username.split(" ")[0],
-        lastName: user.username.split(" ")[1],
+        lastName:
+          user.username.split(" ").length > 1
+            ? user.username.split(" ")[1]
+            : null,
         email: user.email,
         phone: user.phone || null,
         avPoints: user.avPoints || 0,

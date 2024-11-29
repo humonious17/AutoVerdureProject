@@ -10,17 +10,27 @@ const importScript = (src) => {
   credScript.type = "text/javascript";
   credScript.innerHTML = `
     window.handleCredentialResponse = async (response) => {
-        const data = JSON.stringify({ data: response });
-
-        await fetch('/api/addSession', {
-            method: 'POST',
-            headers: {
+        try {
+            const data = JSON.stringify({ data: response });
+            const result = await fetch('/api/addSession', {
+                method: 'POST',
+                headers: {
                     'Content-Type': 'application/json',
                 },
-            body: data,
-        });
+                body: data,
+            });
 
-        window.location.href = '/profile';
+            if (result.ok) {
+                window.location.href = '/profile';
+            } else {
+                // Handle authentication error
+                console.error('Authentication failed');
+                alert('Authentication failed. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error during authentication:', error);
+            alert('An error occurred. Please try again.');
+        }
     }
     `;
   document.head.appendChild(credScript);
@@ -214,8 +224,6 @@ const Signin = (prop) => {
   );
 };
 
-export default Signin;
-
 export async function getServerSideProps({ req, res }) {
   const { admin, db } = await import("/pages/api/firebaseAdmin");
   const cookies = req.headers.cookie;
@@ -252,3 +260,5 @@ export async function getServerSideProps({ req, res }) {
     props: { user: null },
   };
 }
+
+export default Signin;

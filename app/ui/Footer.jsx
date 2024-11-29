@@ -97,7 +97,7 @@ const Footer = () => {
                 href="mailto:Info@Autofarmstore.com"
                 className="flex items-start"
               >
-                Info@Autofarmstore.com
+                Info@autoverdure.com
               </Link>
             </div>
 
@@ -143,7 +143,7 @@ const Footer = () => {
           </div>
 
           <p className="mt-[28px] text-xs font-medium">
-            © Copyright 2023, All Rights Reserved by Auto Verdure
+            © Copyright 2024, All Rights Reserved by Auto Verdure
           </p>
         </div>
       </div>

@@ -320,17 +320,7 @@ const Navbar = () => {
                 {item.title}
                 <span className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg" />
               </li>
-              {item.title === "contact" && (
-                <div className="flex transition-all duration-300 group-hover:rotate-180 group-hover:translate-y-1">
-                  <Image
-                    src="/downArrow.svg"
-                    alt="downArrow"
-                    width={16}
-                    height={16}
-                    className="transition-transform duration-300"
-                  />
-                </div>
-              )}
+              {item.title === "contact"}
             </Link>
           ))}
         </ul>
@@ -631,7 +621,7 @@ const Navbar = () => {
               setShowSearchSuggestions(true);
             }}
             className={`
-              bg-[#FFFBF7] 
+              bg-[white] 
               border 
               border-gray-300 
               rounded-full 

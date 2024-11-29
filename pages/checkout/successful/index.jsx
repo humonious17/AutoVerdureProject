@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
@@ -60,6 +61,7 @@ const Successful = () => {
                 <div className="space-y-2 text-sm text-gray-600">
                   <p>Order ID: {orderDetails.orderId}</p>
                   <p>Email: {orderDetails.email}</p>
+
                   <p>
                     Total Amount: ₹
                     {(parseFloat(orderDetails.totalAmount) / 100).toFixed(2)}
@@ -83,12 +85,16 @@ const Successful = () => {
                 <div className="space-y-2">
                   {orderDetails.products && orderDetails.products.length > 0 ? (
                     orderDetails.products.map((product, index) => (
-                      <div
-                        key={index}
-                        className="flex justify-between text-sm text-gray-600"
-                      >
-                        <span>{product.name || "Product"}</span>
-                        <span>₹{product.price || "0"}</span>
+                      <div key={index} className="space-y-2">
+                        {product.selectedProducts.map((selectedProduct, idx) => (
+                          <div
+                            key={idx}
+                            className="flex justify-between text-sm text-gray-600"
+                          >
+                            <span>{selectedProduct.productName || "Product Name here"}</span>
+                            <span>₹{selectedProduct.price || "0"}</span>
+                          </div>
+                        ))}
                       </div>
                     ))
                   ) : (

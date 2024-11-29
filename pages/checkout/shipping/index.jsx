@@ -33,10 +33,23 @@ const Shipping = (props) => {
 
   useEffect(() => {
     // Check if we have either email or user is logged in
-    if (!email && !localStorage.getItem("userEmail")) {
+    const storedEmail = localStorage.getItem("userEmail");
+    if (!email && !storedEmail) {
       router.push({
         pathname: "/checkout/guest",
-        query: isBuyNow ? query : {},
+        query: isBuyNow
+          ? {
+              productId: query.productId,
+              productName: query.productName,
+              productPrice: query.productPrice,
+              productQuantity: query.productQuantity,
+              productColor: query.productColor,
+              productSize: query.productSize,
+              productStyle: query.productStyle,
+              productType: query.productType,
+              productImage: query.productImage,
+            }
+          : {},
       });
       return;
     }
@@ -81,7 +94,10 @@ const Shipping = (props) => {
 
   const calculateTotal = () => {
     if (isBuyNow) {
-      return parseFloat(query.productPrice || 0);
+      return (
+        parseFloat(query.productPrice || 0) *
+        (parseInt(query.productQuantity) || 1)
+      );
     }
     return (
       cartProducts?.reduce((total, product) => {

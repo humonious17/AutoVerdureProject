@@ -355,6 +355,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
       productSize: size,
       productQuantity: stockQuantity,
       productStyle: style,
+      buyNow: true,
     };
 
     const isPaymentValid = validatePaymentDetails();

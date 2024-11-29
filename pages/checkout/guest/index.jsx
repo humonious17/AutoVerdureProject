@@ -10,14 +10,32 @@ const importScript = (src) => {
   credScript.innerHTML = `
     window.handleCredentialResponse = async (response) => {
         const data = JSON.stringify({data: response});
-        await fetch('/api/addSession', {
+        const result = await fetch('/api/addSession', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: data,
         });
-        window.location.href = '/checkout/shipping';
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const isBuyNow = urlParams.get('productId') !== null;
+        const buyNowParams = isBuyNow ? {
+            productId: urlParams.get('productId'),
+            productName: urlParams.get('productName'),
+            productPrice: urlParams.get('productPrice'),
+            productQuantity: urlParams.get('productQuantity'),
+            productColor: urlParams.get('productColor'),
+            productSize: urlParams.get('productSize'),
+            productStyle: urlParams.get('productStyle'),
+            productType: urlParams.get('productType'),
+            productImage: urlParams.get('productImage'),
+            buyNow: true
+        } : {};
+
+        window.location.href = isBuyNow 
+            ? '/checkout/shipping?' + new URLSearchParams(buyNowParams).toString()
+            : '/checkout/shipping';
     }
   `;
   document.head.appendChild(credScript);

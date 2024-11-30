@@ -285,7 +285,7 @@ export default function Home() {
   }, [hydroponics]); // Use hydroponics directly as a dependency
 
   return (
-    <div className="w-full px-4 md:px-10 pb-[100px] bg-[#FFFCF8] flex flex-col justify-center items-center overflow-hidden">
+    <div className="w-[full] px-4 md:px-10 pb-[100px] bg-[#FFFCF8] flex flex-col justify-center items-center overflow-hidden overflow-x-hidden">
       {/* Hero */}
       <div className="w-screen flex flex-col-reverse md:flex-row xl:flex-col justify-center items-center overflow-hidden hero-container">
         <div
@@ -295,18 +295,27 @@ export default function Home() {
           }}
         >
           {/* Title */}
-          <p className="text-[40px] md:text-[50px] xl:text-[64px] leading-[50px] md:leading-[60px] xl:leading-[76.8px] tracking-tight font-normal text-primaryGrayscale hero-title text-left  lg:text-center xl:text-center">
+          <p
+            className="text-[50px] md:text-[50px] xl:text-[64px] leading-[50px] md:leading-[60px] xl:leading-[76.8px] tracking-tight font-normal text-black hero-title text-left lg:text-center xl:text-center"
+            style={{
+              fontFamily: "Urbanist",
+              fontWeight: 400,
+              fontSize: "50px",
+              lineHeight: "60px",
+              letterSpacing: "-2.5%",
+            }}
+          >
             Exquisite & Sustainable <br /> Self-Watering Planters
           </p>
 
           {/* Description */}
           <p
-            className="mt-3 xl:mt-[20px] text-sm md:text-base xl:text-lg leading-6 text-left font-normal text-secondaryGrayscale hero-description lg:text-center xl:text-center"
+            className="mt-3 xl:mt-[20px] text-sm md:text-base xl:text-lg leading-6 text-left font-normal text-black hero-description lg:text-center xl:text-center"
             style={{
               color: "#3D3D3D",
               fontFamily: "Urbanist",
-              fontSize: "16px",
-              fontWeight: 425,
+              fontSize: "14px",
+              fontWeight: 400,
               lineHeight: "24px",
             }}
           >
@@ -317,31 +326,53 @@ export default function Home() {
           </p>
 
           {/* Buttons */}
-          <div className="mt-3 md:mt-8 w-full text-base font-medium flex gap-7 justify-start xl:justify-center lg:justify-center md:justify-center items-center hero-buttons">
+          <div className="mt-3 md:mt-8 w-full text-base font-medium flex gap-5 justify-center xl:justify-center lg:justify-center md:justify-center items-center hero-buttons">
             <Link href="/store" passHref>
-              <button className="shop-now px-6 md:px-[42px] py-2 md:py-[18px] sm:px-[42px] sm:py-[18px] rounded-[100px] text-white bg-primaryMain text-sm md:text-base">
+              <button
+                className="shop-now px-4 md:px-[32px] py-2 md:py-[14px] sm:px-[32px] sm:py-[14px] rounded-[100px] text-white bg-primaryMain text-[16px] md:text-base mobile-button"
+                style={{
+                  whiteSpace: "nowrap",
+                }}
+              >
                 Shop now
               </button>
             </Link>
             <Link href="/about-us" passHref>
               <button
-                className="learn-more px-6 md:px-[42px] py-2 md:py-[18px] sm:px-[42px] sm:py-[18px] text-primaryGrayscale border-[1px] border-primaryGrayscale rounded-[100px] bg-transparent text-sm md:text-base"
+                className="learn-more flex items-center justify-center px-4 md:px-[32px] py-2 md:py-[14px] sm:px-[32px] sm:py-[14px] text-primaryGrayscale border-[1px] border-primaryGrayscale rounded-[100px] bg-transparent text-[16px] md:text-base mobile-button"
                 style={{
                   borderRadius: "100px",
                   border: "1px solid var(--Greyscale-Black, #3D3D3D)",
+                  whiteSpace: "nowrap",
                 }}
               >
                 Learn More
               </button>
             </Link>
+
+            <style jsx>{`
+              @media (max-width: 640px) {
+                .mobile-button {
+                  width: auto; /* Adjusts width dynamically */
+                  min-width: 160px; /* Ensures a consistent minimum size */
+                  height: 55px; /* Fixed height */
+                  padding: 18px 24px; /* Adjusted for better spacing */
+                  gap: 10px;
+                  opacity: 1;
+                }
+                .hero-buttons {
+                  gap: 15px; /* Adjusts gap between buttons for mobile */
+                }
+              }
+            `}</style>
           </div>
         </div>
       </div>
       {/* Image */}
-      <div className="absolute top-0 right-[45px] md:right-[20px] image-container">
+      <div className="absolute top-[50px] right-[45px] md:right-[20px] image-container">
         <Image
-          className="xl:hidden pot-image scale-[1.65] origin-center transform-gpu"
-          src="/homebg.png"
+          className="xl:hidden pot-image scale-[1.8] origin-center transform-gpu"
+          src="/mobile.png"
           alt="bgImage"
           width={350}
           height={587}
@@ -351,6 +382,7 @@ export default function Home() {
           }}
         />
       </div>
+
       <div className="w-full h-[766px] absolute top-0 right-[20px] bg-transparent">
         <div className="h-full w-full relative overflow-hidden">
           <Image
@@ -450,7 +482,7 @@ export default function Home() {
         style={{ paddingLeft: "3%" }}
       >
         <div className="w-full flex flex-col justify-center items-center">
-          <div className="max-w-[320px] md:max-w-[754px] xl:max-w-[1200px] w-full flex flex-col justify-center items-center text-[40px] md:text-4xl xl:text-[50px] leading-[48px] md:leading-[43.2px] xl:leading-[43.2px] -tracking-[1px] md:-tracking-[0.9px] font-normal capitalize text-primaryGrayscale">
+          <div className="max-w-[320px] md:max-w-[754px] xl:max-w-[1200px] w-full flex flex-col justify-center items-center text-[40px] md:text-4xl xl:text-[50px] leading-[48px] md:leading-[43.2px] xl:leading-[43.2px] -tracking-[1px] md:-tracking-[0.9px] font-normal capitalize text-[#3D3D3D]">
             <p>Why are our hydroponic kits the best for you?</p>
           </div>
 
@@ -479,6 +511,16 @@ export default function Home() {
                 <HydroponicCard data={card} isActive={index === currentIndex} />
               </div>
             ))}
+            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 translate-y-7 flex space-x-2">
+              {hydroponics.map((_, index) => (
+                <div
+                  key={index}
+                  className={`w-2 h-2 rounded-full ${
+                    index === currentIndex ? "bg-primaryMain" : "bg-gray-300"
+                  }`}
+                ></div>
+              ))}
+            </div>
           </div>
 
           <div className="md:mt-[72.12px] w-full flex flex-col justify-center items-center">
@@ -694,7 +736,7 @@ export default function Home() {
           <div className="max-w-[361px] h-[180.5px] rounded-[14.1px] ">
             <video
               className="w-full h-full rounded-[16px] object-cover "
-              src="/home1.mp4"
+              src="https://res.cloudinary.com/dguzhztdt/video/upload/f_mp4/v1729091741/Auto%20Verdure%20media%20%28website%29/Plants/IMG_7939_wsnkj9.mov"
               alt="video"
               // width={604}
               // height={521}
@@ -708,7 +750,7 @@ export default function Home() {
           <div className="w-full flex justify-between gap-6">
             <video
               className="object-cover rounded-[16px] w-[171.765px] h-[183.395px] "
-              src="https://res.cloudinary.com/dguzhztdt/video/upload/f_mp4/v1729091741/Auto%20Verdure%20media%20%28website%29/Plants/IMG_7939_wsnkj9.mov"
+              src="/home1.mp4"
               alt="video"
               autoPlay
               playsInline

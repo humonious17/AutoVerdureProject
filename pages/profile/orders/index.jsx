@@ -264,12 +264,12 @@ const OrderDetailDialog = ({ order, open, onClose }) => {
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-3xl">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6">
+      <DialogContent className="max-w-3xl max-h-[100vh] overflow-y-auto ">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6  ">
           {/* Left side - Product Image and Details */}
           <div className="space-y-6">
             {order.products && order.products[0] && (
-              <div className="aspect-square relative overflow-hidden rounded-lg">
+              <div className="aspect-square relative rounded-lg">
                 <Image
                   src={
                     order.products[0].productImage &&

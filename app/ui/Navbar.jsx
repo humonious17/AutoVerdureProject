@@ -226,11 +226,11 @@ const Navbar = () => {
     ease-in-out 
     ${
       isScrolled
-        ? "bg-white/95 backdrop-blur-md shadow-lg text-black"
+        ? "bg-white/95 backdrop-blur-md shadow-md text-black"
         : "bg-transparent text-black"
     }
     ${isNavVisible ? "translate-y-0" : "-translate-y-full"}
-    hover:shadow-xl
+    hover:shadow-md
   `}
       style={{
         paddingLeft: "40px",
@@ -243,7 +243,7 @@ const Navbar = () => {
         href="/"
         className="gap-[10px] no-underline text-inherit flex justify-center items-center z-50 group"
       >
-        <div className="relative overflow-hidden w-[48.475px] h-[44px] transition-all duration-300 group-hover:scale-110">
+        <div className="relative overflow-hidden w-[48.475px] h-[44px] transition-all duration-100 group-hover:scale-110">
           <Image
             src="/logoHD.png"
             alt="logo"
@@ -251,11 +251,11 @@ const Navbar = () => {
             height={44}
             unoptimized={true}
             priority
-            className="transition-all duration-300 group-hover:brightness-110"
+            className="transition-all duration-100 group-hover:brightness-110"
           />
-          <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-100" />
         </div>
-        <p className="text-sm leading-[28.8px] fontText uppercase text-center font-medium transition-all duration-300 group-hover:text-gray-600 group-hover:tracking-wider">
+        <p className="text-sm leading-[28.8px] fontText uppercase text-center font-medium transition-all duration-100 group-hover:text-gray-600 group-hover:tracking-wider">
           Auto Verdure
         </p>
       </Link>
@@ -263,7 +263,7 @@ const Navbar = () => {
       {/* Enhanced Hamburger Icon with smooth animation */}
       <div
         ref={hamburgerRef}
-        className="xl:hidden w-[32px] h-[32px] relative cursor-pointer flex items-center justify-center z-50 transition-transform duration-300 hover:scale-110"
+        className="xl:hidden w-[32px] h-[32px] relative cursor-pointer flex items-center justify-center z-50 transition-transform duration-100 hover:scale-110"
         onClick={handleMobileMenuToggle}
       >
         <div
@@ -271,14 +271,14 @@ const Navbar = () => {
             hamburger-icon 
             ${isMobileMenuOpen ? "open" : ""} 
             before:transition-all 
-            before:duration-300 
+            before:duration-100 
             after:transition-all 
-            after:duration-300
+            after:duration-100
           `}
         >
-          <span className="line transition-all duration-300" />
-          <span className="line transition-all duration-300" />
-          <span className="line transition-all duration-300" />
+          <span className="line transition-all duration-100" />
+          <span className="line transition-all duration-100" />
+          <span className="line transition-all duration-100" />
         </div>
       </div>
 
@@ -297,7 +297,7 @@ const Navbar = () => {
                   ${item.title === pathname ? "font-bold" : "font-normal"}
                   capitalize
                   transition-all
-                  duration-300
+                  duration-100
                   before:content-['']
                   before:absolute
                   before:-bottom-2
@@ -307,7 +307,7 @@ const Navbar = () => {
                   before:rounded-full
                   before:opacity-0
                   before:transition-all
-                  before:duration-300
+                  before:duration-100
                   before:bg-gradient-to-r
                   before:from-black
                   before:to-gray-600
@@ -318,7 +318,7 @@ const Navbar = () => {
                 `}
               >
                 {item.title}
-                <span className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg" />
+                <span className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-100 rounded-lg" />
               </li>
               {item.title === "contact"}
             </Link>
@@ -365,7 +365,7 @@ const Navbar = () => {
                   py-2 
                   transform 
                   transition-all 
-                  duration-300 
+                  duration-100 
                   ease-spring
                   ${
                     isMobileMenuOpen
@@ -389,10 +389,10 @@ const Navbar = () => {
                   href={item.url}
                   className="block w-full no-underline relative overflow-hidden group"
                 >
-                  <span className="relative z-10 transition-transform duration-300 group-hover:translate-y-[-2px] inline-block">
+                  <span className="relative z-10 transition-transform duration-100 group-hover:translate-y-[-2px] inline-block">
                     {item.title}
                   </span>
-                  <span className="absolute inset-0 bg-gray-100 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left rounded-lg" />
+                  <span className="absolute inset-0 bg-gray-100 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-100 origin-left rounded-lg" />
                 </Link>
               </li>
             ))}
@@ -407,7 +407,7 @@ const Navbar = () => {
               mx-auto 
               transform 
               transition-all 
-              duration-300 
+              duration-100 
               ${
                 isMobileMenuOpen
                   ? "translate-y-0 opacity-100"
@@ -436,7 +436,7 @@ const Navbar = () => {
                   focus:ring-2 
                   focus:ring-blue-500 
                   transition-all 
-                  duration-300
+                  duration-100
                   group-hover:shadow-md
                   placeholder:text-gray-400
                   placeholder:transition-opacity
@@ -452,14 +452,14 @@ const Navbar = () => {
                   top-1/2 
                   -translate-y-1/2 
                   transition-all 
-                  duration-300 
+                  duration-100 
                   hover:scale-110
                   focus:outline-none
                   overflow-hidden
                 "
               >
                 <svg
-                  className="w-5 h-5 text-gray-500 transition-colors duration-300 hover:text-gray-700"
+                  className="w-5 h-5 text-gray-500 transition-colors duration-100 hover:text-gray-700"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -553,7 +553,7 @@ const Navbar = () => {
                   justify-center 
                   transform 
                   transition-all 
-                  duration-300 
+                  duration-100 
                   hover:scale-110
                   group
                   ${
@@ -571,7 +571,7 @@ const Navbar = () => {
                   className="
                     object-contain 
                     transition-all 
-                    duration-300 
+                    duration-100 
                     group-hover:opacity-70
                     group-hover:transform
                     group-hover:translate-y-[-2px]
@@ -590,7 +590,7 @@ const Navbar = () => {
                   opacity-0 
                   group-hover:opacity-100 
                   transition-all 
-                  duration-300
+                  duration-100
                   capitalize
                 "
                 >
@@ -632,7 +632,7 @@ const Navbar = () => {
               focus:ring-2 
               focus:ring-gray-600 
               transition-all 
-              duration-300
+              duration-100
               ease-out
               ${isSearchFocused ? "w-[350px] shadow-md" : "w-[300px]"}
               placeholder:text-gray-400
@@ -653,7 +653,7 @@ const Navbar = () => {
                   text-gray-400 
                   hover:text-gray-600 
                   transition-all 
-                  duration-300 
+                  duration-100 
                   hover:scale-110
                   focus:outline-none
                 "
@@ -679,7 +679,7 @@ const Navbar = () => {
                 text-gray-400 
                 hover:text-gray-600 
                 transition-all 
-                duration-300 
+                duration-100 
                 hover:scale-110
                 focus:outline-none
                 relative
@@ -778,7 +778,7 @@ const Navbar = () => {
                 h-[24px] 
                 group 
                 transition-transform 
-                duration-300 
+                duration-100 
                 hover:scale-110
               "
             >
@@ -786,7 +786,7 @@ const Navbar = () => {
                 className="
                   object-contain 
                   transition-all 
-                  duration-300 
+                  duration-100 
                   group-hover:opacity-70
                   group-hover:transform
                   group-hover:translate-y-[-2px]
@@ -807,7 +807,7 @@ const Navbar = () => {
                 opacity-0 
                 group-hover:opacity-100 
                 transition-all 
-                duration-300
+                duration-100
                 whitespace-nowrap
                 capitalize
               "

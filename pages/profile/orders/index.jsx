@@ -271,11 +271,19 @@ const OrderDetailDialog = ({ order, open, onClose }) => {
             {order.products && order.products[0] && (
               <div className="aspect-square relative overflow-hidden rounded-lg">
                 <Image
-                  src={order.products[0].productImage}
-                  alt={order.products[0].productName}
+                  src={
+                    order.products[0].productImage &&
+                    order.products[0].productImage !== "null"
+                      ? order.products[0].productImage
+                      : ""
+                  }
+                  alt={order.products[0].productName || "Product Image"}
                   layout="fill"
                   objectFit="cover"
                   className="rounded-lg"
+                  onError={(e) => {
+                    e.target.src = "";
+                  }}
                 />
               </div>
             )}
@@ -553,16 +561,25 @@ const ProfileOrders = ({ orders: initialOrders }) => {
                       : "No products"}
                   </TableCell>
                   <TableCell>
-                    {order.products && order.products.length > 0 && (
+                    {order.products && order.products.length > 0 ? (
                       <Image
-                        src={order.products[0].productImage}
-                        alt={order.products[0].productName}
+                        src={
+                          order.products[0].productImage &&
+                          order.products[0].productImage !== "null"
+                            ? order.products[0].productImage
+                            : ""
+                        }
+                        alt={order.products[0].productName || "Product Image"}
                         width={50}
                         height={50}
                         className="rounded-lg"
+                        onError={(e) => {
+                          e.target.src = "";
+                        }}
                       />
-                    )}
+                    ) : null}
                   </TableCell>
+
                   <TableCell>{order.shipping.city}</TableCell>
                   <TableCell>Product</TableCell>
                   <TableCell>Paid</TableCell>
@@ -604,13 +621,22 @@ const ProfileOrders = ({ orders: initialOrders }) => {
               <div className="flex items-center space-x-4">
                 {order.products && order.products.length > 0 && (
                   <Image
-                    src={order.products[0].productImage}
+                    src={
+                      order.products[0].productImage &&
+                      order.products[0].productImage !== "null"
+                        ? order.products[0].productImage
+                        : ""
+                    }
                     alt={order.products[0].productName || "Product Image"}
                     width={50}
                     height={50}
                     className="rounded-lg"
+                    onError={(e) => {
+                      e.target.src = "";
+                    }}
                   />
                 )}
+
                 <div className="text-sm text-gray-500">
                   {formatTimestamp(order.createdAt) || "No date"}
                 </div>

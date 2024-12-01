@@ -408,7 +408,6 @@ const OrderList = ({ initialOrders }) => {
       });
 
       if (!response.ok) throw new Error("Failed to update status");
-
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
           order.orderId === orderId

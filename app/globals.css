@@ -310,3 +310,9 @@ html {
     }
   }
 }
+
+@media (max-width: 768px) {
+  .chatbot-container {
+    right: 20px !important;
+  }
+}

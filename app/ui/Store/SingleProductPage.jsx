@@ -176,13 +176,23 @@ const SingleProductPage = ({ productData, allProducts }) => {
   }, [productData]);
 
   const handleNextImageClick = (clickSide) => {
+    if (!currentImageUrls.length) return;
+
     setImageId((prevId) => {
+      let newId;
       if (clickSide === "right") {
-        return (prevId + 1) % currentImageUrls.length; // Navigate to the right
+        newId = prevId + 1;
       } else if (clickSide === "left") {
-        return (prevId - 1 + currentImageUrls.length) % currentImageUrls.length; // Navigate to the left
+        newId = prevId - 1;
       }
-      return prevId; // No change
+
+      // Ensure the new ID wraps around properly
+      if (newId < 0) {
+        return currentImageUrls.length - 1;
+      } else if (newId >= currentImageUrls.length) {
+        return 0;
+      }
+      return newId;
     });
   };
 
@@ -196,26 +206,26 @@ const SingleProductPage = ({ productData, allProducts }) => {
     };
 
     return (
-      <div className="w-full flex flex-col sm:w-1/2 xl:w-[624px]">
+      <div className="w-[362px] sm:w-1/2 xl:w-[624px] flex flex-col items-center sm:items-start">
         {/* Main Image Container */}
-        <div className="relative w-full aspect-square sm:h-[394px]">
+        <div className="relative w-[361px] h-[320px] sm:w-full sm:h-[364px] xl:h-[550px]">
           {!loading && (
             <>
               <Image
-                className="object-cover w-full h-full rounded-2xl sm:rounded-[44px]"
+                className="object-cover w-[361px] h-[320px] sm:w-full sm:h-full rounded-[32.4px] sm:rounded-[44px]"
                 src={currentImageUrls[imageId] || fallbackImageUrl}
                 alt={productData.productName}
-                width={550}
+                width={624}
                 height={550}
                 unoptimized={true}
                 priority
               />
 
-              {/* Navigation Arrows - Hidden on mobile */}
+              {/* Navigation Arrows */}
               {currentImageUrls.length > 1 && (
-                <div className="hidden sm:block">
+                <>
                   <button
-                    className="absolute top-1/2 left-4 sm:left-[29px] -translate-y-1/2 p-2 bg-white/50 rounded-full hover:bg-white/80 transition-colors"
+                    className="absolute top-1/2 left-4 sm:left-[29px] -translate-y-1/2 p-2 hover:bg-white/50 rounded-full transition-colors z-10"
                     onClick={() => handleNextImageClick("left")}
                     aria-label="Previous image"
                   >
@@ -227,7 +237,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
                     />
                   </button>
                   <button
-                    className="absolute top-1/2 right-4 sm:right-[29px] -translate-y-1/2 p-2 bg-white/50 rounded-full hover:bg-white/80 transition-colors"
+                    className="absolute top-1/2 right-4 sm:right-[29px] -translate-y-1/2 p-2 hover:bg-white/50 rounded-full transition-colors z-10"
                     onClick={() => handleNextImageClick("right")}
                     aria-label="Next image"
                   >
@@ -238,7 +248,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
                       alt="Next"
                     />
                   </button>
-                </div>
+                </>
               )}
 
               {/* Mobile Dot Indicators */}
@@ -248,7 +258,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
                     <button
                       key={index}
                       className={`w-2 h-2 rounded-full transition-colors ${
-                        imageId === index ? "bg-primaryMain" : "bg-gray-300"
+                        imageId === index ? "bg-primaryMain" : "bg-gray-500"
                       }`}
                       onClick={() => handleImageChange(index)}
                       aria-label={`Go to image ${index + 1}`}
@@ -256,34 +266,65 @@ const SingleProductPage = ({ productData, allProducts }) => {
                   ))}
                 </div>
               )}
+
+              {/* 3D View Button */}
+              <button
+                className="px-2 py-1 xl:px-[21px] xl:py-[10px] text-xs xl:text-sm border rounded-[18.5px] absolute bottom-4 right-4 xl:bottom-[29.5px] xl:right-[31px] text-[#000] font-normal border-[#000] z-10 hover:bg-white/50"
+                onClick={show3dModel}
+              >
+                View in 3D
+              </button>
             </>
+          )}
+
+          {/* 3D Model Viewer */}
+          {showModel && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75">
+              <div className="relative w-4/5 h-4/5">
+                <model-viewer
+                  src="https://res.cloudinary.com/dmumadujz/image/upload/v1732633660/nmembisa7gopuog3by16.glb"
+                  alt="3d Model"
+                  auto-rotate
+                  camera-controls
+                  ar
+                  shadow-intensity="1"
+                  touch-action="pan-y"
+                  style={{ width: "100%", height: "100%" }}
+                ></model-viewer>
+                <button
+                  onClick={hideModelViewer}
+                  className="absolute top-0 right-0 m-4 text-white"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
           )}
         </div>
 
         {/* Thumbnail Grid */}
         {currentImageUrls.length > 1 && (
-          <div className="mt-4 sm:mt-5 w-full grid grid-cols-4 gap-2 sm:gap-x-[6px] xl:grid-cols-2 xl:gap-x-4 xl:gap-y-6">
+          <div className="grid grid-cols-4 sm:grid-cols-2 gap-[6px] sm:gap-4 w-[362px] sm:w-full mt-[20px]">
             {!loading &&
-              currentImageUrls.map((url, index) => (
-                <div
-                  key={index}
-                  className="relative aspect-square sm:h-[86px] xl:h-[264px] cursor-pointer"
-                  onClick={() => handleImageChange(index)}
-                >
-                  <Image
-                    className={`object-cover w-full h-full rounded-lg sm:rounded-[22px] transition-all ${
-                      imageId === index
-                        ? "border-2 border-primaryMain ring-2 ring-primaryMain ring-opacity-50"
-                        : "hover:opacity-80"
-                    }`}
-                    src={url || fallbackImageUrl}
-                    alt={`${productData.productName}-${index + 1}`}
-                    width={86}
-                    height={86}
-                    unoptimized={true}
-                  />
-                </div>
-              ))}
+              currentImageUrls.map(
+                (url, index) =>
+                  index !== imageId && (
+                    <div
+                      key={index}
+                      className="relative w-[85.75px] h-[76px] sm:w-full sm:h-auto sm:aspect-square cursor-pointer overflow-hidden"
+                      onClick={() => handleImageChange(index)}
+                    >
+                      <Image
+                        className="object-cover rounded-[24px] w-full h-full"
+                        src={url || fallbackImageUrl}
+                        alt={`${productData.productName}-${index + 1}`}
+                        width={304}
+                        height={264}
+                        unoptimized={true}
+                      />
+                    </div>
+                  )
+              )}
           </div>
         )}
       </div>
@@ -391,19 +432,19 @@ const SingleProductPage = ({ productData, allProducts }) => {
   const displayedProducts = showAll ? allProducts : allProducts.slice(0, 3);
 
   return (
-    <div className="w-full px-[18px] sm:px-[38px] xl:px-16 bg-[#FFFCF8]">
+    <div className="w-full max-w-[362px] sm:max-w-none px-[0px] sm:px-[38px] xl:px-16 bg-[#FFFCF8]">
       <Head>
         <script
           type="module"
           src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"
         ></script>
       </Head>
-      <div className="pt-[13px] sm:pt-[29px] xl:pt-[96.5px] pb-[221px] flex flex-col justify-center items-center">
+      <div className="pt-[13px] sm:pt-[29px] xl:pt-[96.5px] pb-[0px] flex flex-col justify-center items-center">
         {/* Navigation */}
-        <div className="w-full text-[17px] leading-[30px] text-[#5B5B5B] font-normal flex justify-center items-center sm:justify-normal sm:items-start mt-[63px] sm:mt-0">
+        <div className="w-full text-[17px] leading-[30px] text-[#5B5B5B] font-normal flex justify-center items-center sm:justify-normal sm:items-start mt-[68px] sm:mt-0">
           <p className="flex gap-[19px]">
             <Link href="/">
-              <span>Home</span>
+              <span className="text-primaryMain">Home</span>
             </Link>{" "}
             /{" "}
             <Link href="/store">
@@ -411,7 +452,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
             </Link>{" "}
             /{" "}
             <Link href="/store/planters">
-              <span className="text-[#000]">{productData.productName}</span>
+              <span>{productData.productName}</span>
             </Link>
           </p>
         </div>
@@ -426,214 +467,13 @@ const SingleProductPage = ({ productData, allProducts }) => {
         {/* Product Details */}
         <div className="mt-[27.79px] sm:mt-[17.3px] xl:mt-[51.5px] xl:max-w-[1312px] w-full flex flex-col sm:flex-row sm:gap-x-[30.5px] xl:gap-x-16 justify-center items-center sm:items-start">
           {/* Product Image */}
-          <div className="w-full sm:flex sm:flex-col sm:w-[50%] xl:w-[624px]">
-            <div className="xl:h-[550px] sm: h-[394px] w-full relative">
-              <Image
-                className="object-cover w-full h-full rounded-[44px]"
-                src={currentImageUrls[imageId] || fallbackImageUrl}
-                alt={productData.productName}
-                width={550}
-                height={550}
-                unoptimized={true}
-              />
-
-              <div
-                style={{
-                  height: "32px",
-                  width: "32px",
-                  position: "absolute",
-                  top: "50%",
-                  left: "29px",
-                  cursor: "pointer",
-                }}
-              >
-                <Image
-                  src="/leftArrow1Purple.svg"
-                  height={32}
-                  width={25}
-                  onClick={() => {
-                    handleNextImageClick("left");
-                  }}
-                />
-              </div>
-              <div
-                style={{
-                  height: "32px",
-                  width: "32px",
-                  position: "absolute",
-                  top: "50%",
-                  right: "29px",
-                  cursor: "pointer",
-                }}
-              >
-                <Image
-                  src="/rightArrow1Purple.svg"
-                  height={32}
-                  width={25}
-                  onClick={() => {
-                    handleNextImageClick("right");
-                  }}
-                />
-              </div>
-
-              <div className="flex w-fit xl:flex flex-col gap-[12px] absolute top-[21.18px] right-[29px]">
-                {productData.petFriendly === "true" ? (
-                  <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
-                    <Image
-                      src="/veterinary.png"
-                      alt="veterinary"
-                      width={32}
-                      height={32}
-                    />
-                  </div>
-                ) : (
-                  <></>
-                )}
-                {productData.petUnfriendly === "true" ? (
-                  <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
-                    <Image
-                      src="/noPets.png"
-                      alt="veterinary"
-                      width={32}
-                      height={32}
-                    />
-                  </div>
-                ) : (
-                  <></>
-                )}
-                {productData.lessLight === "true" ? (
-                  <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
-                    <Image
-                      src="/noLight.png"
-                      alt="noLight"
-                      width={32}
-                      height={32}
-                    />
-                  </div>
-                ) : (
-                  <></>
-                )}
-                {productData.moreLight === "true" ? (
-                  <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
-                    <Image
-                      src="/brightness.png"
-                      alt="brightness"
-                      width={32}
-                      height={32}
-                    />
-                  </div>
-                ) : (
-                  <></>
-                )}
-              </div>
-              <button
-                className="px-[12.15px] py-[5.79px] xl:px-[21px] xl:py-[10px] text-[8.099px] xl:text-sm border-[0.58px] rounded-[18.5px] absolute bottom-[19.22px] right-[18.17px] xl:bottom-[29.5px] xl:right-[31px] text-[#000] font-normal border-[#000]"
-                onClick={show3dModel}
-              >
-                <p>View in 3D</p>
-              </button>
-              {showModel ? (
-                <model-viewer
-                  alt="Neil Armstrong's Spacesuit from the Smithsonian Digitization Programs Office and National Air and Space Museum"
-                  src="https://res.cloudinary.com/dmumadujz/image/upload/v1732633660/nmembisa7gopuog3by16.glb"
-                  ar
-                  environment-image="shared-assets/environments/moon_1k.hdr"
-                  poster="shared-assets/models/NeilArmstrong.webp"
-                  shadow-intensity="1"
-                  camera-controls
-                  touch-action="pan-y"
-                ></model-viewer>
-              ) : (
-                <></>
-              )}
-            </div>
-
-            <div className="mt-[20px] w-full grid grid-cols-4 xl:grid-cols-2 gap-x-[6px] xl:gap-x-4 xl:gap-y-[24px] justify-center items-center">
-              <div className="w-full h-[86px] xl:h-[264px]">
-                <Image
-                  className="object-cover w-full h-full rounded-[22px]"
-                  src={
-                    currentImageUrls[(imageId + 1) % currentImageUrls.length] ||
-                    fallbackImageUrl
-                  }
-                  alt="flowers.png"
-                  width={86}
-                  height={86}
-                  unoptimized={true}
-                />
-              </div>
-              <div className="w-full h-[86px] xl:h-[264px]">
-                <Image
-                  className="object-cover w-full h-full rounded-[22px]"
-                  src={
-                    currentImageUrls[(imageId + 2) % currentImageUrls.length] ||
-                    fallbackImageUrl
-                  }
-                  alt="flowers.png"
-                  width={86}
-                  height={86}
-                  unoptimized={true}
-                />
-              </div>
-              <div className="w-full h-[86px] xl:h-[264px]">
-                <Image
-                  className="object-cover w-full h-full rounded-[22px]"
-                  src={
-                    currentImageUrls[(imageId + 3) % currentImageUrls.length] ||
-                    fallbackImageUrl
-                  }
-                  alt="flowers.png"
-                  width={86}
-                  height={86}
-                  unoptimized={true}
-                />
-              </div>
-              <div className="w-full h-[86px] xl:h-[264px]">
-                <Image
-                  className="object-cover w-full h-full rounded-[22px]"
-                  src={
-                    currentImageUrls[(imageId + 4) % currentImageUrls.length] ||
-                    fallbackImageUrl
-                  }
-                  alt="flowers.png"
-                  width={86}
-                  height={86}
-                  unoptimized={true}
-                />
-              </div>
-            </div>
-          </div>
-
-          {showModel ? (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75">
-              <div className="relative w-4/5 h-4/5">
-                <model-viewer
-                  src="https://res.cloudinary.com/dmumadujz/image/upload/v1732633660/nmembisa7gopuog3by16.glb"
-                  alt="3d Model"
-                  auto-rotate
-                  camera-controls
-                  ar
-                  shadow-intensity="1"
-                  touch-action="pan-y"
-                  style={{ width: "100%", height: "100%" }}
-                ></model-viewer>
-                <button
-                  onClick={hideModelViewer}
-                  className="absolute top-0 right-0 m-4 text-white"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          ) : (
-            <></>
-          )}
+          <MainImageSection />
 
           {/* Product Description */}
           <div className="mt-[31px] sm:flex sm:flex-col sm:w-[50%] xl:w-[624px] sm:mt-0 w-full">
             {/* Product Title */}
-            <div>
-              <p className="text-stone-950 text-[51px] font-normal font-['Inter'] leading-[64px] ">
+            <div className="m-0">
+              <p className="text-[#0E0E0E] text-[51px] font-normal font-['Inter'] leading-[64px]">
                 {productData.productName}
               </p>
             </div>
@@ -653,16 +493,16 @@ const SingleProductPage = ({ productData, allProducts }) => {
             </div>
 
             {/* Product Size, Color, Finish */}
-            <div className="mt-[22px] w-full flex flex-col gap-8 sm:gap-6">
+            <div className="mt-[22px] w-full flex flex-col gap-8">
               {/* Product Size */}
-              <div>
+              <div className="flex flex-col gap-3">
                 <p className="text-sm font-normal">Size</p>
-                <div className="mt-[12px] w-[200px] flex gap-4">
+                <div className="w-[200px] flex gap-4">
                   {["XS", "S", "M", "L", "XL"].map((sizeOption) =>
                     productData[sizeOption] === "true" ? (
                       <button
                         key={sizeOption}
-                        onClick={() => handleSizeChange(sizeOption)} // Call handleSizeChange on click
+                        onClick={() => handleSizeChange(sizeOption)}
                         className={`w-[80px] h-[30px] text-[13px] rounded-[5px] cursor-pointer flex justify-center items-center transition-transform duration-300 ease-in-out ${
                           size === sizeOption
                             ? "bg-[#9A5CF5] text-[#fff] shadow-lg transform scale-105"
@@ -679,47 +519,47 @@ const SingleProductPage = ({ productData, allProducts }) => {
               </div>
 
               {/* Product Color */}
-              <p className="text-sm font-normal">Color</p>
-              <div className="mt-[12px] w-[306px] flex gap-4">
-                {Object.entries(colors).map(
-                  ([colorKey, { hex, isAvailable }]) =>
-                    isAvailable && (
-                      <div
-                        key={colorKey}
-                        onClick={() => handleColorSelection(colorKey)}
-                        style={{ backgroundColor: hex }}
-                        className={`w-[30px] h-[30px] rounded-full cursor-pointer border-2 transition-transform duration-300 ease-in-out 
-          ${
-            selectedColor === colorKey
-              ? "border-[#9A5CF5] shadow-lg scale-110 ring- ring-offset-2 ring-[#9A5CF5]"
-              : "hover:shadow-md hover:scale-105"
-          }`}
-                      ></div>
-                    )
-                )}
+              <div className="flex flex-col gap-3">
+                <p className="text-sm font-normal">Color</p>
+                <div className="w-[306px] flex gap-4">
+                  {Object.entries(colors).map(
+                    ([colorKey, { hex, isAvailable }]) =>
+                      isAvailable && (
+                        <div
+                          key={colorKey}
+                          onClick={() => handleColorSelection(colorKey)}
+                          style={{ backgroundColor: hex }}
+                          className={`w-[30px] h-[30px] rounded-full cursor-pointer border-2 transition-transform duration-300 ease-in-out 
+                  ${
+                    selectedColor === colorKey
+                      ? "border-[#9A5CF5] shadow-lg scale-110 ring- ring-offset-2 ring-[#9A5CF5]"
+                      : "hover:shadow-md hover:scale-105"
+                  }`}
+                        ></div>
+                      )
+                  )}
+                </div>
               </div>
 
               {/* Product Finish */}
-              <div className="mt-[22px] w-full flex flex-col gap-8 sm:gap-6">
-                <div>
-                  <p className="text-sm font-semibold mb-2">Finish</p>
-                  <div className="mt-[12px] w-[200px] flex gap-4">
-                    {["Matt", "Gloss", "Art"].map((finishOption) =>
-                      productData[finishOption.toLowerCase()] === "true" ? (
-                        <button
-                          key={finishOption}
-                          onClick={() => setStyle(finishOption)} // Call setStyle on click
-                          className={`px-4 py-2 rounded-full cursor-pointer flex justify-center items-center transition-transform duration-300 ease-in-out ${
-                            style === finishOption
-                              ? "bg-[#9A5CF5] text-[#fff] shadow-lg transform scale-105"
-                              : "bg-[#9A5CF5] bg-opacity-20 hover:bg-opacity-100 text-gray hover:text-[#fff] hover:shadow-md"
-                          }`}
-                        >
-                          <p className="font-semibold">{finishOption}</p>
-                        </button>
-                      ) : null
-                    )}
-                  </div>
+              <div className="flex flex-col gap-3">
+                <p className="text-sm font-normal">Finish</p>
+                <div className="w-[200px] flex gap-4">
+                  {["Matt", "Gloss", "Art"].map((finishOption) =>
+                    productData[finishOption.toLowerCase()] === "true" ? (
+                      <button
+                        key={finishOption}
+                        onClick={() => setStyle(finishOption)}
+                        className={`px-4 py-2 rounded-full cursor-pointer flex justify-center items-center transition-transform duration-300 ease-in-out ${
+                          style === finishOption
+                            ? "bg-[#9A5CF5] text-[#fff] shadow-lg transform scale-105"
+                            : "bg-[#9A5CF5] bg-opacity-20 hover:bg-opacity-100 text-gray hover:text-[#fff] hover:shadow-md"
+                        }`}
+                      >
+                        <p className="font-semibold">{finishOption}</p>
+                      </button>
+                    ) : null
+                  )}
                 </div>
               </div>
             </div>
@@ -963,20 +803,27 @@ const SingleProductPage = ({ productData, allProducts }) => {
                   >
                     Product Description
                     <svg
-                      className={`w-5 h-5 ml-2 transform transition-transform duration-300 ${
-                        isDescriptionOpen ? "rotate-180" : ""
-                      }`}
+                      className={`w-5 h-5 ml-2 transition-transform duration-300`}
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 9l-7 7-7-7"
-                      />
+                      {isDescriptionOpen ? (
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M20 12H4"
+                        />
+                      ) : (
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 4v16m8-8H4"
+                        />
+                      )}
                     </svg>
                   </button>
                   {isDescriptionOpen && (
@@ -994,20 +841,27 @@ const SingleProductPage = ({ productData, allProducts }) => {
                   >
                     Product Details
                     <svg
-                      className={`w-5 h-5 ml-2 transform transition-transform duration-300 ${
-                        isDetailsOpen ? "rotate-180" : ""
-                      }`}
+                      className={`w-5 h-5 ml-2 transition-transform duration-300`}
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 9l-7 7-7-7"
-                      />
+                      {isDetailsOpen ? (
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M20 12H4"
+                        />
+                      ) : (
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 4v16m8-8H4"
+                        />
+                      )}
                     </svg>
                   </button>
                   {isDetailsOpen && (
@@ -1086,30 +940,107 @@ const SingleProductPage = ({ productData, allProducts }) => {
         {/* Product long description, Payment methods */}
         <div className="mt-[30px] sm:mt-[39px] w-full sm:pr-[0px] xl:hidden">
           {/* Product long description */}
-          <div className="w-full text-sm sm:text-[17px] leading-[30px] flex flex-col gap-[18px]">
-            <p>
-              planters nurtures your plant while adding a touch of serenity to
-              your living space elevate your gardening journey and find your
-              gardening journey and find your inner peace with the planters self
-              watering system.
-            </p>
-            <ul className="w-full flex flex-col justify-start items-start">
-              <li className="decoration-dotted flex justify-center items-center">
-                <div className="w-[5px] h-[5px] rounded-full bg-[#5B5B5B] mr-[13.9px]" />
-                {productData.innerHeight} cm - Inner height,{" "}
-                {productData.innerLength} cm Inner length/diameter
-              </li>
-              <li className="decoration-dotted flex justify-center items-center">
-                <div className="w-[5px] h-[5px] rounded-full bg-[#5B5B5B] mr-[13.9px]" />
-                Water-resistant canvas
-              </li>
-              <li className="decoration-dotted flex justify-center items-center">
-                <div className="w-[5px] h-[5px] rounded-full bg-[#5B5B5B] mr-[13.9px]" />
-                Dimensions - {productData.dimensions}
-              </li>
-            </ul>
-          </div>
+          {/* Mobile dropdowns with same design as desktop */}
+          <div className="w-full text-sm sm:text-[17px] leading-[30px] flex flex-col gap-[18px] xl:hidden">
+            {/* Description Dropdown */}
+            <div className="w-full">
+              <button
+                className="w-full p-2 xl:p-5 text-left bg-primaryMain bg-opacity-10 rounded-xl border-[1px] border-primaryMain text-black flex justify-between items-center transition-colors duration-300 hover:bg-purple-200"
+                onClick={toggleDescription}
+              >
+                Product Description
+                <svg
+                  className={`w-5 h-5 ml-2 transition-transform duration-300`}
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  {isDescriptionOpen ? (
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M20 12H4"
+                    />
+                  ) : (
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 4v16m8-8H4"
+                    />
+                  )}
+                </svg>
+              </button>
+              {isDescriptionOpen && (
+                <div className="pl-4 mt-1 bg-white text-black p-3 rounded-md transition-opacity duration-300 opacity-100">
+                  <p>{productData.productDescription}</p>
+                </div>
+              )}
+            </div>
 
+            {/* Product Details Dropdown */}
+            <div className="w-full">
+              <button
+                className="w-full p-2 xl:p-5 text-left bg-primaryMain bg-opacity-10 rounded-xl border-[1px] border-primaryMain text-black flex justify-between items-center transition-colors duration-300 hover:bg-purple-200"
+                onClick={toggleDetails}
+              >
+                Product Details
+                <svg
+                  className={`w-5 h-5 ml-2 transition-transform duration-300`}
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  {isDetailsOpen ? (
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M20 12H4"
+                    />
+                  ) : (
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 4v16m8-8H4"
+                    />
+                  )}
+                </svg>
+              </button>
+              {isDetailsOpen && (
+                <ul className="pl-4 mt-1 bg-white text-black p-3 rounded-md transition-opacity duration-300 opacity-100">
+                  <li className="decoration-dotted flex justify-start items-center">
+                    <div className="w-[5px] h-[5px] rounded-full bg-[#5B5B5B] mr-[13.9px]" />
+                    Inner Dimensions - {innerDimensions}
+                  </li>
+                  <li className="decoration-dotted flex justify-start items-center">
+                    <div className="w-[5px] h-[5px] rounded-full bg-[#5B5B5B] mr-[13.9px]" />
+                    Dimensions - {dimensions}
+                  </li>
+                  <li className="decoration-dotted flex justify-start items-center">
+                    <div className="w-[5px] h-[5px] rounded-full bg-[#5B5B5B] mr-[13.9px]" />
+                    Outer Height - {outerHeight}
+                  </li>
+                  <li className="decoration-dotted flex justify-start items-center">
+                    <div className="w-[5px] h-[5px] rounded-full bg-[#5B5B5B] mr-[13.9px]" />
+                    Outer Diameter - {outerDiameter}
+                  </li>
+                  <li className="decoration-dotted flex justify-start items-center">
+                    <div className="w-[5px] h-[5px] rounded-full bg-[#5B5B5B] mr-[13.9px]" />
+                    Weight - {weight}
+                  </li>
+                  <li className="decoration-dotted flex justify-start items-center">
+                    <div className="w-[5px] h-[5px] rounded-full bg-[#5B5B5B] mr-[13.9px]" />
+                    Volume - {volume}
+                  </li>
+                </ul>
+              )}
+            </div>
+          </div>
           {/* Payment Methods */}
           <div className="mt-[16.5px] w-full flex flex-col sm:flex-row sm:justify-between sm:items-center">
             <p className="text-[17px] leading-[30px] text-[#000000] font-normal">
@@ -1165,7 +1096,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
               <Link
                 className="w-full"
                 key={index}
-                href={`/store/${product.productName}/${product.productId}`}
+                href={`/store/${product.productType}/${product.productId}`}
               >
                 <ProductCard product={product} />
               </Link>

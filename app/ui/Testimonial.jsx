@@ -19,7 +19,7 @@ const ReviewCard = ({ review }) => {
               <Star
                 key={i}
                 className={`w-5 h-5 ${
-                  i < review.rating ? "text-emerald-500" : "text-gray-300"
+                  i < review.rating ? "text-primaryMain" : "text-gray-300"
                 }`}
                 fill={i < review.rating ? "currentColor" : "none"}
               />
@@ -55,7 +55,7 @@ const ReviewCard = ({ review }) => {
               </p>
               <div className="flex items-center space-x-3">
                 {review.userAvatar && (
-                  <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-transparent group-hover:border-emerald-500 transition-all">
+                  <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-transparent group-hover:border-primaryMain transition-all">
                     <Image
                       src={review.userAvatar}
                       alt="User Avatar"
@@ -115,7 +115,7 @@ const ReviewSlider = ({ reviews }) => {
               onClick={() => setCurrentSlide(index)}
               className={`w-3 h-3 rounded-full transition-all duration-300 ${
                 index === currentSlide
-                  ? "bg-emerald-500 w-6"
+                  ? "bg-primaryMain w-6"
                   : "bg-gray-300 hover:bg-gray-400"
               }`}
             />
@@ -158,7 +158,7 @@ const Testimonials = ({ productId }) => {
   if (loading) {
     return (
       <div className="w-full flex justify-center items-center min-h-[200px]">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-emerald-500" />
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primaryMain" />
       </div>
     );
   }

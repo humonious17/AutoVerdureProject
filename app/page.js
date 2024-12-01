@@ -285,7 +285,7 @@ export default function Home() {
   }, [hydroponics]); // Use hydroponics directly as a dependency
 
   return (
-    <div className="w-[full] px-4 md:px-10 pb-[100px] bg-[#FFFCF8] flex flex-col justify-center items-center overflow-hidden overflow-x-hidden">
+    <div className="w-full px-4 md:px-10 pb-[100px] bg-[#FFFCF8] flex flex-col justify-center items-center overflow-hidden">
       {/* Hero */}
       <div className="w-screen flex flex-col-reverse md:flex-row xl:flex-col justify-center items-center overflow-hidden hero-container">
         <div
@@ -453,7 +453,7 @@ export default function Home() {
       {/* Shop The New Collection */}
       <div
         className="mt-[78px] md:mt-[114px] xl:mt-[120px] max-w-[361px] md:max-w-[754px] xl:max-w-[1200px] w-full flex flex-col md:justify-center md:items-center"
-        style={{ paddingLeft: "3%", marginTop: "20%" }}
+        style={{ paddingLeft: "2%", marginTop: "20%" }}
       >
         <p className="text-[20.049px] md:text-4xl xl:text-[50px] leading-[24.059px] md:leading-[43.2px] xl:leading-[60px] -tracking-[0.501px] md:-tracking-[0.9px] xl:-tracking-[1.25px] text-primaryGrayscale font-normal capitalize">
           Shop The New Collection
@@ -479,7 +479,7 @@ export default function Home() {
       {/* Hydroponic Kits */}
       <div
         className="mt-[20.32px] md:mt-[112.85px] xl:mt-[120px] md:max-w-[754px] w-full xl:max-w-[1200px] flex flex-col justify-center items-center"
-        style={{ paddingLeft: "3%" }}
+        style={{ paddingLeft: "2%" }}
       >
         <div className="w-full flex flex-col justify-center items-center">
           <div className="max-w-[320px] md:max-w-[754px] xl:max-w-[1200px] w-full flex flex-col justify-center items-center text-[40px] md:text-4xl xl:text-[50px] leading-[48px] md:leading-[43.2px] xl:leading-[43.2px] -tracking-[1px] md:-tracking-[0.9px] font-normal capitalize text-[#3D3D3D]">
@@ -535,7 +535,7 @@ export default function Home() {
       {/* How Does it Work */}
       <div
         className="mt-[15px] md:mt-[132px] xl:mt-[149.5px] w-full h-fit md:max-w-[754px] xl:max-w-[1098px] flex xl:gap-[98px] flex-col md:flex-row justify-center items-center"
-        style={{ paddingLeft: "4%" }}
+        style={{ paddingLeft: "3%" }}
       >
         <div className="w-full md:-mt-[210px] max-w-[361px] xl:max-w-[630px] flex flex-col">
           <p className="w-fit text-[40px] md:text-4xl xl:text-[50px] leading-[48px] md:leading-[48px] xl:leading-[60px] -tracking-[1px] xl:-tracking-[1.25px] font-normal capitalize text-primaryGrayscale">
@@ -1208,7 +1208,7 @@ export default function Home() {
         {/* Contact */}
         <Contact />
       </div>
-      <Chatbot />
+        <Chatbot />
     </div>
   );
 }

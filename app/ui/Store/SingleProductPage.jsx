@@ -231,8 +231,8 @@ const SingleProductPage = ({ productData, allProducts }) => {
                   >
                     <Image
                       src="/leftArrow1Purple.svg"
-                      height={32}
-                      width={25}
+                      height={16}
+                      width={12.5}
                       alt="Previous"
                     />
                   </button>
@@ -243,8 +243,8 @@ const SingleProductPage = ({ productData, allProducts }) => {
                   >
                     <Image
                       src="/rightArrow1Purple.svg"
-                      height={32}
-                      width={25}
+                      height={16}
+                      width={12.5}
                       alt="Next"
                     />
                   </button>
@@ -481,7 +481,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
             {/* Product short description */}
             <div>
               <p className="mb-[21.5px] text-zinc-600 text-[17px] font-normal font-['Inter'] leading-[30px]">
-                {productData.productTitle}
+                {productData.productSubtitle}
               </p>
             </div>
 

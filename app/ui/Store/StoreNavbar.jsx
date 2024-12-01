@@ -29,11 +29,16 @@ const StoreNavbar = () => {
                     text-sm font-medium
                     rounded-full
                     transition-all
+                    duration-300
+                    ease-in-out
+                    transform
+                    hover:scale-105
+                    hover:shadow-md
                     border-2
                     ${
-                      pathname === item.title
-                        ? "bg-primaryMain text-white"
-                        : "bg-white text-gray-700 border-gray-20"
+                      pathname === item.title.toLowerCase()
+                        ? "bg-primaryMain text-white border-primaryMain scale-105 shadow-md"
+                        : "bg-white text-gray-700 border-gray-200 hover:bg-gray-100"
                     }
                   `}
                 >
@@ -51,11 +56,34 @@ const StoreNavbar = () => {
           <Link
             key={index}
             href={item.url}
-            className={
-              pathname === item.title
-                ? "w-fit text-[10px] md:text-[17px] leading-5 px-3 py-2 md:px-6 md:py-3 border-[1px] rounded-[33px] border-[#0E0E0E] bg-[#0E0E0E] text-[#fff] font-medium capitalize flex justify-center items-center"
-                : "w-fit text-[10px] md:text-[17px] leading-5 px-3 py-2 md:px-6 md:py-3 border-[1px] rounded-[33px] border-[#D1D1D1] hover:bg-[#0E0E0E] hover:border-[#0E0E0E] hover:text-[#fff] font-medium capitalize flex justify-center items-center"
-            }
+            className={`
+              w-fit 
+              text-[10px] 
+              md:text-[17px] 
+              leading-5 
+              px-3 
+              py-2 
+              md:px-6 
+              md:py-3 
+              border-[1px] 
+              rounded-[33px] 
+              font-medium 
+              capitalize 
+              flex 
+              justify-center 
+              items-center
+              transition-all
+              duration-300
+              ease-in-out
+              transform
+              hover:scale-105
+              hover:shadow-md
+              ${
+                pathname === item.title.toLowerCase()
+                  ? "border-primaryMain bg-primaryMain text-[#fff] scale-105 shadow-md"
+                  : "border-[#D1D1D1] text-[#0E0E0E] hover:bg-primaryMain hover:border-primaryMain hover:text-[#fff]"
+              }
+            `}
           >
             {item.title}
           </Link>

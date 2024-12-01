@@ -166,10 +166,10 @@ const ProductCard = ({ product, viewType = "grid" }) => {
               ${isListView ? "sm:mt-auto" : ""}`}
             >
               <p className="text-xs sm:text-[17px] leading-5 text-[#0E0E0E] font-medium">
-                ₹ {productDetail.productPrice}
+                From ₹ {productDetail.productPrice}
               </p>
               <button className="px-3 py-1.5 sm:px-[33px] sm:py-[5px] text-xs sm:text-xl font-medium border border-[#9F9F9F] rounded-full hover:bg-gray-100 transition-colors">
-                Add
+                Explore
               </button>
             </div>
           </div>

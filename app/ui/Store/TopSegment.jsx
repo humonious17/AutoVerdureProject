@@ -1,6 +1,5 @@
 import React from "react";
 import StoreNavbar from "./StoreNavbar";
-import StoreTools from "./StoreTools";
 
 const TopSegment = () => {
   return (

@@ -212,26 +212,26 @@ const Navbar = () => {
   return (
     <div
       className={`
-        w-full 
-        px-4 md:px-[51px] xl:px-[77.34px] 
-        py-[19px] 
-        z-50 
-        flex 
-        justify-between 
-        items-center 
-        fixed 
-        top-0 
-        transition-all 
-        duration-500
-        ease-in-out 
-        ${
-          isScrolled
-            ? "bg-white/95 backdrop-blur-md shadow-lg text-black"
-            : "bg-transparent text-black"
-        }
-        ${isNavVisible ? "translate-y-0" : "-translate-y-full"}
-        hover:shadow-xl
-      `}
+    w-full  // Change from w-screen to w-full
+    px-4 md:px-[51px] xl:px-[77.34px] 
+    py-[19px] 
+    z-50 
+    flex 
+    justify-between 
+    items-center 
+    fixed 
+    top-0 
+    transition-all 
+    duration-500
+    ease-in-out 
+    ${
+      isScrolled
+        ? "bg-white/95 backdrop-blur-md shadow-lg text-black"
+        : "bg-transparent text-black"
+    }
+    ${isNavVisible ? "translate-y-0" : "-translate-y-full"}
+    hover:shadow-xl
+  `}
       style={{
         paddingLeft: "40px",
         paddingRight: "40px",

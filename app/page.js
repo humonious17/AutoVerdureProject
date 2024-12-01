@@ -17,6 +17,7 @@ import { useSwipeable } from "react-swipeable";
 import Power from "./ui/Home/Power";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import "./globals.css";
+import ProductShowcase from "./ui/Home/ProductShowcase";
 
 import Blogs from "@/pages/Blogs";
 
@@ -75,163 +76,6 @@ const Page = () => {
   );
 };
 
-const ProductShowcase = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  const products = [
-    {
-      name: "Zenpot",
-      price: "$349.99 USD",
-      image:
-        "https://res.cloudinary.com/dguzhztdt/image/upload/v1729112257/Auto%20Verdure%20media%20%28website%29/Product%20Media/DSC04194_huxt74.jpg",
-    },
-    {
-      name: "Plant 1",
-      price: "$349.99 USD",
-      image:
-        "https://res.cloudinary.com/dguzhztdt/image/upload/v1729112260/Auto%20Verdure%20media%20%28website%29/Product%20Media/DSC04179_kzpxk9.jpg",
-    },
-    {
-      name: "Plant 2",
-      price: "$149.99 USD",
-      image:
-        "https://res.cloudinary.com/dguzhztdt/image/upload/v1729111922/Auto%20Verdure%20media%20%28website%29/Product%20Media/DSC04256_ovnhay.jpg",
-    },
-    {
-      name: "Plant 3",
-      price: "$49.99 USD",
-      image:
-        "https://res.cloudinary.com/dguzhztdt/image/upload/v1729112038/Auto%20Verdure%20media%20%28website%29/Product%20Media/DSC04216_l3p7h3.jpg",
-    },
-    {
-      name: "Plant 4",
-      price: "$29.99 USD",
-      image:
-        "https://res.cloudinary.com/dguzhztdt/image/upload/v1729111759/Auto%20Verdure%20media%20%28website%29/Product%20Media/DSC04291_ird64g.jpg",
-    },
-  ];
-
-  const nextSlide = () => {
-    setCurrentIndex((prev) => (prev + 1) % products.length);
-  };
-
-  const prevSlide = () => {
-    setCurrentIndex((prev) => (prev - 1 + products.length) % products.length);
-  };
-
-  return (
-    <div className="mt-16 md:mt-36 xl:mt-56 max-w-[361px] md:max-w-[754px] xl:max-w-[1312px] w-full flex flex-col justify-center items-center">
-      <div className="w-full flex justify-between items-center">
-        <p className="text-2xl md:text-4xl xl:text-[38px] leading-[49.4px] font-normal text-[#0E0E0E]">
-          Loved by buyers
-        </p>
-        <div className="flex gap-2 xl:pb-3 xl:border-b xl:border-[#BBBBBB]">
-          <Link href="/store" passHref>
-            <p className="hidden xl:flex">Browse all products</p>
-          </Link>
-          <Image src="/rightArr.svg" alt="img" width={18} height={19} />
-        </div>
-      </div>
-
-      {/* Mobile Layout */}
-      <div className="xl:hidden w-full relative mt-8">
-        <div className="relative w-full h-[400px] rounded-[44px]">
-          <Image
-            className="object-cover rounded-[44px] w-full h-full"
-            src={products[currentIndex].image}
-            alt={products[currentIndex].name}
-            width={361}
-            height={400}
-          />
-          <div className="text-xs leading-4 tracking-wider uppercase text-[#333] rounded-[40px] px-4 py-3 absolute top-6 left-6 bg-white">
-            <p>In Stock</p>
-          </div>
-        </div>
-
-        <div className="mt-6">
-          <p className="text-xl leading-6 text-[#000]">
-            {products[currentIndex].name}
-          </p>
-          <p className="mt-3 text-base leading-5 text-[#0E0E0E]">
-            {products[currentIndex].price}
-          </p>
-        </div>
-
-        <div className="absolute top-1/2 -translate-y-1/2 w-full flex justify-between px-4">
-          <button
-            onClick={prevSlide}
-            className="bg-white rounded-full p-2 shadow-lg"
-          >
-            <ChevronLeft className="w-6 h-6" />
-          </button>
-          <button
-            onClick={nextSlide}
-            className="bg-white rounded-full p-2 shadow-lg"
-          >
-            <ChevronRight className="w-6 h-6" />
-          </button>
-        </div>
-      </div>
-
-      {/* Desktop Layout (unchanged) */}
-      <div className="mt-6 hidden xl:flex w-full h-fit gap-10">
-        {/* Main large image container */}
-        <div className="rounded-[44px] flex-1 h-[796px]">
-          <div className="relative h-full w-full">
-            <div className="h-full w-full">
-              <Image
-                className="object-cover rounded-[44px] w-full h-full"
-                src={products[0].image}
-                alt={products[0].name}
-                width={636}
-                height={796}
-              />
-              <div className="mt-10">
-                <p className="text-[21px] leading-[25.2px] text-[#000]">
-                  {products[0].name}
-                </p>
-                <p className="mt-[13.96px] text-[17px] leading-5 text-[#0E0E0E]">
-                  {products[0].price}
-                </p>
-              </div>
-            </div>
-            <div className="text-[13px] leading-4 tracking-[0.56px] uppercase text-[#333] rounded-[40px] px-[14px] py-[13px] absolute top-6 left-6 bg-white">
-              <p>In Stock</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Grid for smaller images */}
-        <div className="grid grid-cols-2 gap-8">
-          {products.slice(1).map((product, index) => (
-            <div key={index} className="w-[298px] h-[315px] rounded-[44px]">
-              <div className="relative w-full h-full">
-                <Image
-                  className="object-cover rounded-[44px] w-full h-full"
-                  src={product.image}
-                  alt={product.name}
-                  width={298}
-                  height={315}
-                />
-                <div className="text-[13px] leading-4 tracking-[0.56px] uppercase text-[#333] rounded-[40px] px-[14px] py-[13px] absolute top-6 left-6 bg-white">
-                  <p>In Stock</p>
-                </div>
-              </div>
-              <div className="mt-10">
-                <p className="text-[21px] leading-[25.2px] text-[#000]">
-                  {product.name}
-                </p>
-                <p className="mt-[13.96px] text-[17px] leading-5 text-[#0E0E0E]">
-                  {product.price}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-};
 
 export default function Home() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -459,7 +303,7 @@ export default function Home() {
           Shop The New Collection
         </p>
 
-        <div className="mt-[33px] w-full grid grid-cols-2 justify-between items-center gap-x-[3px] md:gap-x-[17.17px] xl:gap-x-[30px] gap-y-[20.32px] md:gap-y-[19.46px] xl:gap-y-[34px]">
+        <div className="mt-[33px] w-full grid grid-cols-2 justify-between items-center gap-x-[12px] gap-y-[20.32px] md:gap-x-[17.17px] md:gap-y-[19.46px] xl:gap-x-[30px] xl:gap-y-[34px] bg-white">
           {collections.map((collection, index) => (
             <div key={index}>
               <CollectionCard
@@ -848,14 +692,14 @@ export default function Home() {
                 src="/expert.mp4"
                 alt="video"
                 // width={604}
-                 height={300}
+                height={300}
                 autoPlay
                 playsInline
                 loop
                 muted
                 style={{ width: "646.66px", height: "300px" }}
-                />
-              
+              />
+
               <div className="mt-[30px] w-[237px]">
                 <p className="text-2xl leading-[48px] -tracking-[0.6px] text-primaryMain font-bold">
                   Expert Guidance
@@ -872,29 +716,19 @@ export default function Home() {
         </div>
 
         {/* Why should you switch from traditional pots to hydroponics? */}
-        <div className="mt-[88px] md:mt-[122px] xl:mt-[74px] max-w-[361px] md:max-w-[754px] xl:max-w-[1200px] w-full flex flex-col justify-center items-center">
-          <div className="md:w-[467px] xl:w-[649px]">
-            <p className="text-[40px] md:text-4xl xl:text-[50px] leading-[48px] xl:leading-[60px] -tracking-[1px] xl:-tracking-[1.25px] md:text-center font-normal text-primaryGrayscale">
+        <div className="mt-[88px] md:mt-[122px] xl:mt-[74px] max-w-[361px] md:max-w-[754px] xl:max-w-[1200px] w-full flex flex-col justify-center items-center px-4 md:px-0">
+          <div className="w-full md:w-[467px] xl:w-[649px]">
+            <p className="text-[40px] md:text-4xl xl:text-[50px] leading-[40px] md:leading-[48px] xl:leading-[60px] -tracking-[1px] xl:-tracking-[1.25px] text-left font-normal text-[#3D3D3D]">
               Why should you switch from traditional pots to hydroponics?
             </p>
           </div>
 
-          <div className="mt-[47.41px] md:mt-[73px] xl:mt-[82px] w-full md:flex flex-col justify-center items-center">
-            <div
-              className="w-1000px md:w-[523px] xl:w-fit flex md:gap-x-5 rounded-[16.4px]"
-              style={{
-                height: "379px",
-                justifyContent: "center",
-                alignItems: "flex-start",
-                gap: "20px",
-                flexShrink: "0f",
-              }}
-            >
-              <div className="w-full xl:w-[320px] flex flex-col md:flex-1 gap-5 text-[11.888px] md:text-xs xl:text-sm p-[24.62px] font-[600] leading-[17.232px] md:leading-[17.832px] rounded-tl-[16.4px] rounded-bl-[16.4px] md:rounded-[16.4px] shadow-[0_16.412px_49.235px_-2.051px_rgba(0,0,0,0.05)] bg-[#fff]">
-                <p className="font-[600] leading-[17.832px]">
-                  How we are different.
-                </p>
-                <div className="mt-[32.82px] w-full flex flex-col  gap-[10px] md:gap-[8.21px] xl:gap-[10px] text-[#666666]">
+          <div className="mt-[30px] md:mt-[73px] xl:mt-[82px] w-full flex flex-col justify-center items-center">
+            <div className="w-full md:w-[523px] xl:w-fit flex flex-row md:flex-row md:gap-x-5 rounded-[16.4px] space-y-0">
+              {/* First Column */}
+              <div className="w-full xl:w-[320px] flex flex-col gap-4 text-sm md:text-xs xl:text-sm p-5 font-[600] rounded-[16.4px] shadow-[0_16.412px_49.235px_-2.051px_rgba(0,0,0,0.05)] bg-[#fff]">
+                <p className="font-[600]">How we are different.</p>
+                <div className="w-full flex flex-col gap-3 text-[#666666]">
                   <p>Plant Watering</p>
                   <p>Minimal Water Wastage</p>
                   <p>Rate of Produce Growth</p>
@@ -902,53 +736,56 @@ export default function Home() {
                   <p>No Pest-induced diseases</p>
                   <p>Reduced Carbon Footprint</p>
                   <p>Higher Crop Yield</p>
-                  <p>Higher Crop Yield</p>
                 </div>
               </div>
 
-              <div className="w-full xl:w-[320px] text-[11.888px] md:text-xs xl:text-sm px-[10.26px] py-[25.47px] gap-5 scale-105 border-[2.55px] rounded-[17px] border-primaryMain flex flex-col md:flex-1 bg-white shadow-[0_16.412px_49.235px_-2.051px_rgba(0,0,0,0.05)] items-center">
-                <p className="font-[600] leading-[17.832px] text-[#666]">
+              {/* Second Column */}
+              <div className="w-full xl:w-[320px] text-sm md:text-xs xl:text-sm p-5 border-2 rounded-[16.4px] border-primaryMain flex flex-col bg-white shadow-[0_16.412px_49.235px_-2.051px_rgba(0,0,0,0.05)]">
+                <p className="font-[600] text-center text-[#666]">
                   Our Hydroponic Pot
                 </p>
-                <div className="mt-[32.82px] w-full leading-[17.832px] gap-[10px] md:gap-[8.21px] xl:gap-[10px] flex flex-col justify-center items-center">
+                <div className="mt-4 w-full flex flex-col gap-3 items-center">
                   <p className="font-semibold">Once 30-45 Days</p>
-                  <BiCheck className="text-[#00FF66]" />
+                  <BiCheck className="text-[#00FF66] text-xl" />
                   <p className="font-semibold">Faster</p>
                   <p className="font-semibold">Less</p>
-                  <div className="md:mt-[2px] xl:mt-[8px] flex flex-col gap-[10px] md:gap-[15px] xl:gap-[15px] justify-center items-center">
-                    <BiCheck className="text-[#00FF66] text-[11.888px] md:text-xs xl:text-sm" />
-                    <BiCheck className="text-[#00FF66] text-[11.888px] md:text-xs xl:text-sm" />
-                    <span className="invisible md:hidden">auto verdure</span>
-                    <BiCheck className="text-[#00FF66] text-[11.888px] md:text-xs xl:text-sm" />
-                    <BiCheck className="text-[#00FF66] text-[11.888px] md:text-xs xl:text-sm" />
+                  <div className="flex flex-col gap-3 items-center">
+                    {[1, 2, 3, 4].map((_, i) => (
+                      <BiCheck key={i} className="text-[#00FF66] text-xl" />
+                    ))}
                   </div>
                 </div>
               </div>
 
-              <div className="hidden w-full xl:w-[320px] text-[11.888px] md:text-xs xl:text-sm px-[10.26px] py-[25.47px] rounded-[17px] xl:flex flex-col md:flex-1 bg-white shadow-[0_16.412px_49.235px_-2.051px_rgba(0,0,0,0.05)] items-center">
-                <p className="font-[600] leading-[17.832px] text-[#666]">
+              {/* Third Column - Hidden on Mobile */}
+              <div className="hidden md:flex w-full xl:w-[320px] text-sm p-5 rounded-[16.4px] flex-col bg-white shadow-[0_16.412px_49.235px_-2.051px_rgba(0,0,0,0.05)]">
+                <p className="font-[600] text-center text-[#666]">
                   Traditional Pots
                 </p>
-                <div className="mt-[52px] leading-[17.832px] gap-[10px] md:gap-[8.21px] xl:gap-[10px] font-[600] flex flex-col justify-center items-center">
-                  <p>Almost Everyday</p>
-                  <p>Overwatering & Underwatering</p>
-                  <p>Slower</p>
-                  <p>More</p>
-                  <div className="md:mt-[2px] xl:mt-[8px] flex flex-col gap-[10px] md:gap-[15px] xl:gap-[15px]">
-                    <BiX className="text-[#FF0000]" />
-                    <BiX className="text-[#FF0000]" />
-                    <BiX className="text-[#FF0000]" />
-                    <BiX className="text-[#FF0000]" />
+                <div className="mt-4 flex flex-col gap-3 items-center">
+                  <p className="font-semibold">Almost Everyday</p>
+                  <p className="font-semibold">Overwatering & Underwatering</p>
+                  <p className="font-semibold">Slower</p>
+                  <p className="font-semibold">More</p>
+                  <div className="flex flex-col gap-3">
+                    {[1, 2, 3, 4].map((_, i) => (
+                      <BiX key={i} className="text-[#FF0000] text-xl" />
+                    ))}
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="mt-[50.59px] w-full md:w-fit text-sm leading-[21px] px-[40px] md:px-0 py-[10px] md:py-0 rounded-[37px] flex xl:hidden justify-between font-[600] bg-[#9A5CF51A] text-[#666]">
-              <p className="px-5 py-2 rounded-[46px] text-white bg-primaryMain">
-                Our Hydroponics Pot
-              </p>
-              <p className="px-5 py-2 rounded-[46px]">Traditional Pots</p>
+            {/* Mobile Toggle */}
+            <div className="mt-6 w-full md:hidden bg-[#9A5CF51A] rounded-full p-2">
+              <div className="flex justify-between items-center">
+                <button className="flex-1 py-2 px-4 rounded-full bg-primaryMain text-white text-sm font-semibold">
+                  Our Hydroponics Pot
+                </button>
+                <button className="flex-1 py-2 px-4 text-sm font-semibold text-[#666]">
+                  Traditional Pots
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -959,11 +796,11 @@ export default function Home() {
         {/* Join THE AV Family  World's first customizable hydroponic pots. */}
         <div className="mt-[80px] md:mt-[160px] max-w-[361px] md:max-w-[754px] xl:max-w-[991px] w-full flex flex-col justify-center items-center mx-auto">
           <div className=" max-w-[361px] md:max-w-[754px] xl:max-w-[1065px] w-full flex flex-col gap-5">
-            <p className="text-[40px] md:text-4xl leading-[48px] -tracking-[1px] md:text-center font-normal capitalize text-primaryGrayscale">
-              Join THE AV Family <br className="hidden md:block" /> World&apos;s
+            <p className="text-[40px] md:text-4xl leading-[48px] -tracking-[1px] md:text-center font-normal text-primaryGrayscale">
+              Join the AV Family <br className="hidden md:block" /> World&apos;s
               first customizable hydroponic pots.
             </p>
-            <p className="w-[272px] md:w-full text-sm leading-6 text-center font-normal text-secondaryGrayscale">
+            <p className="w-[272px] md:w-full text-[14px] leading-6 text-left xl:text-center font-normal text-secondaryGrayscale">
               &quot;Unlock The Biophile Inside You: Embrace Your Connection With
               Nature !&quot;
             </p>

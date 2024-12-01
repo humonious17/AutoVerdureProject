@@ -231,7 +231,7 @@ export default function Blogs({ title, description }) {
               <button
                 key={index}
                 className={`h-2 rounded-full transition-all ${
-                  index === currentIndex ? "w-6 bg-blue-600" : "w-2 bg-gray-300"
+                  index === currentIndex ? "w-6 bg-primaryMain" : "w-2 bg-gray-300"
                 }`}
                 onClick={() => setCurrentIndex(index)}
               />

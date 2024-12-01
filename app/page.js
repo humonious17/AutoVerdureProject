@@ -848,12 +848,14 @@ export default function Home() {
                 src="/expert.mp4"
                 alt="video"
                 // width={604}
-                // height={521}
+                 height={300}
                 autoPlay
                 playsInline
                 loop
                 muted
-              />
+                style={{ width: "646.66px", height: "300px" }}
+                />
+              
               <div className="mt-[30px] w-[237px]">
                 <p className="text-2xl leading-[48px] -tracking-[0.6px] text-primaryMain font-bold">
                   Expert Guidance

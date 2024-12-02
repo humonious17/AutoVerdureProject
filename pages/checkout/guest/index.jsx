@@ -56,7 +56,7 @@ const Input = ({ label, placeholder, type, name, value, onChange }) => {
       </label>
       <div className="w-full relative">
         <input
-          className="w-full text-base px-4 py-3 md:py-3.5 leading-[25.6px] rounded-[84px] border-[2px] border-[#070707] text-[#070707] bg-[#FFFFFF] font-medium focus:outline-none focus:border-primaryMain focus:ring-offset-2 transition-all"
+          className="w-full text-base px-4 py-3 md:py-3.5 leading-[25.6px] rounded-[84px] border-[1px] border-[#070707] text-[#070707] bg-[#FFFFFF] font-medium focus:outline-none focus:border-primaryMain focus:ring-offset-2 transition-all"
           placeholder={placeholder}
           type={isVisible ? "text" : type}
           name={name}

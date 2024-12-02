@@ -158,7 +158,7 @@ const ContactUs = () => {
                   <div className="w-full flex flex-col gap-[8px]">
                     <label className="text-base font-medium">First Name</label>
                     <input
-                      className="text-base px-[21px] py-[18px] text-secondaryGrayscale border-[1px] rounded-[100px] bg-white"
+                      className="text-base px-[21px] py-[18px] text-secondaryGrayscale border-[1px] focus:border-primaryMain focus:outline-none transition-colors duration-300 rounded-[100px] bg-white"
                       type="text"
                       placeholder="First Name"
                       name="firstName"
@@ -169,7 +169,7 @@ const ContactUs = () => {
                   <div className="w-full flex flex-col gap-[8px]">
                     <label className="text-base font-medium">Last Name</label>
                     <input
-                      className="text-base px-[21px] py-[18px] text-secondaryGrayscale border-[1px] rounded-[100px] bg-white"
+                      className="text-base px-[21px] py-[18px] text-secondaryGrayscale border-[1px] rounded-[100px] bg-white focus:border-primaryMain focus:outline-none transition-colors duration-300"
                       type="text"
                       placeholder="Last Name"
                       name="lastName"
@@ -184,7 +184,7 @@ const ContactUs = () => {
                       Email Address *
                     </label>
                     <input
-                      className="text-base px-[21px] py-[18px] text-secondaryGrayscale border-[1px] rounded-[100px] bg-white"
+                      className="text-base px-[21px] py-[18px] text-secondaryGrayscale border-[1px] rounded-[100px] bg-white focus:border-primaryMain focus:outline-none transition-colors duration-300"
                       type="email"
                       placeholder="Email Address"
                       name="email"
@@ -198,7 +198,7 @@ const ContactUs = () => {
                       Type of Query
                     </label>
                     <input
-                      className="text-base px-[21px] py-[18px] text-secondaryGrayscale border-[1px] rounded-[100px] bg-white"
+                      className="text-base px-[21px] py-[18px] text-secondaryGrayscale border-[1px] rounded-[100px] bg-white focus:border-primaryMain focus:outline-none transition-colors duration-300"
                       type="text"
                       placeholder="Select Service"
                       name="queryType"
@@ -213,7 +213,7 @@ const ContactUs = () => {
                   </label>
                   <textarea
                     rows={10}
-                    className="text-base px-[21px] py-[18px] rounded-xl text-secondaryGrayscale border-[1px] bg-white"
+                    className="text-base px-[21px] py-[18px] rounded-xl text-secondaryGrayscale border-[1px] bg-white focus:border-primaryMain focus:outline-none transition-colors duration-300"
                     placeholder="Comments / Questions"
                     name="comments"
                     value={formData.comments}
@@ -222,7 +222,7 @@ const ContactUs = () => {
                 </div>
               </div>
 
-              <button className="mt-8 px-[42px] py-[18px] rounded-[100px] bg-primaryMain text-white">
+              <button className="mt-8 px-[42px] py-[18px] rounded-[100px] bg-primaryMain text-white ">
                 {buttonText}
               </button>
             </form>

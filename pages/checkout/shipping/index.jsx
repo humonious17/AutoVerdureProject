@@ -234,7 +234,7 @@ const Shipping = (props) => {
                 name="countryCode"
                 value={formData.countryCode}
                 onChange={handleInputChange}
-                className="appearance-none w-full p-3 rounded-full bg-white border-2 border-black pr-10 focus:outline-none focus:border-primaryMain transition-colors duration-300"
+                className="appearance-none w-full p-3 rounded-full bg-white border-1 border-black pr-10 focus:outline-none focus:border-primaryMain transition-colors duration-300"
               >
                 {countryCodes.map((code) => (
                   <option key={code.code} value={code.code}>

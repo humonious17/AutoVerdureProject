@@ -3,6 +3,8 @@ import { useRouter } from "next/router";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import findCartProducts from "@/lib/server/findCartProducts";
+import { ChevronDown } from "lucide-react";
+
 
 const countryCodes = [
   { code: "+1", country: "US" },
@@ -21,14 +23,13 @@ const Shipping = (props) => {
   const [error, setError] = useState("");
   const [fieldErrors, setFieldErrors] = useState({});
   const [formData, setFormData] = useState({
-    fullName: "",
-    streetName: "",
-    houseNumber: "",
-    city: "",
-    phone: "",
-    country: "",
-    zipCode: "",
-    countryCode: "+91", // Default country code
+    FullName: "",
+    StreetName: "",
+    HouseNumber: "",
+    City: "",
+    Phone: "",
+    Country: "",
+    ZipCode: "",
   });
 
   useEffect(() => {
@@ -228,18 +229,24 @@ const Shipping = (props) => {
           )}
 
           <div className="flex gap-4">
-            <select
-              name="countryCode"
-              value={formData.countryCode}
-              onChange={handleInputChange}
-              className="w-1/4 p-3 rounded-full border border-gray-300"
-            >
-              {countryCodes.map((code) => (
-                <option key={code.code} value={code.code}>
-                  {code.country} ({code.code})
-                </option>
-              ))}
-            </select>
+            <div className="relative w-1/4">
+              <select
+                name="countryCode"
+                value={formData.countryCode}
+                onChange={handleInputChange}
+                className="appearance-none w-full p-3 rounded-full bg-white border-2 border-black pr-10 focus:outline-none focus:border-primaryMain transition-colors duration-300"
+              >
+                {countryCodes.map((code) => (
+                  <option key={code.code} value={code.code}>
+                    {code.country} ({code.code})
+                  </option>
+                ))}
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3">
+                <ChevronDown className="text-gray-500" size={20} />
+              </div>
+            </div>
+
             <Input
               name="phone"
               label="Phone"

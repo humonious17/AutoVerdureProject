@@ -359,7 +359,9 @@ export default function Home() {
                 <div
                   key={index}
                   className={`w-2 h-2 rounded-full ${
-                    index === currentIndex ? "bg-primaryMain" : "bg-[#FFFCF8]"
+                    index === currentIndex
+                      ? "bg-primaryMain w-4"
+                      : "bg-gray-500"
                   }`}
                 ></div>
               ))}
@@ -739,7 +741,7 @@ export default function Home() {
               </div>
 
               {/* Second Column */}
-              <div className="w-full xl:w-[320px] text-sm md:text-xs xl:text-sm p-5 border-2 rounded-[16.4px] border-primaryMain flex flex-col bg-[#FFFCF8] shadow-[0_16.412px_49.235px_-2.051px_rgba(0,0,0,0.05)]">
+              <div className="w-full xl:w-[320px] text-sm md:text-xs xl:text-sm p-5 border-2 rounded-[16.4px] border-primaryMain flex flex-col bg-white shadow-[0_16.412px_49.235px_-2.051px_rgba(0,0,0,0.05)]">
                 <p className="font-[600] text-center text-[#666]">
                   Our Hydroponic Pot
                 </p>

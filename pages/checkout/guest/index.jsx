@@ -56,7 +56,7 @@ const Input = ({ label, placeholder, type, name, value, onChange }) => {
       </label>
       <div className="w-full relative">
         <input
-          className="w-full text-base px-4 py-3 md:py-3.5 leading-[25.6px] rounded-[84px] border-[1px] border-[#070707] text-[#070707] bg-[#FFFFFF] font-medium focus:outline-none focus:ring-2 focus:ring-gray-800 focus:ring-offset-2 transition-all"
+          className="w-full text-base px-4 py-3 md:py-3.5 leading-[25.6px] rounded-[84px] border-[2px] border-[#070707] text-[#070707] bg-[#FFFFFF] font-medium focus:outline-none focus:border-primaryMain focus:ring-offset-2 transition-all"
           placeholder={placeholder}
           type={isVisible ? "text" : type}
           name={name}
@@ -129,35 +129,37 @@ const GuestCheckout = (props) => {
       <div className="w-full max-w-[560px] space-y-6 md:space-y-8">
         {/* Header Section */}
         <div className="text-center md:text-left space-y-2">
-          <h1 className="text-2xl md:text-[32px] leading-tight font-normal text-[#070707]">
+          <h1 className="text-2xl md:text-[32px] leading-tight font-normal text-[#070707] text-center">
             Welcome back
           </h1>
-          <p className="text-sm md:text-base leading-relaxed text-[#8E8F94] font-medium">
+          <p className="text-sm md:text-base leading-relaxed text-[#8E8F94] font-medium text-center">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit.
           </p>
         </div>
 
         {/* Google Authentication */}
-        <div className="w-full flex flex-col items-center justify-center pt-4 md:pt-6">
-          <div
-            id="g_id_onload"
-            data-client_id="39593396169-ppn7dc7v4huovmuromku2k01s26kngfa.apps.googleusercontent.com"
-            data-context="signin"
-            data-ux_mode="popup"
-            data-callback="handleCredentialResponse"
-            data-auto_prompt="false"
-          ></div>
+        <div className="w-full flex items-center justify-center pt-4 md:pt-6">
+          <div className="max-w-[400px] w-full">
+            <div
+              id="g_id_onload"
+              data-client_id="39593396169-ppn7dc7v4huovmuromku2k01s26kngfa.apps.googleusercontent.com"
+              data-context="signin"
+              data-ux_mode="popup"
+              data-callback="handleCredentialResponse"
+              data-auto_prompt="false"
+            ></div>
 
-          <div
-            className="g_id_signin w-full"
-            data-type="standard"
-            data-shape="pill"
-            data-theme="outline"
-            data-text="signin_with"
-            data-size="large"
-            data-logo_alignment="center"
-            data-width="400"
-          ></div>
+            <div
+              className="g_id_signin w-full"
+              data-type="standard"
+              data-shape="pill"
+              data-theme="outline"
+              data-text="signin_with"
+              data-size="large"
+              data-logo_alignment="center"
+              data-width="400"
+            ></div>
+          </div>
         </div>
 
         {/* Divider */}
@@ -195,7 +197,7 @@ const GuestCheckout = (props) => {
             <p className="text-sm md:text-base text-[#8E8F94] font-medium">
               Don't have an account?{" "}
               <Link
-                href="/cart/checkout/signup"
+                href="/signup"
                 className="text-[#070707] font-semibold hover:underline transition-all"
               >
                 Sign Up

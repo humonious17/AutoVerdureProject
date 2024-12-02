@@ -951,33 +951,21 @@ const SingleProductPage = ({ productData, allProducts }) => {
                 </p>
 
                 <div className="mt-[19.32px] sm:mt-0 max-w-[269px] w-full flex gap-[14px]">
-                  <div className="w-[80px] h-[46px]">
-                    <Image
-                      className="w-full h-full object-contain"
-                      src="/paypal.svg"
-                      alt="paypal"
-                      width={80}
-                      height={46}
-                    />
-                  </div>
-                  <div className="w-[80px] h-[46px]">
-                    <Image
-                      className="w-full h-full object-contain"
-                      src="/stripe.svg"
-                      alt="stripe"
-                      width={80}
-                      height={46}
-                    />
-                  </div>
-                  <div className="w-[80px] h-[46px]">
-                    <Image
-                      className="w-full h-full object-contain"
-                      src="/mastercard.svg"
-                      alt="mastercard"
-                      width={80}
-                      height={46}
-                    />
-                  </div>
+                  {[
+                    { src: "/upi-icon.svg", alt: "upi" },
+                    { src: "/visa-icon.svg", alt: "visa" },
+                    { src: "/mastercard-icon.svg", alt: "mastercard" },
+                  ].map(({ src, alt }) => (
+                    <div key={alt} className="w-[80px] h-[46px]">
+                      <Image
+                        className="w-full h-full object-contain grayscale"
+                        src={src}
+                        alt={alt}
+                        width={80}
+                        height={46}
+                      />
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -1097,33 +1085,21 @@ const SingleProductPage = ({ productData, allProducts }) => {
             </p>
 
             <div className="mt-[19.32px] sm:mt-0 max-w-[269px] w-full flex gap-[14px]">
-              <div className="w-[80px] h-[46px]">
-                <Image
-                  className="w-full h-full object-contain"
-                  src="/paypal.svg"
-                  alt="paypal"
-                  width={80}
-                  height={46}
-                />
-              </div>
-              <div className="w-[80px] h-[46px]">
-                <Image
-                  className="w-full h-full object-contain"
-                  src="/stripe.svg"
-                  alt="stripe"
-                  width={80}
-                  height={46}
-                />
-              </div>
-              <div className="w-[80px] h-[46px]">
-                <Image
-                  className="w-full h-full object-contain"
-                  src="/mastercard.svg"
-                  alt="mastercard"
-                  width={80}
-                  height={46}
-                />
-              </div>
+              {[
+                { src: "/upi-icon.svg", alt: "upi" },
+                { src: "/visa-icon.svg", alt: "visa" },
+                { src: "/mastercard-icon.svg", alt: "mastercard" },
+              ].map(({ src, alt }) => (
+                <div key={alt} className="w-[80px] h-[46px]">
+                  <Image
+                    className="w-full h-full object-contain grayscale"
+                    src={src}
+                    alt={alt}
+                    width={80}
+                    height={46}
+                  />
+                </div>
+              ))}
             </div>
           </div>
         </div>

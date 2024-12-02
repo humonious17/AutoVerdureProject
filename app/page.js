@@ -76,7 +76,6 @@ const Page = () => {
   );
 };
 
-
 export default function Home() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -215,8 +214,8 @@ export default function Home() {
       {/* Image */}
       <div className="absolute top-[50px] right-[45px] md:right-[20px] image-container">
         <Image
-          className="xl:hidden pot-image scale-[1.8] origin-center transform-gpu"
-          src="/mobile.png"
+          className="xl:hidden pot-image scale-[2.2] origin-center transform-gpu"
+          src="/ss.png"
           alt="bgImage"
           width={350}
           height={587}
@@ -303,7 +302,7 @@ export default function Home() {
           Shop The New Collection
         </p>
 
-        <div className="mt-[33px] w-full grid grid-cols-2 justify-between items-center gap-x-[12px] gap-y-[20.32px] md:gap-x-[17.17px] md:gap-y-[19.46px] xl:gap-x-[30px] xl:gap-y-[34px] bg-white">
+        <div className="mt-[33px] w-full grid grid-cols-2 justify-between items-center gap-x-[12px] gap-y-[20.32px] md:gap-x-[17.17px] md:gap-y-[19.46px] xl:gap-x-[30px] xl:gap-y-[34px] bg-[#FFFCF8]">
           {collections.map((collection, index) => (
             <div key={index}>
               <CollectionCard
@@ -360,7 +359,7 @@ export default function Home() {
                 <div
                   key={index}
                   className={`w-2 h-2 rounded-full ${
-                    index === currentIndex ? "bg-primaryMain" : "bg-gray-300"
+                    index === currentIndex ? "bg-primaryMain" : "bg-[#FFFCF8]"
                   }`}
                 ></div>
               ))}
@@ -740,7 +739,7 @@ export default function Home() {
               </div>
 
               {/* Second Column */}
-              <div className="w-full xl:w-[320px] text-sm md:text-xs xl:text-sm p-5 border-2 rounded-[16.4px] border-primaryMain flex flex-col bg-white shadow-[0_16.412px_49.235px_-2.051px_rgba(0,0,0,0.05)]">
+              <div className="w-full xl:w-[320px] text-sm md:text-xs xl:text-sm p-5 border-2 rounded-[16.4px] border-primaryMain flex flex-col bg-[#FFFCF8] shadow-[0_16.412px_49.235px_-2.051px_rgba(0,0,0,0.05)]">
                 <p className="font-[600] text-center text-[#666]">
                   Our Hydroponic Pot
                 </p>
@@ -758,7 +757,7 @@ export default function Home() {
               </div>
 
               {/* Third Column - Hidden on Mobile */}
-              <div className="hidden md:flex w-full xl:w-[320px] text-sm p-5 rounded-[16.4px] flex-col bg-white shadow-[0_16.412px_49.235px_-2.051px_rgba(0,0,0,0.05)]">
+              <div className="hidden md:flex w-full xl:w-[320px] text-sm p-5 rounded-[16.4px] flex-col bg-[#FFFCF8] shadow-[0_16.412px_49.235px_-2.051px_rgba(0,0,0,0.05)]">
                 <p className="font-[600] text-center text-[#666]">
                   Traditional Pots
                 </p>

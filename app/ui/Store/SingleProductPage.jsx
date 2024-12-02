@@ -197,29 +197,78 @@ const SingleProductPage = ({ productData, allProducts }) => {
   };
 
   const MainImageSection = () => {
-    // Scroll to top when changing images on mobile
+    const [touchStart, setTouchStart] = useState(0);
+    const [touchEnd, setTouchEnd] = useState(0);
+    const [transitioning, setTransitioning] = useState(false);
+    const transitionDuration = 300; // milliseconds
+
     const handleImageChange = (index) => {
+      if (transitioning) return;
+
+      setTransitioning(true);
       setImageId(index);
+
       if (window.innerWidth < 640) {
         window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      setTimeout(() => {
+        setTransitioning(false);
+      }, transitionDuration);
+    };
+
+    const handleTouchStart = (e) => {
+      if (transitioning) return;
+      setTouchStart(e.targetTouches[0].clientX);
+    };
+
+    const handleTouchMove = (e) => {
+      if (transitioning) return;
+      setTouchEnd(e.targetTouches[0].clientX);
+    };
+
+    const handleTouchEnd = () => {
+      if (transitioning || window.innerWidth >= 640) return;
+
+      const touchDiff = touchStart - touchEnd;
+      const minSwipeDistance = 50;
+
+      if (Math.abs(touchDiff) > minSwipeDistance) {
+        const newIndex =
+          touchDiff > 0
+            ? (imageId + 1) % currentImageUrls.length
+            : (imageId - 1 + currentImageUrls.length) % currentImageUrls.length;
+
+        handleImageChange(newIndex);
       }
     };
 
     return (
-      <div className="w-[362px] sm:w-1/2 xl:w-[624px] flex flex-col items-center sm:items-start">
+      <div
+        className="w-[362px] sm:w-1/2 xl:w-[624px] flex flex-col items-center sm:items-start"
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
         {/* Main Image Container */}
-        <div className="relative w-[361px] h-[320px] sm:w-full sm:h-[364px] xl:h-[550px]">
+        <div className="relative w-[361px] h-[320px] sm:w-full sm:h-[364px] xl:h-[550px] overflow-hidden">
           {!loading && (
             <>
-              <Image
-                className="object-cover w-[361px] h-[320px] sm:w-full sm:h-full rounded-[32.4px] sm:rounded-[44px]"
-                src={currentImageUrls[imageId] || fallbackImageUrl}
-                alt={productData.productName}
-                width={624}
-                height={550}
-                unoptimized={true}
-                priority
-              />
+              <div
+                className={`absolute inset-0 transition-opacity duration-300 ${
+                  transitioning ? "opacity-0" : "opacity-100"
+                }`}
+              >
+                <Image
+                  className="object-cover w-[361px] h-[320px] sm:w-full sm:h-full rounded-[32.4px] sm:rounded-[44px]"
+                  src={currentImageUrls[imageId] || fallbackImageUrl}
+                  alt={productData.productName}
+                  width={624}
+                  height={550}
+                  unoptimized={true}
+                  priority
+                />
+              </div>
 
               {/* Navigation Arrows */}
               {currentImageUrls.length > 1 && (
@@ -1082,7 +1131,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
         {/* Related Product */}
         <div className="mt-[55.18px] sm:mt-[25px] lg:mt-[84.43px] xl:max-w-[1312px] w-full">
           <div className="hidden w-full sm:flex sm:justify-between sm:items-center">
-            <p className="text-[38px] leading-[49.4px]">Add flowers</p>
+            <p className="text-[38px] leading-[49.4px]">Also Add</p>
             <p
               className="text-[21px] leading-[25.2px] font-normal pb-[7.99px] border-b-[2px] border-[#BBBBBB] cursor-pointer"
               onClick={toggleShowAll}

@@ -129,9 +129,11 @@ const CartOverview = ({ items, onClose }) => {
               alt={item.productName}
               height={105}
               width={105}
+              objectFit="cover" // Ensures image covers the entire area without distortion
               style={{
                 borderRadius: "7.404px",
                 marginLeft: "26.5px",
+                aspectRatio: "1/1", // Ensures square aspect ratio
               }}
             />
             <div
@@ -222,10 +224,11 @@ const CartOverview = ({ items, onClose }) => {
       <div
         style={{
           display: "flex",
-          justifyContent: "space-between",
+          justifyContent: "center", // Changed from space-between to center
           marginTop: "20px",
           paddingLeft: "33px",
           paddingRight: "33px",
+          gap: "20px", // Maintains the gap between buttons
         }}
       >
         <button
@@ -234,12 +237,15 @@ const CartOverview = ({ items, onClose }) => {
             justifyContent: "center",
             alignItems: "center",
             width: "150px",
+            minWidth: "150px",
+            whiteSpace: "nowrap",
             borderRadius: "50px",
             backgroundColor: "#000",
             color: "#FFF",
             cursor: "pointer",
             fontSize: "15px",
             height: "40px",
+            padding: "0 10px",
           }}
           onClick={handleCartGuestCheckout}
         >
@@ -251,12 +257,15 @@ const CartOverview = ({ items, onClose }) => {
             justifyContent: "center",
             alignItems: "center",
             width: "150px",
+            minWidth: "150px",
+            whiteSpace: "nowrap",
             borderRadius: "50px",
             backgroundColor: "#000",
             color: "#FFF",
             cursor: "pointer",
             fontSize: "15px",
             height: "40px",
+            padding: "0 10px",
           }}
           onClick={handleCartMemberCheckout}
         >

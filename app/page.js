@@ -18,6 +18,7 @@ import Power from "./ui/Home/Power";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import "./globals.css";
 import ProductShowcase from "./ui/Home/ProductShowcase";
+import HydroponicComparison from "./ui/Home/hydrotoggle";
 
 import Blogs from "@/pages/Blogs";
 
@@ -752,74 +753,8 @@ export default function Home() {
               Why should you switch from traditional pots to hydroponics?
             </p>
           </div>
-
-          <div className="mt-[30px] md:mt-[73px] xl:mt-[82px] w-full flex flex-col justify-center items-center">
-            <div className="w-full md:w-[523px] xl:w-fit flex flex-row md:flex-row md:gap-x-5 rounded-[16.4px] space-y-0">
-              {/* First Column */}
-              <div className="w-full xl:w-[320px] flex flex-col gap-4 text-sm md:text-xs xl:text-sm p-5 font-[600] rounded-[16.4px] shadow-[0_16.412px_49.235px_-2.051px_rgba(0,0,0,0.05)] bg-[#fff]">
-                <p className="font-[600]">How we are different.</p>
-                <div className="w-full flex flex-col gap-3 text-[#666666]">
-                  <p>Plant Watering</p>
-                  <p>Minimal Water Wastage</p>
-                  <p>Rate of Produce Growth</p>
-                  <p>Labour Required</p>
-                  <p>No Pest-induced diseases</p>
-                  <p>Reduced Carbon Footprint</p>
-                  <p>Higher Crop Yield</p>
-                </div>
-              </div>
-
-              {/* Second Column */}
-              <div className="w-full xl:w-[320px] text-sm md:text-xs xl:text-sm p-5 border-2 rounded-[16.4px] border-primaryMain flex flex-col bg-white shadow-[0_16.412px_49.235px_-2.051px_rgba(0,0,0,0.05)]">
-                <p className="font-[600] text-center text-[#666]">
-                  Our Hydroponic Pot
-                </p>
-                <div className="mt-4 w-full flex flex-col gap-3 items-center">
-                  <p className="font-semibold">Once 30-45 Days</p>
-                  <BiCheck className="text-[#00FF66] text-xl" />
-                  <p className="font-semibold">Faster</p>
-                  <p className="font-semibold">Less</p>
-                  <div className="flex flex-col gap-3 items-center">
-                    {[1, 2, 3, 4].map((_, i) => (
-                      <BiCheck key={i} className="text-[#00FF66] text-xl" />
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Third Column - Hidden on Mobile */}
-              <div className="hidden md:flex w-full xl:w-[320px] text-sm p-5 rounded-[16.4px] flex-col bg-[#FFFCF8] shadow-[0_16.412px_49.235px_-2.051px_rgba(0,0,0,0.05)]">
-                <p className="font-[600] text-center text-[#666]">
-                  Traditional Pots
-                </p>
-                <div className="mt-4 flex flex-col gap-3 items-center">
-                  <p className="font-semibold">Almost Everyday</p>
-                  <p className="font-semibold">Overwatering & Underwatering</p>
-                  <p className="font-semibold">Slower</p>
-                  <p className="font-semibold">More</p>
-                  <div className="flex flex-col gap-3">
-                    {[1, 2, 3, 4].map((_, i) => (
-                      <BiX key={i} className="text-[#FF0000] text-xl" />
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Mobile Toggle */}
-            <div className="mt-6 w-full md:hidden bg-[#9A5CF51A] rounded-full p-2">
-              <div className="flex justify-between items-center">
-                <button className="flex-1 py-2 px-4 rounded-full bg-primaryMain text-white text-sm font-semibold">
-                  Our Hydroponics Pot
-                </button>
-                <button className="flex-1 py-2 px-4 text-sm font-semibold text-[#666]">
-                  Traditional Pots
-                </button>
-              </div>
-            </div>
-          </div>
+          <HydroponicComparison />
         </div>
-
         {/* Loved By Buyers */}
         <ProductShowcase />
 

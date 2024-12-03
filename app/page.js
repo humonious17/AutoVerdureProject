@@ -128,7 +128,7 @@ export default function Home() {
   }, [hydroponics]); // Use hydroponics directly as a dependency
 
   return (
-    <div className="w-full px-4 md:px-10 pb-[100px] bg-[#FFFCF8] flex flex-col justify-center items-center overflow-hidden">
+    <div className="w-full px-4 mr-5 md:px-10 pb-[100px] bg-[#FFFCF8] flex flex-col justify-center items-center overflow-hidden">
       {/* Hero */}
       <div className="w-screen flex flex-col-reverse md:flex-row xl:flex-col justify-center items-center overflow-hidden hero-container">
         <div
@@ -328,35 +328,24 @@ export default function Home() {
         </p>
 
         <div className="mt-[33px] pt-[10px] pb-[10px] w-full grid grid-cols-2 place-items-stretch justify-center items-stretch gap-x-[12px] gap-y-[20.32px] md:gap-x-[17.17px] md:gap-y-[19.46px] xl:gap-x-[30px] xl:gap-y-[34px] sm:px-0 bg-[#FFFCF8]">
-          {collections.map((collection, index) => {
-            // Define the link based on index
-            const links = [
-              "/store/planters",
-              "/store/flowers",
-              "/store/plants",
-              "/store/accessory",
-            ];
-
-            return (
-              <Link
-                key={index}
-                href={links[index]}
-                className="flex justify-center items-stretch w-full"
-              >
-                <CollectionCard
-                  title={collection.title}
-                  description={collection.description}
-                  image={collection.image}
-                  video={collection.video}
-                  className="w-full h-full object-cover"
-                  playsInline
-                  loop
-                  muted
-                  autoPlay
-                />
-              </Link>
-            );
-          })}
+          {collections.map((collection, index) => (
+            <div
+              key={index}
+              className="flex justify-center items-stretch w-full"
+            >
+              <CollectionCard
+                title={collection.title}
+                description={collection.description}
+                image={collection.image}
+                video={collection.video}
+                className="w-full h-full object-cover"
+                playsInline
+                loop
+                muted
+                autoPlay
+              />
+            </div>
+          ))}
         </div>
       </div>
       {/* Hydroponic Kits */}

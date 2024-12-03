@@ -78,7 +78,7 @@ const CollectionCard = ({ title, description, image, video }) => {
           </p>
         </div>
         <Link href={"/store/" + title.toLowerCase()}>
-          <p className="flex items-center mt-2 md:mt-[30px] mb-2 md:mb-[60px] text-[8px] md:text-[9.732px] xl:text-[17px] leading-tight text-[#0E0E0E] font-normal border-b md:border-b-[1px] border-[#BBBBBB]">
+          <p className="flex items-center mt-2 md:mt-[30px] mb-2 md:mb-[60px] text-[8px] md:text-[9.732px] xl:text-[17px] leading-tight text-[#0E0E0E] font-normal">
             Buy Now{" "}
             <span>
               <Image

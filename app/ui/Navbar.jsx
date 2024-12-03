@@ -337,7 +337,7 @@ const Navbar = () => {
             right-0 
             left-0 
             h-screen 
-            bg-white/90 
+            bg-[#FFFBF7]/90 
             backdrop-blur-md 
             z-40 
             pt-[100px] 

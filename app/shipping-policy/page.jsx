@@ -3,7 +3,7 @@ import Link from "next/link";
 import React from "react";
 
 const PolicySection = ({ title, children }) => (
-  <div className="mb-8 bg-white shadow-sm rounded-lg p-6">
+  <div className="mb-8 bg-[#FFFBF7] shadow-sm rounded-lg p-6">
     <h2 className="text-2xl font-semibold text-primaryMain border-b pb-3 mb-4">
       {title}
     </h2>
@@ -20,7 +20,7 @@ const PolicySubsection = ({ title, children }) => (
 
 const ShippingPolicy = () => {
   return (
-    <div className="w-full px-4 pt-[44px] pb-[59px] md:px-[28px] md:py-[116px] xl:px-[119.99px] xl:pt-[114px] xl:pb-[192.5px] 2xl:px-[200px] 2xl:py-[116px] bg-[#FFFCF8] flex flex-col justify-center items-center">
+    <div className="w-full px-4 pt-[100px] pb-[59px] md:px-[28px] md:py-[116px] xl:px-[119.99px] xl:pt-[114px] xl:pb-[192.5px] 2xl:px-[200px] 2xl:py-[116px] bg-[#FFFBF7] flex flex-col justify-center items-center">
       {/* Title Section */}
       <div className="max-w-[246px] md:max-w-[430px] w-full relative">
         <div>
@@ -61,7 +61,7 @@ const ShippingPolicy = () => {
 
       {/* Content */}
       <div className="mt-[80px] md:mt-[72px] max-w-screen md:max-w-[655px] xl:max-w-[778px] w-full">
-        <div className="bg-white rounded-xl shadow-lg p-8 md:p-12">
+        <div className="bg-[#FFFBF7] rounded-xl shadow-lg p-8 md:p-12">
           <div className="mb-8">
             <p className="text-secondaryGrayscale text-base md:text-xl leading-relaxed">
               Welcome to Auto Verdure! We are dedicated to providing

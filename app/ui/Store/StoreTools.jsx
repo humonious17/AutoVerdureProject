@@ -197,7 +197,7 @@ const StoreTools = ({
       <div className="p-4">
         <button
           onClick={applyFilters}
-          className="w-full py-2 px-4 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors"
+          className="w-full py-4 px-4 bg-primaryMain text-white rounded-full hover:bg-gray-800 transition-colors"
         >
           Apply Filters
         </button>

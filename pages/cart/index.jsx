@@ -173,7 +173,7 @@ const Cart = ({ products = [] }) => {
                       </p>
                       <Link
                         href="/"
-                        className="text-blue-600 hover:text-blue-700 font-medium mt-2 inline-block"
+                        className="text-primaryMain hover:purple-300 font-medium mt-2 inline-block"
                       >
                         Start shopping
                       </Link>

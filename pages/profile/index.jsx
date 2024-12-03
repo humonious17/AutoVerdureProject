@@ -265,7 +265,7 @@ const Profile = (props) => {
             type="number"
             name="avPoints"
             value={formData.avPoints}
-            className="w-full px-4 py-2 rounded-full border bg-gray-50"
+            className="w-full px-4 py-2 rounded-full border bg-[#fffbf7]"
             disabled
           />
         </div>
@@ -275,13 +275,13 @@ const Profile = (props) => {
           <button
             type="button"
             onClick={redeemPoints}
-            className="w-full py-3 bg-green-600 hover:bg-green-700 text-white rounded-full transition-colors"
+            className="w-full py-3 bg-[#809d79] hover:bg-[#809d90] text-white rounded-full transition-colors"
           >
             Redeem Points
           </button>
 
           {redeemMessage && (
-            <p className="text-green-600 text-center text-sm">
+            <p className="text-[black] text-center text-sm">
               {redeemMessage}
             </p>
           )}
@@ -331,7 +331,7 @@ const Profile = (props) => {
 
       {/* Logout Message */}
       {logoutMessage && (
-        <div className="fixed top-0 left-0 right-0 bg-green-500 text-white py-3 text-center animate-fade-in-down">
+        <div className="fixed top-0 left-0 right-0 bg-[#809d79] text-white py-3 text-center animate-fade-in-down">
           {logoutMessage}
         </div>
       )}

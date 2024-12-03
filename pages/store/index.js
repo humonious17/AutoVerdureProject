@@ -5,7 +5,6 @@ import TopSegment from "@/app/ui/Store/TopSegment";
 import StoreTools from "@/app/ui/Store/StoreTools";
 import findAllProducts from "/pages/api/products/findAllProducts";
 import TuneIcon from "@mui/icons-material/Tune";
-import Image from "next/image";
 import { LayoutGrid, Smartphone } from "lucide-react";
 import TikTokProductView from "./TikTokProductView";
 
@@ -65,12 +64,12 @@ const Store = ({ initialProducts }) => {
   );
 
   return (
-    <div className="w-full bg-[#FFFCF8] min-h-screen relative">
+    <div className="w-full bg-[#FFFBF7] min-h-screen relative">
       {/* Filter Sidebar - Full screen on mobile */}
       <div
         className={`fixed top-0 left-0 h-screen bg-[#FFFBF7] transform transition-transform duration-300 ease-in-out z-50 w-full sm:w-[300px] ${
           isFilterOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
+        }`} 
       >
         <StoreTools
           totalProducts={validProducts.length}

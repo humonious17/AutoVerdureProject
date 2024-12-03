@@ -46,7 +46,7 @@ const ChatBot = () => {
       {!isOpen && (
         <motion.button
           onClick={() => setIsOpen(true)} // Toggle visibility when clicked
-          className="fixed bottom-4 right-4 bg-purple-600 text-white p-3 rounded-full shadow-lg hover:bg-purple-700 focus:outline-none transition-transform transform hover:scale-110 flex items-center z-50"
+          className="fixed bottom-4 right-4 bg-primaryMain text-white p-3 rounded-full shadow-lg hover:bg-purple-700 focus:outline-none transition-transform transform hover:scale-110 flex items-center z-50"
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
         >
@@ -65,7 +65,7 @@ const ChatBot = () => {
           transition={{ duration: 0.3, ease: 'easeInOut' }}
         >
           {/* Header with close button */}
-          <div className="p-4 bg-purple-500 text-white rounded-t-lg flex justify-between items-center">
+          <div className="p-4 bg-primaryMain text-white rounded-t-lg flex justify-between items-center">
             <div className="flex items-center space-x-2">
               <div className="w-8 h-8 bg-pink-300 rounded-full"></div> {/* Placeholder for profile picture */}
               <div>
@@ -91,7 +91,7 @@ const ChatBot = () => {
             {messages.map((message, index) => (
               <div key={index} className={`mb-2 ${message.sender === 'user' ? 'text-right' : 'text-left'}`}>
                 <motion.span
-                  className={`inline-block p-3 rounded-lg shadow ${message.sender === 'user' ? 'bg-purple-600 text-white' : 'bg-gray-200 text-gray-800'}`}
+                  className={`inline-block p-3 rounded-lg shadow ${message.sender === 'user' ? 'bg-primaryMain text-white' : 'bg-[#fffbf7] text-gray-800'}`}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.2 }}
@@ -105,7 +105,7 @@ const ChatBot = () => {
           {/* Input area */}
           <div className="flex items-center bg-purple-500 p-3 space-x-2 rounded-b-lg">
             {/* Input box with send button inside */}
-            <div className="relative flex items-center bg-white rounded-full pl-4 pr-10 w-full h-10 max-w-lg">
+            <div className="relative flex items-center bg-[#fffbf7] rounded-full pl-4 pr-10 w-full h-10 max-w-lg">
               <input
                 type="text"
                 placeholder="Type Message..."
@@ -124,13 +124,13 @@ const ChatBot = () => {
             </div>
 
             {/* Additional icons */}
-            <button className="text-white p-1 rounded-full hover:bg-purple-300 focus:outline-none">
+            <button className="text-white p-1 rounded-full hover:bg-primaryMain focus:outline-none">
               <CgAttachment size={20} />
             </button>
-            <button className="text-white p-1 rounded-full hover:bg-purple-300 focus:outline-none">
+            <button className="text-white p-1 rounded-full hover:bg-primaryMain focus:outline-none">
               <RiCameraLine size={20} />
             </button>
-            <button className="text-white p-1 rounded-full hover:bg-purple-300 focus:outline-none">
+            <button className="text-white p-1 rounded-full hover:bg-primaryMain focus:outline-none">
               <IoMicOutline size={20} />
             </button>
           </div>

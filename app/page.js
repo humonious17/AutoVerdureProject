@@ -169,10 +169,10 @@ export default function Home() {
           </p>
 
           {/* Buttons */}
-          <div className="mt-3 md:mt-8 w-full text-base font-medium flex gap-5 justify-center xl:justify-center lg:justify-center md:justify-center items-center hero-buttons">
+          <div className="hidden md:flex mt-3 md:mt-8 w-full text-base font-medium gap-5 justify-center xl:justify-center lg:justify-center md:justify-center items-center hero-buttons">
             <Link href="/store" passHref>
               <button
-                className="shop-now px-4 md:px-[32px] py-2 md:py-[14px] sm:px-[32px] sm:py-[14px] rounded-[100px] text-white bg-primaryMain text-[16px] md:text-base mobile-button"
+                className="shop-now px-4 md:px-[32px] py-2 md:py-[14px] sm:px-[32px] sm:py-[14px] rounded-[100px] text-white bg-primaryMain text-[16px] md:text-base"
                 style={{
                   whiteSpace: "nowrap",
                 }}
@@ -182,7 +182,7 @@ export default function Home() {
             </Link>
             <Link href="/about-us" passHref>
               <button
-                className="learn-more flex items-center justify-center px-4 md:px-[32px] py-2 md:py-[14px] sm:px-[32px] sm:py-[14px] text-primaryGrayscale border-[1px] border-primaryGrayscale rounded-[100px] bg-transparent text-[16px] md:text-base mobile-button"
+                className="learn-more flex items-center justify-center px-4 md:px-[32px] py-2 md:py-[14px] sm:px-[32px] sm:py-[14px] text-primaryGrayscale border-[1px] border-primaryGrayscale rounded-[100px] bg-transparent text-[16px] md:text-base"
                 style={{
                   borderRadius: "100px",
                   border: "1px solid var(--Greyscale-Black, #3D3D3D)",
@@ -192,24 +192,49 @@ export default function Home() {
                 Learn More
               </button>
             </Link>
-
-            <style jsx>{`
-              @media (max-width: 640px) {
-                .mobile-button {
-                  width: auto; /* Adjusts width dynamically */
-                  min-width: 160px; /* Ensures a consistent minimum size */
-                  height: 55px; /* Fixed height */
-                  padding: 18px 24px; /* Adjusted for better spacing */
-                  gap: 10px;
-                  opacity: 1;
-                }
-                .hero-buttons {
-                  gap: 15px; /* Adjusts gap between buttons for mobile */
-                }
-              }
-            `}</style>
           </div>
         </div>
+      </div>
+
+      <div className="mt-3 md:mt-8 w-full text-base font-medium flex gap-5 justify-center xl:justify-center lg:justify-center md:justify-center items-center hero-buttons">
+        <Link href="/store" passHref>
+          <button
+            className="shop-now px-4 md:px-[32px] py-2 md:py-[14px] sm:px-[32px] sm:py-[14px] rounded-[100px] text-white bg-primaryMain text-[16px] md:text-base mobile-button"
+            style={{
+              whiteSpace: "nowrap",
+            }}
+          >
+            Shop now
+          </button>
+        </Link>
+        <Link href="/about-us" passHref>
+          <button
+            className="learn-more flex items-center justify-center px-4 md:px-[32px] py-2 md:py-[14px] sm:px-[32px] sm:py-[14px] text-primaryGrayscale border-[1px] border-primaryGrayscale rounded-[100px] bg-transparent text-[16px] md:text-base mobile-button"
+            style={{
+              borderRadius: "100px",
+              border: "1px solid var(--Greyscale-Black, #3D3D3D)",
+              whiteSpace: "nowrap",
+            }}
+          >
+            Learn More
+          </button>
+        </Link>
+
+        <style jsx>{`
+          @media (max-width: 640px) {
+            .mobile-button {
+              width: auto; /* Adjusts width dynamically */
+              min-width: 160px; /* Ensures a consistent minimum size */
+              height: 55px; /* Fixed height */
+              padding: 18px 24px; /* Adjusted for better spacing */
+              gap: 10px;
+              opacity: 1;
+            }
+            .hero-buttons {
+              gap: 15px; /* Adjusts gap between buttons for mobile */
+            }
+          }
+        `}</style>
       </div>
       {/* Image */}
       <div className="absolute top-[50px] right-[45px] md:right-[20px] image-container">
@@ -296,20 +321,24 @@ export default function Home() {
       {/* Shop The New Collection */}
       <div
         className="mt-[78px] md:mt-[114px] xl:mt-[120px] max-w-[361px] md:max-w-[754px] xl:max-w-[1200px] w-full flex flex-col md:justify-center md:items-center"
-        style={{ paddingLeft: "2%", marginTop: "20%" }}
+        style={{ marginTop: "15%" }}
       >
         <p className="text-[20.049px] md:text-4xl xl:text-[50px] leading-[24.059px] md:leading-[43.2px] xl:leading-[60px] -tracking-[0.501px] md:-tracking-[0.9px] xl:-tracking-[1.25px] text-primaryGrayscale font-normal capitalize">
           Shop The New Collection
         </p>
 
-        <div className="mt-[33px] w-full grid grid-cols-2 justify-between items-center gap-x-[12px] gap-y-[20.32px] md:gap-x-[17.17px] md:gap-y-[19.46px] xl:gap-x-[30px] xl:gap-y-[34px] bg-[#FFFCF8]">
+        <div className="mt-[33px] pt-[10px] pb-[10px] w-full grid grid-cols-2 place-items-stretch justify-center items-stretch gap-x-[12px] gap-y-[20.32px] md:gap-x-[17.17px] md:gap-y-[19.46px] xl:gap-x-[30px] xl:gap-y-[34px] sm:px-0 bg-[#FFFCF8]">
           {collections.map((collection, index) => (
-            <div key={index}>
+            <div
+              key={index}
+              className="flex justify-center items-stretch w-full"
+            >
               <CollectionCard
                 title={collection.title}
                 description={collection.description}
                 image={collection.image}
                 video={collection.video}
+                className="w-full h-full object-cover"
                 playsInline
                 loop
                 muted

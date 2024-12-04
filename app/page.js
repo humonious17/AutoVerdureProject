@@ -30,7 +30,7 @@ const Page = () => {
           height: "495px",
           width: "8px",
           marginLeft: "84.35%",
-          background: "#FFFCF8",
+          background: "#FFFBF7",
           top: "0px",
           animation: "shrinkHeightRight 2s forwards",
           animationDelay: "0.2s",
@@ -54,7 +54,7 @@ const Page = () => {
             height: "560px",
             width: "10px",
             marginLeft: "23.5%",
-            background: "#FFFCF8",
+            background: "#FFFBF7",
             top: "0px",
             animation: "shrinkHeight 2s forwards",
             animationDelay: "0.2s",
@@ -66,7 +66,7 @@ const Page = () => {
             height: "495px",
             width: "8px",
             marginLeft: "84.35%",
-            background: "#FFFCF8",
+            background: "#FFFBF7",
             top: "0px",
             animation: "shrinkHeightRight 2s forwards",
             animationDelay: "0.2s",
@@ -129,7 +129,7 @@ export default function Home() {
   }, [hydroponics]); // Use hydroponics directly as a dependency
 
   return (
-    <div className="w-full px-4 mr-5 md:px-10 pb-[100px] bg-[#FFFCF8] flex flex-col justify-center items-center overflow-hidden">
+    <div className="w-full px-4 mr-5 md:px-10 pb-[100px] bg-[#FFFBF7] flex flex-col justify-center items-center overflow-hidden">
       {/* Hero */}
       <div className="w-screen flex flex-col-reverse md:flex-row xl:flex-col justify-center items-center overflow-hidden hero-container">
         <div
@@ -241,7 +241,7 @@ export default function Home() {
       <div className="absolute top-[50px] right-[45px] md:right-[20px] image-container">
         <Image
           className="xl:hidden pot-image scale-[2.2] origin-center transform-gpu"
-          src="/ss.png"
+          src="/newmobile.png"
           alt="bgImage"
           width={350}
           height={587}
@@ -275,7 +275,7 @@ export default function Home() {
               height: "560px",
               width: "10px",
               marginLeft: "23.5%",
-              background: "#FFFCF8",
+              background: "#FFFBF7",
               top: "0px",
               animation: "shrinkHeight 2s forwards",
               animationDelay: "0.2s",
@@ -287,7 +287,7 @@ export default function Home() {
               height: "0px",
               width: "4px",
               marginLeft: "80%",
-              background: "#FFFCF8",
+              background: "#FFFBF7",
               top: "0px",
               animation: "shrinkHeightRight 2s forwards",
               animationDelay: "0.2s",
@@ -296,7 +296,7 @@ export default function Home() {
           <div
             className="absolute"
             style={{
-              background: "#FFFCF8",
+              background: "#FFFBF7",
               top: "395px",
               height: "5px",
               width: "57px",
@@ -308,7 +308,7 @@ export default function Home() {
           <div
             className="absolute"
             style={{
-              background: "#FFFCF8",
+              background: "#FFFBF7",
               top: "394px",
               height: "5px",
               width: "57px",
@@ -328,7 +328,7 @@ export default function Home() {
           Shop The New Collection
         </p>
 
-        <div className="mt-[33px] pt-[10px] pb-[10px] w-full grid grid-cols-2 place-items-stretch justify-center items-stretch gap-x-[12px] gap-y-[20.32px] md:gap-x-[17.17px] md:gap-y-[19.46px] xl:gap-x-[30px] xl:gap-y-[34px] sm:px-0 bg-[#FFFCF8]">
+        <div className="mt-[33px] pt-[10px] pb-[10px] w-full grid grid-cols-2 place-items-stretch justify-center items-stretch gap-x-[12px] gap-y-[17.17px] md:gap-x-[17.17px] md:gap-y-[19.46px] xl:gap-x-[30px] xl:gap-y-[34px] sm:px-0 bg-[#FFFBF7]">
           {collections.map((collection, index) => (
             <div
               key={index}

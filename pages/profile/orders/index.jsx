@@ -265,7 +265,7 @@ const OrderDetailDialog = ({ order, open, onClose }) => {
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="max-w-3xl max-h-[100vh] overflow-y-auto ">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6  ">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6  bg-[#fffbf7]">
           {/* Left side - Product Image and Details */}
           <div className="space-y-6">
             {order.products && order.products[0] && (
@@ -475,7 +475,7 @@ const ProfileOrders = ({ orders: initialOrders }) => {
   };
 
   return (
-    <Card className="max-w-7xl mx-auto my-8">
+    <Card className="max-w-7xl mx-auto my-8 bg-[#fffbf7]">
       <CardHeader>
         <CardTitle className="text-2xl font-bold">My Orders</CardTitle>
       </CardHeader>
@@ -494,11 +494,11 @@ const ProfileOrders = ({ orders: initialOrders }) => {
 
           {/* Filter */}
           <Select value={filterStatus} onValueChange={handleFilter}>
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-[180px] bg-[#fffbf7] border-primaryMain">
               <Filter className="mr-2 h-4 w-4" />
               <SelectValue placeholder="Filter by status" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-[#fffbf7]">
               <SelectItem value="all">All Orders</SelectItem>
               <SelectItem value="completed">Completed</SelectItem>
               <SelectItem value="processing">Processing</SelectItem>
@@ -510,96 +510,95 @@ const ProfileOrders = ({ orders: initialOrders }) => {
         </div>
 
         {/* Desktop Table */}
-        <div className="hidden md:block">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead
-                  className="cursor-pointer"
-                  onClick={() => handleSort("productName")}
-                >
-                  Product
-                  {sortConfig.key === "productName" &&
-                    (sortConfig.direction === "asc" ? (
-                      <SortAsc className="inline ml-2 h-4 w-4" />
-                    ) : (
-                      <SortDesc className="inline ml-2 h-4 w-4" />
-                    ))}
-                </TableHead>
-                <TableHead>Image</TableHead>
-                <TableHead>Address</TableHead>
-                <TableHead>Order Type</TableHead>
-                <TableHead>Payment</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead
-                  className="cursor-pointer"
-                  onClick={() => handleSort("createdAt")}
-                >
-                  Time
-                  {sortConfig.key === "createdAt" &&
-                    (sortConfig.direction === "asc" ? (
-                      <SortAsc className="inline ml-2 h-4 w-4" />
-                    ) : (
-                      <SortDesc className="inline ml-2 h-4 w-4" />
-                    ))}
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {orders.map((order) => (
-                <TableRow
-                  key={order.orderId}
-                  className="cursor-pointer hover:bg-gray-50"
-                  onClick={() => openOrderDetail(order)}
-                >
-                  <TableCell className="font-medium">
-                    {order.products && order.products.length > 0
-                      ? order.products[0].productName +
-                        (order.products.length === 1
-                          ? ""
-                          : ` + ${order.products.length - 1} more`)
-                      : "No products"}
-                  </TableCell>
-                  <TableCell>
+          <div className="hidden md:block">
+            <Table>
+              <TableHeader>
+                <TableRow>
+            <TableHead
+              className="cursor-pointer"
+              onClick={() => handleSort("productName")}
+            >
+              Product
+              {sortConfig.key === "productName" &&
+                (sortConfig.direction === "asc" ? (
+                  <SortAsc className="inline ml-2 h-4 w-4" />
+                ) : (
+                  <SortDesc className="inline ml-2 h-4 w-4" />
+                ))}
+            </TableHead>
+            <TableHead>Image</TableHead>
+            <TableHead>Address</TableHead>
+            <TableHead>Order Type</TableHead>
+            <TableHead>Payment</TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead
+              className="cursor-pointer"
+              onClick={() => handleSort("createdAt")}
+            >
+              Time
+              {sortConfig.key === "createdAt" &&
+                (sortConfig.direction === "asc" ? (
+                  <SortAsc className="inline ml-2 h-4 w-4" />
+                ) : (
+                  <SortDesc className="inline ml-2 h-4 w-4" />
+                ))}
+            </TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+            {orders.map((order) => (
+              <TableRow
+                key={order.orderId}
+                className="cursor-pointer hover:bg-gray-50"
+                onClick={() => openOrderDetail(order)}
+              >
+                <TableCell className="font-medium">
+                  {order.products && order.products.length > 0
+                    ? order.products[0].productName +
+                      (order.products.length === 1
+                        ? ""
+                        : ` + ${order.products.length - 1} more`)
+                    : "No products"}
+                </TableCell>
+                <TableCell>
+                  <div className="w-[50px] h-[50px] relative">
                     {order.products && order.products.length > 0 ? (
                       <Image
-                        src={
-                          order.products[0].productImage &&
+                        src={order.products[0].productImage &&
                           order.products[0].productImage !== "null"
-                            ? order.products[0].productImage
-                            : ""
-                        }
+                          ? order.products[0].productImage
+                          : ""}
                         alt={order.products[0].productName || "Product Image"}
-                        width={50}
-                        height={50}
+                        layout="fill"
+                        objectFit="cover"
                         className="rounded-lg"
                         onError={(e) => {
                           e.target.src = "";
                         }}
                       />
                     ) : null}
-                  </TableCell>
+                  </div>
+                </TableCell>
+                <TableCell>{order.shipping.city}</TableCell>
+                <TableCell>Product</TableCell>
+                <TableCell>Paid</TableCell>
+                <TableCell>
+                  <OrderStatus status={order.orderStatus} />
+                </TableCell>
+                <TableCell>{formatTimestamp(order.createdAt)}</TableCell>
+              </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
 
-                  <TableCell>{order.shipping.city}</TableCell>
-                  <TableCell>Product</TableCell>
-                  <TableCell>Paid</TableCell>
-                  <TableCell>
-                    <OrderStatus status={order.orderStatus} />
-                  </TableCell>
-                  <TableCell>{formatTimestamp(order.createdAt)}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-
-        {/* Mobile Cards */}
+          {/* Mobile Cards */}
         {/* Mobile Cards */}
         <div className="md:hidden space-y-4">
           {orders.map((order) => (
             <div
               key={order.orderId}
-              className="bg-white p-4 rounded-lg border cursor-pointer"
+              className="bg-[#fffbf7] p-4 rounded-lg border cursor-pointer shadow-md shadow-black/10"
               onClick={() => openOrderDetail(order)}
             >
               <div className="flex justify-between items-start mb-3">

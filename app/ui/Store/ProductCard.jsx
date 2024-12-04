@@ -84,7 +84,7 @@ const ProductCard = ({ product, viewType = "grid" }) => {
               {product.petUnfriendly && (
                 <div className="w-[28px] h-[28px] sm:w-[52px] sm:h-[52px] p-[4px] sm:p-[10px] rounded-xl sm:rounded-2xl bg-[#FFFFFF]">
                   <Image
-                    src="/noPets.png"
+                    src="/pf.png"
                     alt="noPets"
                     width={32}
                     height={32}

@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import bcrypt from "bcryptjs";
 import { parse } from "cookie";
+import { Eye, EyeOff } from "lucide-react";
 
 const importScript = (src) => {
   const credScript = document.createElement("script");
@@ -41,20 +42,20 @@ const Input = ({ label, placeholder, type, name, value, onChange }) => {
         <input
           className="w-full h-fit text-base focus:outline-none"
           placeholder={placeholder}
-          type={isVisible ? "text" : type}
+          type={type === "password" && isVisible ? "text" : type}
           name={name}
           value={value}
           onChange={onChange}
         />
         {type === "password" && (
-          <Image
-            className="cursor-pointer"
+          <button
+            type="button"
             onClick={() => setIsVisible(!isVisible)}
-            src="/eye.svg"
-            alt="eye"
-            width={24}
-            height={24}
-          />
+            className="cursor-pointer"
+            aria-label={isVisible ? "Hide password" : "Show password"}
+          >
+            {isVisible ? <EyeOff size={24} /> : <Eye size={24} />}
+          </button>
         )}
       </div>
     </div>
@@ -119,20 +120,21 @@ const Signin = (prop) => {
     }
   };
   return (
-    <div className="mt-[55px] mb-[41px] lg:mb-[152px] lg:pl-[70px] w-full flex flex-col lg:flex-row lg:gap-[57px] xl:gap-x-[152px] justify-center lg:justify-start items-center overflow-x-hidden">
-      <div className="mb-[46px] lg:mb-0 w-full lg:w-[560px] px-11 sm:px-[50px] lg:px-0 flex flex-col justify-center items-start">
+    <div className="px-4 sm:px-0 pt-16 sm:pt-[80px] mt-8 sm:mt-[55px] mb-8 sm:mb-[41px] lg:mb-[152px] lg:pl-[70px] w-full flex flex-col lg:flex-row lg:gap-[57px] xl:gap-x-[152px] justify-center lg:justify-start items-start overflow-x-hidden">
+      {/* Left Section with Text */}
+      <div className="mb-8 sm:mb-[46px] lg:mb-0 w-full lg:w-[560px] px-0 sm:px-[50px] lg:px-0 flex flex-col justify-center items-start">
         {/* Title */}
-        <div className="w-full flex flex-col gap-y-3">
-          <p className="text-[32px] leading-8 font-normal capitalize text-[#070707]">
+        <div className="w-full flex flex-col gap-y-2 sm:gap-y-3">
+          <p className="text-2xl sm:text-[32px] leading-8 font-normal capitalize text-[#070707]">
             Welcome back
           </p>
-          <p className="w-[266px] sm:w-full text-sm leading-[22.4px] font-medium text-[#8E8F94]">
+          <p className="w-full text-sm leading-[22.4px] font-medium text-[#8E8F94]">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit.
           </p>
         </div>
 
         {/* Google and Apple Authentication */}
-        <div className="mt-[42px] sm:mt-[52px] w-full flex flex-col justify-center sm:flex-row gap-y-4 sm:gap-x-4">
+        <div className="mt-8 sm:mt-[52px] w-full flex flex-col justify-center sm:flex-row gap-y-4 sm:gap-x-4">
           <div
             id="g_id_onload"
             data-client_id="39593396169-ppn7dc7v4huovmuromku2k01s26kngfa.apps.googleusercontent.com"
@@ -155,9 +157,9 @@ const Signin = (prop) => {
         </div>
 
         {/* Or */}
-        <div className="my-8 w-[560px] flex gap-x-2 items-center">
+        <div className="my-6 sm:my-8 w-full sm:w-[560px] flex gap-x-2 items-center">
           <div className="w-full h-[1px] bg-[#E4E4E4]" />
-          <p className="text-base leading-[25.6px] font-medium text-[#070707]">
+          <p className="text-sm sm:text-base leading-[25.6px] font-medium text-[#070707] whitespace-nowrap px-2">
             or
           </p>
           <div className="w-full h-[1px] bg-[#E4E4E4]" />
@@ -166,7 +168,7 @@ const Signin = (prop) => {
         {/* Form */}
         <div className="w-full">
           <form
-            className="w-full flex flex-col gap-y-6"
+            className="w-full flex flex-col gap-y-4 sm:gap-y-6"
             onSubmit={handleSubmit}
           >
             <div className="w-full flex flex-col sm:flex-row gap-x-4 gap-y-6 sm:gap-y-0">
@@ -227,11 +229,10 @@ const Signin = (prop) => {
         </div>
       </div>
 
-      <div className="flex justify-center items-center">
-        {/* Image */}
-        <div className="w-[345.65px] h-[373px] lg:w-[548.65px] lg:h-[592px] xl:w-[815.65px] xl:h-[880px]">
+      <div className="flex justify-center items-center w-full md:w-[560px] lg:w-[710px]">
+        <div className=" px-10 py-10 w-full h-[440px] sm:w-[330.65px] sm:h-[340px] md:w-[410px] md:h-[440px] lg:w-[558.65px] lg:h-[582px] xl:w-[725.65px] xl:h-[590px] overflow-hidden rounded-lg bg-[#fffbf7]">
           <Image
-            className="w-full h-full"
+            className="w-full h-full rounded-lg"
             src="/signinImg.png"
             alt="img"
             width={345.65}

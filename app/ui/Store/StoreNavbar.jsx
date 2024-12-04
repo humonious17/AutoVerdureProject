@@ -51,7 +51,7 @@ const StoreNavbar = () => {
       </div>
 
       {/* Desktop View */}
-      <div className="hidden lg:flex mt-[31px] px-6 sm:px-[44px] xl:px-[64px] md:mt-10 w-full h-full gap-4 flex-wrap">
+      <div className="hidden lg:flex mt-[31px] px-6 sm:px-[44px] xl:px-[64px] md:mt-10 w-full h-full gap-4 flex-wrap py-2">
         {storeNavItems.map((item, index) => (
           <Link
             key={index}

@@ -5,8 +5,6 @@ import Image from "next/image";
 import { collections, hydroponics } from "./constant/data";
 import HydroponicCard from "./ui/Home/HydroponicCard";
 import CollectionCard from "./ui/Home/CollectionCard";
-import { BiCheck, BiX } from "react-icons/bi";
-import Loved from "./ui/Home/Loved";
 import Testimonial from "./ui/Home/Testimonial";
 import Displayblogs from "./ui/Store/Displayblogs";
 import Contact from "./ui/Home/Contact";
@@ -15,67 +13,10 @@ import React, { useState, useEffect } from "react";
 import Chatbot from "./ChatBot";
 import { useSwipeable } from "react-swipeable";
 import Power from "./ui/Home/Power";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import "./globals.css";
 import ProductShowcase from "./ui/Home/ProductShowcase";
 import HydroponicComparison from "./ui/Home/hydrotoggle";
 
-import Blogs from "@/pages/Blogs";
-
-const Page = () => {
-  return (
-    <div>
-      <div
-        style={{
-          height: "495px",
-          width: "8px",
-          marginLeft: "84.35%",
-          background: "#FFFBF7",
-          top: "0px",
-          animation: "shrinkHeightRight 2s forwards",
-          animationDelay: "0.2s",
-        }}
-      >
-        <p>It&apos;s a beautiful day!</p>
-      </div>
-      <div className="relative">
-        <Image
-          className="object-cover"
-          style={{ transform: "translateX(12px)" }}
-          src="/sam222long.png"
-          alt="bgImage"
-          width={1550}
-          height={766}
-          onContextMenu={(e) => e.preventDefault()} // Disable right-click context menu
-        />
-        <div
-          className="h-[90px] w-[10px] absolute z-15"
-          style={{
-            height: "560px",
-            width: "10px",
-            marginLeft: "23.5%",
-            background: "#FFFBF7",
-            top: "0px",
-            animation: "shrinkHeight 2s forwards",
-            animationDelay: "0.2s",
-          }}
-        ></div>
-        <div
-          className="h-[90px] w-[20px] absolute z-15"
-          style={{
-            height: "495px",
-            width: "8px",
-            marginLeft: "84.35%",
-            background: "#FFFBF7",
-            top: "0px",
-            animation: "shrinkHeightRight 2s forwards",
-            animationDelay: "0.2s",
-          }}
-        ></div>
-      </div>
-    </div>
-  );
-};
 
 export default function Home() {
   const [currentIndex, setCurrentIndex] = useState(0);

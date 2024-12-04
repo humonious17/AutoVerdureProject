@@ -197,7 +197,7 @@ const StoreTools = ({
       <div className="p-4">
         <button
           onClick={applyFilters}
-          className="w-full py-4 px-4 bg-primaryMain text-white rounded-full hover:bg-gray-800 transition-colors"
+          className="w-full mb-16 xl:mb-0 py-2 px-4 bg-primaryMain text-white rounded-full hover:bg-gray-800 transition-colors"
         >
           Apply Filters
         </button>
@@ -216,7 +216,7 @@ const FilterSection = ({ title, options, selected, onToggle }) => (
             type="checkbox"
             checked={selected.includes(option)}
             onChange={() => onToggle(option)}
-            className="h-4 w-4 rounded border-gray-300"
+            className="h-4 w-4 rounded border-gray-300 accent-primaryMain"
           />
           <span className="text-sm capitalize">{option}</span>
         </label>

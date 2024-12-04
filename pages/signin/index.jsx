@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { parse } from "cookie";
+import { Eye, EyeOff } from "lucide-react";
 
 const importScript = (src) => {
   const credScript = document.createElement("script");
@@ -52,27 +53,31 @@ const Input = ({ label, placeholder, type, name, value, onChange }) => {
         <input
           className="w-full h-fit text-sm sm:text-base focus:outline-none"
           placeholder={placeholder}
-          type={isVisible ? "text" : type}
+          type={type === "password" && isVisible ? "text" : type}
           name={name}
           value={value}
           onChange={onChange}
         />
         {type === "password" && (
-          <Image
-            className="cursor-pointer w-5 h-5 sm:w-6 sm:h-6"
+          <button
+            type="button"
             onClick={() => setIsVisible(!isVisible)}
-            src="/eye.svg"
-            alt="eye"
-            width={24}
-            height={24}
-          />
+            className="cursor-pointer"
+            aria-label={isVisible ? "Hide password" : "Show password"}
+          >
+            {isVisible ? (
+              <EyeOff className="w-5 h-5 sm:w-6 sm:h-6" />
+            ) : (
+              <Eye className="w-5 h-5 sm:w-6 sm:h-6" />
+            )}
+          </button>
         )}
       </div>
     </div>
   );
 };
 
-const Signin = (prop) => {
+const Signin = () => {
   useEffect(() => {
     importScript("https://accounts.google.com/gsi/client");
   }, []);
@@ -224,8 +229,8 @@ const Signin = (prop) => {
   );
 };
 
-export async function getServerSideProps({ req, res }) {
-  const { admin, db } = await import("/pages/api/firebaseAdmin");
+export async function getServerSideProps({ req }) {
+  const { db } = await import("/pages/api/firebaseAdmin");
   const cookies = req.headers.cookie;
   if (cookies) {
     const tokens = parse(cookies);

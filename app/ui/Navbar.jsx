@@ -226,7 +226,7 @@ const Navbar = () => {
     ease-in-out 
     ${
       isScrolled
-        ? "bg-white/95 backdrop-blur-md shadow-md text-black"
+        ? "bg-[#fffbf7]/95 backdrop-blur-md shadow-md text-black"
         : "bg-transparent text-black"
     }
     ${isNavVisible ? "translate-y-0" : "-translate-y-full"}
@@ -253,7 +253,7 @@ const Navbar = () => {
             priority
             className="transition-all duration-100 group-hover:brightness-110"
           />
-          <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-100" />
+          <div className="absolute inset-0 bg-[#fffbf7]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-100" />
         </div>
         <p className="text-sm leading-[28.8px] fontText uppercase text-center font-medium transition-all duration-100 group-hover:text-gray-600 group-hover:tracking-wider">
           Auto Verdure
@@ -807,7 +807,7 @@ const Navbar = () => {
                 opacity-0 
                 group-hover:opacity-100 
                 transition-all 
-                duration-100
+                duration-0
                 whitespace-nowrap
                 capitalize
               "

@@ -138,7 +138,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="mt-3 md:mt-8 w-full text-base font-medium flex gap-5 justify-center xl:justify-center lg:justify-center md:justify-center items-center hero-buttons">
+      <div className=" md:hidden mt-3 md:mt-8 w-full text-base font-medium flex gap-5 justify-center xl:justify-center lg:justify-center md:justify-center items-center hero-buttons">
         <Link href="/store" passHref>
           <button
             className="shop-now px-4 md:px-[32px] py-2 md:py-[14px] sm:px-[32px] sm:py-[14px] rounded-[100px] text-white bg-primaryMain text-[16px] md:text-base mobile-button"
@@ -179,19 +179,21 @@ export default function Home() {
         `}</style>
       </div>
       {/* Image */}
-      <div className="absolute top-[50px] right-[45px] md:right-[20px] image-container">
-        <Image
-          className="xl:hidden pot-image scale-[2.2] origin-center transform-gpu"
-          src="/newmobile.png"
-          alt="bgImage"
-          width={350}
-          height={587}
-          style={{
-            objectFit: "cover",
-            objectPosition: "center",
-          }}
-        />
-      </div>
+      <div className="absolute top-[50px] right-[45px]  md:right-[30px] image-container">
+  <Image
+    className="xl:hidden pot-image transform-gpu scale-[2.2]  origin-center"
+    src="/newmobile.png"
+    alt="bgImage"
+    width={350}
+    height={587}
+    style={{
+      objectFit: "cover",
+      objectPosition: "center",
+    }}
+  />
+</div>
+
+
 
       <div className="w-full h-[766px] absolute top-0 right-[20px] bg-transparent">
         <div className="h-full w-full relative overflow-hidden">
@@ -476,11 +478,11 @@ export default function Home() {
       {/* Join the Auto Verdure Movement */}
       <div className="mt-[107.5px] md:mt-[72px] max-w-[361px] md:max-w-[754px] xl:max-w-[1226px] w-full h-full">
         <div
-          className="hidden w-full h-[432px] xl:h-[521px] md:flex gap-x-5 xl:gap-[54px] justify-center items-center xl:items-start"
+          className="hidden w-full h-[432px] xl:h-[500px] md:flex gap-x-5 xl:gap-[54px] justify-center items-center xl:items-start"
           style={{ paddingLeft: "9%" }}
         >
           {/* Video Container */}
-          <div className="relative w-[366px] h-full xl:w-[604px] xl:h-[521px] xl:flex-1 overflow-hidden">
+          <div className="relative w-[366px] h-[432px] xl:w-[604px] xl:h-[500px] xl:flex-1 overflow-hidden">
             <video
               className="w-full h-full rounded-[16px] object-cover "
               src="/home1.mp4"
@@ -493,20 +495,20 @@ export default function Home() {
           </div>
 
           {/* Image and Text Container */}
-          <div className="w-[366px] h-[432px] xl:h-full flex xl:flex-1 flex-col gap-y-5 xl:gap-y-8">
-            <div className="w-full flex flex-col gap-5">
+          <div className="w-[366px] h-[442px] xl:h-full flex xl:flex-1 flex-col gap-y-2 xl:gap-y-8">
+            <div className="w-full flex flex-col gap-3">
               <p className="text-4xl xl:text-[50px] leading-[43.2px] xl:leading-[60px] -tracking-[0.9px] xl:-tracking-[1.25px] font-normal text-primaryGrayscale">
                 Explore a world where each leaf whispers a tale of wellness &
                 warmth!
               </p>
-              <p className="text-sm leading-6 font-normal text-secondaryGrayscale mt-3">
+              <p className="text-sm leading-6 font-normal text-secondaryGrayscale mt-1">
                 Here, you&apos;ll discover the perfect harmony of nature&apos;s
                 warmth within the confines of your home.
               </p>
             </div>
 
             {/* Image Grid */}
-            <div className="w-full h-[432px] xl:h-full flex gap-[21.5px] justify-between xl:justify-normal xl:gap-6 mt-6">
+            <div className="w-full h-[432px] xl:h-full flex gap-[21.5px] justify-between xl:justify-normal xl:gap-6 mt-3">
               <video
                 className="object-cover w-[192px] h-[205px] xl:w-[192px] xl:h-[205px] rounded-[16px] md:w[192px] md:h-[180px]"
                 src="https://res.cloudinary.com/dguzhztdt/video/upload/f_mp4/v1729091741/Auto%20Verdure%20media%20%28website%29/Plants/IMG_7939_wsnkj9.mov"

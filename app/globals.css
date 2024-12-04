@@ -317,7 +317,7 @@ body {
 
   @media (max-width: 450px) {
     .hero-container {
-      padding-left: 15%;
+      padding-left: 10%;
 
       margin-top: 30%;
     }
@@ -329,7 +329,7 @@ body {
 
   @media (max-width: 380px) {
     .hero-container {
-      padding-left: 30%;
+      padding-left: 15%;
       margin-top: 20%;
     }
     .image-container {
@@ -361,6 +361,21 @@ body {
     }
   }
 }
+@media (min-width: 768px) and (max-width: 1024px) {
+  .image-container img {
+    transform: scale(1.6); /* Adjust scale for iPad */
+    top: 70px;
+   margin-right: -120px;
+  }
+}
+@media (min-width: 540px) and (max-width: 720px) {
+  .image-container img {
+    transform: scale(1.4); /* Adjust scale for iPad */
+    top: 70px;
+   margin-right: -120px;
+  }
+}
+
 
 @media (max-width: 768px) {
   .chatbot-container {

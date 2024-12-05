@@ -5,7 +5,7 @@ import Testimonial from "../ui/Community/Testimonial";
 
 const Community = () => {
   return (
-    <div className="w-full px-4 pt-[44px] pb-[124px] md:px-[86px] md:py-[116px] xl:px-[119.99px] xl:pt-[114px] xl:pb-[151px] 2xl:px-[200px] 2xl:py-[116px] bg-[#FFFCF8] flex flex-col justify-center items-center overflow-hidden">
+    <div className="w-full px-4 mt-[120px] pt-[44px] pb-[124px] md:px-[86px] md:py-[116px] xl:px-[119.99px] xl:pt-[114px] xl:pb-[151px] 2xl:px-[200px] 2xl:py-[116px] bg-[#FFFCF8] flex flex-col justify-center items-center overflow-hidden">
       {/* Title */}
       <div className="w-full flex flex-col justify-center items-center relative">
         <div>

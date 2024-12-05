@@ -265,12 +265,27 @@ export default function Home() {
           Shop The New Collection
         </p>
 
-        <div className="mt-[33px] pt-[10px] pb-[10px] w-full grid grid-cols-2 place-items-stretch justify-center items-stretch gap-x-[12px] gap-y-[17.17px] md:gap-x-[17.17px] md:gap-y-[19.46px] xl:gap-x-[30px] xl:gap-y-[34px] sm:px-0 bg-[#FFFBF7]">
+        {/*<div className="mt-[33px] pt-[10px] pb-[10px] w-full grid grid-cols-2 place-items-stretch justify-center items-stretch gap-x-[12px] gap-y-[17.17px] md:gap-x-[17.17px] md:gap-y-[19.46px] xl:gap-x-[30px] xl:gap-y-[34px] sm:px-0 bg-[#FFFBF7]">
           {collections.map((collection, index) => (
             <div
               key={index}
               className="flex justify-center items-stretch w-full"
             >
+              <CollectionCard
+                title={collection.title}
+                description={collection.description}
+                image={collection.image}
+                video={collection.video}
+                className="w-full h-full object-cover"
+                playsInline
+                loop
+                muted
+                autoPlay
+              />
+            </div>*/}
+            <div className="mt-[33px] w-full grid grid-cols-2 justify-between items-center gap-x-[3px] md:gap-x-[17.17px] xl:gap-x-[30px] gap-y-[20.32px] md:gap-y-[19.46px] xl:gap-y-[34px]">
+          {collections.map((collection, index) => (
+            <div key={index}  className="flex justify-center items-stretch w-full">
               <CollectionCard
                 title={collection.title}
                 description={collection.description}

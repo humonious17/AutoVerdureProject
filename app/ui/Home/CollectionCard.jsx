@@ -56,7 +56,7 @@ const CollectionCard = ({ title, description, image, video }) => {
       </div>
       <div className="w-full  md:w-[119px] xl:w-[202px] md:mx-[36.64px] xl:mx-16 xl:mt-[40px] flex flex-col">
         {/* Title - Stay fixed */}
-        <p className="mt-2 text-[13px] md:text-[21.754px] xl:text-[38px] leading-tight text-[#0E0E0E] font-normal font-['SF_Pro_Display']">
+        <p className="mt-2 text-[13px] md:text-[21.754px] xl:text-[38px] leading-tight text-[#0E0E0E] font-normal ">
           {title}
         </p>
 
@@ -78,7 +78,7 @@ const CollectionCard = ({ title, description, image, video }) => {
             textOverflow: "ellipsis",
           }}
         >
-          <p className="mt-1 text-[8px] md:text-[9.732px] xl:text-[17px] leading-tight text-[#5B5B5B] font-normal transition-all duration-400 ease-in-out font-['SF_Pro_Display']">
+          <p className="mt-1 text-[8px] md:text-[9.732px] xl:text-[17px] leading-tight text-[#5B5B5B] font-normal transition-all duration-400 ease-in-out ">
             {description}
           </p>
         </div>
@@ -90,7 +90,7 @@ const CollectionCard = ({ title, description, image, video }) => {
           }}
         >
           <Link href={"/store/" + title.toLowerCase()}>
-            <p className="flex items-center mt-1 md:mt-[30px] mb-1 md:mb-[60px] text-[8px] md:text-[9.732px] xl:text-[17px] leading-tight text-[#0E0E0E] font-medium font-['SF_Pro_Display']">
+            <p className="flex items-center mt-1 md:mt-[30px] mb-1 md:mb-[60px] text-[8px] md:text-[9.732px] xl:text-[17px] leading-tight text-[#0E0E0E] font-medium ">
               Buy Now{" "}
               <span>
                 <Image

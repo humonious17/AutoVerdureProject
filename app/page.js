@@ -17,7 +17,6 @@ import "./globals.css";
 import ProductShowcase from "./ui/Home/ProductShowcase";
 import HydroponicComparison from "./ui/Home/hydrotoggle";
 
-
 export default function Home() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -180,20 +179,18 @@ export default function Home() {
       </div>
       {/* Image */}
       <div className="absolute top-[50px] right-[45px]  md:right-[30px] image-container">
-  <Image
-    className="xl:hidden pot-image transform-gpu scale-[2.2]  origin-center"
-    src="/newmobile.png"
-    alt="bgImage"
-    width={350}
-    height={587}
-    style={{
-      objectFit: "cover",
-      objectPosition: "center",
-    }}
-  />
-</div>
-
-
+        <Image
+          className="xl:hidden pot-image transform-gpu scale-[2.2]  origin-center"
+          src="/newmobile.png"
+          alt="bgImage"
+          width={350}
+          height={587}
+          style={{
+            objectFit: "cover",
+            objectPosition: "center",
+          }}
+        />
+      </div>
 
       <div className="w-full h-[766px] absolute top-0 right-[20px] bg-transparent">
         <div className="h-full w-full relative overflow-hidden">
@@ -206,7 +203,7 @@ export default function Home() {
               objectFit: "cover",
               transform: "translateX(12px)",
             }}
-            src="/sam222long.png"
+            src="/mainbgtrans2.png"
             alt="bgImage"
             width={1550}
             height={766}
@@ -263,36 +260,36 @@ export default function Home() {
         </div>
       </div>
       {/* Shop The New Collection */}
-      <div
-        className="mt-[78px] md:mt-[114px] xl:mt-[120px] max-w-[361px] md:max-w-[754px] xl:max-w-[1200px] w-full flex flex-col md:justify-center md:items-center"
-        style={{ marginTop: "15%" }}
-      >
-        <p className="text-[20.049px] md:text-4xl xl:text-[50px] leading-[24.059px] md:leading-[43.2px] xl:leading-[60px] -tracking-[0.501px] md:-tracking-[0.9px] xl:-tracking-[1.25px] text-primaryGrayscale font-normal capitalize">
-          Shop The New Collection
-        </p>
+        <div
+          className="mt-[78px] md:mt-[114px] xl:mt-[120px] max-w-[361px] md:max-w-[754px] xl:max-w-[1200px] w-full flex flex-col md:justify-center md:items-center relative z-20"
+          style={{ marginTop: "15%" }}
+        >
+          <p className="text-[20.049px] md:text-4xl xl:text-[50px] leading-[24.059px] md:leading-[43.2px] xl:leading-[60px] -tracking-[0.501px] md:-tracking-[0.9px] xl:-tracking-[1.25px] text-primaryGrayscale font-normal capitalize">
+            Shop The New Collection
+          </p>
 
-        <div className="mt-[33px] pt-[10px] pb-[10px] w-full grid grid-cols-2 place-items-stretch justify-center items-stretch gap-x-[12px] gap-y-[17.17px] md:gap-x-[17.17px] md:gap-y-[19.46px] xl:gap-x-[30px] xl:gap-y-[34px] sm:px-0 bg-[#FFFBF7]">
-          {collections.map((collection, index) => (
-            <div
-              key={index}
-              className="flex justify-center items-stretch w-full"
-            >
-              <CollectionCard
-                title={collection.title}
-                description={collection.description}
-                image={collection.image}
-                video={collection.video}
-                className="w-full h-full object-cover"
-                playsInline
-                loop
-                muted
-                autoPlay
-              />
-            </div>
-          ))}
+          <div className="mt-[33px] pt-[10px] pb-[10px] w-full grid grid-cols-2 place-items-stretch justify-center items-stretch gap-x-[12px] gap-y-[17.17px] md:gap-x-[17.17px] md:gap-y-[19.46px] xl:gap-x-[30px] xl:gap-y-[34px] sm:px-0 bg-[#FFFBF7]">
+            {collections.map((collection, index) => (
+          <div
+            key={index}
+            className="flex justify-center items-stretch w-full"
+          >
+            <CollectionCard
+              title={collection.title}
+              description={collection.description}
+              image={collection.image}
+              video={collection.video}
+              className="w-full h-full object-cover"
+              playsInline
+              loop
+              muted
+              autoPlay
+            />
+          </div>
+            ))}
+          </div>
         </div>
-      </div>
-      {/* Hydroponic Kits */}
+        {/* Hydroponic Kits */}
       <div
         className="mt-[20.32px] md:mt-[112.85px] xl:mt-[120px] md:max-w-[754px] w-full xl:max-w-[1200px] flex flex-col justify-center items-center"
         style={{ paddingLeft: "2%" }}

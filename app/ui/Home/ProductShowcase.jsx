@@ -139,7 +139,7 @@ const ProductShowcase = ({ productType = "plants" }) => {
           className="block rounded-[44px] flex-1 h-[796px]"
         >
           <div className="relative h-full w-full">
-            <div className="h-full w-full">
+            <div className="h-full w-full drop-shadow-lg">
               <Image
                 className="object-cover rounded-[44px] w-full h-full"
                 src={products[0].images[0].publicUrl}
@@ -148,14 +148,14 @@ const ProductShowcase = ({ productType = "plants" }) => {
                 height={796}
                 priority
               />
-              <div className="mt-10">
+              <div className="mt-5">
                 <p className="text-[21px] leading-[25.2px] text-[#000]">
                   {products[0].productName}
                 </p>
-                <p className="text-sm italic mt-[13.96px] text-[17px] leading-5 text-[#0E0E0E]">
+                <p className="text-sm mt-[13.96px] text-[17px] leading-5 text-[#0E0E0E]">
                   {products[0].productSubtitle || "product subtitle goes here"}
                 </p>
-                <p className="mt-[13.96px] text-[17px] leading-5 text-[#0E0E0E]">
+                <p className="text-[17px] leading-5 text-[#0E0E0E]">
                   From Rs. {products[0].productPrice}
                 </p>
               </div>
@@ -167,14 +167,14 @@ const ProductShowcase = ({ productType = "plants" }) => {
         </Link>
 
         {/* Grid for smaller images */}
-        <div className="grid grid-cols-2 gap-8">
+        <div className="grid grid-cols-2 gap-8 gap-y-16">
           {products.slice(1).map((product) => (
             <Link
               key={product._id}
               href={`/store/${productType}/${product.productId}`}
               className="block w-[298px] h-[315px] rounded-[44px]"
             >
-              <div className="relative w-full h-full">
+              <div className="relative w-full h-full drop-shadow-lg">
                 <Image
                   className="object-cover rounded-[44px] w-full h-full"
                   src={product.images[0].publicUrl}
@@ -186,14 +186,14 @@ const ProductShowcase = ({ productType = "plants" }) => {
                   <p>In Stock</p>
                 </div>
               </div>
-              <div className="mt-10">
+              <div className="mt-5">
                 <p className="text-[21px] leading-[25.2px] text-[#000]">
                   {product.productName}
                 </p>
-                <p className="text-sm italic leading-[25.2px] text-[#000]">
+                <p className="text-sm leading-[25.2px] text-[#000]">
                   {product.productSubtitle || "product subtitle goes here"}
                 </p>
-                <p className="mt-[13.96px] text-[17px] leading-5 text-[#0E0E0E]">
+                <p className="text-[17px] leading-5 text-[#0E0E0E]">
                   From Rs. {product.productPrice}
                 </p>
               </div>

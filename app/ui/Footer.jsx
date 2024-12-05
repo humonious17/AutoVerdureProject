@@ -80,7 +80,7 @@ const Footer = () => {
                 />
               </div>
               <p className="flex items-start">
-                4.F, 1797, Sector-52, Gurugram, Haryana- 122003
+                XirdE, 4.F, 1797, Sector-52, Gurugram, Haryana- 122003
               </p>
             </div>
 
@@ -94,10 +94,10 @@ const Footer = () => {
                 />
               </div>
               <Link
-                href="mailto:Info@Autofarmstore.com"
+                href="mailto:support@Autofarmstore.com"
                 className="flex items-start"
               >
-                Info@autoverdure.com
+                support@autoverdure.com
               </Link>
             </div>
 

@@ -4,7 +4,7 @@ import React from "react";
  
 const TermsConditions = () => {
 return (
-    <div className="w-full px-4 pt-[44px] pb-[124px] md:px-[28px] md:py-[116px] xl:px-[119.99px] xl:pt-[114px] xl:pb-[151px] 2xl:px-[200px] 2xl:py-[116px] bg-[#FFFCF8] flex flex-col justify-center items-center">
+    <div className="w-full mt-[40px] px-4 pt-[44px] pb-[124px] md:px-[28px] md:py-[116px] xl:px-[119.99px] xl:pt-[114px] xl:pb-[151px] 2xl:px-[200px] 2xl:py-[116px] bg-[#FFFCF7] flex flex-col justify-center items-center">
       {/* Title */}
       <div className="max-w-[214px] md:max-w-[636px] w-full relative flex flex-col justify-center items-center">
         <div>
@@ -20,7 +20,7 @@ return (
           <div className="max-w-[182px] md:max-w-[636px] w-full text-[40px] md:text-[70px] leading-[48px] md:leading-[80px] -tracking-[1px] md:-tracking-[1.75px] font-normal text-primaryGrayscale">
             <p>Terms and Conditions</p>
           </div>
-          <div className="w-full mt-3 md:mt-6 text-base font-medium flex flex-col justify-center items-center">
+          <div className="w-f</div>ull mt-3 md:mt-6 text-base font-medium flex flex-col justify-center items-center">
             <p className="text-secondaryGrayscale">
               <Link href="/">
                 <span className="text-primaryMain">Home</span>
@@ -31,7 +31,7 @@ return (
         </div>
         <div>
           <Image
-            className="object-contain absolute top-[90px] -right-[70px] md:-top-[60px] md:-right-[5px] lg:right-[0px] xl:top-[30px] xl:-right-[85px] -rotate-[30deg] md:-rotate-[45deg] transform -scale-y-100 -scale-x-100 md:scale-y-100 md:scale-x-100 xl:-scale-y-100 xl:-scale-x-100"
+            className="object-contain absolute top-[90px] -right-[70px] md:-top-[60px] md:-right-[5px] lg:right-[0px] xl:top-[30px] xl:-right-[85px] -rotate-[30deg] md:-rotate-[45deg] transform -scale-y-100 -scale-x-100 md:scale-y-100 md:scale-x-100 xl:-scale-</h2>y-100 xl:-scale-x-100"
             src="/leaf.png"
             alt="leaf"
             width={58}
@@ -41,7 +41,7 @@ return (
       </div>
 
       {/* Horizontal Line */}
-      <div className="mt-9 md:mt-[72px] xl:mt-[72.5px] w-full border-[1px] border-black border-opacity-[11%]" />
+      <div className="mt-9 md:m</div>t-[72px] x</section>l:mt-[72.5px] w-full border-[1px] border-black border-opacity-[11%]" />
 
       {/* Content */}
       <div className="mt-[80px] md:mt-[72px] max-w-screen md:max-w-[641px] xl:max-w-[778px] w-full flex flex-col justify-center items-center">
@@ -481,7 +481,7 @@ return (
             <div className="w-full flex gap-2">
               
               <p>
-                Questions about the Terms of Service should be sent to us at info@autoverdure.com.
+                Questions about the Terms of Service should be sent to us at support@autoverdure.com.
                 <br/>
                 Our contact information is posted below:
                 <br/>

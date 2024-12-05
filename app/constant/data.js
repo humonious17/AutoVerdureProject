@@ -38,7 +38,7 @@ export const quickLinks = [
   { title: "Shop", url: "/shop" },
   { title: "Community", url: "/community" },
   { title: "Resources", url: "/resources" },
-  { title: "Disclaimer", url: "/disclaimer" },
+  { title: "My Profile", url: "/profile" },
   { title: "My Cart", url: "/my-cart" },
 ];
 

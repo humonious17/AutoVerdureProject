@@ -46,7 +46,7 @@ const HydroponicComparison = () => {
     <div className="mt-[30px] md:mt-[73px] xl:mt-[82px] w-full flex flex-col justify-center items-center">
       <div className="w-full md:w-[523px] xl:w-fit flex flex-row md:flex-row md:gap-x-5 rounded-[16.4px] space-y-0">
         {/* First Column - Labels */}
-        <div className="w-full xl:w-[320px] flex flex-col gap-4 text-sm md:text-xs xl:text-sm p-5 font-[600] rounded-[16.4px] shadow-[0_16.412px_49.235px_-2.051px_rgba(0,0,0,0.05)] bg-[#fff]">
+        <div className="w-full xl:w-[320px] flex flex-col gap-4 text-sm md:text-xs xl:text-sm p-5 font-[600] rounded-[16.4px] drop-shadow-xl bg-[#fff]">
           <p className="font-[600]">How we are different.</p>
           <div className="w-full flex flex-col gap-3 text-[#666666]">
             {comparisonData.map((item, index) => (
@@ -59,7 +59,7 @@ const HydroponicComparison = () => {
 
         {/* Second Column - Hydroponic Pot */}
         <div
-          className={`w-full xl:w-[320px] text-sm md:text-xs xl:text-sm p-5 border-2 rounded-[16.4px] border-primaryMain flex flex-col bg-white shadow-[0_16.412px_49.235px_-2.051px_rgba(0,0,0,0.05)] ${
+          className={`w-full xl:w-[320px] text-sm md:text-xs xl:text-sm p-5 border-2 rounded-[16.4px] border-primaryMain flex flex-col bg-white drop-shadow-xl ${
             activeView === "hydroponics" || "hidden md:flex"
           }`}
         >
@@ -80,7 +80,7 @@ const HydroponicComparison = () => {
 
         {/* Third Column - Traditional Pots */}
         <div
-          className={`w-full xl:w-[320px] text-sm md:text-xs xl:text-sm p-5 border-2 rounded-[16.4px] border-primaryMain flex flex-col bg-white shadow-[0_16.412px_49.235px_-2.051px_rgba(0,0,0,0.05)] ${
+          className={`w-full xl:w-[320px] text-sm md:text-xs xl:text-sm p-5 border-2 rounded-[16.4px] border-primaryMain flex flex-col bg-white drop-shadow-xl ${
             activeView === "traditional" ? "flex" : "hidden md:flex"
           }`}
         >

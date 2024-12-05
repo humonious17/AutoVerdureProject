@@ -165,7 +165,7 @@ const ProductCard = ({ product, viewType = "grid" }) => {
               className={`w-full flex flex-col sm:flex-row sm:justify-between items-start sm:items-center px-2 sm:px-4 gap-2 sm:gap-0
               ${isListView ? "sm:mt-auto" : "justify-center items-center"}`}
             >
-              <p className="text-md sm:text-[17px] leading-5 text-[#0E0E0E] font-bold">
+              <p className="text-md sm:text-[17px] leading-5 text-[#0E0E0E] font-normal">
                 From ₹ {productDetail.productPrice}
               </p>
               <button className="w-full sm:w-auto px-3 py-1.5 sm:px-[33px] sm:py-[5px] text-xs sm:text-xl font-medium border border-[#9F9F9F] rounded-full hover:bg-gray-100 transition-colors">

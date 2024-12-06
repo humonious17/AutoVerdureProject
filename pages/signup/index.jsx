@@ -149,7 +149,7 @@ const Signin = (prop) => {
             data-type="standard"
             data-shape="pill"
             data-theme="outline"
-            data-text="signin_with"
+            data-text="signup_with"
             data-size="large"
             data-logo_alignment="center"
             data-width="400"

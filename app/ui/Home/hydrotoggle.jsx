@@ -59,7 +59,7 @@ const HydroponicComparison = () => {
 
         {/* Second Column - Hydroponic Pot */}
         <div
-          className={`w-full xl:w-[320px] text-sm md:text-xs xl:text-sm p-5 border-2 rounded-[16.4px] border-primaryMain flex flex-col bg-white drop-shadow-xl ${
+          className={`w-full xl:w-[320px] text-sm md:text-xs xl:text-sm p-5 border-2 rounded-[16.4px] border-primaryMain flex flex-col bg-white drop-shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 ${
             activeView === "hydroponics" || "hidden md:flex"
           }`}
         >
@@ -80,7 +80,7 @@ const HydroponicComparison = () => {
 
         {/* Third Column - Traditional Pots */}
         <div
-          className={`w-full xl:w-[320px] text-sm md:text-xs xl:text-sm p-5 border-2 rounded-[16.4px] border-primaryMain flex flex-col bg-white drop-shadow-xl ${
+          className={`w-full xl:w-[320px] text-sm md:text-xs xl:text-sm p-5 border-2 rounded-[16.4px] border-primaryMain flex flex-col bg-white drop-shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 ${
             activeView === "traditional" ? "flex" : "hidden md:flex"
           }`}
         >
@@ -103,7 +103,7 @@ const HydroponicComparison = () => {
         <div className="flex justify-between items-center">
           <button
             onClick={() => setActiveView("hydroponics")}
-            className={`flex-1 py-2 px-4 rounded-full text-sm font-semibold ${
+            className={`flex-1 py-2 px-4 rounded-full text-sm font-semibold whitespace-nowrap ${
               activeView === "hydroponics"
                 ? "bg-primaryMain text-white"
                 : "text-[#666]"
@@ -113,7 +113,7 @@ const HydroponicComparison = () => {
           </button>
           <button
             onClick={() => setActiveView("traditional")}
-            className={`flex-1 py-[17px] px-4 rounded-full text-sm font-semibold ${
+            className={`flex-1 py-2 px-4 rounded-full text-sm font-semibold whitespace-nowrap ${
               activeView === "traditional"
                 ? "bg-primaryMain text-white"
                 : "text-[#666]"

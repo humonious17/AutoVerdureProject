@@ -110,10 +110,10 @@ export default function Home() {
           </p>
 
           {/* Buttons */}
-          <div className="hidden md:flex mt-3 md:mt-8 w-full text-base font-medium gap-5 justify-center xl:justify-center lg:justify-center md:justify-center items-center hero-buttons">
+          <div className="hidden md:flex mt-3 md:mt-8 w-full text-base font-medium gap-[28px] justify-center xl:justify-center lg:justify-center md:justify-center items-center hero-buttons">
             <Link href="/store" passHref>
               <button
-                className="shop-now px-4 md:px-[22px] py-2 md:py-[14px] sm:px-[22px] sm:py-[14px] rounded-[100px] text-white bg-primaryMain text-[16px] md:text-base"
+                className="shop-now w-[156px] h-[55px] rounded-[100px] text-white bg-primaryMain text-[16px] md:text-base"
                 style={{
                   whiteSpace: "nowrap",
                 }}
@@ -123,7 +123,7 @@ export default function Home() {
             </Link>
             <Link href="/about-us" passHref>
               <button
-                className="learn-more flex items-center justify-center px-4 md:px-[22px] py-2 md:py-[14px] sm:px-[22px] sm:py-[14px] text-primaryGrayscale border-[1px] border-primaryGrayscale rounded-[100px] bg-transparent text-[16px] md:text-base"
+                className="learn-more w-[156px] h-[55px] text-primaryGrayscale border-[1px] border-primaryGrayscale rounded-[100px] bg-transparent text-[16px] md:text-base"
                 style={{
                   borderRadius: "100px",
                   border: "1px solid var(--Greyscale-Black, #3D3D3D)",
@@ -137,10 +137,10 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="md:hidden mt-3 md:mt-8 w-full text-base font-medium flex justify-center items-center hero-buttons">
-        <Link href="/store" passHref className="w-1/2 px-1">
+      <div className="md:hidden mt-3 md:mt-8 w-full text-base font-medium flex justify-center items-center gap-[10px] px-4">
+        <Link href="/store" passHref className="flex-1">
           <button
-            className="shop-now w-full ml-4 md:px-[22px] md:py-[14px] rounded-[100px] text-white bg-primaryMain text-[16px] md:text-base mobile-button"
+            className="shop-now w-full flex justify-center items-center py-[18px] rounded-[100px] text-white bg-primaryMain text-[16px]"
             style={{
               whiteSpace: "nowrap",
             }}
@@ -148,9 +148,9 @@ export default function Home() {
             Shop Now
           </button>
         </Link>
-        <Link href="/about-us" passHref className="w-1/2 px-1">
+        <Link href="/about-us" passHref className="flex-1">
           <button
-            className="learn-more w-full mr-4 md:px-[22px] py-2 md:py-[14px] text-primaryGrayscale border-[1px] border-primaryGrayscale rounded-[100px] bg-transparent text-[16px] md:text-base mobile-button"
+            className="learn-more w-full flex justify-center items-center py-[18px] text-primaryGrayscale border-[1px] border-primaryGrayscale rounded-[100px] bg-transparent text-[16px]"
             style={{
               borderRadius: "100px",
               border: "1px solid var(--Greyscale-Black, #3D3D3D)",
@@ -160,19 +160,6 @@ export default function Home() {
             Learn More
           </button>
         </Link>
-        <style jsx>{`
-          @media (max-width: 640px) {
-            .mobile-button {
-              width: calc(100% - 20px); 
-              height: 55px;
-              padding: 18px 0;
-            }
-            .hero-buttons {
-              gap: 8px;
-              width: 100%;
-            }
-          }
-        `}</style>
       </div>
       {/* Image */}
       <div className="absolute top-[50px] right-[45px]  md:right-[30px] image-container">
@@ -283,9 +270,12 @@ export default function Home() {
                 autoPlay
               />
             </div>*/}
-            <div className="mt-[33px] w-full grid grid-cols-2 justify-between items-center gap-x-[3px] md:gap-x-[17.17px] xl:gap-x-[30px] gap-y-[20.32px] md:gap-y-[19.46px] xl:gap-y-[34px]">
+        <div className="mt-[33px] w-full grid grid-cols-2 justify-between items-center gap-x-[3px] md:gap-x-[17.17px] xl:gap-x-[30px] gap-y-[20.32px] md:gap-y-[19.46px] xl:gap-y-[34px]">
           {collections.map((collection, index) => (
-            <div key={index}  className="flex justify-center items-stretch w-full">
+            <div
+              key={index}
+              className="flex justify-center items-stretch w-full"
+            >
               <CollectionCard
                 title={collection.title}
                 description={collection.description}

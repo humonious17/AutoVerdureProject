@@ -268,17 +268,25 @@ const Navbar = () => {
       >
         <div
           className={`
-            hamburger-icon 
-            ${isMobileMenuOpen ? "open" : ""} 
-            before:transition-all 
-            before:duration-100 
-            after:transition-all 
-            after:duration-100
-          `}
+          hamburger-icon 
+          ${isMobileMenuOpen ? "open" : ""} 
+          before:transition-all 
+          before:duration-100 
+          after:transition-all 
+          after:duration-100
+            `}
         >
           <span className="line transition-all duration-100" />
-          <span className="line transition-all duration-100" />
-          <span className="line transition-all duration-100" />
+          <span
+            className={`line transition-all duration-100 ${
+              isMobileMenuOpen ? "text-[#fffbf7]" : "text-black"
+            }`}
+          />
+          <span
+            className={`line transition-all duration-100 ${
+              isMobileMenuOpen ? "block" : "hidden"
+            }`}
+          />
         </div>
       </div>
 

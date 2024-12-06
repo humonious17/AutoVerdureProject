@@ -281,9 +281,7 @@ const Profile = (props) => {
           </button>
 
           {redeemMessage && (
-            <p className="text-[black] text-center text-sm">
-              {redeemMessage}
-            </p>
+            <p className="text-[black] text-center text-sm">{redeemMessage}</p>
           )}
 
           <button
@@ -307,20 +305,20 @@ const Profile = (props) => {
       {/* Logout Modal */}
       {showLogoutModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-sm">
+          <div className="bg-[#fffbf7] rounded-lg p-6 w-full max-w-sm">
             <p className="text-lg text-center mb-6">
               Are you sure you want to log out?
             </p>
             <div className="flex gap-4">
               <button
                 onClick={confirmLogout}
-                className="flex-1 py-2 bg-red-500 hover:bg-red-600 text-white rounded-full"
+                className="flex-1 py-2 bg-[black] hover:bg-[grey]/90 text-white rounded-full"
               >
                 Yes
               </button>
               <button
                 onClick={closeLogoutModal}
-                className="flex-1 py-2 bg-gray-200 hover:bg-gray-300 rounded-full"
+                className="flex-1 py-2 bg-primaryMain hover:bg-primaryMain/50 rounded-full"
               >
                 No
               </button>

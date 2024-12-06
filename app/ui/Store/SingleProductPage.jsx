@@ -644,30 +644,38 @@ const SingleProductPage = ({ productData, allProducts }) => {
             </div>
 
             {error && <p className="text-red-600 mt-2">{error}</p>}
-            {/* Quantity, Add to cart, Buy now */}
-            <div className="mt-[18.5px] sm:mt-6 w-full h-[32.8px] xl:h-16 flex gap-[18px] xl:justify-between">
-              <div className="w-[63.077px] xl:w-[123px] h-full py-5 rounded-[29.2px] border-[0.51px] bg-[#FFFFFF] border-[#9F9F9F] flex justify-center items-center">
-                <button className="px-2 py-1" onClick={decrementQuantity}>
-                  -
+            {productData.stockQuantity > 0 ? (
+              /* Quantity, Add to cart, Buy now */
+              <div className="mt-[18.5px] sm:mt-6 w-full h-[32.8px] xl:h-16 flex gap-[18px] xl:justify-between">
+                <div className="w-[63.077px] xl:w-[123px] h-full py-5 rounded-[29.2px] border-[0.51px] bg-[#FFFFFF] border-[#9F9F9F] flex justify-center items-center">
+                  <button className="px-2 py-1" onClick={decrementQuantity}>
+                    -
+                  </button>
+                  <span className="px-2">{stockQuantity}</span>
+                  <button className="px-2 py-1" onClick={incrementQuantity}>
+                    +
+                  </button>
+                </div>
+                <button
+                  className="w-[85.1px] xl:w-[166px] h-full text-[10.256px] xl:text-xl py-5 rounded-[29.7px] border-[0.51px] text-[#000000] bg-[#FFFFFF] border-[#000000] flex justify-center items-center"
+                  onClick={handleAddToCart}
+                >
+                  {buttonText}
                 </button>
-                <span className="px-2">{stockQuantity}</span>
-                <button className="px-2 py-1" onClick={incrementQuantity}>
-                  +
+                <button
+                  className="w-[154.359px] xl:w-[301px] h-full text-[10.256px] xl:text-xl py-5 leading-[12.308px] rounded-[35.9px] font-medium bg-primaryMain text-[#FFFFFF] flex justify-center items-center"
+                  onClick={handleBuyNow}
+                >
+                  Buy Now
                 </button>
               </div>
-              <button
-                className="w-[85.1px] xl:w-[166px] h-full text-[10.256px] xl:text-xl py-5 rounded-[29.7px] border-[0.51px] text-[#000000] bg-[#FFFFFF] border-[#000000] flex justify-center items-center"
-                onClick={handleAddToCart}
-              >
-                {buttonText}
-              </button>
-              <button
-                className="w-[154.359px] xl:w-[301px] h-full text-[10.256px] xl:text-xl py-5 leading-[12.308px] rounded-[35.9px] font-medium bg-primaryMain text-[#FFFFFF] flex justify-center items-center"
-                onClick={handleBuyNow}
-              >
-                Buy Now
-              </button>
-            </div>
+            ) : (
+              <div className="mt-[18.5px] sm:mt-6 w-full">
+                <p className="text-red-600 text-xl font-medium text-center">
+                  Product is currently out of stock!
+                </p>
+              </div>
+            )}
             {productData.productType === "plants" && (
               <div className="mt-[21.5px] w-full sm:w-fit xl:w-full flex flex-row sm:flex-col xl:flex-row sm:gap-y-3 xl:gap-x-[22px] justify-between xl:justify-start">
                 <div className="flex gap-2 sm:gap-3 justify-between sm:justify-start xl:justify-between items-center">
@@ -711,136 +719,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
                 </div>
               </div>
             )}
-            {productData.productType === "flowers" && (
-              <div className="mt-[21.5px] w-full sm:w-fit xl:w-full flex flex-row sm:flex-col xl:flex-row sm:gap-y-3 xl:gap-x-[22px] justify-between xl:justify-start">
-                <div className="flex gap-2 sm:gap-3 justify-between sm:justify-start xl:justify-between items-center">
-                  <Image
-                    src={
-                      productData.petFriendly === "true"
-                        ? "/veterinary.png"
-                        : "/noPets.png"
-                    }
-                    alt="veterinary"
-                    width={32}
-                    height={32}
-                  />
-                  <p className="text-[13px] leading-[15.6px] -tracking-[0.325px] font-normal text-[#000000]">
-                    {productData.petFriendly === "true"
-                      ? "Pet Friendly"
-                      : "Not pet Friendly"}
-                    ;
-                  </p>
-                </div>
-                <div className="flex gap-2 sm:gap-3 justify-between sm:justify-start xl:justify-between items-center">
-                  <Image
-                    src={
-                      productData.lessLight === "true"
-                        ? "/noLight.png"
-                        : "/brightness.png"
-                    }
-                    alt={
-                      productData.lessLight === "true"
-                        ? "lessLight"
-                        : "moreLight"
-                    }
-                    width={32}
-                    height={32}
-                  />
-                  <p className="text-[13px] leading-[15.6px] -tracking-[0.325px] font-normal text-[#000000]">
-                    {productData.lessLight === "true"
-                      ? "Needs Less Light"
-                      : "Needs More Light"}
-                  </p>
-                </div>
-              </div>
-            )}
-            {productData.productType === "planters" && (
-              <div className="mt-[21.5px] w-full sm:w-fit xl:w-full flex flex-row sm:flex-col xl:flex-row sm:gap-y-3 xl:gap-x-[22px] justify-between xl:justify-start">
-                <div className="flex gap-2 sm:gap-3 justify-between sm:justify-start xl:justify-between items-center">
-                  <Image
-                    src={
-                      productData.petFriendly === "true"
-                        ? "/veterinary.png"
-                        : "/noPets.png"
-                    }
-                    alt="veterinary"
-                    width={32}
-                    height={32}
-                  />
-                  <p className="text-[13px] leading-[15.6px] -tracking-[0.325px] font-normal text-[#000000]">
-                    {productData.petFriendly === "true"
-                      ? "Pet Friendly"
-                      : "Not pet Friendly"}
-                    ;
-                  </p>
-                </div>
-                <div className="flex gap-2 sm:gap-3 justify-between sm:justify-start xl:justify-between items-center">
-                  <Image
-                    src={
-                      productData.lessLight === "true"
-                        ? "/noLight.png"
-                        : "/brightness.png"
-                    }
-                    alt={
-                      productData.lessLight === "true"
-                        ? "lessLight"
-                        : "moreLight"
-                    }
-                    width={32}
-                    height={32}
-                  />
-                  <p className="text-[13px] leading-[15.6px] -tracking-[0.325px] font-normal text-[#000000]">
-                    {productData.lessLight === "true"
-                      ? "Needs Less Light"
-                      : "Needs More Light"}
-                  </p>
-                </div>
-              </div>
-            )}
-            {productData.productType === "accessory" && (
-              <div className="mt-[21.5px] w-full sm:w-fit xl:w-full flex flex-row sm:flex-col xl:flex-row sm:gap-y-3 xl:gap-x-[22px] justify-between xl:justify-start">
-                <div className="flex gap-2 sm:gap-3 justify-between sm:justify-start xl:justify-between items-center">
-                  <Image
-                    src={
-                      productData.petFriendly === "true"
-                        ? "/veterinary.png"
-                        : "/noPets.png"
-                    }
-                    alt="veterinary"
-                    width={32}
-                    height={32}
-                  />
-                  <p className="text-[13px] leading-[15.6px] -tracking-[0.325px] font-normal text-[#000000]">
-                    {productData.petFriendly === "true"
-                      ? "Pet Friendly"
-                      : "Not pet Friendly"}
-                    ;
-                  </p>
-                </div>
-                <div className="flex gap-2 sm:gap-3 justify-between sm:justify-start xl:justify-between items-center">
-                  <Image
-                    src={
-                      productData.lessLight === "true"
-                        ? "/noLight.png"
-                        : "/brightness.png"
-                    }
-                    alt={
-                      productData.lessLight === "true"
-                        ? "lessLight"
-                        : "moreLight"
-                    }
-                    width={32}
-                    height={32}
-                  />
-                  <p className="text-[13px] leading-[15.6px] -tracking-[0.325px] font-normal text-[#000000]">
-                    {productData.lessLight === "true"
-                      ? "Needs Less Light"
-                      : "Needs More Light"}
-                  </p>
-                </div>
-              </div>
-            )}
-            {/* Product long description, Payment methods */}
+            {/* Rest of the code remains the same */}
             <div className="mt-[30px] sm:mt-[39px] w-full sm:pr-[0px] hidden xl:flex xl:flex-col">
               {/* Product long description */}
               <div className="w-full text-sm sm:text-[17px] leading-[30px] flex flex-col gap-[18px]">
@@ -1106,17 +985,19 @@ const SingleProductPage = ({ productData, allProducts }) => {
 
         {/* Related Product */}
         <div className="mt-[55.18px] sm:mt-[25px] lg:mt-[84.43px] xl:max-w-[1312px] w-full">
-          <div className="hidden w-full sm:flex sm:justify-between sm:items-center">
-            <p className="text-[38px] leading-[49.4px]">Also Add</p>
+          <div className="w-full flex justify-between items-center">
+            <p className="text-[18px] sm:text-[38px] leading-[30px] sm:leading-[49.4px]">
+              You may also like...
+            </p>
             <p
-              className="text-[21px] leading-[25.2px] font-normal pb-[7.99px] border-b-[2px] border-[#BBBBBB] cursor-pointer"
+              className="text-[18px] sm:text-[21px] leading-[20px] sm:leading-[25.2px] font-normal pb-[7.99px] border-b-[2px] border-[#BBBBBB] cursor-pointer"
               onClick={toggleShowAll}
             >
               {showAll ? "Show less" : "Browse all"}
             </p>
           </div>
 
-          <div className="sm:mt-[52.6px] w-full grid grid-cols-2 xl:grid-cols-3 gap-x-[9px] gap-y-[41.46px] md:gap-x-[43.21px] md:gap-y-16 xl:gap-x-[49px] xl:gap-y-[48px]">
+          <div className="sm:mt-[52.6px] w-full mt-5 grid grid-cols-2 xl:grid-cols-3 gap-x-[9px] gap-y-[41.46px] md:gap-x-[43.21px] md:gap-y-16 xl:gap-x-[49px] xl:gap-y-[48px]">
             {displayedProducts.map((product, index) => (
               <Link
                 className="w-full"

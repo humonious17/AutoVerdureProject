@@ -9,6 +9,7 @@ const CartOverview = ({ items, onClose }) => {
   const [cartItems, setCartItems] = useState(items);
   const [total, setTotal] = useState(0);
   const [isRemoving, setIsRemoving] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(false);
 
   useEffect(() => {
     // Update cart items when items prop changes
@@ -95,21 +96,123 @@ const CartOverview = ({ items, onClose }) => {
     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
 
+  // Minimize and restore functions
+  const handleMinimize = () => {
+    setIsMinimized(true);
+  };
+
+  const handleRestore = () => {
+    setIsMinimized(false);
+  };
+
+  // Minimized cart bubble styles
+  const minimizedCartStyle = {
+    position: "fixed",
+    bottom: "20px",
+    right: "20px",
+    width: "60px",
+    height: "60px",
+    borderRadius: "50%",
+    backgroundColor: "#A458FE",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+    cursor: "pointer",
+    zIndex: 1000,
+  };
+
+  // If minimized, render the small cart bubble
+  if (isMinimized) {
+    return (
+      <div style={minimizedCartStyle} onClick={handleRestore}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="25"
+          height="25"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="white"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <circle cx="10" cy="20.5" r="1" />
+          <circle cx="18" cy="20.5" r="1" />
+          <path d="M2.5 2.5h3l2.7 12.4a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6l1.6-8.4H7.1" />
+        </svg>
+        {cartItems.length > 0 && (
+          <div
+            style={{
+              position: "absolute",
+              top: "-5px",
+              right: "-5px",
+              backgroundColor: "black",
+              color: "white",
+              borderRadius: "50%",
+              width: "20px",
+              height: "20px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              fontSize: "12px",
+            }}
+          >
+            {cartItems.length}
+          </div>
+        )}
+      </div>
+    );
+  }
+
   return (
     <div className="cart-style" ref={cartRef}>
-      <button
-        onClick={onClose}
-        className="absolute top-2 right-2 text-xl"
-        style={{ marginTop: "10px", marginRight: "15px" }}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginTop: "10px",
+          marginRight: "15px",
+          backgroundColor: "#fffbf7",
+        }}
       >
-        ×
-      </button>
+        <button
+          onClick={handleMinimize}
+          className="text-xl"
+          style={{
+            backgroundColor: "#9F9F9F",
+            color: "white",
+            border: "none",
+            borderRadius: "50%",
+            width: "20px",
+            height: "20px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            marginLeft: "15px",
+          }}
+        >
+          -
+        </button>
+        <button
+          onClick={onClose}
+          className="text-xl"
+          style={{
+            color: "black",
+            border: "none",
+            background: "none",
+          }}
+        >
+          ×
+        </button>
+      </div>
       <h2 className="cart-heading">Shopping Cart</h2>
       <div
         style={{
           height: "1px",
           margin: "26px 30px 0 30px",
-          backgroundColor: "#D9D9D9",
+          backgroundColor: "#fffbf7",
         }}
       ></div>
       <div style={{ height: "41.73px" }}></div>
@@ -129,11 +232,11 @@ const CartOverview = ({ items, onClose }) => {
               alt={item.productName}
               height={105}
               width={105}
-              objectFit="cover" // Ensures image covers the entire area without distortion
+              objectFit="cover"
               style={{
                 borderRadius: "7.404px",
                 marginLeft: "26.5px",
-                aspectRatio: "1/1", // Ensures square aspect ratio
+                aspectRatio: "1/1",
               }}
             />
             <div
@@ -224,11 +327,11 @@ const CartOverview = ({ items, onClose }) => {
       <div
         style={{
           display: "flex",
-          justifyContent: "center", // Changed from space-between to center
+          justifyContent: "center",
           marginTop: "20px",
           paddingLeft: "33px",
           paddingRight: "33px",
-          gap: "20px", // Maintains the gap between buttons
+          gap: "20px",
         }}
       >
         <button

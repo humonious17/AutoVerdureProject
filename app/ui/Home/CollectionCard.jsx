@@ -19,7 +19,7 @@ const CollectionCard = ({ title, description, image, video }) => {
 
   return (
     <div
-      className="w-full h-auto md:w-full md:h-auto p-3 md:p-0 flex flex-col md:flex-row-reverse md:rounded-[32.1px] xl:rounded-[56px] md:overflow-hidden bg-[#F8F8F8] border-[2.86px] border-[#FFFBF7] hover:border-primaryMain rounded-[10px]"
+      className="w-full h-auto md:w-full md:h-auto p-3 md:p-0 flex flex-col md:flex-row-reverse md:rounded-[32.1px] xl:rounded-[56px] md:overflow-hidden bg-[#faf0f8] border-[2.86px] border-[#FFFBF7] hover:border-primaryMain rounded-[10px]"
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >
@@ -35,7 +35,7 @@ const CollectionCard = ({ title, description, image, video }) => {
       >
         {isVideo ? (
           <video
-            className="object-cover w-[203.231px] h-[157px] md:w-[203.231px] md:h-full xl:w-[355px]"
+            className="object-cover rounded-[10px] md:rounded-none xl:rounded-none w-[203.231px] h-[157px] md:w-[203.231px] md:h-full xl:w-[355px]"
             src={video}
             autoPlay
             loop
@@ -44,7 +44,7 @@ const CollectionCard = ({ title, description, image, video }) => {
           ></video>
         ) : (
           <Image
-            className="object-cover w-[203.231px] h-[157px] md:w-[203.231px] md:h-full xl:w-[355px]"
+            className="object-cover rounded-[10px] md:rounded-none xl:rounded-none  w-[203.231px] h-[157px] md:w-[203.231px] md:h-full xl:w-[355px]"
             src={image}
             alt="media"
             width={203}

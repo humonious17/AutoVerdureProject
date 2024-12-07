@@ -317,7 +317,7 @@ body {
 
   @media (max-width: 450px) {
     .hero-container {
-      padding-left: 10%;
+      padding-left: 0%;
 
       margin-top: 30%;
     }

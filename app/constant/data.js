@@ -1,11 +1,11 @@
 import { Video } from "lucide-react";
 
 export const navItems = [
-  { title: "home", url: "/" },
-  { title: "about us", url: "/about-us" },
-  { title: "store", url: "/store" },
-  { title: "resources", url: "/resources" },
-  { title: "contact", url: "/contact" },
+  { title: "Home", url: "/" },
+  { title: "About Us", url: "/about-us" },
+  { title: "Store", url: "/store" },
+  { title: "Resources", url: "/resources" },
+  { title: "Contact", url: "/contact" },
 ];
 
 export const profileNavItems = [

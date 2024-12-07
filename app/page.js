@@ -69,18 +69,13 @@ export default function Home() {
   }, [hydroponics]); // Use hydroponics directly as a dependency
 
   return (
-    <div className="w-full px-4 mr-5 md:px-10 pb-[100px] bg-[#FFFBF7] flex flex-col justify-center items-center overflow-hidden">
+    <div className="w-full px-0 pr-0 md:px-10 pb-[100px] bg-[#FFFBF7] flex flex-col justify-center items-center overflow-hidden">
       {/* Hero */}
-      <div className="w-screen flex flex-col-reverse md:flex-row xl:flex-col justify-center items-center overflow-hidden hero-container">
-        <div
-          className="max-w-[361px] md:max-w-[500px] xl:max-w-[622px] md:mr-8 mt-[157px] -ml-7 sm:mx-auto md:-ml-[80px] xl:mt-[170px] z-10 gap-6 content-container lg:ml-[115px] lg:mt-[235px]"
-          style={{
-            paddingRight: "12px",
-          }}
-        >
+      <div className="relative w-screen flex flex-col-reverse md:flex-row xl:flex-col justify-center items-center overflow-hidden hero-container ">
+        <div className="max-w-[361px] md:max-w-[500px] xl:max-w-[622px] mt-[157px] mx-auto xl:mt-[170px] z-10 content-container">
           {/* Title */}
           <p
-            className="text-[50px] md:text-[50px] xl:text-[64px] leading-[50px] md:leading-[60px] xl:leading-[76.8px] tracking-tight font-normal text-black hero-title text-left lg:text-center xl:text-center"
+            className="w-full mx-0 text-[50px] md:text-[50px] xl:text-[64px] leading-[50px] md:leading-[60px] xl:leading-[76.8px] tracking-tight font-normal text-black hero-title text-left lg:text-center xl:text-center "
             style={{
               fontFamily: "Urbanist",
               fontWeight: 400,
@@ -94,7 +89,7 @@ export default function Home() {
 
           {/* Description */}
           <p
-            className="mt-3 xl:mt-[20px] text-sm md:text-base xl:text-lg leading-6 text-left font-normal text-black hero-description lg:text-center xl:text-center"
+            className="w-full mt-3 pl-0.5 mb-4 xl:mt-[20px] text-sm md:text-base xl:text-lg leading-6 text-left lg:text-center xl:text-center font-normal text-black hero-description "
             style={{
               color: "#3D3D3D",
               fontFamily: "Urbanist",
@@ -110,7 +105,7 @@ export default function Home() {
           </p>
 
           {/* Buttons */}
-          <div className="hidden md:flex mt-3 md:mt-8 w-full text-base font-medium gap-[28px] justify-center xl:justify-center lg:justify-center md:justify-center items-center hero-buttons">
+          <div className="relative z-10 hidden md:flex mt-3 md:mt-8 w-full text-base font-medium gap-[28px] justify-center items-center hero-buttons ">
             <Link href="/store" passHref>
               <button
                 className="shop-now w-[156px] h-[55px] rounded-[100px] text-white bg-primaryMain text-[16px] md:text-base"
@@ -137,34 +132,36 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="md:hidden mt-3 md:mt-8 w-full text-base font-medium flex justify-center items-center gap-[10px] px-4">
-        <Link href="/store" passHref className="flex-1">
-          <button
-            className="shop-now w-full flex justify-center items-center py-[18px] rounded-[100px] text-white bg-primaryMain text-[16px]"
-            style={{
-              whiteSpace: "nowrap",
-            }}
-          >
-            Shop Now
-          </button>
-        </Link>
-        <Link href="/about-us" passHref className="flex-1">
-          <button
-            className="learn-more w-full flex justify-center items-center py-[18px] text-primaryGrayscale border-[1px] border-primaryGrayscale rounded-[100px] bg-transparent text-[16px]"
-            style={{
-              borderRadius: "100px",
-              border: "1px solid var(--Greyscale-Black, #3D3D3D)",
-              whiteSpace: "nowrap",
-            }}
-          >
-            Learn More
-          </button>
-        </Link>
+      <div className="md:hidden flex justify-center items-center mt-3 md:mt-8 w-full text-base font-medium px-0 ">
+        <div className="w-[361px] flex justify-between ">
+          <Link href="/store" passHref>
+            <button
+              className="shop-now w-[156px] h-[55px] flex justify-center items-center rounded-[100px] text-white bg-primaryMain text-[16px]"
+              style={{
+                whiteSpace: "nowrap",
+              }}
+            >
+              Shop now
+            </button>
+          </Link>
+          <Link href="/about-us" passHref>
+            <button
+              className="learn-more w-[156px] h-[55px] flex justify-center items-center text-primaryGrayscale border-[1px] border-primaryGrayscale rounded-[100px] bg-transparent text-[16px]"
+              style={{
+                borderRadius: "100px",
+                border: "1px solid var(--Greyscale-Black, #3D3D3D)",
+                whiteSpace: "nowrap",
+              }}
+            >
+              Learn More
+            </button>
+          </Link>
+        </div>
       </div>
       {/* Image */}
-      <div className="absolute top-[50px] right-[45px]  md:right-[30px] image-container">
+      <div className="absolute top-[30px] right-[70px] md:right-[50px] image-container z-10">
         <Image
-          className="xl:hidden pot-image transform-gpu scale-[2.2]  origin-center"
+          className="xl:hidden pot-image transform-gpu scale-[2.2] origin-center"
           src="/newmobile.png"
           alt="bgImage"
           width={350}
@@ -176,7 +173,7 @@ export default function Home() {
         />
       </div>
 
-      <div className="w-full h-[766px] absolute top-0 right-[20px] bg-transparent">
+      <div className="hidden md:block w-full h-[766px] absolute top-0 right-[20px] bg-transparent">
         <div className="h-full w-full relative overflow-hidden">
           <Image
             className="w-full h-full hidden xl:flex top-0 object-cover"
@@ -194,11 +191,11 @@ export default function Home() {
             onContextMenu={(e) => e.preventDefault()}
           />
           <div
-            className="h-[90px] w-[10px] absolute z-15"
+            className="h-[90px] w-[10px] absolute"
             style={{
               height: "560px",
               width: "10px",
-              marginLeft: "23.5%",
+              marginLeft: "21.5%", // Decreased from 23.5%
               background: "#FFFBF7",
               top: "0px",
               animation: "shrinkHeight 2s forwards",
@@ -206,11 +203,11 @@ export default function Home() {
             }}
           ></div>
           <div
-            className="h-[90px] w-[20px] absolute z-15"
+            className="h-[90px] w-[20px] absolute"
             style={{
               height: "0px",
               width: "4px",
-              marginLeft: "80%",
+              marginLeft: "78%", // Decreased from 80%
               background: "#FFFBF7",
               top: "0px",
               animation: "shrinkHeightRight 2s forwards",
@@ -224,7 +221,7 @@ export default function Home() {
               top: "395px",
               height: "5px",
               width: "57px",
-              marginLeft: "23.4%",
+              marginLeft: "21.4%", // Decreased from 23.4%
               animation: "shrinkWidthLeft 1.5s forwards",
               animationDelay: "0.2s",
             }}
@@ -236,7 +233,7 @@ export default function Home() {
               top: "394px",
               height: "5px",
               width: "57px",
-              marginLeft: "82.9%",
+              marginLeft: "80.9%", // Decreased from 82.9%
               animation: "shrinkWidthRight 1.5s forwards",
               animationDelay: "0.2s",
             }}

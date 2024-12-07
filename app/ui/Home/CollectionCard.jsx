@@ -19,23 +19,23 @@ const CollectionCard = ({ title, description, image, video }) => {
 
   return (
     <div
-      className="w-full h-auto md:w-full md:h-auto p-3 md:p-0 flex flex-col md:flex-row-reverse md:rounded-[32.1px] xl:rounded-[56px] md:overflow-hidden bg-[#faf0f8] border-[2.86px] border-[#FFFBF7] hover:border-primaryMain rounded-[10px]"
+      className="w-full h-auto md:w-full md:h-auto p-3 md:p-0 flex flex-col md:flex-row-reverse md:rounded-[32.1px] xl:rounded-[56px] md:overflow-hidden bg-[#faf0f8] border-[2.86px] border-[#fffbf7] hover:border-primaryMain rounded-[10px] drop-shadow-xl transition-all duration-500 ease-in-out"
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >
       <div
-        className="transition-all duration-400 ease-in-out"
+        className="transition-all duration-500 ease-in-out transform"
         style={{
           height: isLargeScreen
             ? isHover
-              ? `${214 + 28 + Math.ceil(description.length / 14) * 23}px` // Increased from 199 to 214 (+15px)
-              : "290px" // Increased from 274 to 289 (+15px)
-            : "170px", // Mobile height remains unchanged
+              ? `${214 + 28 + Math.ceil(description.length / 14) * 23}px`
+              : "315px"
+            : "170px",
         }}
       >
         {isVideo ? (
           <video
-            className="object-cover rounded-[10px] md:rounded-none xl:rounded-none w-[203.231px] h-[157px] md:w-[203.231px] md:h-full xl:w-[355px]"
+            className="object-cover rounded-[10px] md:rounded-none xl:rounded-none w-[203.231px] h-[170px] md:w-[203.231px] md:h-full xl:w-[355px] transition-transform duration-500 ease-in-out"
             src={video}
             autoPlay
             loop
@@ -44,55 +44,55 @@ const CollectionCard = ({ title, description, image, video }) => {
           ></video>
         ) : (
           <Image
-            className="object-cover rounded-[10px] md:rounded-none xl:rounded-none  w-[203.231px] h-[157px] md:w-[203.231px] md:h-full xl:w-[355px]"
+            className="object-cover rounded-[10px] md:rounded-none xl:rounded-none w-[203.231px] h-[170px] md:w-[203.231px] md:h-full xl:w-[355px] transition-transform duration-500 ease-in-out"
             src={image}
             alt="media"
             width={203}
-            height={463.75} // Updated to match new height
+            height={463.75}
             unoptimized
             priority
           />
         )}
       </div>
-      <div className="w-full  md:w-[119px] xl:w-[202px] md:mx-[36.64px] xl:mx-16 xl:mt-[40px] flex flex-col">
-        {/* Title - Stay fixed */}
-        <p className="mt-2 text-[13px] md:text-[21.754px] xl:text-[38px] leading-tight text-[#0E0E0E] font-normal ">
+      <div className="w-full md:w-[119px] xl:w-[202px] md:mx-[36.64px] xl:mx-16 xl:mt-[40px] flex flex-col transition-all duration-500 ease-in-out">
+        <p className="mt-2 text-[13px] md:text-[21.754px] xl:text-[38px] leading-tight text-[#0E0E0E] font-normal transition-all duration-500 ease-in-out">
           {title}
         </p>
 
-        {/* Description - Adjust height on hover */}
         <div
-          className="transition-all duration-400 ease-in-out"
+          className="transition-all duration-500 ease-in-out"
           style={{
             height: isLargeScreen
               ? isHover
                 ? `${28 + Math.ceil(description.length / 14) * 23}px`
                 : "90px"
               : isHover
-              ? "auto" // For mobile, make it auto when hovered
-              : "0px", // Default height for mobile
+              ? "auto"
+              : "0px",
             display: "-webkit-box",
             WebkitBoxOrient: "vertical",
-            WebkitLineClamp: isHover ? "unset" : 2, // Make it "unset" on hover for both mobile and desktop
+            WebkitLineClamp: isHover ? "unset" : 2,
             overflow: "hidden",
             textOverflow: "ellipsis",
+            opacity: isHover ? 1 : 0.8,
           }}
         >
-          <p className="mt-1 text-[8px] md:text-[9.732px] xl:text-[17px] leading-tight text-[#5B5B5B] font-normal transition-all duration-400 ease-in-out ">
+          <p className="mt-1 text-[8px] md:text-[9.732px] xl:text-[17px] leading-tight text-[#5B5B5B] font-normal transition-all duration-500 ease-in-out">
             {description}
           </p>
         </div>
 
-        {/* Buy Now Button */}
         <div
+          className="transition-all duration-500 ease-in-out"
           style={{
-            marginTop: isHover ? "8px" : "0", // Move the button down when description is expanded
+            marginTop: isHover ? "8px" : "0",
+            opacity: isHover ? 1 : 0.9,
           }}
         >
           <Link href={"/store/" + title.toLowerCase()}>
-            <p className="flex items-center mt-1 md:mt-[30px] mb-1 md:mb-[60px] text-[8px] md:text-[9.732px] xl:text-[17px] leading-tight text-[#0E0E0E] font-medium ">
+            <p className="flex items-center mt-1 md:mt-[30px] mb-1 md:mb-[60px] text-[8px] md:text-[9.732px] xl:text-[17px] leading-tight text-[#0E0E0E] font-medium hover:text-primaryMain transition-all duration-300 ease-in-out">
               Buy Now{" "}
-              <span>
+              <span className="transition-transform duration-300 ease-in-out transform hover:translate-x-1">
                 <Image
                   className="object-contain ml-2 w-[6px] h-[6px] md:w-[10.305px] md:h-[10.877px] xl:w-[18px] xl:h-[19px]"
                   src="/buyNow.svg"

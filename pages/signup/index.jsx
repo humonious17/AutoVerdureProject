@@ -129,7 +129,7 @@ const Signin = (prop) => {
             Welcome back
           </p>
           <p className="w-full text-sm leading-[22.4px] font-medium text-[#8E8F94]">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            Join to start shopping and stay up-to-date on the latest deals.
           </p>
         </div>
 
@@ -149,7 +149,7 @@ const Signin = (prop) => {
             data-type="standard"
             data-shape="pill"
             data-theme="outline"
-            data-text="signin_with"
+            data-text="signup_with"
             data-size="large"
             data-logo_alignment="center"
             data-width="400"

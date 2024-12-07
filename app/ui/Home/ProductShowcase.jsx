@@ -166,9 +166,9 @@ const ProductShowcase = ({ productType = "plants" }) => {
           </div>
         </Link>
 
-        {/* Grid for smaller images */}
+        {/* Grid for smaller images - Limited to 4 products */}
         <div className="grid grid-cols-2 gap-8 gap-y-16">
-          {products.slice(1).map((product) => (
+          {products.slice(1, 5).map((product) => (
             <Link
               key={product._id}
               href={`/store/${productType}/${product.productId}`}

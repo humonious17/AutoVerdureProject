@@ -10,7 +10,7 @@ const HydroponicCard = ({ data, isActive, index }) => {
   let backgroundColor = "";
   if (isMobile) {
     // Apply purple for cards 1, 3, 5 (index 0, 2, 4) and cream for 2, 4, 6 (index 1, 3, 5)
-    backgroundColor = (index % 2 === 0) ? "bg-purple-500" : "bg-primaryCream";
+    isActive = (index % 2 === 0) ? "bg-purple-500" : "bg-primaryCream";
   }
 
   return (

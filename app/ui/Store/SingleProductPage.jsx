@@ -268,6 +268,57 @@ const SingleProductPage = ({ productData, allProducts }) => {
                   unoptimized={true}
                   priority
                 />
+                {/* Small Icon */}
+                <div className="flex w-fit xl:flex flex-col gap-[12px] absolute top-[21.18px] right-[29px]">
+                  {productData.petFriendly === "true" ? (
+                    <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
+                      <Image
+                        src="/veterinary.png"
+                        alt="veterinary"
+                        width={32}
+                        height={32}
+                      />
+                    </div>
+                  ) : (
+                    <></>
+                  )}
+                  {productData.petUnfriendly === "true" ? (
+                    <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
+                      <Image
+                        src="/pf.png"
+                        alt="veterinary"
+                        width={32}
+                        height={32}
+                      />
+                    </div>
+                  ) : (
+                    <></>
+                  )}
+                  {productData.lessLight === "true" ? (
+                    <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
+                      <Image
+                        src="/noLight.png"
+                        alt="noLight"
+                        width={32}
+                        height={32}
+                      />
+                    </div>
+                  ) : (
+                    <></>
+                  )}
+                  {productData.moreLight === "true" ? (
+                    <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
+                      <Image
+                        src="/brightness.png"
+                        alt="brightness"
+                        width={32}
+                        height={32}
+                      />
+                    </div>
+                  ) : (
+                    <></>
+                  )}
+                </div>
               </div>
 
               {/* Navigation Arrows */}
@@ -526,21 +577,18 @@ const SingleProductPage = ({ productData, allProducts }) => {
                 {productData.productName}
               </p>
             </div>
-
             {/* Product short description */}
             <div>
               <p className="mb-[21.5px] text-zinc-600 text-[17px] font-normal font-['Inter'] leading-[30px]">
                 {productData.productSubtitle}
               </p>
             </div>
-
             {/* Product Price */}
             <div>
               <p className="text-stone-950 text-[27px] font-medium font-['Inter'] leading-10">
                 ₹ {price} INR
               </p>
             </div>
-
             {/* Product Size, Color, Finish */}
             <div className="mt-[22px] w-full flex flex-col gap-8">
               {/* Product Size */}
@@ -642,7 +690,6 @@ const SingleProductPage = ({ productData, allProducts }) => {
                 <p>(Login/Signup)</p>
               </div>
             </div>
-
             {error && <p className="text-red-600 mt-2">{error}</p>}
             {productData.stockQuantity > 0 ? (
               /* Quantity, Add to cart, Buy now */
@@ -676,7 +723,10 @@ const SingleProductPage = ({ productData, allProducts }) => {
                 </p>
               </div>
             )}
-            {productData.productType === "plants" && (
+            {(productData.productType === "plants" ||
+              productData.productType === "planters" ||
+              productData.productType === "flowers" ||
+              productData.productType === "accessory") && (
               <div className="mt-[21.5px] w-full sm:w-fit xl:w-full flex flex-row sm:flex-col xl:flex-row sm:gap-y-3 xl:gap-x-[22px] justify-between xl:justify-start">
                 <div className="flex gap-2 sm:gap-3 justify-between sm:justify-start xl:justify-between items-center">
                   <Image
@@ -719,7 +769,6 @@ const SingleProductPage = ({ productData, allProducts }) => {
                 </div>
               </div>
             )}
-            {/* Rest of the code remains the same */}
             <div className="mt-[30px] sm:mt-[39px] w-full sm:pr-[0px] hidden xl:flex xl:flex-col">
               {/* Product long description */}
               <div className="w-full text-sm sm:text-[17px] leading-[30px] flex flex-col gap-[18px]">

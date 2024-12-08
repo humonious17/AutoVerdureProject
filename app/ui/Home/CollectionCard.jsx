@@ -19,7 +19,7 @@ const CollectionCard = ({ title, description, image, video }) => {
 
   return (
     <div
-      className="w-full h-auto md:w-full md:h-auto p-3 md:p-0 flex flex-col md:flex-row-reverse md:rounded-[32.1px] xl:rounded-[56px] md:overflow-hidden bg-[#faf0f8] border-[2.86px] border-[#fffbf7] hover:border-primaryMain rounded-[10px] drop-shadow-xl transition-all duration-500 ease-in-out"
+      className="w-full h-auto md:w-full md:h-auto p-3 md:p-0 flex flex-col md:flex-row-reverse md:rounded-[32.1px] xl:rounded-[56px] md:overflow-hidden bg-[#fffbf7] border-[2.86px] border-[#fffbf7] hover:border-primaryMain rounded-[10px] drop-shadow-xl transition-all duration-500 ease-in-out"
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >

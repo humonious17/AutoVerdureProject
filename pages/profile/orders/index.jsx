@@ -264,12 +264,12 @@ const OrderDetailDialog = ({ order, open, onClose }) => {
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-3xl max-h-[100vh] overflow-y-auto ">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6  bg-[#fffbf7]">
+      <DialogContent className="max-w-3xl max-h-[100vh] overflow-y-auto p-0">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 p-4 md:p-6 bg-[#fffbf7] mt-[40px] mb-[40px]">
           {/* Left side - Product Image and Details */}
-          <div className="space-y-6">
+          <div className="space-y-4 md:space-y-6">
             {order.products && order.products[0] && (
-              <div className="aspect-square relative rounded-lg">
+              <div className="aspect-square relative rounded-lg overflow-hidden">
                 <Image
                   src={
                     order.products[0].productImage &&
@@ -288,30 +288,37 @@ const OrderDetailDialog = ({ order, open, onClose }) => {
               </div>
             )}
             <div className="space-y-2">
-              <h2 className="text-2xl font-semibold">
+              <h2 className="text-xl md:text-2xl font-semibold">
                 {order.products[0]?.productName}
               </h2>
-              <p className="text-gray-600">Location: {order.shipping.city}</p>
-              <p className="text-gray-600">
+              <p className="text-sm md:text-base text-gray-600">
+                Location: {order.shipping.city}
+              </p>
+              <p className="text-sm md:text-base text-gray-600">
                 Pot Size: {order.products[0]?.size || "12 x 16 inch"}
               </p>
-              <p className="text-gray-600">Order ID: #{order.orderId}</p>
-              <div className="bg-orange-50 text-orange-700 px-4 py-2 rounded-full inline-block">
+              <p className="text-sm md:text-base text-gray-600">
+                Order ID: #{order.orderId}
+              </p>
+              <div className="bg-orange-50 text-orange-700 px-3 py-1 md:px-4 md:py-2 rounded-full inline-block text-xs md:text-base">
                 Arriving in 2 days
               </div>
-              <button className="text-purple-600 flex items-center gap-2 mt-4">
+              <button className="text-purple-600 flex items-center gap-2 mt-2 md:mt-4 text-sm md:text-base">
                 View guides related to your product →
               </button>
             </div>
           </div>
 
           {/* Right side - Review Form */}
-          <form onSubmit={handleSubmitReview} className="space-y-6">
-            <h2 className="text-2xl font-bold">Add a review</h2>
+          <form
+            onSubmit={handleSubmitReview}
+            className="space-y-4 md:space-y-6"
+          >
+            <h2 className="text-xl md:text-2xl font-bold">Add a review</h2>
 
             {/* Rating */}
             <div className="space-y-2">
-              <label className="block text-gray-700 font-semibold">
+              <label className="block text-sm md:text-base text-gray-700 font-semibold">
                 Select Rating
               </label>
               <div className="flex gap-2">
@@ -320,14 +327,14 @@ const OrderDetailDialog = ({ order, open, onClose }) => {
                     type="button"
                     key={i}
                     onClick={() => handleRating(i)}
-                    className={`w-6 h-6 flex items-center justify-center transition-colors duration-300 ${
+                    className={`w-6 h-6 md:w-8 md:h-8 flex items-center justify-center transition-colors duration-300 ${
                       rating > i
                         ? "bg-green-700 text-white"
                         : "bg-gray-200 text-gray-400"
                     } hover:scale-110`}
                     disabled={isSubmitting}
                   >
-                    <span className="text-xl">★</span>
+                    <span className="text-base md:text-xl">★</span>
                   </button>
                 ))}
               </div>
@@ -335,11 +342,11 @@ const OrderDetailDialog = ({ order, open, onClose }) => {
 
             {/* Comments */}
             <div className="space-y-2">
-              <label className="block text-gray-700 font-semibold">
+              <label className="block text-sm md:text-base text-gray-700 font-semibold">
                 Add Comments
               </label>
               <textarea
-                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="w-full p-2 md:p-3 text-sm md:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                 rows="4"
                 placeholder="Write your comment..."
                 value={comment}
@@ -350,10 +357,10 @@ const OrderDetailDialog = ({ order, open, onClose }) => {
 
             {/* Photo Upload */}
             <div className="space-y-2">
-              <label className="block text-gray-700 font-semibold">
+              <label className="block text-sm md:text-base text-gray-700 font-semibold">
                 Add Photos
               </label>
-              <div className="relative w-full h-44 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center overflow-hidden">
+              <div className="relative w-full h-32 md:h-44 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center overflow-hidden">
                 {uploadedImage ? (
                   <Image
                     src={uploadedImage}
@@ -369,7 +376,7 @@ const OrderDetailDialog = ({ order, open, onClose }) => {
                       onClick={() =>
                         document.querySelector('input[type="file"]').click()
                       }
-                      className="absolute flex items-center justify-center w-10 h-10 border-2 border-purple-500 text-purple-500 rounded-full hover:bg-purple-500 hover:text-white transition-colors duration-300"
+                      className="absolute flex items-center justify-center w-8 h-8 md:w-10 md:h-10 border-2 border-purple-500 text-purple-500 rounded-full hover:bg-purple-500 hover:text-white transition-colors duration-300"
                       disabled={isSubmitting}
                     >
                       +
@@ -389,7 +396,7 @@ const OrderDetailDialog = ({ order, open, onClose }) => {
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full py-3 bg-purple-600 text-white font-bold rounded-full hover:bg-purple-700 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-2 md:py-3 bg-purple-600 text-white text-sm md:text-base font-bold rounded-full hover:bg-purple-700 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={isSubmitting}
             >
               {isSubmitting ? "Submitting..." : "Submit review"}
@@ -510,89 +517,91 @@ const ProfileOrders = ({ orders: initialOrders }) => {
         </div>
 
         {/* Desktop Table */}
-          <div className="hidden md:block">
-            <Table>
-              <TableHeader>
-                <TableRow>
-            <TableHead
-              className="cursor-pointer"
-              onClick={() => handleSort("productName")}
-            >
-              Product
-              {sortConfig.key === "productName" &&
-                (sortConfig.direction === "asc" ? (
-                  <SortAsc className="inline ml-2 h-4 w-4" />
-                ) : (
-                  <SortDesc className="inline ml-2 h-4 w-4" />
-                ))}
-            </TableHead>
-            <TableHead>Image</TableHead>
-            <TableHead>Address</TableHead>
-            <TableHead>Order Type</TableHead>
-            <TableHead>Payment</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead
-              className="cursor-pointer"
-              onClick={() => handleSort("createdAt")}
-            >
-              Time
-              {sortConfig.key === "createdAt" &&
-                (sortConfig.direction === "asc" ? (
-                  <SortAsc className="inline ml-2 h-4 w-4" />
-                ) : (
-                  <SortDesc className="inline ml-2 h-4 w-4" />
-                ))}
-            </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-            {orders.map((order) => (
-              <TableRow
-                key={order.orderId}
-                className="cursor-pointer hover:bg-gray-50"
-                onClick={() => openOrderDetail(order)}
-              >
-                <TableCell className="font-medium">
-                  {order.products && order.products.length > 0
-                    ? order.products[0].productName +
-                      (order.products.length === 1
-                        ? ""
-                        : ` + ${order.products.length - 1} more`)
-                    : "No products"}
-                </TableCell>
-                <TableCell>
-                  <div className="w-[50px] h-[50px] relative">
-                    {order.products && order.products.length > 0 ? (
-                      <Image
-                        src={order.products[0].productImage &&
-                          order.products[0].productImage !== "null"
-                          ? order.products[0].productImage
-                          : ""}
-                        alt={order.products[0].productName || "Product Image"}
-                        layout="fill"
-                        objectFit="cover"
-                        className="rounded-lg"
-                        onError={(e) => {
-                          e.target.src = "";
-                        }}
-                      />
-                    ) : null}
-                  </div>
-                </TableCell>
-                <TableCell>{order.shipping.city}</TableCell>
-                <TableCell>Product</TableCell>
-                <TableCell>Paid</TableCell>
-                <TableCell>
-                  <OrderStatus status={order.orderStatus} />
-                </TableCell>
-                <TableCell>{formatTimestamp(order.createdAt)}</TableCell>
+        <div className="hidden md:block">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead
+                  className="cursor-pointer"
+                  onClick={() => handleSort("productName")}
+                >
+                  Product
+                  {sortConfig.key === "productName" &&
+                    (sortConfig.direction === "asc" ? (
+                      <SortAsc className="inline ml-2 h-4 w-4" />
+                    ) : (
+                      <SortDesc className="inline ml-2 h-4 w-4" />
+                    ))}
+                </TableHead>
+                <TableHead>Image</TableHead>
+                <TableHead>Address</TableHead>
+                <TableHead>Order Type</TableHead>
+                <TableHead>Payment</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead
+                  className="cursor-pointer"
+                  onClick={() => handleSort("createdAt")}
+                >
+                  Time
+                  {sortConfig.key === "createdAt" &&
+                    (sortConfig.direction === "asc" ? (
+                      <SortAsc className="inline ml-2 h-4 w-4" />
+                    ) : (
+                      <SortDesc className="inline ml-2 h-4 w-4" />
+                    ))}
+                </TableHead>
               </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
+            </TableHeader>
+            <TableBody>
+              {orders.map((order) => (
+                <TableRow
+                  key={order.orderId}
+                  className="cursor-pointer hover:bg-gray-50"
+                  onClick={() => openOrderDetail(order)}
+                >
+                  <TableCell className="font-medium">
+                    {order.products && order.products.length > 0
+                      ? order.products[0].productName +
+                        (order.products.length === 1
+                          ? ""
+                          : ` + ${order.products.length - 1} more`)
+                      : "No products"}
+                  </TableCell>
+                  <TableCell>
+                    <div className="w-[50px] h-[50px] relative">
+                      {order.products && order.products.length > 0 ? (
+                        <Image
+                          src={
+                            order.products[0].productImage &&
+                            order.products[0].productImage !== "null"
+                              ? order.products[0].productImage
+                              : ""
+                          }
+                          alt={order.products[0].productName || "Product Image"}
+                          layout="fill"
+                          objectFit="cover"
+                          className="rounded-lg"
+                          onError={(e) => {
+                            e.target.src = "";
+                          }}
+                        />
+                      ) : null}
+                    </div>
+                  </TableCell>
+                  <TableCell>{order.shipping.city}</TableCell>
+                  <TableCell>Product</TableCell>
+                  <TableCell>Paid</TableCell>
+                  <TableCell>
+                    <OrderStatus status={order.orderStatus} />
+                  </TableCell>
+                  <TableCell>{formatTimestamp(order.createdAt)}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
 
-          {/* Mobile Cards */}
+        {/* Mobile Cards */}
         {/* Mobile Cards */}
         <div className="md:hidden space-y-4">
           {orders.map((order) => (

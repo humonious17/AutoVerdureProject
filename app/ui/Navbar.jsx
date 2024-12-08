@@ -242,7 +242,7 @@ const Navbar = () => {
       <Link
         href="/"
         className="gap-[10px] no-underline text-inherit flex justify-center items-center z-50 group"
-        style={{ marginLeft: "0px" }} // Shift to the left
+        style={{ marginLeft: "-20px" }} // Shift to the left
       >
         <div className="relative overflow-hidden w-[48.475px] h-[44px] transition-all duration-100 group-hover:scale-110">
           <Image
@@ -266,7 +266,7 @@ const Navbar = () => {
         ref={hamburgerRef}
         className="xl:hidden w-[32px] h-[32px] relative cursor-pointer flex items-center justify-center z-50 transition-transform duration-100 hover:scale-110"
         onClick={handleMobileMenuToggle}
-        style={{ marginRight: "-25px", marginTop: "10px" }} // Shift to the right
+        style={{ marginRight: "-12px", marginTop: "10px" }} // Shift to the right
       >
         <div
           className={`

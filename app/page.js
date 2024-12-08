@@ -75,7 +75,7 @@ export default function Home() {
         <div className="max-w-[361px] md:max-w-[500px] xl:max-w-[622px] mt-[157px] mx-auto xl:mt-[170px] z-10 content-container">
           {/* Title */}
           <p
-            className="w-full mx-0 text-[50px] md:text-[50px] xl:text-[64px] leading-[50px] md:leading-[60px] xl:leading-[76.8px] tracking-tight font-normal text-black hero-title text-left lg:text-center xl:text-center "
+            className="w-full mt-5 mx-0 text-[50px] md:text-[50px] xl:text-[64px] leading-[50px] md:leading-[60px] xl:leading-[76.8px] tracking-tight font-normal text-black hero-title text-left lg:text-center xl:text-center "
             style={{
               fontFamily: "Urbanist",
               fontWeight: 400,
@@ -159,7 +159,7 @@ export default function Home() {
         </div>
       </div>
       {/* Image */}
-      <div className="absolute top-[30px] right-[70px] md:right-[50px] image-container z-10">
+      <div className="absolute top-[40px] right-[60px] md:right-[50px] image-container z-10">
         <Image
           className="xl:hidden pot-image transform-gpu scale-[2.2] origin-center"
           src="/newmobile.png"
@@ -291,7 +291,7 @@ export default function Home() {
       {/* Hydroponic Kits */}
       <div
         className="mt-[20.32px] md:mt-[112.85px] xl:mt-[120px] md:max-w-[754px] w-full xl:max-w-[1200px] flex flex-col justify-center items-center"
-        style={{ paddingLeft: "2%" }}
+        style={{ paddingLeft: "0%" }}
       >
         <div className="w-full flex flex-col justify-center items-center">
           <div className="max-w-[320px] md:max-w-[754px] xl:max-w-[1200px] w-full flex flex-col justify-center items-center text-[40px] md:text-4xl xl:text-[50px] leading-[48px] md:leading-[43.2px] xl:leading-[43.2px] -tracking-[1px] md:-tracking-[0.9px] font-normal capitalize text-[#3D3D3D]">
@@ -349,7 +349,7 @@ export default function Home() {
       {/* How Does it Work */}
       <div
         className="mt-[15px] md:mt-[132px] xl:mt-[149.5px] w-full h-fit md:max-w-[754px] xl:max-w-[1098px] flex xl:gap-[98px] flex-col md:flex-row justify-center items-center"
-        style={{ paddingLeft: "3%" }}
+        style={{ paddingLeft: "0%" }}
       >
         <div className="w-full md:-mt-[210px] max-w-[361px] xl:max-w-[630px] flex flex-col">
           <p className="w-fit text-[40px] md:text-4xl xl:text-[50px] leading-[48px] md:leading-[48px] xl:leading-[60px] -tracking-[1px] xl:-tracking-[1.25px] font-normal capitalize text-primaryGrayscale">

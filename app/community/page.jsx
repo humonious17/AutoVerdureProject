@@ -5,7 +5,7 @@ import Testimonial from "../ui/Community/Testimonial";
 
 const Community = () => {
   return (
-    <div className="w-full px-4 mt-[120px] pt-[44px] pb-[124px] md:px-[86px] md:py-[116px] xl:px-[119.99px] xl:pt-[114px] xl:pb-[151px] 2xl:px-[200px] 2xl:py-[116px] bg-[#FFFCF8] flex flex-col justify-center items-center overflow-hidden">
+    <div className="w-full px-4 mt-[75px] pt-[44px] pb-[104px] md:px-[86px] md:py-[116px] xl:px-[119.99px] xl:pt-[114px] xl:pb-[151px] 2xl:px-[200px] 2xl:py-[116px] bg-[#FFFCF8] flex flex-col justify-center items-center overflow-hidden">
       {/* Title */}
       <div className="w-full flex flex-col justify-center items-center relative">
         <div>
@@ -43,7 +43,7 @@ const Community = () => {
       {/* Content */}
       <div className="w-full">
         {/* For Mobile create carousel in different div */}
-        <div className="mt-[52px] md:mt-[82.5px] w-full 2xl:relative 2xl:left-[15%]">
+        <div className="mt-[52px] md:mt-[82.5px] w-full 2xl:relative 2xl:left-[9%]">
           <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-1 gap-y-5 md:gap-x-[26px] xl:gap-y-6">
             <Testimonial />
             <Testimonial />
@@ -146,12 +146,14 @@ const Community = () => {
         {/* Join the Auto Verdure */}
         <div className="hidden md:mt-[94px] xl:mt-[127px] w-full h-[432px] xl:h-[521px] md:flex gap-x-5 xl:gap-[54px] justify-center items-center xl:items-start">
           <div className="w-[366px] h-full xl:w-[604px] xl:h-[521px] xl:flex-1 rounded-[9.7px]">
-            <Image
-              className="w-[366px] h-full xl:w-[604px] xl:h-[521px]"
-              src="/homeImage.png"
-              alt="img"
-              width={366}
-              height={432}
+          <video
+              className="w-full h-full rounded-[16px] object-cover "
+              src="/home1.mp4"
+              autoPlay
+              alt="video"
+              playsInline
+              loop
+              muted
             />
           </div>
 
@@ -167,26 +169,30 @@ const Community = () => {
             </div>
 
             <div className="w-full h-[432px] xl:h-full flex gap-[21.5px] justify-between xl:justify-normal xl:gap-6">
-              <Image
-                className="xl:w-[192px] xl:h-[205px]"
-                src="/aboutImg3.png"
-                alt="img"
-                width={172.075}
-                height={183.725}
+            <video
+                className="object-cover w-[192px] h-[205px] xl:w-[192px] xl:h-[205px] rounded-[16px] md:w[192px] md:h-[180px]"
+                src="https://res.cloudinary.com/dguzhztdt/video/upload/f_mp4/v1729091741/Auto%20Verdure%20media%20%28website%29/Plants/IMG_7939_wsnkj9.mov"
+                alt="video"
+                // width={604}
+                // height={521}
+                autoPlay
+                playsInline
+                loop
+                muted
               />
-              <Image
-                className="xl:w-[192px] xl:h-[205px]"
-                src="/aboutImg3.png"
-                alt="img"
-                width={171.075}
-                height={183.725}
+                <Image
+                className="w-[192px] h-[205px] xl:w-[192px] xl:h-[205px] rounded-[16px] md:w[192px] md:h-[180px]"
+                src="https://res.cloudinary.com/dguzhztdt/image/upload/f_auto/v1729091744/Auto%20Verdure%20media%20%28website%29/Plants/IMG_1297_cy22gd.heic"
+                alt="image2"
+                width={192}
+                height={205}
               />
             </div>
           </div>
         </div>
 
         {/* Join the Auto Verdure */}
-        <div className="md:hidden mt-[114px] w-full flex flex-col gap-5">
+        <div className="md:hidden mt-8 w-full flex flex-col gap-5">
           <p className="text-[40px] leading-[48px] -tracking-[1px] font-normal text-primaryGrayscale">
             Join the Auto Verdure Movement to Transform Indoor & Outdoor Urban
             Plant Growing.
@@ -197,36 +203,57 @@ const Community = () => {
         </div>
 
         {/* Video and Image */}
-        <div className="md:hidden mt-8 w-full flex flex-col gap-8">
-          <div className="w-full h-[180.5px] rounded-[14.1px] bg-primaryMain"></div>
+        <div className="md:hidden mt-4 w-full flex flex-col gap-8">
+          <div className="max-w-[395px] h-[180.5px] rounded-[14.1px] ">
+            <video
+              className="w-full h-full rounded-[16px] object-cover "
+              src="https://res.cloudinary.com/dguzhztdt/video/upload/f_mp4/v1729091741/Auto%20Verdure%20media%20%28website%29/Plants/IMG_7939_wsnkj9.mov"
+              alt="video"
+              // width={604}
+              // height={521}
+              autoPlay
+              playsInline
+              loop
+              muted
+            />
+          </div>
 
-          <div className="w-full flex justify-between">
-            <Image
-              src="/aboutImg3.png"
-              alt="img"
-              width={171.765}
-              height={183.395}
+          <div className="w-full flex justify-between gap-2">
+            <video
+              className="object-cover rounded-[16px] w-[185.765px] h-[183.395px] "
+              src="/home1.mp4"
+              alt="video"
+              autoPlay
+              playsInline
+              loop
+              muted
             />
             <Image
-              src="/aboutImg3.png"
+              className="rounded-[16px] w-[185.765px] h-[183.395px] sm:w-[140px] sm:h-[150px]"
+              src="https://res.cloudinary.com/dguzhztdt/image/upload/f_auto/v1729091744/Auto%20Verdure%20media%20%28website%29/Plants/IMG_1297_cy22gd.heic"
               alt="img"
               width={171.765}
               height={183.395}
+              style={{ width: "185.765px", height: "183.395px" }}
             />
           </div>
 
           <div className="w-full flex flex-col justify-center items-center">
-            <button className="text-base px-[42px] py-[18px] rounded-[100px] border-[1px] font-normal text-primaryGrayscale">
+          <Link href="/about-us" passHref>
+            <button className="text-base px-[42px] py-[18px] rounded-[100px] border-[1px] border-primaryGrayscale font-normal text-primaryGrayscale">
               About Us
             </button>
+            </Link>
           </div>
         </div>
 
         {/* About Us Button */}
         <div className="mt-[58px] hidden w-full md:flex flex-col justify-center items-center">
-          <button className="text-base px-[42px] py-[18px] rounded-[100px] border-[1px] font-normal text-primaryGrayscale">
-            About Us
-          </button>
+        <Link href="/about-us" passHref>
+            <button className="text-base px-[42px] py-[18px] rounded-[100px] border-[1px] border-primaryGrayscale font-normal text-primaryGrayscale">
+              About Us
+            </button>
+            </Link>
         </div>
       </div>
     </div>

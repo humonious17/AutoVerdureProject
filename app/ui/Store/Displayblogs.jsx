@@ -124,10 +124,9 @@ export default function Blogs({ title, description }) {
             <button
               onClick={handlePrevious}
               className={`
-                absolute left-0 top-1/2 -translate-y-1/2 z-10 
+                absolute left-0 top-[100px] -translate-y-1/2 z-10 
                 opacity-0 group-hover:opacity-100 
-                transition-all duration-300 ease-in-out
-                bg-gray-100 bg-opacity-50 hover:bg-opacity-80 
+                transition-all duration-300 ease-in-out 
                 p-2 rounded-full
                 ${currentIndex === 0 ? "cursor-not-allowed" : "cursor-pointer"}
               `}
@@ -143,7 +142,7 @@ export default function Blogs({ title, description }) {
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className="text-gray-700 w-6 h-6"
+                className="text-primaryMain w-6 h-6"
               >
                 <path d="M15 18l-6-6 6-6" />
               </svg>
@@ -151,10 +150,9 @@ export default function Blogs({ title, description }) {
             <button
               onClick={handleNext}
               className={`
-                absolute right-0 top-1/2 -translate-y-1/2 z-10 
+                absolute right-0 top-[100px] -translate-y-1/2 z-10 
                 opacity-0 group-hover:opacity-100 
-                transition-all duration-300 ease-in-out
-                bg-gray-100 bg-opacity-50 hover:bg-opacity-80 
+                transition-all duration-300 ease-in-out 
                 p-2 rounded-full
                 ${
                   (isMobile && currentIndex === blogs.length - 1) ||
@@ -178,7 +176,7 @@ export default function Blogs({ title, description }) {
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className="text-gray-700 w-6 h-6"
+                className="text-primaryMain w-6 h-6"
               >
                 <path d="M9 18l6-6-6-6" />
               </svg>

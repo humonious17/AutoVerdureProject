@@ -7,11 +7,13 @@ const HydroponicCard = ({ data, isActive, index }) => {
   const isMobile = typeof window !== "undefined" && window.innerWidth <= 768; // To ensure we're on the client-side and the code works in Next.js
 
   // Determine the background color based on the card index for mobile screens
-  let backgroundColor = "";
-  if (isMobile) {
-    // Apply purple for cards 1, 3, 5 (index 0, 2, 4) and cream for 2, 4, 6 (index 1, 3, 5)
-    backgroundColor = index % 2 === 0 ? "bg-purple-500" : "bg-primaryCream";
-  }
+  const getMobileBackgroundColor = () => {
+    if (!isMobile) return "";
+
+    // Alternating between primaryMain and primaryCream for mobile
+    if (isActive) return "bg-primaryMain";
+    return index % 2 === 0 ? "bg-primaryCream" : "bg-primaryMain/20";
+  };
 
   return (
     <div
@@ -20,9 +22,9 @@ const HydroponicCard = ({ data, isActive, index }) => {
           isActive
             ? "bg-primaryMain text-white"
             : isMobile
-            ? backgroundColor
+            ? getMobileBackgroundColor()
             : "bg-primaryCream"
-        }`} // Apply the color logic
+        }`}
     >
       <Image
         className={`object-contain md:w-[39.233px] md:h-[39.22px] ${

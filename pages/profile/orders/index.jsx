@@ -329,7 +329,7 @@ const OrderDetailDialog = ({ order, open, onClose }) => {
                     onClick={() => handleRating(i)}
                     className={`w-6 h-6 md:w-8 md:h-8 flex items-center justify-center transition-colors duration-300 ${
                       rating > i
-                        ? "bg-green-700 text-white"
+                        ? "bg-primaryMain text-white"
                         : "bg-gray-200 text-gray-400"
                     } hover:scale-110`}
                     disabled={isSubmitting}

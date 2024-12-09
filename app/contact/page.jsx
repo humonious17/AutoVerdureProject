@@ -47,24 +47,25 @@ const ContactUs = () => {
   };
 
   return (
-    <div className="w-full px-4 pt-[44px] pb-[144px] md:px-[28px] md:py-[116px] xl:px-[119.99px] xl:pt-[114px] xl:pb-[151px] 2xl:px-[200px] 2xl:py-[116px] bg-[#FFFCF8] flex flex-col justify-center items-center mt-[50px]">
+    <div className="w-full px-4 pt-[80px] pb-[124px] md:px-[28px] md:py-[116px] xl:px-[119.99px] xl:pt-[114px] xl:pb-[151px] 2xl:px-[200px] 2xl:py-[116px] bg-[#FFFCF8] flex flex-col justify-center items-center">
       {/* Title */}
-      <div className="max-w-[219px] md:max-w-[382px] w-full relative">
+      <div className="max-w-[219px] md:max-w-[382px] w-full relative  ">
         <div>
           <Image
-            className="object-contain absolute -top-[20.5px] -left-[70px] md:top-6 md:-left-[120px] xl:-left-[247px] -rotate-45 md:rotate-45 transform scale-x-100 md:-scale-x-100"
+            className="object-contain absolute -top-[10.5px] -left-[70px] md:top-6 md:-left-[120px] xl:-left-[247px] -rotate-45 md:rotate-45 transform scale-x-100 md:-scale-x-100"
             src="/leaf.png"
             alt="leaf"
+            unoptimized={true}
             width={58}
             height={41}
           />
         </div>
         <div className="flex flex-col justify-center items-center">
-          <div className="text-[40px] md:text-[70px] leading-[48px] md:leading-[80px] -tracking-[1px] md:-tracking-[1.75px] font-normal text-primaryGrayscale">
+          <div className="text-[40px]  md:text-[70px] leading-[48px] md:leading-[80px] -tracking-[1px] md:-tracking-[1.75px] font-normal text-primaryGrayscale">
             <p>Contact Us</p>
           </div>
           <div className="mt-3 md:mt-6 text-base font-medium">
-            <p className="text-secondaryGrayscale">
+            <p className="text-secondaryGrayscale ">
               <Link href="/">
                 <span className="text-primaryMain">Home</span>
               </Link>{" "}

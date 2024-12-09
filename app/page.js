@@ -9,7 +9,7 @@ import Testimonial from "./ui/Home/Testimonial";
 import Displayblogs from "./ui/Store/Displayblogs";
 import Contact from "./ui/Home/Contact";
 import Link from "next/link";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Chatbot from "./ChatBot";
 import { useSwipeable } from "react-swipeable";
 import Power from "./ui/Home/Power";
@@ -67,6 +67,49 @@ export default function Home() {
 
     return () => clearInterval(intervalId);
   }, [hydroponics]); // Use hydroponics directly as a dependency
+
+  const touchStartX = useRef(null);
+  const touchEndX = useRef(null);
+
+  // Touch event handlers
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchMove = (e) => {
+    touchEndX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStartX.current && touchEndX.current) {
+      const diffX = touchStartX.current - touchEndX.current;
+
+      // Swipe threshold
+      if (Math.abs(diffX) > 50) {
+        // Swipe left
+        if (diffX > 0 && currentIndex < hydroponics.length - 1) {
+          setCurrentIndex((prev) => prev + 1);
+        }
+        // Swipe right
+        else if (diffX < 0 && currentIndex > 0) {
+          setCurrentIndex((prev) => prev - 1);
+        }
+      }
+
+      // Reset touch coordinates
+      touchStartX.current = null;
+      touchEndX.current = null;
+    }
+  };
+
+  // Optional: Auto-slide feature
+  useEffect(() => {
+    const autoSlideTimer = setInterval(() => {
+      setCurrentIndex((prev) => (prev < hydroponics.length - 1 ? prev + 1 : 0));
+    }, 5000); // Change slide every 5 seconds
+
+    return () => clearInterval(autoSlideTimer);
+  }, [hydroponics.length]);
 
   return (
     <div className="w-full px-0 pr-0 md:px-10 pb-[100px] bg-[#FFFBF7] flex flex-col justify-center items-center overflow-hidden">
@@ -298,36 +341,51 @@ export default function Home() {
             <p>Why are our hydroponic kits the best for you?</p>
           </div>
 
-          <div className="hidden mt-12 md:mt-[38px] xl:mt-12 w-full flex flex-col md:grid md:grid-cols-2 xl:grid-cols-3 gap-y-[41px] md:gap-x-[22px] md:gap-y-[47px] xl:grid-x-[41px] xl:grid-y-12 justify-center items-center hydrophonic-kit">
+          {/* Desktop Grid View */}
+          <div className="hidden mt-12 md:mt-[38px] xl:mt-12 w-full md:grid md:grid-cols-2 xl:grid-cols-3 gap-y-[41px] md:gap-x-[22px] md:gap-y-[47px] xl:gap-x-[41px] xl:gap-y-12 justify-center items-center hydrophonic-kit">
             {hydroponics.map((hydroponic, index) => (
               <HydroponicCard
                 key={index}
                 data={hydroponic}
+                index={index}
                 isActive={index === currentIndex}
               />
             ))}
           </div>
-          <div className="relative w-full h-[350px] mt-10 mb-8 flex justify-center items-center md:hidden">
-            {/* Mobile View */}
+
+          {/* Mobile Slider View */}
+          <div
+            className="relative w-full h-[350px] mt-10 mb-8 flex justify-center items-center md:hidden"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
             {hydroponics.map((card, index) => (
               <div
                 key={index}
-                className={`absolute transition-opacity duration-10000 ease-in-out ${
-                  index === currentIndex ? "opacity-100 z-10" : "opacity-0 z-0"
+                className={`absolute transition-all duration-500 ease-in-out ${
+                  index === currentIndex
+                    ? "opacity-100 z-10 translate-x-0"
+                    : index < currentIndex
+                    ? "opacity-0 -translate-x-full"
+                    : "opacity-0 translate-x-full"
                 }`}
-                style={{
-                  transform: `translateY(${index === currentIndex ? 0 : 10}px)`,
-                  transition: "transform 0.9s ease-in-out",
-                }}
               >
-                <HydroponicCard data={card} isActive={index === currentIndex} />
+                <HydroponicCard
+                  data={card}
+                  index={index}
+                  isActive={index === currentIndex}
+                />
               </div>
             ))}
+
+            {/* Pagination Dots */}
             <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 translate-y-7 flex space-x-2">
               {hydroponics.map((_, index) => (
                 <div
                   key={index}
-                  className={`w-2 h-2 rounded-full ${
+                  onClick={() => setCurrentIndex(index)}
+                  className={`w-2 h-2 rounded-full cursor-pointer ${
                     index === currentIndex
                       ? "bg-primaryMain w-4"
                       : "bg-gray-500"
@@ -591,10 +649,14 @@ export default function Home() {
         <div className="mt-[59.11px] w-full flex flex-col md:gap-y-7 justify-center items-center">
           <div className="w-full flex flex-col md:flex-row-reverse md:gap-[56.67px] justify-center">
             <div className=" w-full md:w-[405px] xl:w-[646.66px] hidden md:flex flex-col justify-center items-center md:justify-start md:items-start">
-              <Image
-                className="rounded-[16px]"
-                src="/imag.jpg"
-                alt="image"
+              <video
+                className="object-cover rounded-[16px]"
+                src="/pdr.mp4"
+                alt="powerful design research"
+                playsInline
+                muted
+                autoPlay
+                loop
                 width={646.67}
                 height={300}
                 style={{ width: "646.67px", height: "300px" }}

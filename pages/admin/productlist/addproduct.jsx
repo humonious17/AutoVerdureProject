@@ -18,6 +18,8 @@ const ProductForm = () => {
     innerLength: 0,
     dimensions: "",
     petFriendly: "false",
+    lessLight: "false",
+    moreLight: "false",
     indoorPlants: "false",
     outdoorPlants: "false",
     seasonalPlants: "false",
@@ -107,6 +109,8 @@ const ProductForm = () => {
     defaultSize: "",
     defaultColor: "",
   };
+
+  const [storedValues, setStoredValues] = useState(null);
 
   const [cropperData, setCropperData] = useState({
     isOpen: false,
@@ -336,6 +340,7 @@ const ProductForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setStoredValues({ ...formData });
 
     if (!validateForm()) {
       alert("Please select at least one size and one color.");
@@ -401,7 +406,7 @@ const ProductForm = () => {
                     value={formData.productId}
                     onChange={handleChange}
                     required
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-gray-200 text-black p-2"
                   />
                 </div>
 
@@ -415,7 +420,7 @@ const ProductForm = () => {
                     value={formData.productName}
                     onChange={handleChange}
                     required
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-gray-200 text-black p-2"
                   />
                 </div>
               </div>
@@ -428,7 +433,7 @@ const ProductForm = () => {
                   name="productType"
                   value={formData.productType}
                   onChange={handleChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-gray-200 text-black p-2"
                 >
                   <option value="plants">Plants</option>
                   <option value="planters">Planters</option>
@@ -439,13 +444,26 @@ const ProductForm = () => {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700">
+                  Product Subtitle
+                </label>
+                <input
+                  type="text"
+                  name="productSubtitle"
+                  value={formData.productSubtitle}
+                  onChange={handleChange}
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-gray-200 text-black p-2 whitespace-pre-wrap"
+                />
+              </div>
+
+              <div className="mt-4">
+                <label className="block text-sm font-medium text-gray-700">
                   Product Description
                 </label>
                 <textarea
                   name="productDescription"
                   value={formData.productDescription}
                   onChange={handleChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 h-32"
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-gray-200 text-black p-2 whitespace-pre-wrap"
                 />
               </div>
             </div>
@@ -467,7 +485,7 @@ const ProductForm = () => {
                     value={formData.stockQuantity}
                     onChange={handleChange}
                     required
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-gray-200 text-black p-2"
                   />
                 </div>
 
@@ -480,7 +498,7 @@ const ProductForm = () => {
                     name="innerHeight"
                     value={formData.innerHeight}
                     onChange={handleChange}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-gray-200 text-black p-2"
                   />
                 </div>
 
@@ -493,7 +511,7 @@ const ProductForm = () => {
                     name="innerLength"
                     value={formData.innerLength}
                     onChange={handleChange}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-gray-200 text-black p-2"
                   />
                 </div>
               </div>
@@ -512,7 +530,7 @@ const ProductForm = () => {
                     name="petFriendly"
                     checked={formData.petFriendly === "true"}
                     onChange={handleChange}
-                    className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 h-4 w-4"
+                    className="rounded border-gray-300  focus:ring-blue-500 h-4 w-4 bg-gray-200 text-black p-2"
                   />
                   <span className="text-sm text-gray-700">Pet Friendly</span>
                 </label>
@@ -523,7 +541,7 @@ const ProductForm = () => {
                     name="lessLight"
                     checked={formData.lessLight === "true"}
                     onChange={handleChange}
-                    className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 h-4 w-4"
+                    className="rounded border-gray-300  focus:ring-blue-500 h-4 w-4 bg-gray-200 text-black p-2"
                   />
                   <span className="text-sm text-gray-700">Less Light</span>
                 </label>
@@ -534,7 +552,7 @@ const ProductForm = () => {
                     name="moreLight"
                     checked={formData.moreLight === "true"}
                     onChange={handleChange}
-                    className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 h-4 w-4"
+                    className="rounded border-gray-300  focus:ring-blue-500 h-4 w-4 bg-gray-200 text-black p-2"
                   />
                   <span className="text-sm text-gray-700">More Light</span>
                 </label>
@@ -549,26 +567,13 @@ const ProductForm = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Product Subtitle
-                  </label>
-                  <input
-                    type="text"
-                    name="productSubtitle"
-                    value={formData.productSubtitle}
-                    onChange={handleChange}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                  />
-                </div>
-
-                <div>
                   <label className="flex items-center space-x-3">
                     <input
                       type="checkbox"
                       name="indoorPlants"
                       checked={formData.indoorPlants === "true"}
                       onChange={handleChange}
-                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 h-4 w-4"
+                      className="rounded border-gray-300  focus:ring-blue-500 h-4 w-4 bg-gray-200 text-black p-2"
                     />
                     <span className="text-sm text-gray-700">Indoor Plants</span>
                   </label>
@@ -581,7 +586,7 @@ const ProductForm = () => {
                       name="outdoorPlants"
                       checked={formData.outdoorPlants === "true"}
                       onChange={handleChange}
-                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 h-4 w-4"
+                      className="rounded border-gray-300  focus:ring-blue-500 h-4 w-4 bg-gray-200 text-black p-2"
                     />
                     <span className="text-sm text-gray-700">
                       Outdoor Plants
@@ -596,7 +601,7 @@ const ProductForm = () => {
                       name="seasonalPlants"
                       checked={formData.seasonalPlants === "true"}
                       onChange={handleChange}
-                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 h-4 w-4"
+                      className="rounded border-gray-300  focus:ring-blue-500 h-4 w-4 bg-gray-200 text-black p-2"
                     />
                     <span className="text-sm text-gray-700">
                       Seasonal Plants
@@ -611,7 +616,7 @@ const ProductForm = () => {
                       name="hydroponics"
                       checked={formData.hydroponics === "true"}
                       onChange={handleChange}
-                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 h-4 w-4"
+                      className="rounded border-gray-300  focus:ring-blue-500 h-4 w-4 bg-gray-200 text-black p-2"
                     />
                     <span className="text-sm text-gray-700">Hydroponics</span>
                   </label>
@@ -624,7 +629,7 @@ const ProductForm = () => {
                       name="traditional"
                       checked={formData.traditional === "true"}
                       onChange={handleChange}
-                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 h-4 w-4"
+                      className="rounded border-gray-300  focus:ring-blue-500 h-4 w-4 bg-gray-200 text-black p-2"
                     />
                     <span className="text-sm text-gray-700">Traditional</span>
                   </label>
@@ -637,7 +642,7 @@ const ProductForm = () => {
                       name="frp"
                       checked={formData.frp === "true"}
                       onChange={handleChange}
-                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 h-4 w-4"
+                      className="rounded border-gray-300  focus:ring-blue-500 h-4 w-4 bg-gray-200 text-black p-2"
                     />
                     <span className="text-sm text-gray-700">FRP</span>
                   </label>
@@ -650,7 +655,7 @@ const ProductForm = () => {
                       name="ceramic"
                       checked={formData.ceramic === "true"}
                       onChange={handleChange}
-                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 h-4 w-4"
+                      className="rounded border-gray-300  focus:ring-blue-500 h-4 w-4 bg-gray-200 text-black p-2"
                     />
                     <span className="text-sm text-gray-700">Ceramic</span>
                   </label>
@@ -671,7 +676,7 @@ const ProductForm = () => {
                       name="matt"
                       checked={formData.matt === "true"}
                       onChange={handleChange}
-                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 h-4 w-4"
+                      className="rounded border-gray-300  focus:ring-blue-500 h-4 w-4 bg-gray-200 text-black p-2"
                     />
                     <span className="text-sm text-gray-700">Matt</span>
                   </label>
@@ -686,7 +691,7 @@ const ProductForm = () => {
                       name="gloss"
                       checked={formData.gloss === "true"}
                       onChange={handleChange}
-                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 h-4 w-4"
+                      className="rounded border-gray-300  focus:ring-blue-500 h-4 w-4 bg-gray-200 text-black p-2"
                     />
                     <span className="text-sm text-gray-700">Gloss</span>
                   </label>
@@ -701,7 +706,7 @@ const ProductForm = () => {
                       name="art"
                       checked={formData.art === "true"}
                       onChange={handleChange}
-                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 h-4 w-4"
+                      className="rounded border-gray-300  focus:ring-blue-500 h-4 w-4 bg-gray-200 text-black p-2"
                     />
                     <span className="text-sm text-gray-700">Art</span>
                   </label>
@@ -727,7 +732,7 @@ const ProductForm = () => {
                             name={size}
                             checked={formData.sizes[size].selected}
                             onChange={handleChange}
-                            className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 h-4 w-4"
+                            className="rounded border-gray-300  focus:ring-blue-500 h-4 w-4 bg-gray-200 text-black p-2"
                           />
                           <span className="font-semibold text-gray-900">
                             {size}
@@ -749,7 +754,7 @@ const ProductForm = () => {
                                 handleSizePriceChange(size, e.target.value)
                               }
                               placeholder="Enter price"
-                              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
+                              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm bg-gray-200 text-black p-2"
                             />
                           </div>
 
@@ -774,7 +779,7 @@ const ProductForm = () => {
                                       e.target.value
                                     )
                                   }
-                                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
+                                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm bg-gray-200 text-black p-2"
                                 />
                               </div>
                               <div className="space-y-2">
@@ -791,7 +796,7 @@ const ProductForm = () => {
                                       e.target.value
                                     )
                                   }
-                                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
+                                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm bg-gray-200 text-black p-2"
                                 />
                               </div>
                               <div className="space-y-2">
@@ -808,7 +813,7 @@ const ProductForm = () => {
                                       e.target.value
                                     )
                                   }
-                                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
+                                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm bg-gray-200 text-black p-2"
                                 />
                               </div>
                             </div>
@@ -829,7 +834,7 @@ const ProductForm = () => {
                                       e.target.value
                                     )
                                   }
-                                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
+                                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm bg-gray-200 text-black p-2"
                                 />
                               </div>
                               <div className="space-y-2">
@@ -846,7 +851,7 @@ const ProductForm = () => {
                                       e.target.value
                                     )
                                   }
-                                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
+                                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm bg-gray-200 text-black p-2"
                                 />
                               </div>
                             </div>
@@ -866,7 +871,7 @@ const ProductForm = () => {
                                       e.target.value
                                     )
                                   }
-                                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
+                                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm bg-gray-200 text-black p-2"
                                 />
                               </div>
                             </div>
@@ -886,7 +891,7 @@ const ProductForm = () => {
                                       e.target.value
                                     )
                                   }
-                                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
+                                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm bg-gray-200 text-black p-2"
                                 />
                               </div>
                             </div>
@@ -906,7 +911,7 @@ const ProductForm = () => {
                                       e.target.value
                                     )
                                   }
-                                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
+                                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm bg-gray-200 text-black p-2"
                                 />
                               </div>
                             </div>
@@ -926,7 +931,7 @@ const ProductForm = () => {
                                       e.target.value
                                     )
                                   }
-                                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
+                                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm bg-gray-200 text-black p-2"
                                 />
                               </div>
                             </div>
@@ -939,7 +944,7 @@ const ProductForm = () => {
                               name="defaultSize"
                               checked={formData.defaultSize === size}
                               onChange={() => setDefaultSize(size)}
-                              className="rounded-full border-gray-300 text-blue-600 focus:ring-blue-500"
+                              className="rounded-full border-gray-300 text-blue-600 focus:ring-blue-500 bg-gray-200 text-black p-2"
                             />
                             <span className="text-sm text-gray-600">
                               Set as Default Size
@@ -969,7 +974,7 @@ const ProductForm = () => {
                           name={color}
                           checked={formData.colors[color].selected}
                           onChange={handleChange}
-                          className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 h-4 w-4"
+                          className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 h-4 w-4 bg-gray-200 text-black p-2"
                         />
                         <span className="font-medium text-gray-700">
                           {color.charAt(0).toUpperCase() + color.slice(1)}
@@ -986,7 +991,7 @@ const ProductForm = () => {
                             handleColorPriceChange(color, e.target.value)
                           }
                           placeholder={`Price for ${color}`}
-                          className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                          className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-gray-200 text-black p-2"
                         />
                         <label className="flex items-center space-x-2">
                           <input
@@ -994,7 +999,7 @@ const ProductForm = () => {
                             name="defaultColor"
                             checked={formData.defaultColor === color}
                             onChange={() => setDefaultColor(color)}
-                            className="rounded-full border-gray-300 text-blue-600 focus:ring-blue-500"
+                            className="rounded-full border-gray-300 text-blue-600 focus:ring-blue-500 bg-gray-200 text-black p-2"
                           />
                           <span className="text-sm text-gray-600">
                             Set as Default

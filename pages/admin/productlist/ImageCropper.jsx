@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @next/next/no-img-element */
 import React, { useState, useRef, useEffect } from "react";
 import { X, Move, ZoomIn, ZoomOut, RotateCw } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -81,8 +83,8 @@ const ImageCropper = ({ file, onSave, onCancel }) => {
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");
 
-    // Keep canvas at 550x550 for display
-    canvas.width = 550;
+    // Keep canvas at 624x550 for display
+    canvas.width = 624;
     canvas.height = 550;
 
     // Draw background (transparent)
@@ -100,7 +102,7 @@ const ImageCropper = ({ file, onSave, onCancel }) => {
 
     // Calculate scaling to fit image within canvas while maintaining aspect ratio
     const scaleFactor = Math.min(
-      550 / imageDimensions.width,
+      624 / imageDimensions.width,
       550 / imageDimensions.height
     );
 
@@ -150,7 +152,7 @@ const ImageCropper = ({ file, onSave, onCancel }) => {
 
         <div
           ref={containerRef}
-          className="relative w-[550px] h-[550px] overflow-hidden border-2 border-dashed border-gray-300 rounded-lg mb-4 mx-auto"
+          className="relative w-[624px] h-[550px] overflow-hidden border-2 border-dashed border-gray-300 rounded-lg mb-4 mx-auto"
           onMouseDown={handleDragStart}
           onMouseMove={handleDragMove}
           onMouseUp={handleDragEnd}

@@ -179,7 +179,11 @@ const Index = () => {
                   variant="outline"
                   size="sm"
                   className="flex-1"
-                  onClick={() => handleDeleteProduct(product.productId)}
+                  onClick={() => {
+                    if (window.confirm("Are you sure you want to delete this product?")) {
+                      handleDeleteProduct(product.productId);
+                    }
+                  }}
                 >
                   <Trash2 className="w-4 h-4 mr-2" />
                   Delete

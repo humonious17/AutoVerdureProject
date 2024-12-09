@@ -805,7 +805,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
                   </button>
                   {isDescriptionOpen && (
                     <div className="pl-4 mt-1 bg-white text-black p-3 rounded-md transition-opacity duration-300 opacity-100">
-                      <p>{productData.productDescription}</p>
+                      <p className="whitespace-pre-wrap">{productData.productDescription}</p>
                     </div>
                   )}
                 </div>

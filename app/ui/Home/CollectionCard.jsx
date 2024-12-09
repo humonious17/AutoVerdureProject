@@ -19,7 +19,7 @@ const CollectionCard = ({ title, description, image, video }) => {
 
   return (
     <div
-      className="w-full h-auto md:w-full md:h-auto p-3 md:p-0 flex flex-col md:flex-row-reverse md:rounded-[32.1px] xl:rounded-[56px] md:overflow-hidden bg-[#faf0f8] border-[2.86px] border-[#fffbf7] hover:border-primaryMain rounded-[10px]  transition-all duration-500 ease-in-out"
+      className="w-full h-auto md:w-full md:h-auto p-3 md:p-0 flex flex-col md:flex-row-reverse md:rounded-[32.1px] xl:rounded-[56px] md:overflow-hidden bg-[#fffbf7] border-[2.86px] border-[#fffbf7] hover:border-primaryMain rounded-[10px] transition-all duration-500 ease-in-out drop-shadow-md"
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >
@@ -55,7 +55,7 @@ const CollectionCard = ({ title, description, image, video }) => {
         )}
       </div>
       <div className="w-full md:w-[119px] xl:w-[202px] md:mx-[36.64px] xl:mx-16 xl:mt-[40px] flex flex-col transition-all duration-500 ease-in-out">
-        <p className="mt-2 text-[13px] md:text-[21.754px] xl:text-[38px] leading-tight text-[#0E0E0E] font-normal transition-all duration-500 ease-in-out">
+        <p className="mt-2 text-[13px] md:text-[21.754px] xl:text-[38px] leading-tight text-[#0E0E0E] font-normal transition-all duration-500 ease-in-out font-sfPro">
           {title}
         </p>
 
@@ -77,7 +77,7 @@ const CollectionCard = ({ title, description, image, video }) => {
             opacity: isHover ? 1 : 0.8,
           }}
         >
-          <p className="mt-1 text-[8px] md:text-[9.732px] xl:text-[17px] leading-tight text-[#5B5B5B] font-normal transition-all duration-500 ease-in-out">
+          <p className="mt-1 text-[8px] md:text-[9.732px] xl:text-[17px] leading-tight text-[#5B5B5B] font-normal transition-all duration-500 ease-in-out font-sfPro">
             {description}
           </p>
         </div>
@@ -90,7 +90,7 @@ const CollectionCard = ({ title, description, image, video }) => {
           }}
         >
           <Link href={"/store/" + title.toLowerCase()}>
-            <p className="flex items-center mt-1 md:mt-[30px] mb-1 md:mb-[60px] text-[8px] md:text-[9.732px] xl:text-[17px] leading-tight text-[#0E0E0E] font-medium hover:text-primaryMain transition-all duration-300 ease-in-out">
+            <p className="flex items-center mt-1 md:mt-[30px] mb-1 md:mb-[60px] text-[8px] md:text-[9.732px] xl:text-[17px] leading-tight text-[#0E0E0E] font-medium hover:text-primaryMain transition-all duration-300 ease-in-out font-sfPro">
               Buy Now{" "}
               <span className="transition-transform duration-300 ease-in-out transform hover:translate-x-1">
                 <Image

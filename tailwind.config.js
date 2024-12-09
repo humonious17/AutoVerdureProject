@@ -13,6 +13,9 @@ module.exports = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      fontFamily: {
+        sfPro: ['"SF Pro Display"', "sans-serif"],
+      },
       colors: {
         primaryMain: "#9A5CF5",
         secondaryMain: "#809D79",

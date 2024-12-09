@@ -286,7 +286,7 @@ export default function Home() {
       {/* Shop The New Collection */}
       <div
         className="mt-[78px] md:mt-[114px] xl:mt-[120px] max-w-[361px] md:max-w-[754px] xl:max-w-[1200px] w-full flex flex-col md:justify-center md:items-center relative z-20"
-        style={{ marginTop: "15%" }}
+        style={{ marginTop: "15%", fontFamily: "SF Pro Display" }}
       >
         <p className="text-[20.049px] md:text-4xl xl:text-[50px] leading-[24.059px] md:leading-[43.2px] xl:leading-[60px] -tracking-[0.501px] md:-tracking-[0.9px] xl:-tracking-[1.25px] text-primaryGrayscale font-normal capitalize">
           Shop The New Collection

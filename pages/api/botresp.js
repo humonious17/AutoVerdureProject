@@ -1,12 +1,10 @@
+// Replace with your actual imports and model setup
 const { VertexAI } = require("@google-cloud/vertexai");
-
-// Initialize Vertex with your Cloud project and location
 const vertex_ai = new VertexAI({
-  project: "auto-verdue-test",
+  project: "elegant-works-429712-a7",
   location: "us-central1",
 });
 const model = "gemini-1.5-flash-001";
-
 // Instantiate the models
 const generativeModel = vertex_ai.getGenerativeModel({
   model: model,
@@ -34,30 +32,47 @@ const generativeModel = vertex_ai.getGenerativeModel({
     },
   ],
   systemInstruction:
-    "You are a bot for Auto verdure, answer strictly from the document, if anything is not mentioned in the document, answer in a way that implies that the information is not there in the document. Example: user: 'what is company's policy on wearing analog watches on saturday?' response: 'no such company policy is there'",
+    "You are an AI assistant for an indoor gardening and plant-selling website, designed to provide friendly, helpful, and human-like responses. Your primary responsibilities include assisting users with queries about the website's products, services, policies, and gardening advice. Use a conversational, warm, and approachable tone, avoiding technical jargon unless necessary and simplifying complex concepts where possible. Be empathetic and courteous, ensuring users feel valued and heard. Refer to company policy documents (shipping, privacy, terms) as needed to provide accurate responses, and if the requested information is not in the documents, politely inform the user: 'Sorry, I can't help you with that.' For generic gardening queries, provide natural, friendly advice that a knowledgeable human might give. Avoid revealing that you are an AI or that your responses are document-based unless explicitly asked. Provide clear and concise answers, and avoid overloading users with unnecessary details. When unsure, remain transparent without making up information. Politely decline to assist with topics unrelated to indoor gardening or the website's operations, ensuring responses are safe, non-offensive, and align with the website's ethos. Redirect users to customer support for complex issues beyond your scope. Strictly adhere to safety guidelines to prevent hate speech, harassment, explicit content, or dangerous advice. Maintain a balance between professionalism and friendliness, creating a delightful experience for the user.",
 });
 
+// Policy Documents
 const document1 = {
   fileData: {
     mimeType: "application/pdf",
-    fileUri: `gs://auto-verdure-dataset/auto-verdure-general-policies-pdf.pdf`,
+    fileUri: `gs://bots_policies/shippingpolicy.pdf`,
+  },
+};
+
+const document2 = {
+  fileData: {
+    mimeType: "application/pdf",
+    fileUri: `gs://bots_policies/privacy.pdf`,
+  },
+};
+
+const document3 = {
+  fileData: {
+    mimeType: "application/pdf",
+    fileUri: `gs://bots_policies/terms.pdf`,
   },
 };
 
 async function generateContent(prompt) {
   const req = {
-    contents: [{ role: "user", parts: [document1, { text: prompt }] }],
+    contents: [
+      {
+        role: "user",
+        parts: [document1, document2, document3, { text: prompt }],
+      },
+    ],
   };
-
   const result = await generativeModel.generateContent(req);
   const response = result.response;
-
   return response.candidates[0].content.parts[0].text;
 }
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
-    // Parse the request body
     const prompt = req.body.message;
     if (prompt === "ping") {
       res.status(200).json({ message: "pong" });
@@ -66,7 +81,6 @@ export default async function handler(req, res) {
       res.status(200).json({ message: bot_resp });
     }
   } else {
-    // Handle any other HTTP method
     res.setHeader("Allow", ["POST"]);
     res.status(405).end(`Method ${req.method} Not Allowed`);
   }

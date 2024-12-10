@@ -176,21 +176,39 @@ const ImageCropper = ({ file, onSave, onCancel }) => {
             />
           )}
 
+          {/* Grid lines - moved after image */}
+          <div className="absolute inset-0 pointer-events-none z-10">
+            <div className="absolute left-1/2 top-0 bottom-0 border-l border-black/30 w-0"></div>
+            <div className="absolute top-1/2 left-0 right-0 border-t border-black/30 h-0"></div>
+          </div>
+
+          {/* Horizontal Scale */}
+          <div className="absolute bottom-0 left-0 w-full flex justify-between text-xs text-gray-600 z-20">
+            <span>0</span>
+            <span className="text-right">624px</span>
+          </div>
+
+          {/* Vertical Scale */}
+          <div className="absolute top-0 left-0 h-full flex flex-col justify-between text-xs text-gray-600 z-20">
+            <span className="text-left">0</span>
+            <span className="text-right">550px</span>
+          </div>
+
           <Move className="absolute top-4 left-4 w-6 h-6 text-white drop-shadow-lg pointer-events-none" />
         </div>
 
-        <div className="flex justify-center gap-4">
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={() => handleZoom(-0.1)}
-          >
-            <ZoomOut className="h-4 w-4" />
-          </Button>
-
-          <Button variant="outline" size="icon" onClick={() => handleZoom(0.1)}>
-            <ZoomIn className="h-4 w-4" />
-          </Button>
+        <div className="flex items-center justify-center gap-4">
+          <ZoomOut className="h-4 w-4 text-gray-500" />
+          <input
+            type="range"
+            min="0.5"
+            max="3"
+            step="0.01"
+            value={scale}
+            onChange={(e) => setScale(parseFloat(e.target.value))}
+            className="w-48 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+          />
+          <ZoomIn className="h-4 w-4 text-gray-500" />
 
           <Button variant="outline" size="icon" onClick={handleRotate}>
             <RotateCw className="h-4 w-4" />

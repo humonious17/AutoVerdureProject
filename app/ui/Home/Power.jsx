@@ -24,10 +24,14 @@ const ContentSections = () => {
   const sections = [
     {
       id: 0,
-      image: "/imag.jpg",
+      video: "/pdr.mp4",
       title: "Powerful Design Research",
       description:
         "We are the first in the Indian Market to combat the rising concern of mosquito-induced diseases by integrating the solution into our design research.",
+      playsInline: true,
+      autoPlay: true,
+      muted: true,
+      loop: true,
     },
     {
       id: 1,
@@ -49,7 +53,10 @@ const ContentSections = () => {
       title: "Expert Guidance",
       description:
         "And YES, Just Like you, we are Passionate about Plants- We Bring you Expert Guidance to provide proper care to your Plants.",
-
+      playsInline: true,
+      autoPlay: true,
+      muted: true,
+      loop: true
     },
   ];
 

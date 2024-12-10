@@ -541,20 +541,57 @@ const SingleProductPage = ({ productData, allProducts }) => {
       </Head>
       <div className="pt-[13px] sm:pt-[29px] xl:pt-[96.5px] pb-[0px] flex flex-col justify-center items-center">
         {/* Navigation */}
-        <div className="w-full text-[17px] leading-[30px] text-[#5B5B5B] font-normal flex justify-center items-center sm:justify-normal sm:items-start mt-[68px] sm:mt-0">
-          <p className="flex gap-[19px]">
-            <Link href="/">
-              <span className="text-primaryMain">Home</span>
-            </Link>{" "}
-            /{" "}
-            <Link href="/store">
-              <span>Store</span>
-            </Link>{" "}
-            /{" "}
-            <Link href="/store/planters">
-              <span>{productData.productName}</span>
-            </Link>
-          </p>
+        <div className="w-full text-[17px] leading-[30px] text-[#5B5B5B] font-normal flex flex-col sm:flex-row justify-between items-center mt-[68px] sm:mt-0 gap-4">
+          <div className="w-full flex items-center justify-between">
+            <p className="flex flex-wrap justify-center sm:justify-start gap-[19px]">
+              <Link href="/">
+                <span className="text-primaryMain">Home</span>
+              </Link>{" "}
+              /{" "}
+              <Link href="/store">
+                <span>Store</span>
+              </Link>{" "}
+              /{" "}
+              <Link href="/store/planters">
+                <span>{productData.productName}</span>
+              </Link>
+            </p>
+
+            <button
+              onClick={() => {
+                const currentUrl = window.location.href;
+                navigator.clipboard.writeText(currentUrl);
+                alert("Link copied to clipboard!");
+              }}
+              className="text-gray-500 hover:text-primaryMain transition-colors flex items-center gap-1 sm:hidden"
+            >
+              <Image
+                src="/share.svg"
+                alt="Share"
+                width={16}
+                height={16}
+                className="w-4 h-4 opacity-70 group-hover:opacity-100"
+              />
+            </button>
+          </div>
+
+          {/* Desktop Share Button */}
+          <button
+            onClick={() => {
+              const currentUrl = window.location.href;
+              navigator.clipboard.writeText(currentUrl);
+              alert("Link copied to clipboard!");
+            }}
+            className="hidden sm:flex text-gray-500 hover:text-primaryMain transition-colors items-center gap-1"
+          >
+            <Image
+              src="/share.svg"
+              alt="Share"
+              width={16}
+              height={16}
+              className="w-4 h-4 opacity-70 group-hover:opacity-100"
+            />
+          </button>
         </div>
 
         {isCartVisible && (
@@ -769,6 +806,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
                 </div>
               </div>
             )}
+
             <div className="mt-[30px] sm:mt-[39px] w-full sm:pr-[0px] hidden xl:flex xl:flex-col">
               {/* Product long description */}
               <div className="w-full text-sm sm:text-[17px] leading-[30px] flex flex-col gap-[18px]">

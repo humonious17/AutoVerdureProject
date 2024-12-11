@@ -610,7 +610,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
           <div className="mt-[31px] sm:flex sm:flex-col sm:w-[50%] xl:w-[624px] sm:mt-0 w-full">
             {/* Product Title */}
             <div className="m-0">
-              <p className="text-[#0E0E0E] text-[51px] font-normal font-['Inter'] leading-[64px]">
+              <p className="text-[#0E0E0E] text-[51px] font-normal font-['Inter'] leading-[64px] mx-0 px-0">
                 {productData.productName}
               </p>
             </div>

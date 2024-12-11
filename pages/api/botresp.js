@@ -1,7 +1,7 @@
 const { VertexAI } = require("@google-cloud/vertexai");
 const vertex_ai = new VertexAI({
-  project: "elegant-works-429712-a7",
-  location: "us-central1",
+  project: process.env.VERTEX_AI_PROJECT,
+  location: process.env.VERTEX_AI_LOCATION,
 });
 const model = "gemini-1.5-flash-001";
 // Instantiate the models

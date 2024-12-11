@@ -1,4 +1,3 @@
-// Replace with your actual imports and model setup
 const { VertexAI } = require("@google-cloud/vertexai");
 const vertex_ai = new VertexAI({
   project: "elegant-works-429712-a7",

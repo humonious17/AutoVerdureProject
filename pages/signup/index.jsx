@@ -145,14 +145,14 @@ const Signin = (prop) => {
           ></div>
 
           <div
-            className="g_id_signin"
+            className="g_id_signin w-full sm:w-[380px] md:w-[400px] lg:w-[400px]"
             data-type="standard"
             data-shape="pill"
             data-theme="outline"
             data-text="signup_with"
             data-size="large"
             data-logo_alignment="center"
-            data-width="400"
+            
           ></div>
         </div>
 
@@ -230,7 +230,7 @@ const Signin = (prop) => {
       </div>
 
       <div className="flex justify-center items-center w-full md:w-[560px] lg:w-[710px]">
-        <div className=" px-10 py-10 w-full h-[440px] sm:w-[330.65px] sm:h-[340px] md:w-[410px] md:h-[440px] lg:w-[558.65px] lg:h-[582px] xl:w-[725.65px] xl:h-[590px] overflow-hidden rounded-lg bg-[#fffbf7]">
+      <div className="w-full h-[280px] sm:w-[330.65px] sm:h-[340px] md:w-[410px] md:h-[440px] lg:w-[558.65px] lg:h-[582px] xl:w-[725.65px] xl:h-[590px] overflow-hidden  shadow-lg rounded-lg">
           <Image
             className="w-full h-full rounded-lg"
             src="/signinImg.png"

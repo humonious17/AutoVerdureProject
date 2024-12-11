@@ -134,7 +134,7 @@ const Signin = () => {
             Welcome back
           </p>
           <p className="w-full text-sm leading-[22.4px] font-medium text-[#8E8F94]">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          A portal to your green world with orders, learning guides and complete profile dashboard with a simple sign in..
           </p>
         </div>
 
@@ -150,14 +150,15 @@ const Signin = () => {
           ></div>
 
           <div
-            className="g_id_signin"
+            className="g_id_signin w-full sm:w-[380px] md:w-[400px] lg:w-[400px]"
             data-type="standard"
             data-shape="pill"
             data-theme="outline"
             data-text="signin_with"
             data-size="large"
             data-logo_alignment="center"
-            data-width="400"
+            
+            
           ></div>
         </div>
 

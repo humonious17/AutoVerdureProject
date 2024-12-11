@@ -150,14 +150,14 @@ const GuestCheckout = (props) => {
             ></div>
 
             <div
-              className="g_id_signin w-full"
+              className="g_id_signin w-full sm:w-[360px] md:w-[380px] lg:w-[400px]"
               data-type="standard"
               data-shape="pill"
               data-theme="outline"
               data-text="signin_with"
               data-size="large"
               data-logo_alignment="center"
-              data-width="400"
+              
             ></div>
           </div>
         </div>

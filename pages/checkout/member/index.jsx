@@ -129,7 +129,7 @@ const Signin = () => {
       <div className="mt-[42px] sm:mt-[52px] w-full flex flex-col justify-center sm:flex-row gap-y-4 sm:gap-x-4">
         <div
           id="g_id_onload"
-          data-client_id="YOUR_CLIENT_ID" // Replace with your actual client ID
+          data-client_id="39593396169-ppn7dc7v4huovmuromku2k01s26kngfa.apps.googleusercontent.com" // Replace with your actual client ID
           data-context="signin"
           data-ux_mode="popup"
           data-callback="handleCredentialResponse"
@@ -137,14 +137,14 @@ const Signin = () => {
         ></div>
 
         <div
-          className="g_id_signin"
+          className="g_id_signin  w-full sm:w-[360px] md:w-[380px] lg:w-[400px]"
           data-type="standard"
           data-shape="pill"
           data-theme="outline"
           data-text="signin_with"
           data-size="large"
           data-logo_alignment="center"
-          data-width="400"
+          
         ></div>
       </div>
 

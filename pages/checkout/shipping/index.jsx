@@ -240,49 +240,54 @@ const Shipping = ({ email, cartProducts }) => {
           {Object.keys(formData).map((field) => {
             if (field === "countryCode") return null;
             
-            if (field === "phone") {
+            
               return (
-                <div key={field} className="flex gap-x-2">
-                  <Select
-                    value={formData.countryCode}
-                    onValueChange={handleCountryCodeChange}
-                  >
-                    <SelectTrigger className="w-[100px]">
-                      <SelectValue placeholder="Code" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {countryCodes.map((country) => (
-                        <SelectItem key={country.code} value={country.code}>
-                          {country.code} ({country.country})
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                <div key={field} className="flex flex-col mb-4">
+                <label className="text-sm font-semibold text-[#070707] mb-2">
+  {field
+    .split(/(?=[A-Z])/)
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ")}
+</label>
+                {field === "phone" ? (
+                  <div className="flex gap-x-2">
+                    <Select
+                      value={formData.countryCode}
+                      onValueChange={handleCountryCodeChange}
+                    >
+                      <SelectTrigger className="w-[100px]">
+                        <SelectValue placeholder="Code" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {countryCodes.map((country) => (
+                          <SelectItem key={country.code} value={country.code}>
+                            {country.code} ({country.country})
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <Input
+                      name="phone"
+                      placeholder="Phone number"
+                      type="tel"
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                      error={fieldErrors.phone}
+                      className="flex-1 rounded-full border border-gray-300"
+                    />
+                  </div>
+                ) : (
                   <Input
-                    name="phone"
-                    placeholder="Phone number"
-                    type="tel"
-                    value={formData.phone}
+                    name={field}
+                    placeholder={field.split(/(?=[A-Z])/).join(" ")}
+                    type="text"
+                    value={formData[field]}
                     onChange={handleInputChange}
-                    error={fieldErrors.phone}
-                    className="flex-1 rounded-full"
+                    error={fieldErrors[field]}
+                    className="rounded-full border border-gray-300"
                   />
-                </div>
-              );
-            }
-
-            return (
-              <Input
-                key={field}
-                name={field}
-                label={field.split(/(?=[A-Z])/).join(" ")}
-                placeholder={field.split(/(?=[A-Z])/).join(" ")}
-                type={field === "zipCode" ? "text" : "text"}
-                value={formData[field]}
-                onChange={handleInputChange}
-                error={fieldErrors[field]}
-                className="rounded-full"
-              />
+                )}
+              </div>
             );
           })}
 
@@ -302,7 +307,6 @@ const Shipping = ({ email, cartProducts }) => {
     </div>
   );
 };
-
 export async function getServerSideProps({ req, query }) {
   const currentUser = require("@/lib/server/currentUser").default;
   const user = await currentUser(req);

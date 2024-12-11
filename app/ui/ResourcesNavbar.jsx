@@ -16,6 +16,7 @@ const ResourcesNavbar = () => {
             src="/leaf.png"
             alt="leaf"
             unoptimized={true}
+            priority={true}
             width={58}
             height={41}
           />
@@ -38,6 +39,8 @@ const ResourcesNavbar = () => {
             className="object-contain absolute top-[38.5px] -right-[70px] md:-top-[10px] md:-right-[118px] xl:top-[41.5px] xl:-right-[222px] rotate-45 md:-rotate-45"
             src="/leaf.png"
             alt="leaf"
+            unoptimized={true}
+            priority={true}
             width={58}
             height={41}
           />

@@ -28,6 +28,8 @@ const ShippingPolicy = () => {
             className="object-contain absolute -top-[10px] -left-[60.43px] md:top-[88px] md:-left-[62px] xl:-left-[248px] xl:-bottom-6 -rotate-45 md:rotate-45 xl:-rotate-45 transform scale-x-100 md:-scale-x-100 xl:scale-x-100"
             src="/leaf.png"
             alt="leaf"
+            unoptimized={true}
+            priority={true}
             width={58}
             height={41}
           />
@@ -50,6 +52,8 @@ const ShippingPolicy = () => {
             className="object-contain absolute -bottom-[40px] -right-[50px] md:bottom-[123px] md:-right-[62px] xl:top-[35.5px] xl:-right-[150px] rotate-45 md:-rotate-45"
             src="/leaf.png"
             alt="leaf"
+            unoptimized={true}
+            priority={true}
             width={58}
             height={41}
           />

@@ -39,6 +39,8 @@ const Explore = () => {
             className="object-contain -rotate-45"
             src="/leaf.png"
             alt="leaf"
+            unoptimized={true}
+            priority={true}
             width={60}
             height={44}
           />

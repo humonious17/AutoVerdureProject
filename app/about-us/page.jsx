@@ -26,6 +26,7 @@ const AboutUs = () => {
             src="/leaf.png"
             alt="leaf"
             unoptimized={true}
+            priority={true}
             width={58}
             height={41}
           />
@@ -48,6 +49,8 @@ const AboutUs = () => {
             className="object-contain absolute top-[38.5px] -right-[70px] md:-top-[10px] md:-right-[118px] xl:top-[41.5px] xl:-right-[222px] rotate-45 md:-rotate-45"
             src="/leaf.png"
             alt="leaf"
+            unoptimized={true}
+            priority={true}
             width={58}
             height={41}
           />
@@ -181,6 +184,8 @@ const AboutUs = () => {
                 className="hidden md:flex xl:hidden object-contain absolute top-[75.46px] right-[100px] lg:right-[200px] -rotate-45 transform -scale-y-100"
                 src="/leaf.png"
                 alt="leaf"
+                unoptimized={true}
+                priority={true}
                 width={58}
                 height={41}
               />
@@ -192,6 +197,8 @@ const AboutUs = () => {
                 className="object-contain sm:h-[189px] absolute top-[61.38px] md:top-[73px] md:left-[110px] lg:left-[250px] xl:left-[100px] rotate-45 transform -scale-x-100"
                 src="/leaf.png"
                 alt="leaf"
+                unoptimized={true}
+                priority={true}
                 width={58}
                 height={41}
               />

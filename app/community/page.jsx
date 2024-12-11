@@ -12,6 +12,8 @@ const Community = () => {
           <Image
             className="object-contain absolute top-[0px] left-[0px] md:top-[10px] md:-left-[16px] xl:-top-[13.1px] xl:left-[118px] -rotate-45 md:rotate-45 transform scale-x-100 md:-scale-x-100"
             src="/leaf.png"
+            unoptimized={true}
+            priority={true}
             alt="leaf"
             width={58}
             height={41}
@@ -34,6 +36,8 @@ const Community = () => {
             className="object-contain absolute bottom-[0px] right-[0px] md:-top-[29px] md:-right-[0px] xl:top-[33.85px] xl:-right-[10px] rotate-45 md:-rotate-45"
             src="/leaf.png"
             alt="leaf"
+            unoptimized={true}
+            priority={true}
             width={58}
             height={41}
           />
@@ -146,7 +150,7 @@ const Community = () => {
         {/* Join the Auto Verdure */}
         <div className="hidden md:mt-[94px] xl:mt-[127px] w-full h-[432px] xl:h-[521px] md:flex gap-x-5 xl:gap-[54px] justify-center items-center xl:items-start">
           <div className="w-[366px] h-full xl:w-[604px] xl:h-[521px] xl:flex-1 rounded-[9.7px]">
-          <video
+            <video
               className="w-full h-full rounded-[16px] object-cover "
               src="/home1.mp4"
               autoPlay
@@ -169,7 +173,7 @@ const Community = () => {
             </div>
 
             <div className="w-full h-[432px] xl:h-full flex gap-[21.5px] justify-between xl:justify-normal xl:gap-6">
-            <video
+              <video
                 className="object-cover w-[192px] h-[205px] xl:w-[192px] xl:h-[205px] rounded-[16px] md:w[192px] md:h-[180px]"
                 src="https://res.cloudinary.com/dguzhztdt/video/upload/f_mp4/v1729091741/Auto%20Verdure%20media%20%28website%29/Plants/IMG_7939_wsnkj9.mov"
                 alt="video"
@@ -180,7 +184,7 @@ const Community = () => {
                 loop
                 muted
               />
-                <Image
+              <Image
                 className="w-[192px] h-[205px] xl:w-[192px] xl:h-[205px] rounded-[16px] md:w[192px] md:h-[180px]"
                 src="https://res.cloudinary.com/dguzhztdt/image/upload/f_auto/v1729091744/Auto%20Verdure%20media%20%28website%29/Plants/IMG_1297_cy22gd.heic"
                 alt="image2"
@@ -239,21 +243,21 @@ const Community = () => {
           </div>
 
           <div className="w-full flex flex-col justify-center items-center">
-          <Link href="/about-us" passHref>
-            <button className="text-base px-[42px] py-[18px] rounded-[100px] border-[1px] border-primaryGrayscale font-normal text-primaryGrayscale">
-              About Us
-            </button>
+            <Link href="/about-us" passHref>
+              <button className="text-base px-[42px] py-[18px] rounded-[100px] border-[1px] border-primaryGrayscale font-normal text-primaryGrayscale">
+                About Us
+              </button>
             </Link>
           </div>
         </div>
 
         {/* About Us Button */}
         <div className="mt-[58px] hidden w-full md:flex flex-col justify-center items-center">
-        <Link href="/about-us" passHref>
+          <Link href="/about-us" passHref>
             <button className="text-base px-[42px] py-[18px] rounded-[100px] border-[1px] border-primaryGrayscale font-normal text-primaryGrayscale">
               About Us
             </button>
-            </Link>
+          </Link>
         </div>
       </div>
     </div>

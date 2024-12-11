@@ -94,6 +94,11 @@ input[type="number"] {
   height: 105px;
   flex-shrink: 0;
 }
+input:-webkit-autofill {
+  background-color: #9A5CF5 !important; /* Purple background */
+  color: white !important; /* White text for contrast */
+  transition: background-color;
+}
 .product-better {
   color: #9f9f9f;
   color: color(display-p3 0.625 0.625 0.625);

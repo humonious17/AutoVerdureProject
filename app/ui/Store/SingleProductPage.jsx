@@ -271,48 +271,48 @@ const SingleProductPage = ({ productData, allProducts }) => {
                 {/* Small Icon */}
                 <div className="flex w-fit xl:flex flex-col gap-[12px] absolute top-[21.18px] right-[29px]">
                   {productData.petFriendly === "true" ? (
-                    <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
+                    <div className="w-[50px] h-[50px] p-[10px] rounded-2xl bg-[#FFFFFF]">
                       <Image
                         src="/veterinary.png"
                         alt="veterinary"
-                        width={32}
-                        height={32}
+                        width={30}
+                        height={30}
                       />
                     </div>
                   ) : (
                     <></>
                   )}
                   {productData.petUnfriendly === "true" ? (
-                    <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
+                    <div className="w-[50px] h-[50px] p-[10px] rounded-2xl bg-[#FFFFFF]">
                       <Image
                         src="/pf.png"
                         alt="veterinary"
-                        width={32}
-                        height={32}
+                        width={30}
+                        height={30}
                       />
                     </div>
                   ) : (
                     <></>
                   )}
                   {productData.lessLight === "true" ? (
-                    <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
+                    <div className="w-[50px] h-[50px] p-[10px] rounded-2xl bg-[#FFFFFF]">
                       <Image
                         src="/noLight.png"
                         alt="noLight"
-                        width={32}
-                        height={32}
+                        width={30}
+                        height={30}
                       />
                     </div>
                   ) : (
                     <></>
                   )}
                   {productData.moreLight === "true" ? (
-                    <div className="w-[52px] h-[52px] p-[10px] rounded-2xl bg-[#FFFFFF]">
+                    <div className="w-[50px] h-[50px] p-[10px] rounded-2xl bg-[#FFFFFF]">
                       <Image
                         src="/brightness.png"
                         alt="brightness"
-                        width={32}
-                        height={32}
+                        width={30}
+                        height={30}
                       />
                     </div>
                   ) : (

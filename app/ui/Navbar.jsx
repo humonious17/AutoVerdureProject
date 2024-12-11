@@ -324,6 +324,7 @@ const Navbar = () => {
                   group-hover:before:w-full
                   group-hover:before:opacity-100
                   group-hover:transform
+                   group-hover:font-bold
                   group-hover:translate-y-[-2px]
                 `}
               >

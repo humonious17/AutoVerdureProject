@@ -22,8 +22,7 @@ const Accordion = ({ question, answer }) => {
         {open ? (
           <FaMinus className="cursor-pointer" />
         ) : (
-         
-          <FaPlus className="cursor-pointer" />
+          < FaPlus className="cursor-pointer" />
         )}
       </div>
 

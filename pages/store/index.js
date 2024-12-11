@@ -150,7 +150,7 @@ const Store = ({ initialProducts }) => {
                 <select
                   value={sortBy}
                   onChange={(e) => handleSort(e.target.value)}
-                  className="py-1.5 px-2 sm:py-2 sm:px-3 text-sm border rounded-lg bg-[#FFFBF7] flex-1 sm:flex-none"
+                  className="py-1.5 px-2 sm:py-2 sm:px-3 text-sm border-2 rounded-lg bg-[#FFFBF7] flex-1 sm:flex-none  focus:outline-none focus:border-purple-500 active:border-purple-600 hover:border-purple-600"
                 >
                   <option value="default">Sort by</option>
                   <option value="name-asc">Name (A-Z)</option>
@@ -161,7 +161,8 @@ const Store = ({ initialProducts }) => {
                 <select
                   value={showCount}
                   onChange={(e) => handleShowCountChange(e.target.value)}
-                  className="py-1.5 px-2 sm:py-2 sm:px-3 text-sm border rounded-lg bg-[#FFFBF7] flex-1 sm:flex-none"
+                  className="py-1.5 px-2 sm:py-2 sm:px-3 text-sm border-2 rounded-lg bg-[#FFFBF7] flex-1 sm:flex-none  focus:outline-none focus:border-purple-500 active:border-purple-600 hover:border-purple-600"
+
                 >
                   <option value={16}>Show 16</option>
                   <option value={32}>Show 32</option>

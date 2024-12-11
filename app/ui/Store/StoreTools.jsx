@@ -121,7 +121,8 @@ const StoreTools = ({
             <select
               value={selectedSort}
               onChange={(e) => handleSortChange(e.target.value)}
-              className="w-full p-2 border rounded-md"
+              className="w-full p-2 border-2 rounded-md  focus:outline-none focus:border-purple-500 active:border-purple-600 hover:border-purple-600"
+
             >
               <option value="newest">Newest</option>
               <option value="price-low-high">Price: Low to High</option>
@@ -134,11 +135,11 @@ const StoreTools = ({
 
           {/* Show Count Options */}
           <div className="space-y-3">
-            <h3 className="font-medium">Show per page</h3>
+            <h3 className="font-medium ">Show per page</h3>
             <select
               value={selectedCount}
               onChange={(e) => handleShowCountChange(Number(e.target.value))}
-              className="w-full p-2 border rounded-md"
+              className="w-full p-2 border-2  focus:outline-none focus:border-purple-500 active:border-purple-600 hover:border-purple-600 rounded-md"
             >
               <option value={12}>12</option>
               <option value={24}>24</option>

@@ -2,19 +2,42 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { toast } from "@/components/hooks/use-toast";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import findCartProducts from "@/lib/server/findCartProducts";
 import { ChevronDown } from "lucide-react";
 
-
 const countryCodes = [
-  { code: "+1", country: "US" },
-  { code: "+91", country: "IN" },
-  { code: "+44", country: "UK" },
-  // Add more country codes as needed
+  { code: "+1", country: "US", name: "United States" },
+  { code: "+91", country: "IN", name: "India" },
+  { code: "+44", country: "UK", name: "United Kingdom" },
 ];
 
-const Shipping = (props) => {
-  const { email, cartProducts } = props;
+const validateForm = (formData) => {
+  const errors = {};
+  if (!formData.fullName?.trim()) errors.fullName = "Full name is required";
+  if (!formData.streetName?.trim()) errors.streetName = "Street name is required";
+  if (!formData.houseNumber?.trim()) errors.houseNumber = "House number is required";
+  if (!formData.city?.trim()) errors.city = "City is required";
+  if (!formData.country?.trim()) errors.country = "Country is required";
+  if (!formData.zipCode?.trim()) errors.zipCode = "ZIP code is required";
+  if (!formData.phone?.trim()) errors.phone = "Phone number is required";
+  
+  const phoneRegex = /^\+?[\d\s-]{8,}$/;
+  if (formData.phone && !phoneRegex.test(formData.phone)) {
+    errors.phone = "Invalid phone number";
+  }
+
+  return errors;
+};
+
+const Shipping = ({ email, cartProducts }) => {
   const router = useRouter();
   const { query } = router;
   const isBuyNow = Boolean(query.productId);
@@ -23,13 +46,14 @@ const Shipping = (props) => {
   const [error, setError] = useState("");
   const [fieldErrors, setFieldErrors] = useState({});
   const [formData, setFormData] = useState({
-    FullName: "",
-    StreetName: "",
-    HouseNumber: "",
-    City: "",
-    Phone: "",
-    Country: "",
-    ZipCode: "",
+    fullName: "",
+    streetName: "",
+    houseNumber: "",
+    city: "",
+    phone: "",
+    countryCode: "+1",
+    country: "",
+    zipCode: "",
   });
 
   useEffect(() => {
@@ -61,35 +85,22 @@ const Shipping = (props) => {
     }
   }, [router, email, cartProducts, isBuyNow, query]);
 
-  const validateForm = () => {
-    const errors = {};
-    const fields = Object.keys(formData);
-
-    fields.forEach((field) => {
-      if (!formData[field].trim()) {
-        errors[field] = `${
-          field.charAt(0).toUpperCase() + field.slice(1)
-        } is required`;
-      }
-    });
-
-    if (formData.phone && !/^\d{10}$/.test(formData.phone.trim())) {
-      errors.phone = "Please enter a valid 10-digit phone number";
-    }
-
-    if (formData.zipCode && !/^\d{6}$/.test(formData.zipCode.trim())) {
-      errors.zipCode = "Please enter a valid 6-digit ZIP code";
-    }
-
-    setFieldErrors(errors);
-    return Object.keys(errors).length === 0;
-  };
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value,
+    }));
+    // Clear error when user starts typing
+    if (fieldErrors[name]) {
+      setFieldErrors((prev) => ({ ...prev, [name]: "" }));
+    }
+  };
+
+  const handleCountryCodeChange = (value) => {
+    setFormData((prev) => ({
+      ...prev,
+      countryCode: value,
     }));
   };
 
@@ -109,11 +120,19 @@ const Shipping = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
     setIsLoading(true);
+    setError("");
 
-    if (!validateForm()) {
+    // Validate form
+    const errors = validateForm(formData);
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
       setIsLoading(false);
+      toast({
+        title: "Validation Error",
+        description: "Please check all required fields",
+        variant: "destructive",
+      });
       return;
     }
 
@@ -154,7 +173,10 @@ const Shipping = (props) => {
         body: JSON.stringify({
           amount: total * 100,
           products,
-          shippingDetails: formData,
+          shippingDetails: {
+            ...formData,
+            phone: `${formData.countryCode}${formData.phone}`,
+          },
           email: email || localStorage.getItem("userEmail"),
           isBuyNow,
         }),
@@ -186,6 +208,11 @@ const Shipping = (props) => {
     } catch (error) {
       console.error("Error creating order:", error);
       setError("Failed to process order. Please try again.");
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
     } finally {
       setIsLoading(false);
     }
@@ -210,64 +237,66 @@ const Shipping = (props) => {
             </div>
           )}
 
-          {Object.keys(formData).map(
-            (field) =>
-              field !== "phone" &&
-              field !== "countryCode" && (
-                <Input
-                  key={field}
-                  name={field}
-                  label={field.split(/(?=[A-Z])/).join(" ")}
-                  placeholder={field.split(/(?=[A-Z])/).join(" ")}
-                  type={field === "zipCode" ? "tel" : "text"}
-                  value={formData[field]}
-                  onChange={handleInputChange}
-                  error={fieldErrors[field]}
-                  className="rounded-full"
-                />
-              )
-          )}
+          {Object.keys(formData).map((field) => {
+            if (field === "countryCode") return null;
+            
+            if (field === "phone") {
+              return (
+                <div key={field} className="flex gap-x-2">
+                  <Select
+                    value={formData.countryCode}
+                    onValueChange={handleCountryCodeChange}
+                  >
+                    <SelectTrigger className="w-[100px]">
+                      <SelectValue placeholder="Code" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {countryCodes.map((country) => (
+                        <SelectItem key={country.code} value={country.code}>
+                          {country.code} ({country.country})
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <Input
+                    name="phone"
+                    placeholder="Phone number"
+                    type="tel"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    error={fieldErrors.phone}
+                    className="flex-1 rounded-full"
+                  />
+                </div>
+              );
+            }
 
-          <div className="flex gap-4">
-            <div className="relative w-1/4">
-              <select
-                name="countryCode"
-                value={formData.countryCode}
+            return (
+              <Input
+                key={field}
+                name={field}
+                label={field.split(/(?=[A-Z])/).join(" ")}
+                placeholder={field.split(/(?=[A-Z])/).join(" ")}
+                type={field === "zipCode" ? "text" : "text"}
+                value={formData[field]}
                 onChange={handleInputChange}
-                className="appearance-none w-full p-3 rounded-full bg-white border-1 border-black pr-10 focus:outline-none focus:border-primaryMain transition-colors duration-300"
-              >
-                {countryCodes.map((code) => (
-                  <option key={code.code} value={code.code}>
-                    {code.country} ({code.code})
-                  </option>
-                ))}
-              </select>
-              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3">
-                <ChevronDown className="text-gray-500" size={20} />
-              </div>
-            </div>
+                error={fieldErrors[field]}
+                className="rounded-full"
+              />
+            );
+          })}
 
-            <Input
-              name="phone"
-              label="Phone"
-              placeholder="Enter your phone number"
-              type="tel"
-              value={formData.phone}
-              onChange={handleInputChange}
-              error={fieldErrors.phone}
-              className="w-3/4 rounded-full"
-            />
-          </div>
-
-          <button
-            type="submit"
+          <Button 
+            type="submit" 
+            className="w-full rounded-full"
             disabled={isLoading}
-            className={`mt-[42px] sm:mt-[52px] w-full text-base px-6 py-[17px] rounded-[30px] border-[1px] bg-[#070707] border-[#070707] text-[#FFFFFF] font-bold ${
-              isLoading ? "opacity-50 cursor-not-allowed" : ""
-            }`}
           >
             {isLoading ? "Processing..." : "Continue to Payment"}
-          </button>
+          </Button>
+
+          {error && (
+            <p className="text-red-500 text-sm text-center">{error}</p>
+          )}
         </form>
       </div>
     </div>

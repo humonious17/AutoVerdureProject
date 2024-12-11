@@ -20,8 +20,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import AddProduct from "../addproduct";
-import EditProductForm from "../EditProductForm";
+import AddProduct from "./addproduct";
+import EditProductForm from "./EditProductForm";
 
 const Index = () => {
   const [products, setProducts] = useState([]);
@@ -180,11 +180,7 @@ const Index = () => {
                   size="sm"
                   className="flex-1"
                   onClick={() => {
-                    if (
-                      window.confirm(
-                        "Are you sure you want to delete this product?"
-                      )
-                    ) {
+                    if (window.confirm("Are you sure you want to delete this product?")) {
                       handleDeleteProduct(product.productId);
                     }
                   }}

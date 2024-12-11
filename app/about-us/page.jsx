@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 "use client";
 
 import Image from "next/image";
@@ -9,6 +10,9 @@ import Link from "next/link";
 import { CldVideoPlayer } from "next-cloudinary";
 import "next-cloudinary/dist/cld-video-player.css";
 import { useState } from "react";
+import { motion } from "framer-motion";
+import { useInView } from "react-intersection-observer";
+import StackedCardsSection from "./StackedCardSection";
 
 const AboutUs = () => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -275,13 +279,15 @@ const AboutUs = () => {
             width={138.798}
             height={154.544}
           />
-          <div className="w-full flex justify-between pr-[21.41px]">
+          <div className="w-full flex justify-between pr-[21.41px] ">
             <div className="hidden md:flex h-fit relative ">
               <div className="hidden md:flex flex-col gap-4 sticky top-0">
                 <Image
                   className="object-contain"
                   src="/star.svg"
                   alt="star"
+                  unoptimized={true}
+                  pripory={true}
                   width={48}
                   height={49}
                 />
@@ -292,11 +298,7 @@ const AboutUs = () => {
               </div>
             </div>
 
-            <div className="flex flex-col gap-5 relative">
-              {aboutUs.map((item, index) => (
-                <AboutUsCard key={index} aboutDetails={item} />
-              ))}
-            </div>
+            <StackedCardsSection/>
           </div>
           <Image
             className="hidden xl:block object-contain absolute right-0 rotate-[360deg]"

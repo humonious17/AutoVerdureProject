@@ -163,20 +163,28 @@ const ContactUs = () => {
                     <label className="text-base font-medium">First Name</label>
                     <input
                       className={`text-base px-[21px] py-[18px] text-secondaryGrayscale border-[1px] focus:outline-none transition-colors duration-300 rounded-[100px] ${
-                        formData.firstName ? "bg-purple-200" : "bg-white"
+                        formData.firstName ? "bg-primaryMain/10" : "bg-white"
                       }`}
                       type="text"
                       placeholder="First Name"
                       name="firstName"
                       value={formData.firstName}
                       onChange={handleChange}
+                      style={{
+                        "&:autofill": {
+                          border: "1px solid #434346",
+                          WebkitTextFillColor: "#F1F1F1",
+                          WebkitBoxShadow: "0 0 0px 1000px #1B1B1C inset",
+                          transition: "background-color 5000s ease-in-out 0s",
+                        },
+                      }}
                     />
                   </div>
                   <div className="w-full flex flex-col gap-[8px]">
                     <label className="text-base font-medium">Last Name</label>
                     <input
                       className={`text-base px-[21px] py-[18px] text-secondaryGrayscale border-[1px] focus:outline-none transition-colors duration-300 rounded-[100px] ${
-                        formData.lastName ? "bg-purple-200" : "bg-white"
+                        formData.lastName ? "bg-primaryMain/10" : "bg-white"
                       }`}
                       type="text"
                       placeholder="Last Name"
@@ -193,7 +201,7 @@ const ContactUs = () => {
                     </label>
                     <input
                       className={`text-base px-[21px] py-[18px] text-secondaryGrayscale border-[1px] focus:outline-none transition-colors duration-300 rounded-[100px] ${
-                        formData.email ? "bg-purple-200" : "bg-white"
+                        formData.email ? "bg-primaryMain/10" : "bg-white"
                       }`}
                       type="email"
                       placeholder="Email Address"
@@ -209,7 +217,7 @@ const ContactUs = () => {
                     </label>
                     <input
                       className={`text-base px-[21px] py-[18px] text-secondaryGrayscale border-[1px] focus:outline-none transition-colors duration-300 rounded-[100px] ${
-                        formData.queryType ? "bg-purple-200" : "bg-white"
+                        formData.queryType ? "bg-primaryMain/10" : "bg-white"
                       }`}
                       type="text"
                       placeholder="Select Service"
@@ -226,7 +234,7 @@ const ContactUs = () => {
                   <textarea
                     rows={10}
                     className={`text-base px-[21px] py-[18px] rounded-xl text-secondaryGrayscale border-[1px] focus:outline-none transition-colors duration-300 ${
-                      formData.comments ? "bg-purple-200" : "bg-white"
+                      formData.comments ? "bg-primaryMain/10" : "bg-white"
                     }`}
                     placeholder="Comments / Questions"
                     name="comments"

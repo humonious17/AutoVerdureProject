@@ -111,6 +111,14 @@ module.exports = {
       },
       display: ["responsive"],
     },
+    variants: {
+      extend: {
+        backgroundColor: ["autofill"],
+        textColor: ["autofill"],
+      },
+    },
   },
   plugins: [require("tailwindcss-animate")],
 };
+
+

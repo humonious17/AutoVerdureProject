@@ -730,7 +730,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
             {error && <p className="text-red-600 mt-2">{error}</p>}
             {productData.stockQuantity > 0 ? (
               /* Quantity, Add to cart, Buy now */
-              <div className="mt-[18.5px] sm:mt-6 w-full h-[32.8px] xl:h-16 flex gap-[18px] xl:justify-between">
+              <div className="mt-[18.5px] sm:mt-6 w-full h-[33.51px] xl:h-16 flex gap-[18px] justify-between xl:justify-between">
                 <div className="w-[63.077px] xl:w-[123px] h-full py-5 rounded-[29.2px] border-[0.51px] bg-[#FFFFFF] border-[#9F9F9F] flex justify-center items-center">
                   <button className="px-2 py-1" onClick={decrementQuantity}>
                     -
@@ -764,8 +764,8 @@ const SingleProductPage = ({ productData, allProducts }) => {
               productData.productType === "planters" ||
               productData.productType === "flowers" ||
               productData.productType === "accessory") && (
-              <div className="mt-[21.5px] w-full sm:w-fit xl:w-full flex flex-row sm:flex-col xl:flex-row sm:gap-y-3 xl:gap-x-[22px] justify-between xl:justify-start">
-                <div className="flex gap-2 sm:gap-3 justify-between sm:justify-start xl:justify-between items-center">
+              <div className="mt-[21.5px] w-full sm:w-fit xl:w-full flex flex-row sm:flex-col xl:flex-row sm:gap-y-3 xl:gap-x-[22px] xl:justify-start">
+                <div className="flex gap-2 mr-2 sm:gap-3 justify-between sm:justify-start xl:justify-between items-center">
                   <Image
                     src={
                       productData.petFriendly === "true"

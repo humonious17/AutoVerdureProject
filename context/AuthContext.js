@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     // Check for existing session on initial load
     checkSession();
-  }, [checkSession]);
+  }, []);
 
   const checkSession = () => {
     const token = localStorage.getItem("adminToken");

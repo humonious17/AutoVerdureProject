@@ -11,8 +11,8 @@ const HydroponicCard = ({ data, isActive, index }) => {
     if (!isMobile) return "";
 
     // Alternating between primaryMain and primaryCream for mobile
-    if (isActive) return "bg-primaryMain";
-    return index % 2 === 0 ? "bg-primaryCream" : "bg-primaryMain/20";
+    if (isActive) return "bg-primaryMain"; return  "bg-primaryCream" ;
+   
   };
 
   return (

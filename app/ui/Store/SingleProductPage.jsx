@@ -532,7 +532,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
   const displayedProducts = showAll ? allProducts : allProducts.slice(0, 3);
 
   return (
-    <div className="w-full max-w-[362px] sm:max-w-none px-[0px] sm:px-[38px] xl:px-16 bg-[#FFFCF8]">
+    <div className="w-full max-w-[362px] sm:max-w-none px-[0px] sm:px-[38px] xl:px-16 bg-[#fffbf7]">
       <Head>
         <script
           type="module"
@@ -730,24 +730,26 @@ const SingleProductPage = ({ productData, allProducts }) => {
             {error && <p className="text-red-600 mt-2">{error}</p>}
             {productData.stockQuantity > 0 ? (
               /* Quantity, Add to cart, Buy now */
-              <div className="mt-[18.5px] sm:mt-6 w-full h-[33.51px] xl:h-16 flex gap-[18px] justify-between xl:justify-between">
-                <div className="w-[63.077px] xl:w-[123px] h-full py-5 rounded-[29.2px] border-[0.51px] bg-[#FFFFFF] border-[#9F9F9F] flex justify-center items-center">
-                  <button className="px-2 py-1" onClick={decrementQuantity}>
-                    -
-                  </button>
-                  <span className="px-2">{stockQuantity}</span>
-                  <button className="px-2 py-1" onClick={incrementQuantity}>
-                    +
+              <div className="mt-[18.5px] sm:mt-6 w-full h-[32.82px] xl:h-16 flex gap-[18px] justify-between xl:justify-between">
+                <div className="flex justify-between gap-2">
+                  <div className="w-[63.077px] xl:w-[123px] h-full rounded-[29.2px] border-[0.51px] bg-[#FFFFFF] border-[#9F9F9F] flex justify-center items-center">
+                    <button className="px-2 py-1" onClick={decrementQuantity}>
+                      -
+                    </button>
+                    <span className="px-2">{stockQuantity}</span>
+                    <button className="px-2 py-1" onClick={incrementQuantity}>
+                      +
+                    </button>
+                  </div>
+                  <button
+                    className="w-[85.1px] xl:w-[166px] h-full text-[10.256px] xl:text-xl rounded-[29.7px] border-[0.51px] text-[#000000] bg-[#FFFFFF] border-[#000000] flex justify-center items-center"
+                    onClick={handleAddToCart}
+                  >
+                    {buttonText}
                   </button>
                 </div>
                 <button
-                  className="w-[85.1px] xl:w-[166px] h-full text-[10.256px] xl:text-xl py-5 rounded-[29.7px] border-[0.51px] text-[#000000] bg-[#FFFFFF] border-[#000000] flex justify-center items-center"
-                  onClick={handleAddToCart}
-                >
-                  {buttonText}
-                </button>
-                <button
-                  className="w-[154.359px] xl:w-[301px] h-full text-[10.256px] xl:text-xl py-5 leading-[12.308px] rounded-[35.9px] font-medium bg-primaryMain text-[#FFFFFF] flex justify-center items-center"
+                  className="w-[154.359px] xl:w-[301px] h-full text-[10.256px] xl:text-xl  leading-[12.308px] rounded-[35.9px] font-medium bg-primaryMain text-[#FFFFFF] hover:bg-purple-500 flex justify-center items-center"
                   onClick={handleBuyNow}
                 >
                   Buy Now

@@ -6,7 +6,7 @@ import React from "react";
 
 const SingleBlog = () => {
   return (
-    <div className="pt-8 pb-[126px] md:pt-10 md:pb-[128.44px] xl:pt-[57px] xl:pb-[167px] pl-4 pr-[13px] bg-[#FFFCF8] flex flex-col justify-center items-center">
+    <div className="pt-8 pb-[126px] md:pt-10 md:pb-[128.44px] xl:pt-[57px] xl:pb-[167px] pl-4 pr-[13px] bg-[#FFFBF7] flex flex-col justify-center items-center">
       <div className="px-1 md:px-[35px] xl:px-[101px] text-base font-medium w-full flex flex-col justify-start items-start">
         <p>
           <span className="text-primaryMain">

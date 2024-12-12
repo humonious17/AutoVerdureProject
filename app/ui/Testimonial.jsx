@@ -180,9 +180,8 @@ const Testimonials = ({ productId }) => {
   }
 
   return (
-    <div className="w-full bg-[#FFFCF8] py-12">
+    <div className="w-full bg-[#FFFBF7] py-12">
       <div className="max-w-6xl mx-auto px-6">
-
         <ReviewSlider reviews={reviews} />
       </div>
     </div>

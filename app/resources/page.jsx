@@ -8,7 +8,7 @@ import Blogs from "@/pages/Blogs";
 
 const resources = () => {
   return (
-    <div className="w-full px-4 md:px-[27px] xl:px-[119.99px] 2xl:px-[230px] bg-[#FFFCF8]">
+    <div className="w-full px-4 md:px-[27px] xl:px-[119.99px] 2xl:px-[230px] bg-[#FFFBF7]">
       <ResourcesNavbar />
       <Blogs />
 

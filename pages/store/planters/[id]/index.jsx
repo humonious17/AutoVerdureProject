@@ -7,8 +7,8 @@ const SinglePlantersPage = (props) => {
     const productData = props.product;
     const allProducts = props.allProducts;
   return (
-    <div className="w-full flex justify-center items-center overflow-hidden bg-[#FFFCF8]">
-          <SingleProductPage productData={productData}  allProducts={allProducts}/>
+    <div className="w-full flex justify-center items-center overflow-hidden bg-[#FFFBF7]">
+      <SingleProductPage productData={productData} allProducts={allProducts} />
     </div>
   );
 };

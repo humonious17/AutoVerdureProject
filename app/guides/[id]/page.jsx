@@ -6,7 +6,7 @@ import React from "react";
 
 const SingleBlog = () => {
   return (
-    <div className="pt-8 pb-[126px] md:pt-10 md:pb-[128.44px] xl:pt-[57px] xl:pb-[167px] pl-4 pr-[13px] bg-[#FFFCF8] flex flex-col justify-center items-center">
+    <div className="pt-8 pb-[126px] md:pt-10 md:pb-[128.44px] xl:pt-[57px] xl:pb-[167px] pl-4 pr-[13px] bg-[#FFFBF7] flex flex-col justify-center items-center">
       <div className="px-1 md:px-[35px] xl:px-[101px] text-base font-medium w-full flex flex-col justify-start items-start">
         <p>
           <span className="text-primaryMain">
@@ -68,15 +68,14 @@ const SingleBlog = () => {
         <div className="mt-[68px] w-full flex flex-col justify-center items-center">
           {/* Blog Image */}
           <div className="w-full h-[218px] md:h-[419px] lg:h-[500px] xl:h-[600px] 2xl:h-[700px] rounded-3xl flex justify-center items-center">
-          <Image
-            className="object-cover w-full h-full rounded-3xl"
-            src="/blogImage.png"
-            alt="image"
-            width={1000}
-            height={700}
-          />
-        </div>
-
+            <Image
+              className="object-cover w-full h-full rounded-3xl"
+              src="/blogImage.png"
+              alt="image"
+              width={1000}
+              height={700}
+            />
+          </div>
 
           {/* Blog Description */}
           <div className="mt-[54px] md:mt-[49px] w-full flex flex-col justify-center items-start">

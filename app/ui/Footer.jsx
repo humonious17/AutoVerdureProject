@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const Footer = () => {
   return (
-    <div className="pl-4 pr-[85px] md:px-[41px] lg:px-[80px] xl:px-[119px] pb-[45px] bg-[#FFFCF8] mt-[20px] ml-[20px]">
+    <div className="pl-4 pr-[85px] md:px-[41px] lg:px-[80px] xl:px-[119px] pb-[45px] bg-[#FFFBF7] mt-[20px] ml-[20px]">
       {/* Border */}
       <div className="hidden md:flex mb-[73px] border-t-[1px] border-tertiaryBg" />
       <div className="xl:gap-x-[78px] grid grid-cols-1 md:grid-cols-2 xl:flex xl:justify-around">
@@ -128,7 +128,7 @@ const Footer = () => {
             <form className="w-full flex justify-center items-center">
               <input
                 autoComplete="false"
-                className="w-full focus:outline-none bg-[#FFFCF8]"
+                className="w-full focus:outline-none bg-[#FFFBF7]"
                 type="text"
                 placeholder="Your Email"
                 spellCheck="false"

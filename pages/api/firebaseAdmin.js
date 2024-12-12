@@ -11,7 +11,8 @@ if (!admin.apps.length) {
     })
 }
 
+const auth = admin.auth(); 
 const db = admin.firestore();
 const storage = admin.storage();
 
-module.exports = { admin, db, storage };
+module.exports = { auth, admin, db, storage };

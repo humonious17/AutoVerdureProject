@@ -3,8 +3,8 @@ import React from "react";
 
 const page = () => {
   return (
-    <div className="px-4 sm:px-[70px] md:px-[118px] lg:px-[185px] xl:px-[285px] 2xl:px-[500px] w-full bg-[#FFFCF8] flex flex-col justify-center items-center">
-      <div className="mt-[93px] xl:mt-[74px] px-5 py-10 md:px-[20%] md:py-[108px] xl:py-[108px] w-full bg-white border-[1px] border-[#E0E0E0] flex flex-col justify-center items-center">
+    <div className="px-4 sm:px-[70px] md:px-[118px] lg:px-[185px] xl:px-[285px] 2xl:px-[500px] w-full bg-[#FFFBF7] flex flex-col justify-center items-center">
+      <div className="mt-[93px] xl:mt-[74px] px-5 py-10 md:px-[20%] md:py-[108px] xl:py-[108px] w-full bg-[#FFFBF7] border-[1px] border-[#E0E0E0] flex flex-col justify-center items-center">
         <div className="w-full flex gap-[10px]">
           <div className="pl-3 pr-3 py-[10px] w-full rounded-md border-[2px] hover:border-[#0570DE] border-[#E0E0E0] cursor-pointer shadow-[0_2px_4px_0px_rgba(0,0,0,0.07)]">
             <Image

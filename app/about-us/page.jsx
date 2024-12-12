@@ -21,7 +21,7 @@ const AboutUs = () => {
     setIsExpanded((prev) => !prev);
   };
   return (
-    <div className="w-full px-4 pt-[80px] pb-[124px] md:px-[28px] md:py-[116px] xl:px-[119.99px] xl:pt-[114px] xl:pb-[151px] 2xl:px-[200px] 2xl:py-[116px] bg-[#FFFCF8] flex flex-col justify-center items-center">
+    <div className="w-full px-4 pt-[80px] pb-[124px] md:px-[28px] md:py-[116px] xl:px-[119.99px] xl:pt-[114px] xl:pb-[151px] 2xl:px-[200px] 2xl:py-[116px] bg-[#FFFBF7] flex flex-col justify-center items-center">
       {/* Title */}
       <div className="max-w-[219px] md:max-w-[382px] w-full relative  ">
         <div>

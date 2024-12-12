@@ -14,21 +14,23 @@ import findCartProducts from "@/lib/server/findCartProducts";
 import { ChevronDown } from "lucide-react";
 
 const countryCodes = [
-  { code: "+1", country: "US", name: "United States" },
   { code: "+91", country: "IN", name: "India" },
+  { code: "+1", country: "US", name: "United States" },
   { code: "+44", country: "UK", name: "United Kingdom" },
 ];
 
 const validateForm = (formData) => {
   const errors = {};
   if (!formData.fullName?.trim()) errors.fullName = "Full name is required";
-  if (!formData.streetName?.trim()) errors.streetName = "Street name is required";
-  if (!formData.houseNumber?.trim()) errors.houseNumber = "House number is required";
+  if (!formData.streetName?.trim())
+    errors.streetName = "Street name is required";
+  if (!formData.houseNumber?.trim())
+    errors.houseNumber = "House number is required";
   if (!formData.city?.trim()) errors.city = "City is required";
   if (!formData.country?.trim()) errors.country = "Country is required";
   if (!formData.zipCode?.trim()) errors.zipCode = "ZIP code is required";
   if (!formData.phone?.trim()) errors.phone = "Phone number is required";
-  
+
   const phoneRegex = /^\+?[\d\s-]{8,}$/;
   if (formData.phone && !phoneRegex.test(formData.phone)) {
     errors.phone = "Invalid phone number";
@@ -239,23 +241,26 @@ const Shipping = ({ email, cartProducts }) => {
 
           {Object.keys(formData).map((field) => {
             if (field === "countryCode") return null;
-            
-            
-              return (
-                <div key={field} className="flex flex-col mb-4">
+
+            return (
+              <div key={field} className="flex flex-col mb-4">
                 <label className="text-sm font-semibold text-[#070707] mb-2">
-  {field
-    .split(/(?=[A-Z])/)
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join(" ")}
-</label>
+                  {field
+                    .split(/(?=[A-Z])/)
+                    .map(
+                      (word) =>
+                        word.charAt(0).toUpperCase() +
+                        word.slice(1).toLowerCase()
+                    )
+                    .join(" ")}
+                </label>
                 {field === "phone" ? (
                   <div className="flex gap-x-2">
                     <Select
                       value={formData.countryCode}
                       onValueChange={handleCountryCodeChange}
                     >
-                      <SelectTrigger className="w-[100px]">
+                      <SelectTrigger className="w-[100px] h-[48px] rounded-full bg-[#fffbf7]">
                         <SelectValue placeholder="Code" />
                       </SelectTrigger>
                       <SelectContent>
@@ -291,17 +296,15 @@ const Shipping = ({ email, cartProducts }) => {
             );
           })}
 
-          <Button 
-            type="submit" 
-            className="w-full rounded-full"
+          <Button
+            type="submit"
+            className="w-full rounded-full bg-primaryMain"
             disabled={isLoading}
           >
             {isLoading ? "Processing..." : "Continue to Payment"}
           </Button>
 
-          {error && (
-            <p className="text-red-500 text-sm text-center">{error}</p>
-          )}
+          {error && <p className="text-red-500 text-sm text-center">{error}</p>}
         </form>
       </div>
     </div>

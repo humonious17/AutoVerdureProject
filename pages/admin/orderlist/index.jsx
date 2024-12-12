@@ -46,6 +46,8 @@ import {
   Filter,
   RefreshCcw,
 } from "lucide-react";
+import ProtectedRoute from "@/components/ProtectedRoute";
+import { useAuth } from "../AuthContext";
 
 // Previous helper functions remain the same
 const normalizeOrderItems = (order) => {
@@ -509,261 +511,268 @@ const OrderList = ({ initialOrders }) => {
   };
 
   return (
-    <div className="container mx-auto py-8">
-      <Card>
-        <CardHeader className="space-y-4">
-          <div className="flex items-center justify-between">
-            <CardTitle className="text-2xl font-bold">
-              Order Management
-            </CardTitle>
-            <Button variant="outline" onClick={handleRefresh}>
-              <RefreshCcw className="w-4 h-4 mr-2" />
-              Refresh
-            </Button>
-          </div>
-
-          <div className="flex flex-wrap gap-4">
-            <div className="flex items-center space-x-2">
-              <Search className="w-4 h-4 text-gray-400" />
-              <Input
-                placeholder="Search orders..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-72"
-              />
-            </div>
-
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-40">
-                <SelectValue placeholder="Filter by status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Orders</SelectItem>
-                <SelectItem value="created">Created</SelectItem>
-                <SelectItem value="pending">Pending</SelectItem>
-                <SelectItem value="processing">Processing</SelectItem>
-                <SelectItem value="completed">Completed</SelectItem>
-                <SelectItem value="cancelled">Cancelled</SelectItem>
-              </SelectContent>
-            </Select>
-
-            <div className="flex items-center space-x-2">
-              <Calendar className="w-4 h-4 text-gray-400" />
-              <Input
-                type="date"
-                value={dateRange.start}
-                onChange={(e) =>
-                  setDateRange((prev) => ({ ...prev, start: e.target.value }))
-                }
-                className="w-40"
-              />
-              <span>to</span>
-              <Input
-                type="date"
-                value={dateRange.end}
-                onChange={(e) =>
-                  setDateRange((prev) => ({ ...prev, end: e.target.value }))
-                }
-                className="w-40"
-              />
-            </div>
-          </div>
-
-          {selectedOrders.length > 0 && (
-            <div className="flex items-center space-x-4 bg-gray-50 p-4 rounded-lg">
-              <span className="text-sm text-gray-600">
-                {selectedOrders.length} orders selected
-              </span>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => handleBulkAction("processing")}
-              >
-                Mark as Processing
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => handleBulkAction("completed")}
-              >
-                Mark as Completed
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => handleBulkAction("cancelled")}
-              >
-                Cancel Orders
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setSelectedOrders([])}
-              >
-                Clear Selection
+    <ProtectedRoute>
+      <div className="container mx-auto py-8">
+        <Card>
+          <CardHeader className="space-y-4">
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-2xl font-bold">
+                Order Management
+              </CardTitle>
+              <Button variant="outline" onClick={handleRefresh}>
+                <RefreshCcw className="w-4 h-4 mr-2" />
+                Refresh
               </Button>
             </div>
-          )}
-        </CardHeader>
 
-        <CardContent>
-          <div className="rounded-md border">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-12">
-                    <Checkbox
-                      checked={
-                        selectedOrders.length === filteredOrders.length &&
-                        filteredOrders.length > 0
-                      }
-                      onCheckedChange={(checked) => {
-                        setSelectedOrders(
-                          checked
-                            ? filteredOrders.map((order) => order.orderId)
-                            : []
-                        );
-                      }}
-                    />
-                  </TableHead>
-                  <TableHead>Order ID</TableHead>
-                  <TableHead>Customer</TableHead>
-                  <TableHead>Products</TableHead>
-                  <TableHead>Total Amount</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Payment</TableHead>
-                  <TableHead>Date</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredOrders.map((order) => (
-                  <TableRow
-                    key={order.orderId}
-                    className="cursor-pointer hover:bg-gray-50"
-                    onClick={(e) => handleRowClick(order, e)}
-                  >
-                    <TableCell>
+            <div className="flex flex-wrap gap-4">
+              <div className="flex items-center space-x-2">
+                <Search className="w-4 h-4 text-gray-400" />
+                <Input
+                  placeholder="Search orders..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-72"
+                />
+              </div>
+
+              <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <SelectTrigger className="w-40">
+                  <SelectValue placeholder="Filter by status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Orders</SelectItem>
+                  <SelectItem value="created">Created</SelectItem>
+                  <SelectItem value="pending">Pending</SelectItem>
+                  <SelectItem value="processing">Processing</SelectItem>
+                  <SelectItem value="completed">Completed</SelectItem>
+                  <SelectItem value="cancelled">Cancelled</SelectItem>
+                </SelectContent>
+              </Select>
+
+              <div className="flex items-center space-x-2">
+                <Calendar className="w-4 h-4 text-gray-400" />
+                <Input
+                  type="date"
+                  value={dateRange.start}
+                  onChange={(e) =>
+                    setDateRange((prev) => ({ ...prev, start: e.target.value }))
+                  }
+                  className="w-40"
+                />
+                <span>to</span>
+                <Input
+                  type="date"
+                  value={dateRange.end}
+                  onChange={(e) =>
+                    setDateRange((prev) => ({ ...prev, end: e.target.value }))
+                  }
+                  className="w-40"
+                />
+              </div>
+            </div>
+
+            {selectedOrders.length > 0 && (
+              <div className="flex items-center space-x-4 bg-gray-50 p-4 rounded-lg">
+                <span className="text-sm text-gray-600">
+                  {selectedOrders.length} orders selected
+                </span>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleBulkAction("processing")}
+                >
+                  Mark as Processing
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleBulkAction("completed")}
+                >
+                  Mark as Completed
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleBulkAction("cancelled")}
+                >
+                  Cancel Orders
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setSelectedOrders([])}
+                >
+                  Clear Selection
+                </Button>
+              </div>
+            )}
+          </CardHeader>
+
+          <CardContent>
+            <div className="rounded-md border">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="w-12">
                       <Checkbox
-                        checked={selectedOrders.includes(order.orderId)}
+                        checked={
+                          selectedOrders.length === filteredOrders.length &&
+                          filteredOrders.length > 0
+                        }
                         onCheckedChange={(checked) => {
-                          setSelectedOrders((prev) =>
+                          setSelectedOrders(
                             checked
-                              ? [...prev, order.orderId]
-                              : prev.filter((id) => id !== order.orderId)
+                              ? filteredOrders.map((order) => order.orderId)
+                              : []
                           );
                         }}
                       />
-                    </TableCell>
-                    <TableCell className="font-medium">
-                      {order.orderId}
-                    </TableCell>
-                    <TableCell>
-                      <div>
-                        <p className="font-medium">
-                          {order.shipping?.fullName}
-                        </p>
-                        <p className="text-sm text-gray-500">{order.email}</p>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      {order.products?.length || order.items?.length || 0} items
-                    </TableCell>
-                    <TableCell>Rs. {normalizeAmount(order)}</TableCell>
-                    <TableCell>
-                      <Badge
-                        className={getStatusColor(
-                          order.orderStatus || order.status
-                        )}
-                      >
-                        {order.orderStatus || order.status}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <Badge
-                        className={getStatusColor(
-                          order.paymentStatus || "pending"
-                        )}
-                      >
-                        <CreditCard className="w-3 h-3 mr-1 inline" />
-                        {order.paymentStatus || "Pending"}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>{formatDate(order.createdAt)}</TableCell>
-                    <TableCell className="text-right">
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button
-                            variant="ghost"
-                            className="h-8 w-8 p-0 actions-button"
-                          >
-                            <MoreVertical className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem
-                            onClick={() =>
-                              handleUpdateStatus(order.orderId, "processing")
-                            }
-                          >
-                            Mark as Processing
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            onClick={() =>
-                              handleUpdateStatus(order.orderId, "completed")
-                            }
-                          >
-                            Mark as Completed
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            onClick={() =>
-                              handleUpdateStatus(order.orderId, "cancelled")
-                            }
-                          >
-                            Cancel Order
-                          </DropdownMenuItem>
-                          <DropdownMenuSeparator />
-                          <DropdownMenuItem onClick={() => window.print()}>
-                            Print Order
-                          </DropdownMenuItem>
-                          <DropdownMenuItem>Download Invoice</DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </TableCell>
+                    </TableHead>
+                    <TableHead>Order ID</TableHead>
+                    <TableHead>Customer</TableHead>
+                    <TableHead>Products</TableHead>
+                    <TableHead>Total Amount</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Payment</TableHead>
+                    <TableHead>Date</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
-                ))}
-                {filteredOrders.length === 0 && (
-                  <TableRow>
-                    <TableCell colSpan={9} className="text-center py-8">
-                      No orders found
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </div>
-        </CardContent>
-      </Card>
+                </TableHeader>
+                <TableBody>
+                  {filteredOrders.map((order) => (
+                    <TableRow
+                      key={order.orderId}
+                      className="cursor-pointer hover:bg-gray-50"
+                      onClick={(e) => handleRowClick(order, e)}
+                    >
+                      <TableCell>
+                        <Checkbox
+                          checked={selectedOrders.includes(order.orderId)}
+                          onCheckedChange={(checked) => {
+                            setSelectedOrders((prev) =>
+                              checked
+                                ? [...prev, order.orderId]
+                                : prev.filter((id) => id !== order.orderId)
+                            );
+                          }}
+                        />
+                      </TableCell>
+                      <TableCell className="font-medium">
+                        {order.orderId}
+                      </TableCell>
+                      <TableCell>
+                        <div>
+                          <p className="font-medium">
+                            {order.shipping?.fullName}
+                          </p>
+                          <p className="text-sm text-gray-500">{order.email}</p>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        {order.products?.length || order.items?.length || 0}{" "}
+                        items
+                      </TableCell>
+                      <TableCell>Rs. {normalizeAmount(order)}</TableCell>
+                      <TableCell>
+                        <Badge
+                          className={getStatusColor(
+                            order.orderStatus || order.status
+                          )}
+                        >
+                          {order.orderStatus || order.status}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <Badge
+                          className={getStatusColor(
+                            order.paymentStatus || "pending"
+                          )}
+                        >
+                          <CreditCard className="w-3 h-3 mr-1 inline" />
+                          {order.paymentStatus || "Pending"}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>{formatDate(order.createdAt)}</TableCell>
+                      <TableCell className="text-right">
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              className="h-8 w-8 p-0 actions-button"
+                            >
+                              <MoreVertical className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem
+                              onClick={() =>
+                                handleUpdateStatus(order.orderId, "processing")
+                              }
+                            >
+                              Mark as Processing
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() =>
+                                handleUpdateStatus(order.orderId, "completed")
+                              }
+                            >
+                              Mark as Completed
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() =>
+                                handleUpdateStatus(order.orderId, "cancelled")
+                              }
+                            >
+                              Cancel Order
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem onClick={() => window.print()}>
+                              Print Order
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
+                              Download Invoice
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                  {filteredOrders.length === 0 && (
+                    <TableRow>
+                      <TableCell colSpan={9} className="text-center py-8">
+                        No orders found
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </div>
+          </CardContent>
+        </Card>
 
-      <Dialog
-        open={!!selectedOrder}
-        onOpenChange={() => setSelectedOrder(null)}
-      >
-        <DialogContent className="max-w-3xl">
-          <DialogHeader>
-            <DialogTitle>Order Details - #{selectedOrder?.orderId}</DialogTitle>
-          </DialogHeader>
-          {selectedOrder && (
-            <OrderDetails
-              order={selectedOrder}
-              onClose={() => setSelectedOrder(null)}
-              onUpdateStatus={handleUpdateStatus}
-              onUpdateNotes={handleUpdateNotes}
-            />
-          )}
-        </DialogContent>
-      </Dialog>
-    </div>
+        <Dialog
+          open={!!selectedOrder}
+          onOpenChange={() => setSelectedOrder(null)}
+        >
+          <DialogContent className="max-w-3xl">
+            <DialogHeader>
+              <DialogTitle>
+                Order Details - #{selectedOrder?.orderId}
+              </DialogTitle>
+            </DialogHeader>
+            {selectedOrder && (
+              <OrderDetails
+                order={selectedOrder}
+                onClose={() => setSelectedOrder(null)}
+                onUpdateStatus={handleUpdateStatus}
+                onUpdateNotes={handleUpdateNotes}
+              />
+            )}
+          </DialogContent>
+        </Dialog>
+      </div>
+    </ProtectedRoute>
   );
 };
 

@@ -842,7 +842,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
                     </svg>
                   </button>
                   {isDescriptionOpen && (
-                    <div className="pl-4 mt-1 bg-white text-black p-3 rounded-md transition-opacity duration-300 opacity-100">
+                    <div className="pl-4 mt-1 bg-[#fffbf7] text-black p-3 rounded-md transition-opacity duration-300 opacity-100">
                       <p className="whitespace-pre-wrap">
                         {productData.productDescription}
                       </p>
@@ -882,7 +882,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
                     </svg>
                   </button>
                   {isDetailsOpen && (
-                    <ul className="pl-4 mt-1 bg-white text-black p-3 rounded-md transition-opacity duration-300 opacity-100">
+                    <ul className="pl-4 mt-1 bg-[#fffbf7] text-black p-3 rounded-md transition-opacity duration-300 opacity-100">
                       <li className="decoration-dotted flex justify-start items-center">
                         <div className="w-[5px] h-[5px] rounded-full bg-[#5B5B5B] mr-[13.9px]" />
                         Inner Dimensions - {innerDimensions}
@@ -979,7 +979,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
                 </svg>
               </button>
               {isDescriptionOpen && (
-                <div className="pl-4 mt-1 bg-white text-black p-3 rounded-md transition-opacity duration-300 opacity-100 whitespace-pre-wrap">
+                <div className="pl-4 mt-1 bg-[#fffbf7] text-black p-3 rounded-md transition-opacity duration-300 opacity-100 whitespace-pre-wrap">
                   <p>{productData.productDescription}</p>
                 </div>
               )}
@@ -1017,7 +1017,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
                 </svg>
               </button>
               {isDetailsOpen && (
-                <ul className="pl-4 mt-1 bg-white text-black p-3 rounded-md transition-opacity duration-300 opacity-100">
+                <ul className="pl-4 mt-1 bg-[#fffbf7] text-black p-3 rounded-md transition-opacity duration-300 opacity-100">
                   <li className="decoration-dotted flex justify-start items-center">
                     <div className="w-[5px] h-[5px] rounded-full bg-[#5B5B5B] mr-[13.9px]" />
                     Inner Dimensions - {innerDimensions}

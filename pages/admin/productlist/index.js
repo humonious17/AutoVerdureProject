@@ -22,6 +22,8 @@ import {
 } from "@/components/ui/select";
 import AddProduct from "./addproduct";
 import EditProductForm from "./EditProductForm";
+import ProtectedRoute from "@/components/ProtectedRoute";
+import { useAuth } from "../AuthContext";
 
 const Index = () => {
   const [products, setProducts] = useState([]);
@@ -32,6 +34,7 @@ const Index = () => {
   const [sortBy, setSortBy] = useState("name");
   const [sortOrder, setSortOrder] = useState("asc");
   const [filterType, setFilterType] = useState("all");
+  const { logout } = useAuth();
 
   useEffect(() => {
     fetchProducts();
@@ -180,7 +183,11 @@ const Index = () => {
                   size="sm"
                   className="flex-1"
                   onClick={() => {
-                    if (window.confirm("Are you sure you want to delete this product?")) {
+                    if (
+                      window.confirm(
+                        "Are you sure you want to delete this product?"
+                      )
+                    ) {
                       handleDeleteProduct(product.productId);
                     }
                   }}
@@ -253,97 +260,102 @@ const Index = () => {
   );
 
   return (
-    <div className="min-h-screen bg-[#FFFBF7] p-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-8 flex justify-between items-center">
-          <h1 className="text-3xl font-bold text-gray-900">
-            Product Management
-          </h1>
-          <Button onClick={handleToggleAddProduct}>
-            <PlusCircle className="w-5 h-5 mr-2" />
-            Add Product
-          </Button>
-        </div>
-
-        {showAddProduct && <AddProduct onAddProduct={handleAddProduct} />}
-
-        {!editingProduct && (
-          <div className="mb-6 space-y-4">
-            <div className="flex flex-col sm:flex-row gap-4">
-              <div className="flex-1">
-                <div className="relative">
-                  <Search className="absolute left-2 top-3 h-4 w-4 text-gray-500" />
-                  <Input
-                    placeholder="Search products..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-8"
-                  />
-                </div>
-              </div>
-              <div className="flex gap-4">
-                <Select value={filterType} onValueChange={setFilterType}>
-                  <SelectTrigger className="w-[180px]">
-                    <Filter className="w-4 h-4 mr-2" />
-                    <SelectValue placeholder="Filter by type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Types</SelectItem>
-                    <SelectItem value="plants">Plants</SelectItem>
-                    <SelectItem value="planters">Planters</SelectItem>
-                    <SelectItem value="flowers">Flowers</SelectItem>
-                    <SelectItem value="accessories">Accessories</SelectItem>
-                  </SelectContent>
-                </Select>
-                <Select value={sortBy} onValueChange={setSortBy}>
-                  <SelectTrigger className="w-[180px]">
-                    <ArrowUpDown className="w-4 h-4 mr-2" />
-                    <SelectValue placeholder="Sort by" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="name">Name</SelectItem>
-                    <SelectItem value="price">Price</SelectItem>
-                    <SelectItem value="type">Type</SelectItem>
-                  </SelectContent>
-                </Select>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={toggleSortOrder}
-                  className="w-10 h-10"
-                >
-                  {sortOrder === "asc" ? "↑" : "↓"}
-                </Button>
-                <ToggleGroup
-                  type="single"
-                  value={viewMode}
-                  onValueChange={(value) => value && setViewMode(value)}
-                >
-                  <ToggleGroupItem value="grid">
-                    <LayoutGrid className="w-4 h-4" />
-                  </ToggleGroupItem>
-                  <ToggleGroupItem value="list">
-                    <List className="w-4 h-4" />
-                  </ToggleGroupItem>
-                </ToggleGroup>
-              </div>
+    <ProtectedRoute>
+      <div className="min-h-screen bg-[#FFFBF7] p-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-8 flex justify-between items-center">
+            <h1 className="text-3xl font-bold text-gray-900">
+              Product Management
+            </h1>
+            <div className="flex gap-[10px]">
+              <Button onClick={handleToggleAddProduct} className="bg-primaryMain">
+                <PlusCircle className="w-5 h-5 mr-2" />
+                Add Product
+              </Button>
+              <Button onClick={logout}>Logout</Button>
             </div>
           </div>
-        )}
 
-        {editingProduct ? (
-          <EditProductForm
-            product={editingProduct}
-            onSave={handleUpdateProduct}
-            onCancel={() => setEditingProduct(null)}
-          />
-        ) : viewMode === "grid" ? (
-          <GridView />
-        ) : (
-          <ListView />
-        )}
+          {showAddProduct && <AddProduct onAddProduct={handleAddProduct} />}
+
+          {!editingProduct && (
+            <div className="mb-6 space-y-4">
+              <div className="flex flex-col sm:flex-row gap-4">
+                <div className="flex-1">
+                  <div className="relative">
+                    <Search className="absolute left-2 top-3 h-4 w-4 text-gray-500" />
+                    <Input
+                      placeholder="Search products..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="pl-8"
+                    />
+                  </div>
+                </div>
+                <div className="flex gap-4">
+                  <Select value={filterType} onValueChange={setFilterType}>
+                    <SelectTrigger className="w-[180px]">
+                      <Filter className="w-4 h-4 mr-2" />
+                      <SelectValue placeholder="Filter by type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Types</SelectItem>
+                      <SelectItem value="plants">Plants</SelectItem>
+                      <SelectItem value="planters">Planters</SelectItem>
+                      <SelectItem value="flowers">Flowers</SelectItem>
+                      <SelectItem value="accessories">Accessories</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <Select value={sortBy} onValueChange={setSortBy}>
+                    <SelectTrigger className="w-[180px]">
+                      <ArrowUpDown className="w-4 h-4 mr-2" />
+                      <SelectValue placeholder="Sort by" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="name">Name</SelectItem>
+                      <SelectItem value="price">Price</SelectItem>
+                      <SelectItem value="type">Type</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={toggleSortOrder}
+                    className="w-10 h-10"
+                  >
+                    {sortOrder === "asc" ? "↑" : "↓"}
+                  </Button>
+                  <ToggleGroup
+                    type="single"
+                    value={viewMode}
+                    onValueChange={(value) => value && setViewMode(value)}
+                  >
+                    <ToggleGroupItem value="grid">
+                      <LayoutGrid className="w-4 h-4" />
+                    </ToggleGroupItem>
+                    <ToggleGroupItem value="list">
+                      <List className="w-4 h-4" />
+                    </ToggleGroupItem>
+                  </ToggleGroup>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {editingProduct ? (
+            <EditProductForm
+              product={editingProduct}
+              onSave={handleUpdateProduct}
+              onCancel={() => setEditingProduct(null)}
+            />
+          ) : viewMode === "grid" ? (
+            <GridView />
+          ) : (
+            <ListView />
+          )}
+        </div>
       </div>
-    </div>
+    </ProtectedRoute>
   );
 };
 

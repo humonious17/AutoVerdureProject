@@ -22,6 +22,8 @@ import {
   SortDesc,
 } from "lucide-react";
 import Link from "next/link";
+import ProtectedRoute from "@/components/ProtectedRoute";
+import { useAuth } from "../AuthContext";
 
 export default function BlogsList() {
   const [blogs, setBlogs] = useState([]);
@@ -165,125 +167,127 @@ export default function BlogsList() {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
-      <div className="max-w-7xl mx-auto">
-        <header className="mb-8">
-          <div className="flex justify-between items-center mb-6">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">Blog Posts</h1>
-              <p className="text-gray-500 mt-2">Manage your blog content</p>
-            </div>
-            <Link href="/admin/blogs">
-              <Button className="flex items-center gap-2">
-                Create New Post
-              </Button>
-            </Link>
-          </div>
-
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-6">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-              <Input
-                type="text"
-                placeholder="Search blogs..."
-                className="pl-10"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
-
-            <Select
-              value={selectedCategory}
-              onValueChange={setSelectedCategory}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Filter by category" />
-              </SelectTrigger>
-              <SelectContent>
-                {getUniqueCategories().map((category) => (
-                  <SelectItem key={category} value={category}>
-                    {category.charAt(0).toUpperCase() + category.slice(1)}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            <Select value={sortBy} onValueChange={setSortBy}>
-              <SelectTrigger>
-                <SelectValue placeholder="Sort by" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="date">Date</SelectItem>
-                <SelectItem value="title">Title</SelectItem>
-              </SelectContent>
-            </Select>
-
-            <div className="flex gap-2">
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={() =>
-                  setSortOrder(sortOrder === "asc" ? "desc" : "asc")
-                }
-                className="flex-1"
-              >
-                {sortOrder === "asc" ? (
-                  <SortAsc className="h-4 w-4" />
-                ) : (
-                  <SortDesc className="h-4 w-4" />
-                )}
-              </Button>
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={() =>
-                  setViewMode(viewMode === "grid" ? "list" : "grid")
-                }
-                className="flex-1"
-              >
-                {viewMode === "grid" ? (
-                  <List className="h-4 w-4" />
-                ) : (
-                  <LayoutGrid className="h-4 w-4" />
-                )}
-              </Button>
-            </div>
-          </div>
-        </header>
-
-        {showSuccess && (
-          <Alert className="mb-6 bg-green-50 border-green-200">
-            <CheckCircle2 className="h-4 w-4 text-green-600" />
-            <AlertDescription className="text-green-800">
-              {successMessage}
-            </AlertDescription>
-          </Alert>
-        )}
-
-        {isLoading ? (
-          <div className="flex justify-center items-center h-64">
-            <div className="animate-spin rounded-full h-8 w-8 border-2 border-blue-500 border-t-transparent" />
-          </div>
-        ) : (
-          <div
-            className={`grid gap-6 ${
-              viewMode === "grid" ? "md:grid-cols-2" : ""
-            }`}
-          >
-            {sortedAndFilteredBlogs.map((blog) => (
-              <BlogCard key={blog.id} blog={blog} />
-            ))}
-
-            {sortedAndFilteredBlogs.length === 0 && !isLoading && (
-              <div className="text-center py-12 col-span-full">
-                <p className="text-gray-500">
-                  No blogs found matching your criteria.
-                </p>
+    <ProtectedRoute>
+      <div className="min-h-screen bg-[#fffbf7] p-8">
+        <div className="max-w-7xl mx-auto">
+          <header className="mb-8">
+            <div className="flex justify-between items-center mb-6">
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900">Blog Posts</h1>
+                <p className="text-gray-500 mt-2">Manage your blog content</p>
               </div>
-            )}
-          </div>
-        )}
+              <Link href="/admin/blogs">
+                <Button className="flex items-center gap-2">
+                  Create New Post
+                </Button>
+              </Link>
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-6">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+                <Input
+                  type="text"
+                  placeholder="Search blogs..."
+                  className="pl-10"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
+
+              <Select
+                value={selectedCategory}
+                onValueChange={setSelectedCategory}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Filter by category" />
+                </SelectTrigger>
+                <SelectContent>
+                  {getUniqueCategories().map((category) => (
+                    <SelectItem key={category} value={category}>
+                      {category.charAt(0).toUpperCase() + category.slice(1)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              <Select value={sortBy} onValueChange={setSortBy}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Sort by" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="date">Date</SelectItem>
+                  <SelectItem value="title">Title</SelectItem>
+                </SelectContent>
+              </Select>
+
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() =>
+                    setSortOrder(sortOrder === "asc" ? "desc" : "asc")
+                  }
+                  className="flex-1"
+                >
+                  {sortOrder === "asc" ? (
+                    <SortAsc className="h-4 w-4" />
+                  ) : (
+                    <SortDesc className="h-4 w-4" />
+                  )}
+                </Button>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() =>
+                    setViewMode(viewMode === "grid" ? "list" : "grid")
+                  }
+                  className="flex-1"
+                >
+                  {viewMode === "grid" ? (
+                    <List className="h-4 w-4" />
+                  ) : (
+                    <LayoutGrid className="h-4 w-4" />
+                  )}
+                </Button>
+              </div>
+            </div>
+          </header>
+
+          {showSuccess && (
+            <Alert className="mb-6 bg-green-50 border-green-200">
+              <CheckCircle2 className="h-4 w-4 text-green-600" />
+              <AlertDescription className="text-green-800">
+                {successMessage}
+              </AlertDescription>
+            </Alert>
+          )}
+
+          {isLoading ? (
+            <div className="flex justify-center items-center h-64">
+              <div className="animate-spin rounded-full h-8 w-8 border-2 border-blue-500 border-t-transparent" />
+            </div>
+          ) : (
+            <div
+              className={`grid gap-6 ${
+                viewMode === "grid" ? "md:grid-cols-2" : ""
+              }`}
+            >
+              {sortedAndFilteredBlogs.map((blog) => (
+                <BlogCard key={blog.id} blog={blog} />
+              ))}
+
+              {sortedAndFilteredBlogs.length === 0 && !isLoading && (
+                <div className="text-center py-12 col-span-full">
+                  <p className="text-gray-500">
+                    No blogs found matching your criteria.
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </ProtectedRoute>
   );
 }

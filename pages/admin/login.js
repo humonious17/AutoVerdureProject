@@ -5,7 +5,7 @@ import { Lock, Unlock, AlertTriangle } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useAuth } from "@/pages/admin/AuthContext";
+import { useAuth } from "@/context/AuthContext";
 
 export default function AdminLogin() {
   const [email, setEmail] = useState("");

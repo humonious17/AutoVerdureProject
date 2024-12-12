@@ -23,7 +23,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import ProtectedRoute from "@/components/ProtectedRoute";
-import { useAuth } from "../AuthContext";
+import { useAuth } from "../../../context/AuthContext";
 
 export default function BlogsList() {
   const [blogs, setBlogs] = useState([]);

@@ -47,7 +47,7 @@ import {
   RefreshCcw,
 } from "lucide-react";
 import ProtectedRoute from "@/components/ProtectedRoute";
-import { useAuth } from "../AuthContext";
+import { useAuth } from "../../../context/AuthContext";
 
 // Previous helper functions remain the same
 const normalizeOrderItems = (order) => {

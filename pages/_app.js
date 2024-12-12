@@ -7,7 +7,7 @@ import adminLayout from "@/pages/layouts/adminLayout";
 import checkoutLayout from "@/pages/layouts/checkoutLayout";
 import { useRouter } from "next/router";
 import App from "next/app";
-import { AuthProvider } from "./admin/AuthContext";
+import { AuthProvider } from "../context/AuthContext";
 
 function MyApp({ Component, pageProps }) {
   const [isClient, setIsClient] = useState(false);

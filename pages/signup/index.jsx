@@ -121,11 +121,11 @@ const Signin = (prop) => {
   };
   return (
     <div className="px-4 sm:px-0 pt-16 sm:pt-[80px] mt-8 sm:mt-[55px] mb-8 sm:mb-[41px] lg:mb-[152px] lg:pl-[70px] w-full flex flex-col lg:flex-row lg:gap-[57px] xl:gap-x-[152px] justify-center lg:justify-start items-start overflow-x-hidden">
-      {/* Left Section with Text */}
-      <div className="mb-8 sm:mb-[46px] lg:mb-0 w-full lg:w-[560px] px-0 sm:px-[50px] lg:px-0 flex flex-col justify-center items-start">
-        {/* Title */}
-        <div className="w-full flex flex-col gap-y-2 sm:gap-y-3">
-          <p className="text-2xl sm:text-[32px] leading-8 font-normal capitalize text-[#070707]">
+    {/* Left Section with Text */}
+    <div className="mb-8 sm:mb-[46px] lg:mb-0 w-full lg:w-[560px] px-0 sm:px-[50px] lg:px-0 flex flex-col justify-center items-start">
+      {/* Title */}
+      <div className="w-full flex flex-col gap-y-2 sm:gap-y-3">
+        <p className="text-2xl sm:text-[32px] leading-8 font-normal capitalize text-[#070707]">
             Welcome back
           </p>
           <p className="w-full text-sm leading-[22.4px] font-medium text-[#8E8F94]">
@@ -229,15 +229,18 @@ const Signin = (prop) => {
         </div>
       </div>
 
-      <div className="flex justify-center items-center w-full md:w-[560px] lg:w-[710px]">
-      <div className="w-full h-[280px] sm:w-[330.65px] sm:h-[340px] md:w-[410px] md:h-[440px] lg:w-[558.65px] lg:h-[582px] xl:w-[725.65px] xl:h-[590px] overflow-hidden  shadow-lg rounded-lg">
-          <Image
-            className="w-full h-full rounded-lg"
-            src="/signinImg.png"
-            alt="img"
-            width={345.65}
-            height={373}
-          />
+      <div className="flex justify-center items-center w-full md:w-[820px] lg:w-[710px]">
+        <div className="w-full xl:mt-[210px] lg:mt-[180px] h-[280px] sm:w-[430.65px] sm:h-[340px] md:w-[640px] md:h-[440px] lg:w-[558.65px] lg:h-[582px] xl:w-[725.65px] xl:h-[590px] overflow-hidden  shadow-lg rounded-lg">
+      <video
+            className="w-full h-full object-cover rounded-lg"
+            src="/signup.mp4"
+            playsInline
+            autoPlay
+            loop
+            muted
+          >
+            Your browser does not support the video tag.
+          </video>
         </div>
       </div>
     </div>

@@ -212,8 +212,8 @@ const Signin = () => {
       </div>
 
       {/* Right Section with Image */}
-      <div className="flex justify-center items-center w-full md:w-[560px] lg:w-[710px]">
-        <div className="w-full h-[280px] sm:w-[330.65px] sm:h-[340px] md:w-[410px] md:h-[440px] lg:w-[558.65px] lg:h-[582px] xl:w-[725.65px] xl:h-[590px] overflow-hidden  shadow-lg rounded-lg">
+      <div className="flex justify-center items-center w-full md:w-[800px] lg:w-[710px]">
+        <div className="w-full h-[280px] sm:w-[430.65px] sm:h-[340px] md:w-[660px] md:h-[440px] lg:w-[558.65px] lg:h-[582px] xl:w-[725.65px] xl:h-[590px] overflow-hidden  shadow-lg rounded-lg">
           <video
             className="w-full h-full object-cover rounded-lg"
             src="/vid221.mov"

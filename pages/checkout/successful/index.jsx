@@ -1,8 +1,64 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { motion } from "framer-motion";
+
+const ProductImageGallery = ({ orderDetails }) => {
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  // Determine grid columns based on number of images
+  const getGridColumns = (totalImages) => {
+    if (totalImages <= 2) return "grid-cols-2";
+    if (totalImages <= 3) return "grid-cols-3";
+    if (totalImages <= 4) return "grid-cols-4";
+    return "grid-cols-3 md:grid-cols-4 lg:grid-cols-5";
+  };
+
+  // Flatten products into a single array of images
+  const productImages =
+    orderDetails?.products?.flatMap((product) =>
+      product.selectedProducts.map((selectedProduct) => ({
+        image: selectedProduct.productImage || "/orderconfirmed.png",
+        name: selectedProduct.productName || "Product",
+      }))
+    ) || [];
+
+  // Determine dynamic grid columns
+  const gridColumnClass = getGridColumns(productImages.length);
+
+  const openImageModal = (image) => {
+    setSelectedImage(image);
+  };
+
+  return (
+    <div className="w-full">
+      {/* Image Grid */}
+      <div className={`grid ${gridColumnClass} gap-4 sm:gap-6`}>
+        {productImages.map((product, idx) => (
+          <motion.div
+            key={idx}
+            whileHover={{ scale: 1.05 }}
+            className="bg-[#fffbf7] rounded-xl overflow-hidden shadow-lg relative group cursor-pointer w-[200px] h-[200px]"
+            onClick={() => openImageModal(product.image)}
+          >
+            {/* Image Container */}
+            <div className="w-full h-full relative">
+              <Image
+                src={product.image}
+                alt={product.name}
+                width={200}
+                height={200}
+                className="object-cover w-full h-full"
+                priority
+              />
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 const Successful = () => {
   const router = useRouter();
@@ -26,90 +82,107 @@ const Successful = () => {
   }, [router.query]);
 
   return (
-    <div className="mb-[95px] sm:mb-[58px] xl:mb-[105px] w-full px-11 sm:px-5 flex flex-col justify-center items-center">
-      {/* Title */}
-      <div className="max-w-[560px] w-full flex flex-col gap-y-3 sm:text-center">
-        <p className="text-[32px] leading-8 font-normal capitalize text-[#070707]">
-          Thank you for your purchase!
-        </p>
-        <p className="w-[266px] sm:w-full text-sm leading-[22.4px] font-medium text-[#8E8F94]">
-          Your order has been confirmed and will be shipped soon.
-        </p>
-      </div>
-
-      {/* Content */}
-      <div className="mt-5 sm:mt-[69px] max-w-[724px] w-full flex flex-col sm:flex-row sm:gap-x-6">
-        <div className="w-full h-[350px] sm:w-[350px]">
-          <Image
-            className="w-full h-full object-contain"
-            src="/orderconfirmed.png"
-            alt="Order Confirmed"
-            width={350}
-            height={350}
-          />
+    <div className="bg-[#fffbf7] min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto">
+        {/* Success Header */}
+        <div className="text-center mb-10">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            Thank You for Your Purchase!
+          </h1>
+          <p className="text-lg text-gray-600">
+            Your order has been confirmed and will be shipped soon.
+          </p>
         </div>
 
-        <div className="mt-[47px] sm:mt-0 w-full px-6 py-7 rounded-2xl flex flex-col gap-y-6 bg-[#FFFFFF] shadow-sm">
-          <p className="text-[32px] leading-8 font-normal capitalize text-[#070707]">
-            Hurray! Your order is confirmed.
-          </p>
+        {/* Order Details Container */}
+        <div className="grid md:grid-cols-2 gap-8">
+          {/* Product Images Carousel */}
+          <ProductImageGallery orderDetails={orderDetails} />
 
-          {orderDetails && (
-            <div className="flex flex-col gap-y-4">
-              <div className="border-b pb-4">
-                <h3 className="font-semibold text-lg mb-2">Order Summary</h3>
-                <div className="space-y-2 text-sm text-gray-600">
-                  <p>Order ID: {orderDetails.orderId}</p>
-                  <p>Email: {orderDetails.email}</p>
+          {/* Order Summary Card */}
+          <div className="bg-[#fffbf7] rounded-2xl shadow-lg p-8">
+            <h2 className="text-3xl font-bold text-gray-900 mb-6">
+              Order Confirmed
+            </h2>
 
-                  <p>
-                    Total Amount: ₹
-                    {(parseFloat(orderDetails.totalAmount) / 100).toFixed(2)}
-                  </p>
+            {orderDetails && (
+              <div className="space-y-6">
+                {/* Order Summary Section */}
+                <div className="border-b pb-4">
+                  <h3 className="font-semibold text-xl mb-3 text-gray-800">
+                    Order Summary
+                  </h3>
+                  <div className="space-y-2 text-gray-600">
+                    <p>
+                      <span className="font-medium">Order ID:</span>{" "}
+                      {orderDetails.orderId}
+                    </p>
+                    <p>
+                      <span className="font-medium">Email:</span>{" "}
+                      {orderDetails.email}
+                    </p>
+                    <p>
+                      <span className="font-medium">Total Amount:</span> ₹
+                      {(parseFloat(orderDetails.totalAmount) / 100).toFixed(2)}
+                    </p>
+                  </div>
                 </div>
-              </div>
 
-              <div className="border-b pb-4">
-                <h3 className="font-semibold text-lg mb-2">Shipping Details</h3>
-                <div className="space-y-1 text-sm text-gray-600">
-                  <p>{orderDetails.shipping.fullName}</p>
-                  <p>{orderDetails.shipping.address1}</p>
-                  <p>{orderDetails.shipping.address2}</p>
-                  <p>{orderDetails.shipping.postalCode}</p>
-                  <p>Phone: {orderDetails.shipping.phone}</p>
+                {/* Shipping Details Section */}
+                <div className="border-b pb-4">
+                  <h3 className="font-semibold text-xl mb-3 text-gray-800">
+                    Shipping Details
+                  </h3>
+                  <div className="space-y-1 text-gray-600">
+                    <p>{orderDetails.shipping.fullName}</p>
+                    <p>{orderDetails.shipping.address1}</p>
+                    <p>{orderDetails.shipping.address2}</p>
+                    <p>{orderDetails.shipping.postalCode}</p>
+                    <p>Phone: {orderDetails.shipping.phone}</p>
+                  </div>
                 </div>
-              </div>
 
-              <div className="border-b pb-4">
-                <h3 className="font-semibold text-lg mb-2">Products</h3>
-                <div className="space-y-2">
-                  {orderDetails.products && orderDetails.products.length > 0 ? (
-                    orderDetails.products.map((product, index) => (
-                      <div key={index} className="space-y-2">
-                        {product.selectedProducts.map((selectedProduct, idx) => (
-                          <div
-                            key={idx}
-                            className="flex justify-between text-sm text-gray-600"
-                          >
-                            <span>{selectedProduct.productName || "Product Name here"}</span>
-                            <span>₹{selectedProduct.price || "0"}</span>
-                          </div>
-                        ))}
-                      </div>
-                    ))
-                  ) : (
-                    <p className="text-sm text-gray-600">No products found</p>
-                  )}
+                {/* Products Section */}
+                <div className="border-b pb-4">
+                  <h3 className="font-semibold text-xl mb-3 text-gray-800">
+                    Products
+                  </h3>
+                  <div className="space-y-2">
+                    {orderDetails.products &&
+                    orderDetails.products.length > 0 ? (
+                      orderDetails.products.map((product, index) => (
+                        <div key={index} className="space-y-2">
+                          {product.selectedProducts.map(
+                            (selectedProduct, idx) => (
+                              <div
+                                key={idx}
+                                className="flex justify-between text-sm text-gray-700"
+                              >
+                                <span className="font-medium">
+                                  {selectedProduct.productName ||
+                                    "Product Name"}
+                                </span>
+                                <span>₹{selectedProduct.price || "0"}</span>
+                              </div>
+                            )
+                          )}
+                        </div>
+                      ))
+                    ) : (
+                      <p className="text-sm text-gray-600">No products found</p>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </div>
-          )}
 
-          <Link href="/store" passHref>
-            <button className="w-full py-[17px] text-base leading-[20.8px] font-bold rounded-[30px] bg-[#070707] text-white flex justify-center items-center">
-              Back to Shopping
-            </button>
-          </Link>
+                {/* Back to Shopping Button */}
+                <Link href="/store" passHref>
+                  <button className="w-full py-4 text-base font-bold rounded-full bg-gray-900 text-white hover:bg-gray-800 transition-colors duration-300 flex justify-center items-center">
+                    Continue Shopping
+                  </button>
+                </Link>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

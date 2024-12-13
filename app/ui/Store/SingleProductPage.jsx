@@ -491,6 +491,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
     const payload = {
       productId: productData.productId,
       productName: productData.productName,
+      productImage: productData.images[0].publicUrl,
       productPrice: price,
       productColor: selectedColor,
       productSize: size,
@@ -730,9 +731,9 @@ const SingleProductPage = ({ productData, allProducts }) => {
             {error && <p className="text-red-600 mt-2">{error}</p>}
             {productData.stockQuantity > 0 ? (
               /* Quantity, Add to cart, Buy now */
-              <div className="mt-[18.5px] sm:mt-6 w-full h-[32.82px] xl:h-16 flex gap-[18px] justify-between xl:justify-between">
+              <div className="mt-[18.5px] sm:mt-6 w-full h-[45px] xl:h-16 flex gap-[18px] justify-between xl:justify-between">
                 <div className="flex justify-between gap-2">
-                  <div className="w-[63.077px] xl:w-[123px] h-full rounded-[29.2px] border-[0.51px] bg-[#FFFFFF] border-[#9F9F9F] flex justify-center items-center">
+                  <div className="w-[70px] xl:w-[123px] h-full rounded-[29.2px] border-[0.51px] bg-[#FFFFFF] border-[#8d8d8d] flex justify-center items-center">
                     <button className="px-2 py-1" onClick={decrementQuantity}>
                       -
                     </button>
@@ -742,14 +743,14 @@ const SingleProductPage = ({ productData, allProducts }) => {
                     </button>
                   </div>
                   <button
-                    className="w-[85.1px] xl:w-[166px] h-full text-[10.256px] xl:text-xl rounded-[29.7px] border-[0.51px] text-[#000000] bg-[#FFFFFF] border-[#000000] flex justify-center items-center"
+                    className="w-[96px] xl:w-[166px] h-full text-[14px] xl:text-xl rounded-[29.7px] border-[0.51px] text-[#000000] bg-[#FFFFFF] border-[#000000] flex justify-center items-center"
                     onClick={handleAddToCart}
                   >
                     {buttonText}
                   </button>
                 </div>
                 <button
-                  className="w-[154.359px] xl:w-[301px] h-full text-[10.256px] xl:text-xl  leading-[12.308px] rounded-[35.9px] font-medium bg-primaryMain text-[#FFFFFF] hover:bg-purple-500 flex justify-center items-center"
+                  className="w-[154.359px] xl:w-[301px] h-full text-[14px] xl:text-xl  leading-[12.308px] rounded-[35.9px] font-medium bg-primaryMain text-[#FFFFFF] hover:bg-purple-500 flex justify-center items-center"
                   onClick={handleBuyNow}
                 >
                   Buy Now

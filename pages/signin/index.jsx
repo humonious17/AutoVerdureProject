@@ -134,7 +134,10 @@ const Signin = () => {
             Welcome back
           </p>
           <p className="w-full text-sm leading-[22.4px] font-medium text-[#8E8F94]">
-          A portal to your green world with orders, learning guides and complete profile dashboard with a simple sign in..
+            A green portal to your profile <br /> Sign in to check your orders,
+            specific learning guides and gain complete control of your profile
+            with redeemable loyalty points, saved payment methods and much
+            more..
           </p>
         </div>
 
@@ -157,8 +160,6 @@ const Signin = () => {
             data-text="signin_with"
             data-size="large"
             data-logo_alignment="center"
-            
-            
           ></div>
         </div>
 

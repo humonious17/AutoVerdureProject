@@ -1,7 +1,14 @@
 const { VertexAI } = require("@google-cloud/vertexai");
+
+const auth = new GoogleAuth({
+  credentials: JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEYS),
+  scopes: ["https://www.googleapis.com/auth/cloud-platform"],
+});
+
 const vertex_ai = new VertexAI({
   project: process.env.VERTEX_AI_PROJECT || "elegant-works-429712-a7",
   location: process.env.VERTEX_AI_LOCATION || "us-central1",
+  authClient: await auth.getClient(),
 });
 const model = "gemini-1.5-flash-001";
 // Instantiate the models

@@ -9,10 +9,10 @@ const ProductImageGallery = ({ orderDetails }) => {
 
   // Determine grid columns based on number of images
   const getGridColumns = (totalImages) => {
-    if (totalImages <= 2) return "grid-cols-2";
-    if (totalImages <= 3) return "grid-cols-3";
-    if (totalImages <= 4) return "grid-cols-4";
-    return "grid-cols-3 md:grid-cols-4 lg:grid-cols-5";
+    if (totalImages <= 2) return "grid-cols-1 sm:grid-cols-2";
+    if (totalImages <= 3) return "grid-cols-1 sm:grid-cols-3";
+    if (totalImages <= 4) return "grid-cols-1 sm:grid-cols-4";
+    return "grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5";
   };
 
   // Flatten products into a single array of images
@@ -34,7 +34,7 @@ const ProductImageGallery = ({ orderDetails }) => {
   return (
     <div className="w-full">
       {/* Image Grid */}
-      <div className={`grid ${gridColumnClass} gap-4 sm:gap-6`}>
+      <div className={`grid ${gridColumnClass} gap-4 sm:gap-6 place-items-center`}>
         {productImages.map((product, idx) => (
           <motion.div
             key={idx}
@@ -86,7 +86,7 @@ const Successful = () => {
       <div className="max-w-4xl mx-auto">
         {/* Success Header */}
         <div className="text-center mb-10">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+          <h1 className="text-4xl font-md text-gray-900 mb-4">
             Thank You for Your Purchase!
           </h1>
           <p className="text-lg text-gray-600">

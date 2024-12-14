@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Manrope:wght@200..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap");
 @import url("https://fonts.cdnfonts.com/css/sf-pro-display");
-@import 'react-quill/dist/quill.snow.css';
+@import "react-quill/dist/quill.snow.css";
 
 @tailwind base;
 @tailwind components;
@@ -96,7 +96,7 @@ input[type="number"] {
   flex-shrink: 0;
 }
 input:-webkit-autofill {
-  background-color: #9A5CF5 !important; /* Purple background */
+  background-color: #9a5cf5 !important; /* Purple background */
   color: white !important; /* White text for contrast */
   transition: background-color;
 }
@@ -373,17 +373,16 @@ body {
   .image-container img {
     transform: scale(1.6); /* Adjust scale for iPad */
     top: 70px;
-   margin-right: -120px;
+    margin-right: -120px;
   }
 }
 @media (min-width: 540px) and (max-width: 720px) {
   .image-container img {
     transform: scale(1.4); /* Adjust scale for iPad */
     top: 70px;
-   margin-right: -120px;
+    margin-right: -120px;
   }
 }
-
 
 @media (max-width: 768px) {
   .chatbot-container {
@@ -391,4 +390,46 @@ body {
   }
 }
 
+.form-control {
+  height: 40px !important;
+  width: 490px !important;
+  border-radius: 2rem !important;
+  margin-left: 70px !important;
+  background-color: #fffbf7 !important;
+  padding: 0.5rem 1rem !important;
+  color: #111827 !important;
+  border: 1px solid #d1d5db !important;
+  transition: border-color 0.3s ease !important;
+}
 
+.form-control::placeholder {
+  color: #6b7280 !important;
+}
+
+.form-control:focus {
+  outline: none !important;
+  border-color: #856cff !important;
+}
+
+.flag-dropdown {
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+  border-radius: 2rem !important;
+  background-color: #fffbf7 !important;
+}
+
+.react-tel-input {
+  height: 40px !important;
+  width: 540px !important;
+  background-color: #fffbf7 !important;
+}
+
+.react-tel-input .selected-flag {
+  padding-left: 8px !important;
+  border-radius: 2rem !important;
+}
+
+.flag-dropdown:focus {
+  outline: none !important;
+  border-color: #856cff !important;
+}

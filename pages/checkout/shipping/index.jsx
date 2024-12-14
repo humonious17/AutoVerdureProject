@@ -11,7 +11,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import findCartProducts from "@/lib/server/findCartProducts";
-import { ChevronDown } from "lucide-react";
 
 const countryCodes = [
   { code: "+91", country: "IN", name: "India" },
@@ -53,7 +52,7 @@ const Shipping = ({ email, cartProducts }) => {
     houseNumber: "",
     city: "",
     phone: "",
-    countryCode: "+1",
+    countryCode: "+91",
     country: "",
     zipCode: "",
   });

@@ -1,4 +1,5 @@
 const { VertexAI } = require("@google-cloud/vertexai");
+const { GoogleAuth } = require("google-auth-library");
 
 const auth = new GoogleAuth({
   credentials: JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEYS),

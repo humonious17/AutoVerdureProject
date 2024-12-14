@@ -149,7 +149,7 @@ const ContactUs = () => {
             >
               <div className="w-full flex flex-col gap-y-[7px] justify-center items-center md:justify-normal md:items-start">
                 <p className="text-[40px] md:text-[50px] leading-[48px] -tracking-[1px] font-normal text-primaryGrayscale">
-                  Our Contact Details
+                  Get in Touch
                 </p>
                 <p className="text-sm leading-6 text-center md:text-start font-normal text-secondaryGrayscale">
                   We&apos;d love to hear from you! Please fill out the form

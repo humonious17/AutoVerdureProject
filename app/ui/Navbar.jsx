@@ -445,7 +445,7 @@ const Navbar = () => {
                   rounded-full 
                   focus:outline-none 
                   focus:ring-2 
-                  focus:ring-blue-500 
+                  focus:ring-primaryMain 
                   transition-all 
                   duration-100
                   group-hover:shadow-md

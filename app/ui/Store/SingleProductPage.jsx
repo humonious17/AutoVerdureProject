@@ -593,7 +593,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
       </Head>
       <div className="pt-[13px] sm:pt-[29px] xl:pt-[96.5px] pb-[0px] flex flex-col justify-center items-center">
         {/* Navigation */}
-        <div className="w-full text-[17px] leading-[30px] text-[#5B5B5B] font-normal flex flex-col sm:flex-row justify-between items-center mt-[68px] sm:mt-0 gap-4">
+        <div className="w-full text-[17px] leading-[30px] text-[#5B5B5B] font-normal flex flex-col sm:flex-row justify-between items-center mt-[68px] sm:mt-0 gap-4 px-4">
           <div className="w-full flex items-center justify-between">
             <p className="flex flex-wrap justify-center sm:justify-start gap-[19px]">
               <Link href="/">

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/hooks/use-toast";
@@ -12,12 +14,6 @@ import {
 } from "@/components/ui/select";
 import findCartProducts from "@/lib/server/findCartProducts";
 
-const countryCodes = [
-  { code: "+91", country: "IN", name: "India" },
-  { code: "+1", country: "US", name: "United States" },
-  { code: "+44", country: "UK", name: "United Kingdom" },
-];
-
 const validateForm = (formData) => {
   const errors = {};
   if (!formData.fullName?.trim()) errors.fullName = "Full name is required";
@@ -29,11 +25,6 @@ const validateForm = (formData) => {
   if (!formData.country?.trim()) errors.country = "Country is required";
   if (!formData.zipCode?.trim()) errors.zipCode = "ZIP code is required";
   if (!formData.phone?.trim()) errors.phone = "Phone number is required";
-
-  const phoneRegex = /^\+?[\d\s-]{8,}$/;
-  if (formData.phone && !phoneRegex.test(formData.phone)) {
-    errors.phone = "Invalid phone number";
-  }
 
   return errors;
 };
@@ -52,7 +43,6 @@ const Shipping = ({ email, cartProducts }) => {
     houseNumber: "",
     city: "",
     phone: "",
-    countryCode: "+91",
     country: "",
     zipCode: "",
   });
@@ -98,11 +88,17 @@ const Shipping = ({ email, cartProducts }) => {
     }
   };
 
-  const handleCountryCodeChange = (value) => {
+  const handlePhoneChange = (value, country) => {
     setFormData((prev) => ({
       ...prev,
-      countryCode: value,
+      phone: value,
+      countryCode: `+${country.dialCode}`,
+      country: country.countryCode.toUpperCase(),
     }));
+    // Clear phone error when a valid phone is entered
+    if (fieldErrors.phone) {
+      setFieldErrors((prev) => ({ ...prev, phone: "" }));
+    }
   };
 
   const calculateTotal = () => {
@@ -176,7 +172,7 @@ const Shipping = ({ email, cartProducts }) => {
           products,
           shippingDetails: {
             ...formData,
-            phone: `${formData.countryCode}${formData.phone}`,
+            phone: formData.phone, // Phone is now already in full international format
           },
           email: email || localStorage.getItem("userEmail"),
           isBuyNow,
@@ -238,49 +234,58 @@ const Shipping = ({ email, cartProducts }) => {
             </div>
           )}
 
-          {Object.keys(formData).map((field) => {
-            if (field === "countryCode") return null;
-
-            return (
-              <div key={field} className="flex flex-col mb-4">
-                <label className="text-sm font-semibold text-[#070707] mb-2">
-                  {field
-                    .split(/(?=[A-Z])/)
-                    .map(
-                      (word) =>
-                        word.charAt(0).toUpperCase() +
-                        word.slice(1).toLowerCase()
-                    )
-                    .join(" ")}
-                </label>
-                {field === "phone" ? (
-                  <div className="flex gap-x-2">
-                    <Select
-                      value={formData.countryCode}
-                      onValueChange={handleCountryCodeChange}
-                    >
-                      <SelectTrigger className="w-[100px] h-[48px] rounded-full bg-[#fffbf7]">
-                        <SelectValue placeholder="Code" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {countryCodes.map((country) => (
-                          <SelectItem key={country.code} value={country.code}>
-                            {country.code} ({country.country})
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <Input
-                      name="phone"
-                      placeholder="Phone number"
-                      type="tel"
+          {Object.keys(formData)
+            .filter((field) => field !== "countryCode")
+            .map((field) => {
+              if (field === "phone") {
+                return (
+                  <div key={field} className="flex flex-col mb-4">
+                    <label className="text-sm font-semibold text-[#070707] mb-2">
+                      Phone Number
+                    </label>
+                    <PhoneInput
+                      country={"in"}
                       value={formData.phone}
-                      onChange={handleInputChange}
-                      error={fieldErrors.phone}
-                      className="flex-1 rounded-full border border-gray-300"
+                      onChange={handlePhoneChange}
+                      inputStyle={{
+                        width: "100%",
+                        height: "48px",
+                        borderRadius: "9999px",
+                        border: fieldErrors.phone
+                          ? "1px solid red"
+                          : "1px solid #D1D5DB",
+                      }}
+                      buttonStyle={{
+                        borderRadius: "9999px 0 0 9999px",
+                        border: fieldErrors.phone
+                          ? "1px solid red"
+                          : "1px solid #D1D5DB",
+                      }}
+                      placeholder="Enter phone number"
+                      searchPlaceholder="Search country"
+                      enableSearch={true}
                     />
+                    {fieldErrors.phone && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {fieldErrors.phone}
+                      </p>
+                    )}
                   </div>
-                ) : (
+                );
+              }
+
+              return (
+                <div key={field} className="flex flex-col mb-4">
+                  <label className="text-sm font-semibold text-[#070707] mb-2">
+                    {field
+                      .split(/(?=[A-Z])/)
+                      .map(
+                        (word) =>
+                          word.charAt(0).toUpperCase() +
+                          word.slice(1).toLowerCase()
+                      )
+                      .join(" ")}
+                  </label>
                   <Input
                     name={field}
                     placeholder={field.split(/(?=[A-Z])/).join(" ")}
@@ -288,12 +293,11 @@ const Shipping = ({ email, cartProducts }) => {
                     value={formData[field]}
                     onChange={handleInputChange}
                     error={fieldErrors[field]}
-                    className="rounded-full border border-gray-300"
+                    className="rounded-full border border-gray-300 bg-white focus:bg-primaryMain/10"
                   />
-                )}
-              </div>
-            );
-          })}
+                </div>
+              );
+            })}
 
           <Button
             type="submit"
@@ -309,6 +313,7 @@ const Shipping = ({ email, cartProducts }) => {
     </div>
   );
 };
+
 export async function getServerSideProps({ req, query }) {
   const currentUser = require("@/lib/server/currentUser").default;
   const user = await currentUser(req);

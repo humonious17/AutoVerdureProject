@@ -131,18 +131,17 @@ const Signin = () => {
         {/* Title */}
         <div className="w-full flex flex-col gap-y-2 sm:gap-y-3">
           <p className="text-2xl sm:text-[32px] leading-8 font-normal capitalize text-[#070707]">
-            Welcome back
+            Sign In
           </p>
           <p className="w-full text-sm leading-[22.4px] font-medium text-[#8E8F94]">
-            A green portal to your profile <br /> Sign in to check your orders,
-            specific learning guides and gain complete control of your profile
-            with redeemable loyalty points, saved payment methods and much
-            more..
+            Sign in to track your orders, access tailored guides, and manage
+            your profile with redeemable loyalty points, saved payment methods,
+            and more...
           </p>
         </div>
 
         {/* Google and Apple Authentication */}
-        <div className="mt-8 sm:mt-[52px] w-full flex flex-col justify-center sm:flex-row gap-y-4 sm:gap-x-4">
+        <div className="mt-8 sm:mt-[52px] w-full flex flex-col items-center justify-center gap-y-4 sm:flex-row sm:gap-x-4">
           <div
             id="g_id_onload"
             data-client_id="39593396169-ppn7dc7v4huovmuromku2k01s26kngfa.apps.googleusercontent.com"

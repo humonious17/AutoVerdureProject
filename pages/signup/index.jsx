@@ -121,20 +121,20 @@ const Signin = (prop) => {
   };
   return (
     <div className="px-4 sm:px-0 pt-16 sm:pt-[80px] mt-8 sm:mt-[55px] mb-8 sm:mb-[41px] lg:mb-[152px] lg:pl-[70px] w-full flex flex-col lg:flex-row lg:gap-[57px] xl:gap-x-[152px] justify-center lg:justify-start items-start overflow-x-hidden">
-    {/* Left Section with Text */}
-    <div className="mb-8 sm:mb-[46px] lg:mb-0 w-full lg:w-[560px] px-0 sm:px-[50px] lg:px-0 flex flex-col justify-center items-start">
-      {/* Title */}
-      <div className="w-full flex flex-col gap-y-2 sm:gap-y-3">
-        <p className="text-2xl sm:text-[32px] leading-8 font-normal capitalize text-[#070707]">
-            Welcome back
+      {/* Left Section with Text */}
+      <div className="mb-8 sm:mb-[46px] lg:mb-0 w-full lg:w-[560px] px-0 sm:px-[50px] lg:px-0 flex flex-col justify-center items-start">
+        {/* Title */}
+        <div className="w-full flex flex-col gap-y-2 sm:gap-y-3">
+          <p className="text-2xl sm:text-[32px] leading-8 font-normal capitalize text-[#070707]">
+            Sign Up
           </p>
           <p className="w-full text-sm leading-[22.4px] font-medium text-[#8E8F94]">
             Join to start shopping and stay up-to-date on the latest deals.
           </p>
         </div>
 
-        {/* Google and Apple Authentication */}
-        <div className="mt-8 sm:mt-[52px] w-full flex flex-col justify-center sm:flex-row gap-y-4 sm:gap-x-4">
+        {/* Google Authentication */}
+        <div className="mt-8 sm:mt-[52px] w-full flex flex-col items-center justify-center gap-y-4 sm:flex-row sm:gap-x-4">
           <div
             id="g_id_onload"
             data-client_id="39593396169-ppn7dc7v4huovmuromku2k01s26kngfa.apps.googleusercontent.com"
@@ -145,14 +145,13 @@ const Signin = (prop) => {
           ></div>
 
           <div
-            className="g_id_signin w-full sm:w-[380px] md:w-[400px] lg:w-[400px]"
+            className="g_id_signin w-full sm:w-full md:w-full lg:w-full"
             data-type="standard"
             data-shape="pill"
             data-theme="outline"
             data-text="signup_with"
             data-size="large"
             data-logo_alignment="center"
-            
           ></div>
         </div>
 
@@ -230,9 +229,9 @@ const Signin = (prop) => {
       </div>
 
       <div className="flex justify-center items-center w-full md:w-[820px] lg:w-[710px]">
-        <div className="w-full xl:mt-[210px] lg:mt-[180px] h-[280px] sm:w-[430.65px] sm:h-[340px] md:w-[640px] md:h-[440px] lg:w-[558.65px] lg:h-[582px] xl:w-[725.65px] xl:h-[590px] overflow-hidden  shadow-lg rounded-lg">
-      <video
-            className="w-full h-full object-cover rounded-lg"
+        <div className="w-full xl:mt-[210px] lg:mt-[180px] h-[280px] sm:w-[430.65px] sm:h-[340px] md:w-[640px] md:h-[440px] lg:w-[558.65px] lg:h-[582px] xl:w-[725.65px] xl:h-[590px] overflow-hidden rounded-lg bg-[#fffbf7]">
+          <video
+            className="w-full h-full object-cover rounded-lg py-8"
             src="/signup.mp4"
             playsInline
             autoPlay

@@ -173,7 +173,7 @@ const Cart = ({ products = [] }) => {
                       </p>
                       <Link
                         href="/"
-                        className="text-primaryMain hover:purple-300 font-medium mt-2 inline-block"
+                        className="text-primaryMain hover:text-purple-300 font-medium mt-2 inline-block"
                       >
                         Start shopping
                       </Link>
@@ -189,9 +189,9 @@ const Cart = ({ products = [] }) => {
                           exit={{ opacity: 0, y: -20 }}
                           className="py-4 md:py-6"
                         >
-                          <div className="flex flex-col md:grid md:grid-cols-12 gap-4">
-                            {/* Mobile: Product Image and Name */}
-                            <div className="flex items-start space-x-4 md:col-span-6">
+                          <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+                            {/* Product Image and Name */}
+                            <div className="md:col-span-6 flex items-center space-x-4">
                               <div className="relative h-24 w-24 flex-shrink-0 rounded-lg overflow-hidden">
                                 <Image
                                   src={item.productImage}
@@ -211,62 +211,58 @@ const Cart = ({ products = [] }) => {
                               </div>
                             </div>
 
-                            {/* Mobile: Quantity and Actions */}
-                            <div className="flex items-center justify-between mt-4 md:mt-0 md:col-span-6">
-                              <div className="flex items-center space-x-4 md:grid md:grid-cols-3 md:gap-4 md:items-center w-full">
-                                {/* Desktop: Price */}
-                                <div className="hidden md:block text-gray-900 font-medium text-right">
-                                  {formatPrice(item.price)}
-                                </div>
+                            {/* Quantity, Price, and Actions */}
+                            <div className="md:col-span-6 grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+                              {/* Desktop: Price */}
+                              <div className="hidden md:block text-gray-900 font-medium text-right">
+                                {formatPrice(item.price)}
+                              </div>
 
-                                {/* Quantity Controls */}
-                                <div className="flex items-center">
-                                  <motion.button
-                                    whileTap={{ scale: 0.95 }}
-                                    onClick={() =>
-                                      updateQuantity(
-                                        item.cartObjId,
-                                        item.productQty - 1
-                                      )
-                                    }
-                                    className="w-8 h-8 flex items-center justify-center border rounded-l-md hover:bg-gray-50 transition-colors"
-                                  >
-                                    -
-                                  </motion.button>
-                                  <span className="w-12 h-8 flex items-center justify-center border-t border-b bg-white">
-                                    {item.productQty}
-                                  </span>
-                                  <motion.button
-                                    whileTap={{ scale: 0.95 }}
-                                    onClick={() =>
-                                      updateQuantity(
-                                        item.cartObjId,
-                                        item.productQty + 1
-                                      )
-                                    }
-                                    className="w-8 h-8 flex items-center justify-center border rounded-r-md hover:bg-gray-50 transition-colors"
-                                  >
-                                    +
-                                  </motion.button>
-                                </div>
+                              {/* Quantity Controls */}
+                              <div className="flex justify-left items-center">
+                                <motion.button
+                                  whileTap={{ scale: 0.95 }}
+                                  onClick={() =>
+                                    updateQuantity(
+                                      item.cartObjId,
+                                      item.productQty - 1
+                                    )
+                                  }
+                                  className="w-8 h-8 flex items-center justify-center border rounded-l-md hover:bg-gray-50 transition-colors"
+                                >
+                                  -
+                                </motion.button>
+                                <span className="w-12 h-8 flex items-center justify-center border-t border-b bg-white">
+                                  {item.productQty}
+                                </span>
+                                <motion.button
+                                  whileTap={{ scale: 0.95 }}
+                                  onClick={() =>
+                                    updateQuantity(
+                                      item.cartObjId,
+                                      item.productQty + 1
+                                    )
+                                  }
+                                  className="w-8 h-8 flex items-center justify-center border rounded-r-md hover:bg-gray-50 transition-colors"
+                                >
+                                  +
+                                </motion.button>
+                              </div>
 
-                                {/* Subtotal and Remove */}
-                                <div className="flex items-center justify-between md:justify-end space-x-4">
-                                  <span className="text-gray-900 font-medium whitespace-nowrap">
-                                    {formatPrice(item.price * item.productQty)}
-                                  </span>
-                                  <motion.button
-                                    whileHover={{ scale: 1.1 }}
-                                    whileTap={{ scale: 0.9 }}
-                                    onClick={() =>
-                                      removeCartItem(item.cartObjId)
-                                    }
-                                    disabled={isRemoving}
-                                    className="p-2 text-gray-400 hover:text-red-500 transition-colors"
-                                  >
-                                    <Trash2 className="h-5 w-5" />
-                                  </motion.button>
-                                </div>
+                              {/* Subtotal and Remove */}
+                              <div className="flex justify-between md:justify-end items-center space-x-4">
+                                <span className="text-gray-900 font-medium whitespace-nowrap">
+                                  {formatPrice(item.price * item.productQty)}
+                                </span>
+                                <motion.button
+                                  whileHover={{ scale: 1.1 }}
+                                  whileTap={{ scale: 0.9 }}
+                                  onClick={() => removeCartItem(item.cartObjId)}
+                                  disabled={isRemoving}
+                                  className="p-2 text-gray-400 hover:text-red-500 transition-colors"
+                                >
+                                  <Trash2 className="h-5 w-5" />
+                                </motion.button>
                               </div>
                             </div>
                           </div>

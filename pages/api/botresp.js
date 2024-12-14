@@ -22,7 +22,6 @@ const vertex_ai = new VertexAI({
   authClient: await auth.getClient(),
 });
 const model = "gemini-1.5-flash-001";
-// Instantiate the models
 const generativeModel = vertex_ai.getGenerativeModel({
   model: model,
   generationConfig: {

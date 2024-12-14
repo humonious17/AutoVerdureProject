@@ -1020,24 +1020,22 @@ export default function Home() {
       }
 
       {/* IBM Watson Assistant */}
-      {
-        // {useEffect(() => {
-        //   window.watsonAssistantChatOptions = {
-        //     integrationID: "e090b9a0-0723-47e0-9df2-61d7307d4bda",
-        //     region: "jp-tok",
-        //     serviceInstanceID: "305b8f41-31f1-4bc8-a5b6-1ed8a8cb069a",
-        //     onLoad: async (instance) => {
-        //       await instance.render();
-        //     },
-        //   };
-        //   const script = document.createElement("script");
-        //   script.src = `https://web-chat.global.assistant.watson.appdomain.cloud/versions/latest/WatsonAssistantChatEntry.js`;
-        //   document.head.appendChild(script);
-        //   return () => {
-        //     document.head.removeChild(script);
-        //   };
-        // }, [])}
-      }
+      {/* {useEffect(() => {
+        window.watsonAssistantChatOptions = {
+          integrationID: "e090b9a0-0723-47e0-9df2-61d7307d4bda",
+          region: "jp-tok",
+          serviceInstanceID: "305b8f41-31f1-4bc8-a5b6-1ed8a8cb069a",
+          onLoad: async (instance) => {
+            await instance.render();
+          },
+        };
+        const script = document.createElement("script");
+        script.src = `https://web-chat.global.assistant.watson.appdomain.cloud/versions/latest/WatsonAssistantChatEntry.js`;
+        document.head.appendChild(script);
+        return () => {
+          document.head.removeChild(script);
+        };
+      }, [])} */}
     </div>
   );
 }

@@ -1,6 +1,16 @@
 const { VertexAI } = require("@google-cloud/vertexai");
 const { GoogleAuth } = require("google-auth-library");
 
+try {
+  console.log("Credentials:", process.env.FIREBASE_SERVICE_ACCOUNT_KEYS);
+  const parsedCredentials = JSON.parse(
+    process.env.FIREBASE_SERVICE_ACCOUNT_KEYS
+  );
+  console.log("Parsed Credentials:", parsedCredentials);
+} catch (parseError) {
+  console.error("Credential Parsing Error:", parseError);
+}
+
 const auth = new GoogleAuth({
   credentials: JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEYS),
   scopes: ["https://www.googleapis.com/auth/cloud-platform"],

@@ -269,9 +269,9 @@ const SingleProductPage = ({ productData, allProducts }) => {
                   priority
                 />
                 {/* Small Icon */}
-                <div className="flex w-fit xl:flex flex-col gap-[12px] absolute top-[21.18px] right-[29px]">
+                <div className="flex w-fit xl:flex flex-col gap-[12px] absolute top-[21.18px] right-[22px]">
                   {productData.petFriendly === "true" ? (
-                    <div className="w-[48px] h-[48px] p-[10px] rounded-2xl bg-[#FFFFFF]">
+                    <div className="w-[38px] h-[38px] p-[10px] rounded-xl bg-[#fffbf7]/50">
                       <Image
                         src="/veterinary.png"
                         alt="veterinary"
@@ -283,7 +283,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
                     <></>
                   )}
                   {productData.petUnfriendly === "true" ? (
-                    <div className="w-[48px] h-[48px] p-[10px] rounded-2xl bg-[#FFFFFF]">
+                    <div className="w-[38px] h-[38px] p-[10px] rounded-xl  bg-[#fffbf7]/50">
                       <Image
                         src="/pf.png"
                         alt="veterinary"
@@ -295,7 +295,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
                     <></>
                   )}
                   {productData.lessLight === "true" ? (
-                    <div className="w-[48px] h-[48px] p-[10px] rounded-2xl bg-[#FFFFFF]">
+                    <div className="w-[38px] h-[38px] p-[10px] rounded-xl  bg-[#fffbf7]/50">
                       <Image
                         src="/noLight.png"
                         alt="noLight"
@@ -307,7 +307,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
                     <></>
                   )}
                   {productData.moreLight === "true" ? (
-                    <div className="w-[50px] h-[50px] p-[10px] rounded-2xl bg-[#FFFFFF]">
+                    <div className="w-[38px] h-[38px] p-[10px] rounded-xl bg-[#fffbf7]/50">
                       <Image
                         src="/brightness.png"
                         alt="brightness"
@@ -427,6 +427,57 @@ const SingleProductPage = ({ productData, allProducts }) => {
               )}
           </div>
         )}
+      </div>
+    );
+  };
+
+  const PointsDropdown = ({ price }) => {
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+    const toggleDropdown = () => {
+      setIsDropdownOpen(!isDropdownOpen);
+    };
+
+    return (
+      <div className="mt-[37.5px] sm:mt-6 w-full flex flex-col gap-6 p-2 xl:p-5 rounded-xl border-[1px] bg-primaryMain bg-opacity-10 border-primaryMain">
+      <div className="w-full flex justify-between items-center">
+        <div className="w-full flex gap-2 items-center">
+        <Image
+          className="object-contain"
+          src="/badgeDiscount.svg"
+          alt="badgeDiscount"
+          width={32}
+          height={32}
+        />
+        <p className="text-sm xl:text-[18px] leading-7 font-medium text-[#0C0C0C]">
+          Earn {Math.floor(price / 100)} Points with this purchase
+        </p>
+        </div>
+        <button onClick={toggleDropdown} className="focus:outline-none">
+        <Image
+          className="object-contain cursor-pointer"
+          src="/info.svg"
+          alt="Info"
+          width={32}
+          height={32}
+        />
+        </button>
+      </div>
+
+      {/* Login/Signup Dropdown */}
+      {isDropdownOpen && (
+        <div>
+        <p className="text-xs font-medium text-black leading-6">
+          To know more about your redeemable points visit{" "}
+          <Link href="/profile" className="text-[#0000EE] hover:underline">
+          /profile
+          </Link>
+        </p>
+        <div className="text-xs font-medium leading-6 underline text-[#0000EE]">
+          <p>(Login/Signup)</p>
+        </div>
+        </div>
+      )}
       </div>
     );
   };
@@ -699,56 +750,28 @@ const SingleProductPage = ({ productData, allProducts }) => {
               </div>
             </div>
             {/* Discount Card */}
-            <div className="mt-[37.5px] sm:mt-6 w-full flex flex-col gap-6 p-2 xl:p-5 rounded-xl border-[1px] bg-primaryMain bg-opacity-10 border-primaryMain">
-              <div className="w-full flex justify-between items-center">
-                <div className="w-full flex gap-2 items-center">
-                  <Image
-                    className="object-contain"
-                    src="/badgeDiscount.svg"
-                    alt="badgeDiscount"
-                    width={32}
-                    height={32}
-                  />
-                  <p className="text-sm xl:text-[18px] leading-7 font-medium text-[#0C0C0C]">
-                    Earn {Math.floor(price / 100)} Points with this purchase{" "}
-                    {/* AV Points */}
-                  </p>
-                </div>
-                <Image
-                  className="object-contain"
-                  src="/info.svg"
-                  alt="badgeDiscount"
-                  width={32}
-                  height={32}
-                />
-              </div>
+            <PointsDropdown price={price} />
 
-              {/* Login/Signup Information */}
-              <div className="text-xs font-medium leading-6 underline text-[#0000EE]">
-                <p>(Login/Signup)</p>
-              </div>
-            </div>
             {error && <p className="text-red-600 mt-2">{error}</p>}
             {productData.stockQuantity > 0 ? (
               /* Quantity, Add to cart, Buy now */
               <div className="mt-[18.5px] sm:mt-6 w-full h-[45px] xl:h-16 flex gap-[18px] justify-between xl:justify-between">
-                <div className="flex justify-between gap-2">
-                  <div className="w-[70px] xl:w-[123px] h-full rounded-[29.2px] border-[0.51px] bg-[#FFFFFF] border-[#8d8d8d] flex justify-center items-center">
-                    <button className="px-2 py-1" onClick={decrementQuantity}>
-                      -
-                    </button>
-                    <span className="px-2">{stockQuantity}</span>
-                    <button className="px-2 py-1" onClick={incrementQuantity}>
-                      +
-                    </button>
-                  </div>
-                  <button
-                    className="w-[96px] xl:w-[166px] h-full text-[14px] xl:text-xl rounded-[29.7px] border-[0.51px] text-[#000000] bg-[#FFFFFF] border-[#000000] flex justify-center items-center"
-                    onClick={handleAddToCart}
-                  >
-                    {buttonText}
+                <div className="w-[70px] xl:w-[123px] h-full rounded-[29.2px] border-[0.51px] bg-[#FFFFFF] border-[#8d8d8d] flex justify-center items-center">
+                  <button className="px-2 py-1" onClick={decrementQuantity}>
+                    -
+                  </button>
+                  <span className="px-2">{stockQuantity}</span>
+                  <button className="px-2 py-1" onClick={incrementQuantity}>
+                    +
                   </button>
                 </div>
+                <button
+                  className="w-[96px] xl:w-[166px] h-full text-[14px] xl:text-xl rounded-[29.7px] border-[0.51px] text-[#000000] bg-[#FFFFFF] border-[#000000] flex justify-center items-center"
+                  onClick={handleAddToCart}
+                >
+                  {buttonText}
+                </button>
+
                 <button
                   className="w-[154.359px] xl:w-[301px] h-full text-[14px] xl:text-xl  leading-[12.308px] rounded-[35.9px] font-medium bg-primaryMain text-[#FFFFFF] hover:bg-purple-500 flex justify-center items-center"
                   onClick={handleBuyNow}

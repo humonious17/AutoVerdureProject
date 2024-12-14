@@ -3,15 +3,10 @@
 
 import Image from "next/image";
 import React from "react";
-import AboutUsCard from "../ui/AboutUs/AboutUsCard";
-import { aboutUs } from "../constant/data";
 import FAQ from "../ui/AboutUs/FAQ";
 import Link from "next/link";
-import { CldVideoPlayer } from "next-cloudinary";
 import "next-cloudinary/dist/cld-video-player.css";
 import { useState } from "react";
-import { motion } from "framer-motion";
-import { useInView } from "react-intersection-observer";
 import StackedCardsSection from "./StackedCardSection";
 
 const AboutUs = () => {
@@ -21,7 +16,7 @@ const AboutUs = () => {
     setIsExpanded((prev) => !prev);
   };
   return (
-    <div className="w-full px-4 pt-[80px] pb-[124px] md:px-[28px] md:py-[116px] xl:px-[119.99px] xl:pt-[114px] xl:pb-[151px] 2xl:px-[200px] 2xl:py-[116px] bg-[#FFFBF7] flex flex-col justify-center items-center">
+    <div className="w-full px-4 pt-[120px] pb-[124px] md:px-[28px] md:py-[116px] xl:px-[119.99px] xl:pt-[114px] xl:pb-[151px] 2xl:px-[200px] 2xl:py-[116px] bg-[#FFFBF7] flex flex-col justify-center items-center">
       {/* Title */}
       <div className="max-w-[219px] md:max-w-[382px] w-full relative  ">
         <div>

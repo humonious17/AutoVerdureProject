@@ -1,23 +1,96 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 
 const ContentSections = () => {
-  const [visibleSectionRow1, setVisibleSectionRow1] = useState(0); // For first row
-  const [visibleSectionRow2, setVisibleSectionRow2] = useState(0); // For second row
+  const [visibleSectionRow1, setVisibleSectionRow1] = useState(0);
+  const [visibleSectionRow2, setVisibleSectionRow2] = useState(0);
 
+  // Touch event tracking with improved precision
+  const touchStartRef = useRef(null);
+  const touchEndRef = useRef(null);
+  const [isDragging, setIsDragging] = useState(false);
+
+  // the required distance between touchStart and touchEnd to be detected as a swipe
+  const minSwipeDistance = 50;
+  const maxSwipeTime = 300; // milliseconds
+
+  const handleSwipe = useCallback((row, direction) => {
+    const updateSection =
+      row === 1 ? setVisibleSectionRow1 : setVisibleSectionRow2;
+
+    updateSection((prev) => {
+      if (direction === "next") {
+        return (prev + 1) % 2;
+      } else {
+        return (prev - 1 + 2) % 2;
+      }
+    });
+  }, []);
+
+  const onTouchStart = useCallback((e) => {
+    touchStartRef.current = {
+      x: e.targetTouches[0].clientX,
+      time: Date.now(),
+    };
+    touchEndRef.current = null;
+    setIsDragging(true);
+  }, []);
+
+  const onTouchMove = useCallback(
+    (e) => {
+      if (!isDragging) return;
+      touchEndRef.current = {
+        x: e.targetTouches[0].clientX,
+        time: Date.now(),
+      };
+    },
+    [isDragging]
+  );
+
+  const onTouchEnd = useCallback(
+    (row) => {
+      if (!touchStartRef.current || !touchEndRef.current) {
+        setIsDragging(false);
+        return;
+      }
+
+      const { x: startX, time: startTime } = touchStartRef.current;
+      const { x: endX, time: endTime } = touchEndRef.current;
+
+      const distance = startX - endX;
+      const timeDiff = endTime - startTime;
+
+      // Check if swipe is valid (within time and distance thresholds)
+      const isValidSwipe =
+        Math.abs(distance) > minSwipeDistance && timeDiff < maxSwipeTime;
+
+      if (isValidSwipe) {
+        const direction = distance > 0 ? "next" : "prev";
+        handleSwipe(row, direction);
+      }
+
+      // Reset dragging state
+      setIsDragging(false);
+      touchStartRef.current = null;
+      touchEndRef.current = null;
+    },
+    [handleSwipe]
+  );
+
+  // Auto-advance sections every 10 seconds
   useEffect(() => {
     const interval1 = setInterval(() => {
-      setVisibleSectionRow1((prevSection) => (prevSection + 1) % 2); // Cycle through 2 sections in row 1
-    }, 10000); // Change section every 10 seconds in row 1
+      setVisibleSectionRow1((prevSection) => (prevSection + 1) % 2);
+    }, 10000);
 
     const interval2 = setInterval(() => {
-      setVisibleSectionRow2((prevSection) => (prevSection + 1) % 2); // Cycle through 2 sections in row 2
-    }, 10000); // Change section every 10 seconds in row 2
+      setVisibleSectionRow2((prevSection) => (prevSection + 1) % 2);
+    }, 10000);
 
     return () => {
-      clearInterval(interval1); // Cleanup interval for row 1
-      clearInterval(interval2); // Cleanup interval for row 2
+      clearInterval(interval1);
+      clearInterval(interval2);
     };
   }, []);
 
@@ -56,14 +129,19 @@ const ContentSections = () => {
       playsInline: true,
       autoPlay: true,
       muted: true,
-      loop: true
+      loop: true,
     },
   ];
 
   return (
     <div className="w-full flex flex-col justify-center">
       {/* First Row (Mobile View Only) */}
-      <div className="block md:hidden w-full">
+      <div
+        className="block md:hidden w-full"
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={() => onTouchEnd(1)}
+      >
         {sections.slice(0, 2).map((section, index) => (
           <div
             key={section.id}
@@ -78,7 +156,11 @@ const ContentSections = () => {
                     alt={section.title}
                     width={646.67}
                     height={300}
-                    style={{ width: "100%", height: "300px" }}
+                    style={{
+                      width: "100%",
+                      height: "300px",
+                      transition: "opacity 0.3s ease-in-out",
+                    }}
                   />
                 ) : (
                   <video
@@ -89,7 +171,11 @@ const ContentSections = () => {
                     loop
                     autoPlay
                     muted
-                    style={{ width: "100%", height: "auto" }}
+                    style={{
+                      width: "100%",
+                      height: "auto",
+                      transition: "opacity 0.3s ease-in-out",
+                    }}
                   />
                 )}
                 <div className="mt-[30px] w-full px-4">
@@ -104,10 +190,26 @@ const ContentSections = () => {
             )}
           </div>
         ))}
+        {/* Progress Dots for First Row */}
+        <div className="flex justify-center mt-4 space-x-2">
+          {[0, 1].map((dot) => (
+            <span
+              key={dot}
+              className={`h-2 w-2 rounded-full transition-colors duration-300 ${
+                dot === visibleSectionRow1 ? "bg-primaryMain" : "bg-gray-300"
+              }`}
+            />
+          ))}
+        </div>
       </div>
 
       {/* Second Row (Mobile View Only) */}
-      <div className="block md:hidden w-full mt-[59px]">
+      <div
+        className="block md:hidden w-full mt-[59px]"
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={() => onTouchEnd(2)}
+      >
         {sections.slice(2).map((section, index) => (
           <div
             key={section.id}
@@ -122,7 +224,11 @@ const ContentSections = () => {
                     alt={section.title}
                     width={646.67}
                     height={300}
-                    style={{ width: "100%", height: "auto" }}
+                    style={{
+                      width: "100%",
+                      height: "auto",
+                      transition: "opacity 0.3s ease-in-out",
+                    }}
                   />
                 ) : (
                   <video
@@ -135,7 +241,11 @@ const ContentSections = () => {
                     muted
                     width={646.67}
                     height={300}
-                    style={{ width: "100%", height: "300px" }}
+                    style={{
+                      width: "100%",
+                      height: "300px",
+                      transition: "opacity 0.3s ease-in-out",
+                    }}
                   />
                 )}
                 <div className="mt-[30px] w-full px-4">
@@ -150,6 +260,17 @@ const ContentSections = () => {
             )}
           </div>
         ))}
+        {/* Progress Dots for Second Row */}
+        <div className="flex justify-center mt-4 space-x-2">
+          {[0, 1].map((dot) => (
+            <span
+              key={dot}
+              className={`h-2 w-2 rounded-full transition-colors duration-300 ${
+                dot === visibleSectionRow2 ? "bg-primaryMain" : "bg-gray-300"
+              }`}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

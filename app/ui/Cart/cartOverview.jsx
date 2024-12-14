@@ -266,7 +266,7 @@ const CartOverview = ({ items, onClose }) => {
               className="text-xl"
               style={{
                 marginTop: "33.85px",
-                marginRight: "40px",
+                marginRight: "10px",
                 backgroundColor: "#9F9F9F",
                 border: "none",
                 cursor: isRemoving ? "not-allowed" : "pointer",
@@ -287,37 +287,9 @@ const CartOverview = ({ items, onClose }) => {
           </li>
         ))}
       </ul>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          marginLeft: "31px",
-          marginTop: "5px",
-        }}
-      >
-        <p
-          style={{
-            fontFamily: "Poppins",
-            fontSize: "16px",
-            fontStyle: "normal",
-            fontWeight: "400",
-            lineHeight: "normal",
-            marginRight: "101px",
-            color: "#000",
-          }}
-        >
-          Subtotal
-        </p>
-        <p
-          style={{
-            fontFamily: "Poppins",
-            fontSize: "16px",
-            fontStyle: "normal",
-            fontWeight: "600",
-            lineHeight: "normal",
-            color: "#A458FE",
-          }}
-        >
+      <div className="flex justify-between items-center px-[51px] mt-[5px]">
+        <p className="font-poppins text-base font-normal text-black">Total</p>
+        <p className="font-poppins text-base font-semibold text-[#A458FE]">
           Rs. {formatPrice(total)}
         </p>
       </div>
@@ -328,10 +300,10 @@ const CartOverview = ({ items, onClose }) => {
         style={{
           display: "flex",
           justifyContent: "center",
+          alignItems: "center",
           marginTop: "20px",
-          paddingLeft: "33px",
-          paddingRight: "33px",
           gap: "20px",
+          width: "100%"
         }}
       >
         <button
@@ -348,7 +320,6 @@ const CartOverview = ({ items, onClose }) => {
             cursor: "pointer",
             fontSize: "15px",
             height: "40px",
-            padding: "0 10px",
           }}
           onClick={handleCartGuestCheckout}
         >
@@ -368,7 +339,6 @@ const CartOverview = ({ items, onClose }) => {
             cursor: "pointer",
             fontSize: "15px",
             height: "40px",
-            padding: "0 10px",
           }}
           onClick={handleCartMemberCheckout}
         >

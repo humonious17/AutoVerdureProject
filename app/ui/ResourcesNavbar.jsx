@@ -8,7 +8,7 @@ const ResourcesNavbar = () => {
   const [resources, setResources] = useState("all");
 
   return (
-    <div className="pt-[80px] md:pt-[124px] xl:pt-[114px] w-full flex flex-col justify-center items-center">
+    <div className="pt-[120px] md:pt-[124px] xl:pt-[114px] w-full flex flex-col justify-center items-center">
       <div className="max-w-[219px] md:max-w-[382px] w-full relative  ">
         <div>
           <Image

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import React from "react";
+import Link from "next/link";
 
 const Explore = () => {
   return (
@@ -60,9 +61,11 @@ const Explore = () => {
             plant consultation services to help you make informed decisions
             about your indoor and outdoor greenery.
           </p>
-          <div className="mt-4 w-fit px-[30px] py-[14px] rounded-[100px] text-base bg-primaryMain text-white font-normal cursor-pointer">
-            <p>Contact us</p>
-          </div>
+          <Link href="/contact">
+            <div className="mt-4 w-fit px-[30px] py-[14px] rounded-[100px] text-base bg-primaryMain text-white font-normal cursor-pointer">
+              <p>Contact us</p>
+            </div>
+          </Link>
         </div>
 
         {/* Decorative zig-zag image */}

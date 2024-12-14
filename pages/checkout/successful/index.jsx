@@ -176,7 +176,7 @@ const Successful = () => {
 
                 {/* Back to Shopping Button */}
                 <Link href="/store" passHref>
-                  <button className="w-full py-4 text-base font-bold rounded-full bg-gray-900 text-white hover:bg-gray-800 transition-colors duration-300 flex justify-center items-center">
+                  <button className="mt-2 w-full py-4 text-base font-bold rounded-full bg-gray-900 text-white hover:bg-gray-800 transition-colors duration-300 flex justify-center items-center">
                     Continue Shopping
                   </button>
                 </Link>

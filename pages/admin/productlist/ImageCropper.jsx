@@ -1,138 +1,93 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable @next/next/no-img-element */
 import React, { useState, useRef, useEffect } from "react";
 import { X, Move, ZoomIn, ZoomOut, RotateCw } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import Croppie from "croppie";
+import "croppie/croppie.css";
 
 const ImageCropper = ({ file, onSave, onCancel }) => {
-  const [scale, setScale] = useState(1);
-  const [rotation, setRotation] = useState(0);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [isDragging, setIsDragging] = useState(false);
-  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
-  const [imageDimensions, setImageDimensions] = useState({
-    width: 0,
-    height: 0,
-  });
-  const imageRef = useRef(null);
-  const containerRef = useRef(null);
+  const [isFileUploaded, setIsFileUploaded] = useState(false);
+  const croppieRef = useRef(null);
+  const fileInputRef = useRef(null);
+  const [croppieInstance, setCroppieInstance] = useState(null);
 
-  // Create object URL for the image file
-  const imageUrl = file ? URL.createObjectURL(file) : null;
+  const croppieOptions = {
+    showZoomer: true,
+    enableOrientation: true,
+    mouseWheelZoom: "ctrl",
+    viewport: {
+      width: 624,
+      height: 550,
+      type: "square",
+    },
+    boundary: {
+      width: 624,
+      height: 550,
+    },
+  };
 
-  // Load image dimensions when file changes
   useEffect(() => {
-    if (file) {
-      const img = new Image();
-      img.onload = () => {
-        setImageDimensions({ width: img.width, height: img.height });
-        // Reset transformations when new image is loaded
-        setPosition({ x: 0, y: 0 });
-        setScale(1);
-        setRotation(0);
-      };
-      img.src = imageUrl;
+    // Initialize Croppie when component mounts
+    if (croppieRef.current) {
+      const c = new Croppie(croppieRef.current, croppieOptions);
+      setCroppieInstance(c);
     }
 
-    // Cleanup URL when component unmounts or file changes
+    // Cleanup Croppie instance when component unmounts
     return () => {
-      if (imageUrl) {
-        URL.revokeObjectURL(imageUrl);
+      if (croppieInstance) {
+        croppieInstance.destroy();
       }
     };
-  }, [file]);
+  }, []);
 
-  const handleDragStart = (e) => {
-    e.preventDefault();
-    setIsDragging(true);
-    setDragStart({
-      x: e.clientX - position.x,
-      y: e.clientY - position.y,
-    });
-  };
+  useEffect(() => {
+    // Bind file to Croppie when file changes
+    if (file && croppieInstance) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        croppieInstance.bind({
+          url: e.target.result,
+          zoom: 1,
+        });
+        setIsFileUploaded(true);
+      };
+      reader.readAsDataURL(file);
+    }
+  }, [file, croppieInstance]);
 
-  const handleDragMove = (e) => {
-    if (!isDragging) return;
-
-    const newX = e.clientX - dragStart.x;
-    const newY = e.clientY - dragStart.y;
-
-    setPosition({
-      x: newX,
-      y: newY,
-    });
-  };
-
-  const handleDragEnd = () => {
-    setIsDragging(false);
+  const handleRotate = () => {
+    if (croppieInstance) {
+      croppieInstance.rotate(90);
+    }
   };
 
   const handleZoom = (delta) => {
-    setScale((prevScale) => {
-      const newScale = prevScale + delta;
-      return newScale > 0.5 && newScale < 3 ? newScale : prevScale;
-    });
+    if (croppieInstance) {
+      const currentZoom = croppieInstance.get().zoom;
+      const newZoom = currentZoom + delta;
+
+      // Limit zoom between 0.5 and 3
+      if (newZoom >= 0.5 && newZoom <= 3) {
+        croppieInstance.setZoom(newZoom);
+      }
+    }
   };
 
-  const handleRotate = () => {
-    setRotation((prev) => (prev + 90) % 360);
-  };
-
-  const handleSave = async () => {
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
-
-    // Keep canvas at 624x550 for display
-    canvas.width = 624;
-    canvas.height = 550;
-
-    // Draw background (transparent)
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Save context state
-    ctx.save();
-
-    // Move to center of canvas
-    ctx.translate(canvas.width / 2, canvas.height / 2);
-
-    // Apply transformations
-    ctx.rotate((rotation * Math.PI) / 180);
-    ctx.scale(scale, scale);
-
-    // Calculate scaling to fit image within canvas while maintaining aspect ratio
-    const scaleFactor = Math.min(
-      624 / imageDimensions.width,
-      550 / imageDimensions.height
-    );
-
-    // Draw image centered
-    const img = imageRef.current;
-    const scaledWidth = imageDimensions.width * scaleFactor;
-    const scaledHeight = imageDimensions.height * scaleFactor;
-
-    ctx.drawImage(
-      img,
-      -scaledWidth / 2 + position.x / scale,
-      -scaledHeight / 2 + position.y / scale,
-      scaledWidth,
-      scaledHeight
-    );
-
-    // Restore context state
-    ctx.restore();
-
-    // Convert to blob
-    canvas.toBlob(
-      async (blob) => {
-        const processedFile = new File([blob], file.name, {
-          type: file.type || "image/jpeg",
+  const handleSave = () => {
+    if (croppieInstance) {
+      croppieInstance
+        .result("blob")
+        .then((blob) => {
+          const processedFile = new File([blob], file.name, {
+            type: file.type || "image/jpeg",
+          });
+          onSave(processedFile);
+        })
+        .catch((error) => {
+          console.error("Error processing image:", error);
         });
-        onSave(processedFile);
-      },
-      file.type || "image/jpeg",
-      1.0
-    );
+    }
   };
 
   return (
@@ -151,64 +106,31 @@ const ImageCropper = ({ file, onSave, onCancel }) => {
         </div>
 
         <div
-          ref={containerRef}
+          ref={croppieRef}
           className="relative w-[624px] h-[550px] overflow-hidden border-2 border-dashed border-gray-300 rounded-lg mb-4 mx-auto"
-          onMouseDown={handleDragStart}
-          onMouseMove={handleDragMove}
-          onMouseUp={handleDragEnd}
-          onMouseLeave={handleDragEnd}
-        >
-          {file && (
-            <img
-              ref={imageRef}
-              src={imageUrl}
-              alt="Preview"
-              className="absolute left-1/2 top-1/2 cursor-move"
-              style={{
-                transform: `translate(-50%, -50%) translate(${position.x}px, ${position.y}px) rotate(${rotation}deg) scale(${scale})`,
-                maxWidth: "none",
-                width: "auto",
-                height: "auto",
-                maxHeight: "550px",
-                objectFit: "contain",
-              }}
-              draggable="false"
-            />
-          )}
-
-          {/* Grid lines - moved after image */}
-          <div className="absolute inset-0 pointer-events-none z-10">
-            <div className="absolute left-1/2 top-0 bottom-0 border-l border-black/30 w-0"></div>
-            <div className="absolute top-1/2 left-0 right-0 border-t border-black/30 h-0"></div>
-          </div>
-
-          {/* Horizontal Scale */}
-          <div className="absolute bottom-0 left-0 w-full flex justify-between text-xs text-gray-600 z-20">
-            <span>0</span>
-            <span className="text-right">624px</span>
-          </div>
-
-          {/* Vertical Scale */}
-          <div className="absolute top-0 left-0 h-full flex flex-col justify-between text-xs text-gray-600 z-20">
-            <span className="text-left">0</span>
-            <span className="text-right">550px</span>
-          </div>
-
-          <Move className="absolute top-4 left-4 w-6 h-6 text-white drop-shadow-lg pointer-events-none" />
-        </div>
+        />
 
         <div className="flex items-center justify-center gap-4">
-          <ZoomOut className="h-4 w-4 text-gray-500" />
+          <ZoomOut
+            className="h-4 w-4 text-gray-500 cursor-pointer"
+            onClick={() => handleZoom(-0.1)}
+          />
           <input
             type="range"
             min="0.5"
             max="3"
-            step="0.01"
-            value={scale}
-            onChange={(e) => setScale(parseFloat(e.target.value))}
+            step="0.1"
+            value={croppieInstance ? croppieInstance.get().zoom : 1}
+            onChange={(e) =>
+              croppieInstance &&
+              croppieInstance.setZoom(parseFloat(e.target.value))
+            }
             className="w-48 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
           />
-          <ZoomIn className="h-4 w-4 text-gray-500" />
+          <ZoomIn
+            className="h-4 w-4 text-gray-500 cursor-pointer"
+            onClick={() => handleZoom(0.1)}
+          />
 
           <Button variant="outline" size="icon" onClick={handleRotate}>
             <RotateCw className="h-4 w-4" />

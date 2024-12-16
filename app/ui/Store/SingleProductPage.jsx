@@ -270,54 +270,31 @@ const SingleProductPage = ({ productData, allProducts }) => {
                 />
                 {/* Small Icon */}
                 <div className="flex w-fit xl:flex flex-col gap-[12px] absolute top-[21.18px] right-[22px]">
-                  {productData.petFriendly === "true" ? (
-                    <div className="w-[38px] h-[38px] p-[10px] rounded-xl bg-[#fffbf7]/50">
-                      <Image
-                        src="/veterinary.png"
-                        alt="veterinary"
-                        width={30}
-                        height={30}
-                      />
-                    </div>
-                  ) : (
-                    <></>
-                  )}
-                  {productData.petUnfriendly === "true" ? (
-                    <div className="w-[38px] h-[38px] p-[10px] rounded-xl  bg-[#fffbf7]/50">
-                      <Image
-                        src="/pf.png"
-                        alt="veterinary"
-                        width={30}
-                        height={30}
-                      />
-                    </div>
-                  ) : (
-                    <></>
-                  )}
-                  {productData.lessLight === "true" ? (
-                    <div className="w-[38px] h-[38px] p-[10px] rounded-xl  bg-[#fffbf7]/50">
-                      <Image
-                        src="/noLight.png"
-                        alt="noLight"
-                        width={30}
-                        height={30}
-                      />
-                    </div>
-                  ) : (
-                    <></>
-                  )}
-                  {productData.moreLight === "true" ? (
-                    <div className="w-[38px] h-[38px] p-[10px] rounded-xl bg-[#fffbf7]/50">
-                      <Image
-                        src="/brightness.png"
-                        alt="brightness"
-                        width={30}
-                        height={30}
-                      />
-                    </div>
-                  ) : (
-                    <></>
-                  )}
+                  <div className="w-[38px] h-[38px] p-[10px] rounded-xl bg-[#fffbf7]/50">
+                    <Image
+                      src={
+                        productData.petFriendly === "true"
+                          ? "/veterinary.png"
+                          : "/noPets.png"
+                      }
+                      alt="veterinary"
+                      width={30}
+                      height={30}
+                    />
+                  </div>
+
+                  <div className="w-[38px] h-[38px] p-[10px] rounded-xl  bg-[#fffbf7]/50">
+                    <Image
+                      src={
+                        productData.lessLight === "true"
+                          ? "/noLight.png"
+                          : "/brightness.png"
+                      }
+                      alt="noLight"
+                      width={30}
+                      height={30}
+                    />
+                  </div>
                 </div>
               </div>
 
@@ -440,44 +417,44 @@ const SingleProductPage = ({ productData, allProducts }) => {
 
     return (
       <div className="mt-[37.5px] sm:mt-6 w-full flex flex-col gap-6 p-2 xl:p-5 rounded-xl border-[1px] bg-primaryMain bg-opacity-10 border-primaryMain">
-      <div className="w-full flex justify-between items-center">
-        <div className="w-full flex gap-2 items-center">
-        <Image
-          className="object-contain"
-          src="/badgeDiscount.svg"
-          alt="badgeDiscount"
-          width={32}
-          height={32}
-        />
-        <p className="text-sm xl:text-[18px] leading-7 font-medium text-[#0C0C0C]">
-          Earn {Math.floor(price / 100)} Points with this purchase
-        </p>
+        <div className="w-full flex justify-between items-center">
+          <div className="w-full flex gap-2 items-center">
+            <Image
+              className="object-contain"
+              src="/badgeDiscount.svg"
+              alt="badgeDiscount"
+              width={32}
+              height={32}
+            />
+            <p className="text-sm xl:text-[18px] leading-7 font-medium text-[#0C0C0C]">
+              Earn {Math.floor(price / 100)} Points with this purchase
+            </p>
+          </div>
+          <button onClick={toggleDropdown} className="focus:outline-none">
+            <Image
+              className="object-contain cursor-pointer"
+              src="/info.svg"
+              alt="Info"
+              width={32}
+              height={32}
+            />
+          </button>
         </div>
-        <button onClick={toggleDropdown} className="focus:outline-none">
-        <Image
-          className="object-contain cursor-pointer"
-          src="/info.svg"
-          alt="Info"
-          width={32}
-          height={32}
-        />
-        </button>
-      </div>
 
-      {/* Login/Signup Dropdown */}
-      {isDropdownOpen && (
-        <div>
-        <p className="text-xs font-medium text-black leading-6">
-          To know more about your redeemable points visit{" "}
-          <Link href="/profile" className="text-[#0000EE] hover:underline">
-          /profile
-          </Link>
-        </p>
-        <div className="text-xs font-medium leading-6 underline text-[#0000EE]">
-          <p>(Login/Signup)</p>
-        </div>
-        </div>
-      )}
+        {/* Login/Signup Dropdown */}
+        {isDropdownOpen && (
+          <div>
+            <p className="text-xs font-medium text-black leading-6">
+              To know more about your redeemable points visit{" "}
+              <Link href="/profile" className="text-[#0000EE] hover:underline">
+                /profile
+              </Link>
+            </p>
+            <div className="text-xs font-medium leading-6 underline text-[#0000EE]">
+              <p>(Login/Signup)</p>
+            </div>
+          </div>
+        )}
       </div>
     );
   };
@@ -799,8 +776,8 @@ const SingleProductPage = ({ productData, allProducts }) => {
                         : "/noPets.png"
                     }
                     alt="veterinary"
-                    width={30}
-                    height={30}
+                    width={32}
+                    height={32}
                   />
                   <p className="text-[13px] leading-[15.6px] -tracking-[0.325px] font-normal text-[#000000]">
                     {productData.petFriendly === "true"

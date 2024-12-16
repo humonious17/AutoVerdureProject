@@ -73,19 +73,12 @@ const ProductCard = ({ product, viewType = "grid" }) => {
               {product.petFriendly && (
                 <div className="w-[28px] h-[28px] sm:w-[52px] sm:h-[52px] p-[4px] sm:p-[10px] rounded-xl sm:rounded-2xl bg-[#FFFFFF]">
                   <Image
-                    src="/veterinary.png"
+                    src={
+                      product.petFriendly === "true"
+                        ? "/veterinary.png"
+                        : "/noPets.png"
+                    }
                     alt="veterinary"
-                    width={32}
-                    height={32}
-                    className="w-full h-full"
-                  />
-                </div>
-              )}
-              {product.petUnfriendly && (
-                <div className="w-[28px] h-[28px] sm:w-[52px] sm:h-[52px] p-[4px] sm:p-[10px] rounded-xl sm:rounded-2xl bg-[#FFFFFF]">
-                  <Image
-                    src="/pf.png"
-                    alt="noPets"
                     width={32}
                     height={32}
                     className="w-full h-full"
@@ -95,19 +88,14 @@ const ProductCard = ({ product, viewType = "grid" }) => {
               {product.lessLight && (
                 <div className="w-[28px] h-[28px] sm:w-[52px] sm:h-[52px] p-[4px] sm:p-[10px] rounded-xl sm:rounded-2xl bg-[#FFFFFF]">
                   <Image
-                    src="/noLight.png"
-                    alt="noLight"
-                    width={32}
-                    height={32}
-                    className="w-full h-full"
-                  />
-                </div>
-              )}
-              {product.moreLight && (
-                <div className="w-[28px] h-[28px] sm:w-[52px] sm:h-[52px] p-[4px] sm:p-[10px] rounded-xl sm:rounded-2xl bg-[#FFFFFF]">
-                  <Image
-                    src="/brightness.png"
-                    alt="brightness"
+                    src={
+                      product.lessLight === "true"
+                        ? "/noLight.png"
+                        : "/brightness.png"
+                    }
+                    alt={
+                      product.lessLight === "true" ? "lessLight" : "moreLight"
+                    }
                     width={32}
                     height={32}
                     className="w-full h-full"

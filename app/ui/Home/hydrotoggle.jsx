@@ -46,11 +46,14 @@ const HydroponicComparison = () => {
     <div className="mt-[30px] md:mt-[73px] xl:mt-[82px] w-full flex flex-col justify-center items-center">
       <div className="w-full md:w-[523px] xl:w-fit flex flex-row md:flex-row md:gap-x-5 rounded-[16.4px] space-y-0">
         {/* First Column - Labels */}
-        <div className="w-full xl:w-[320px] flex flex-col gap-4 text-sm md:text-xs xl:text-sm p-5 font-[600] rounded-[16.4px] drop-shadow-xl bg-[#fff]">
+        <div className="w-full xl:w-[320px] flex flex-col gap-4 text-sm md:text-xs xl:text-sm p-5 font-[600] rounded-[16.4px] bg-[#fff] shadow-md hover:shadow-lg transition-shadow duration-300 transform hover:-translate-y-1">
           <p className="font-[600] font-sfPro">How we are different.</p>
           <div className="w-full flex flex-col gap-3 text-[#666666]">
             {comparisonData.map((item, index) => (
-              <p key={index} className="h-[30px] flex items-center font-sfPro">
+              <p
+                key={index}
+                className="h-[30px] flex items-center font-sfPro hover:text-primaryMain transition-colors duration-200 hover:translate-x-1 transform transition-transform"
+              >
                 {item.label}
               </p>
             ))}
@@ -59,9 +62,14 @@ const HydroponicComparison = () => {
 
         {/* Second Column - Hydroponic Pot */}
         <div
-          className={`w-[320px] text-sm md:text-xs xl:text-sm p-5 border-2 rounded-[16.4px] border-primaryMain flex flex-col bg-white drop-shadow-xl hover:shadow-2xl transition-all duration-300 ${
-            activeView === "hydroponics" ? "flex" : "hidden md:flex"
-          } whitespace-nowrap`}
+          className={`w-[320px] text-sm md:text-xs xl:text-sm p-5 border-2 rounded-[16.4px] border-primaryMain flex flex-col bg-white 
+    hover:shadow-2xl transition-all duration-300 
+    ${activeView === "hydroponics" ? "flex" : "hidden md:flex"}
+    whitespace-nowrap
+    relative
+    before:absolute before:inset-0 before:bg-gradient-to-br before:from-transparent before:to-white/10 before:opacity-0 hover:before:opacity-30 before:rounded-[16.4px] before:transition-opacity before:duration-300
+    transform hover:scale-[1.02] hover:-translate-y-1
+  `}
         >
           <p className="font-[600] text-center text-[#666] font-sfPro">
             Our Hydroponic Pot
@@ -70,7 +78,9 @@ const HydroponicComparison = () => {
             {comparisonData.map((item, index) => (
               <p
                 key={index}
-                className="h-[30px] flex items-center justify-center font-semibold text-center font-sfPro"
+                className="h-[30px] flex items-center justify-center font-semibold text-center font-sfPro 
+          hover:text-primaryMain transition-colors duration-200 
+          hover:scale-105 transform transition-transform"
               >
                 {item.hydroponic}
               </p>
@@ -80,9 +90,13 @@ const HydroponicComparison = () => {
 
         {/* Third Column - Traditional Pots */}
         <div
-          className={`w-[320px] text-sm md:text-xs xl:text-sm p-5 border-2 rounded-[16.4px] border-primaryMain flex flex-col bg-white drop-shadow-xl hover:shadow-2xl transition-all duration-300 ${
-            activeView === "traditional" ? "flex" : "hidden md:flex"
-          }`}
+          className={`w-[320px] text-sm md:text-xs xl:text-sm p-5 border-2 rounded-[16.4px] border-primaryMain flex flex-col bg-white 
+    hover:shadow-2xl transition-all duration-300 
+    ${activeView === "traditional" ? "flex" : "hidden md:flex"}
+    relative
+    before:absolute before:inset-0 before:bg-gradient-to-br before:from-transparent before:to-white/10 before:opacity-0 hover:before:opacity-30 before:rounded-[16.4px] before:transition-opacity before:duration-300
+    transform hover:scale-[1.02] hover:-translate-y-1
+  `}
         >
           <p className="font-[600] text-center text-[#666] font-sfPro">
             Traditional Pots
@@ -91,7 +105,9 @@ const HydroponicComparison = () => {
             {comparisonData.map((item, index) => (
               <p
                 key={index}
-                className="h-[30px] flex items-center justify-center font-semibold text-center font-sfPro"
+                className="h-[30px] flex items-center justify-center font-semibold text-center font-sfPro 
+          hover:text-primaryMain transition-colors duration-200 
+          hover:scale-105 transform transition-transform"
               >
                 {item.traditional}
               </p>

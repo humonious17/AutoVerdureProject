@@ -1,17 +1,15 @@
-import admin from 'firebase-admin';
+import admin from "firebase-admin";
 
-const serviceAccount = JSON.parse(
-    process.env.FIREBASE_SERVICE_ACCOUNT_KEYS
-);
+const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEYS);
 
 if (!admin.apps.length) {
-    admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount),
-        storageBucket: 'auto-verdue-test.appspot.com',
-    })
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    storageBucket: "elegant-works-429712-a7.appspot.com",
+  });
 }
 
-const auth = admin.auth(); 
+const auth = admin.auth();
 const db = admin.firestore();
 const storage = admin.storage();
 

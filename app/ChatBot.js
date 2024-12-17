@@ -134,7 +134,9 @@ const ChatBot = () => {
                   <Smile className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold">Auto Verdure Support</h3>
+                  <h3 className="text-lg font-semibold">
+                    Auto Verdure Support
+                  </h3>
                   <p className="text-xs text-white/70">Chatbot</p>
                 </div>
               </div>
@@ -227,9 +229,7 @@ const ChatBot = () => {
                   <motion.button
                     onClick={sendMessage}
                     disabled={input.trim() === ""}
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 text-indigo-600 disabled:text-gray-400"
+                    className="absolute right-2 top-1/2 -translate-y-1/2 text-indigo-600 disabled:text-gray-400 hover:text-indigo-300"
                   >
                     <Send className="w-5 h-5" />
                   </motion.button>

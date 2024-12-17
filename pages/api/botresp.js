@@ -55,21 +55,21 @@ const generativeModel = vertex_ai.getGenerativeModel({
 const document1 = {
   fileData: {
     mimeType: "application/pdf",
-    fileUri: `gs://bots_policies/shippingpolicy.pdf`,
+    fileUri: `gs://elegant-works-429712-a7.appspot.com/shippingpolicy.pdf`,
   },
 };
 
 const document2 = {
   fileData: {
     mimeType: "application/pdf",
-    fileUri: `gs://bots_policies/privacy.pdf`,
+    fileUri: `gs://elegant-works-429712-a7.appspot.com/privacy.pdf`,
   },
 };
 
 const document3 = {
   fileData: {
     mimeType: "application/pdf",
-    fileUri: `gs://bots_policies/terms.pdf`,
+    fileUri: `gs://elegant-works-429712-a7.appspot.com/terms.pdf`,
   },
 };
 

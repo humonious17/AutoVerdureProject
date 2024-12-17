@@ -12,6 +12,7 @@ import Link from "next/link";
 import React, { useState, useEffect, useRef } from "react";
 import Chatbot from "./ChatBot";
 import { useSwipeable } from "react-swipeable";
+import Script from "next/script";
 import Power from "./ui/Home/Power";
 import "./globals.css";
 import ProductShowcase from "./ui/Home/ProductShowcase";
@@ -1014,10 +1015,21 @@ export default function Home() {
         <Contact />
       </div>
       {
-        <div className="fixed bottom-4 right-4 z-50">
-          <Chatbot />
-        </div>
+        // <div className="fixed bottom-4 right-4 z-50">
+        //   <Chatbot />
+        // </div>
       }
+
+      <div>
+        <Script
+          src="https://cdn.botpress.cloud/webchat/v2.2/inject.js"
+          strategy="lazyOnload"
+        />
+        <Script
+          src="https://files.bpcontent.cloud/2024/12/17/19/20241217191144-QELXVVOO.js"
+          strategy="lazyOnload"
+        />
+      </div>
 
       {/* IBM Watson Assistant */}
       {/* {useEffect(() => {

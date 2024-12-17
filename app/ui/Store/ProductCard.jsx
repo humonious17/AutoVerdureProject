@@ -34,7 +34,7 @@ const ProductCard = ({ product, viewType = "grid" }) => {
           ${
             isListView
               ? "w-full sm:w-[200px] aspect-square sm:aspect-auto sm:h-full flex-shrink-0"
-              : "w-full aspect-square sm:aspect-auto sm:h-[316px]"
+              : "w-full aspect-square sm:aspect-auto sm:h-[432px]"
           }`}
         >
           {productImage ? (
@@ -54,7 +54,7 @@ const ProductCard = ({ product, viewType = "grid" }) => {
           )}
 
           {/* Stock Status Badge */}
-          <div className="w-fit text-[10px] sm:text-[13px] p-1 sm:px-[14px] sm:py-[13px] leading-4 tracking-[0.56px] rounded-[40px] absolute top-[10px] left-[10px] sm:top-[24px] sm:left-[30px] bg-white text-[#5B5B5B] uppercase flex justify-center items-center">
+          <div className="w-fit text-[10px] sm:text-[13px] p-1 sm:px-[14px] sm:py-[13px] leading-4 tracking-[0.56px] rounded-[40px] absolute top-[10px] left-[10px] sm:top-[24px] sm:left-[30px] bg-white/50 text-[#5B5B5B] uppercase flex justify-center items-center">
             <p>
               {productDetail.stockQuantity === 0
                 ? "Sold Out"

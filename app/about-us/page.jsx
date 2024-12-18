@@ -8,6 +8,7 @@ import Link from "next/link";
 import "next-cloudinary/dist/cld-video-player.css";
 import { useState } from "react";
 import StackedCardsSection from "./StackedCardSection";
+import Chatbot from "../ChatBot";
 
 const AboutUs = () => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -293,7 +294,7 @@ const AboutUs = () => {
               </div>
             </div>
 
-            <StackedCardsSection/>
+            <StackedCardsSection />
           </div>
           <Image
             className="hidden xl:block object-contain absolute right-0 rotate-[360deg]"
@@ -380,6 +381,11 @@ const AboutUs = () => {
 
       {/* FAQ */}
       <FAQ />
+      {
+        <div className="fixed bottom-4 right-4 z-50">
+          <Chatbot />
+        </div>
+      }
     </div>
   );
 };

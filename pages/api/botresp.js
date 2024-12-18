@@ -7,8 +7,23 @@ try {
     process.env.FIREBASE_SERVICE_ACCOUNT_KEYS
   );
   console.log("Parsed Credentials:", parsedCredentials);
-} catch (parseError) {
-  console.error("Credential Parsing Error:", parseError);
+
+  const auth = new GoogleAuth({
+    credentials: parsedCredentials,
+    scopes: ["https://www.googleapis.com/auth/cloud-platform"],
+  });
+
+  const authClient = await auth.getClient();
+  const vertex_ai = new VertexAI({
+    project: process.env.VERTEX_AI_PROJECT || "elegant-works-429712-a7",
+    location: process.env.VERTEX_AI_LOCATION || "us-central1",
+    authClient: authClient,
+  });
+
+  console.log("Vertex AI client initialized successfully");
+} catch (error) {
+  console.error("Authentication Error:", error);
+  throw new Error("Failed to initialize GoogleAuth or Vertex AI");
 }
 
 const auth = new GoogleAuth({

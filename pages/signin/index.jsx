@@ -152,7 +152,7 @@ const Signin = () => {
           ></div>
 
           <div
-            className="g_id_signin w-full sm:w-[380px] md:w-[400px] lg:w-[400px]"
+            className="g_id_signin w-[380px] sm:w-[380px] md:w-[400px] lg:w-[400px]"
             data-type="standard"
             data-shape="pill"
             data-theme="outline"
@@ -161,7 +161,6 @@ const Signin = () => {
             data-logo_alignment="center"
           ></div>
         </div>
-
         {/* Or */}
         <div className="my-6 sm:my-8 w-full sm:w-[560px] flex gap-x-2 items-center">
           <div className="w-full h-[1px] bg-[#E4E4E4]" />

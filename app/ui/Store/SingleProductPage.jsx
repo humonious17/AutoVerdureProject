@@ -496,6 +496,9 @@ const SingleProductPage = ({ productData, allProducts }) => {
 
       if (response.ok) {
         setButtonText("Added");
+        setTimeout(() => {
+          setButtonText("Add To Cart");
+        }, 1000);
         const result = await response.json();
         const cartProducts = result.cartProducts;
         setCartItems(cartProducts);
@@ -767,7 +770,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
               productData.productType === "planters" ||
               productData.productType === "flowers" ||
               productData.productType === "accessory") && (
-              <div className="mt-[21.5px] w-full sm:w-fit xl:w-full flex flex-row sm:flex-col xl:flex-row sm:gap-y-3 xl:gap-x-[22px] xl:justify-start">
+              <div className="mt-[21.5px] w-full sm:w-fit xl:w-full justify-between flex flex-row sm:flex-col xl:flex-row sm:gap-y-3 xl:gap-x-[6px] xl:justify-start">
                 <div className="flex gap-2 mr-2 sm:gap-3 justify-between sm:justify-start xl:justify-between items-center">
                   <Image
                     src={
@@ -783,7 +786,6 @@ const SingleProductPage = ({ productData, allProducts }) => {
                     {productData.petFriendly === "true"
                       ? "Pet Friendly"
                       : "Not pet Friendly"}
-                    ;
                   </p>
                 </div>
                 <div className="flex gap-2 sm:gap-3 justify-between sm:justify-start xl:justify-between items-center">

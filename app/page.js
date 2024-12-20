@@ -1014,13 +1014,13 @@ export default function Home() {
         {/* Contact */}
         <Contact />
       </div>
-      {/* {
+      {
         <div className="fixed bottom-4 right-4 z-50">
           <Chatbot />
         </div>
-      } */}
+      }
 
-      <div>
+      {/* <div>
         <Script
           src="https://cdn.botpress.cloud/webchat/v2.2/inject.js"
           strategy="lazyOnload"
@@ -1029,7 +1029,7 @@ export default function Home() {
           src="https://files.bpcontent.cloud/2024/12/17/19/20241217191144-QELXVVOO.js"
           strategy="lazyOnload"
         />
-      </div>
+      </div> */}
 
       {/* IBM Watson Assistant */}
       {/* {useEffect(() => {

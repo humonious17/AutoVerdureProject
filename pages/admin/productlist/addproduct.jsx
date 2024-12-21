@@ -1019,7 +1019,7 @@ const ProductForm = () => {
                   Starting Product Price
                 </span>
                 <span className="text-2xl font-bold text-blue-600">
-                  Rs. {formData.productPrice}
+                  ₹ {formData.productPrice}
                 </span>
               </div>
             </div>

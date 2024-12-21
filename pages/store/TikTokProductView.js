@@ -365,11 +365,11 @@ const TikTokProductView = ({ products, onClose }) => {
                   className="flex items-baseline gap-2 mb-3"
                 >
                   <span className="text-2xl font-bold text-purple-400">
-                    Rs. {currentProduct.productPrice}
+                    ₹ {currentProduct.productPrice}
                   </span>
                   {currentProduct.originalPrice && (
                     <span className="text-sm text-white/50 line-through">
-                      Rs. {currentProduct.originalPrice}
+                      ₹ {currentProduct.originalPrice}
                     </span>
                   )}
                 </motion.div>

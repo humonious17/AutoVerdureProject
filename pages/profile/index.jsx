@@ -19,7 +19,7 @@ const Profile = (props) => {
   const redeemPoints = async () => {
     const redemptionValue = formData.avPoints * 10; // 1 point = 10rs
     setRedeemMessage(
-      `You can redeem Rs. ${redemptionValue} on your next order.`
+      `You can redeem ₹ ${redemptionValue} on your next order.`
     );
   };
 

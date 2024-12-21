@@ -287,8 +287,8 @@ const OrderDetails = ({ order, onClose, onUpdateStatus, onUpdateNotes }) => {
                     </div>
                   </TableCell>
                   <TableCell>{item.productQty}</TableCell>
-                  <TableCell>Rs. {item.price}</TableCell>
-                  <TableCell>Rs. {item.price * item.productQty}</TableCell>
+                  <TableCell>₹ {item.price}</TableCell>
+                  <TableCell>₹ {item.price * item.productQty}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -300,17 +300,17 @@ const OrderDetails = ({ order, onClose, onUpdateStatus, onUpdateNotes }) => {
         <div className="flex justify-between items-center">
           <div className="space-y-1">
             <p className="text-sm text-gray-500">
-              Subtotal: Rs. {calculateSubtotal()}
+              Subtotal: ₹ {calculateSubtotal()}
             </p>
-            <p className="text-sm text-gray-500">Shipping: Rs. {0}</p>
+            <p className="text-sm text-gray-500">Shipping: ₹ {0}</p>
             {order.discount > 0 && (
               <p className="text-sm text-gray-500">
-                Discount: -Rs. {order.discount / 100}
+                Discount: -₹ {order.discount / 100}
               </p>
             )}
           </div>
           <div className="text-xl font-bold">
-            Total: Rs. {normalizeAmount(order)}
+            Total: ₹ {normalizeAmount(order)}
           </div>
         </div>
       </div>
@@ -673,7 +673,7 @@ const OrderList = ({ initialOrders }) => {
                         {order.products?.length || order.items?.length || 0}{" "}
                         items
                       </TableCell>
-                      <TableCell>Rs. {normalizeAmount(order)}</TableCell>
+                      <TableCell>₹ {normalizeAmount(order)}</TableCell>
                       <TableCell>
                         <Badge
                           className={getStatusColor(

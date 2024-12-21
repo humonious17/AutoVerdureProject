@@ -40,12 +40,16 @@ const Store = ({ initialProducts }) => {
         break;
       case "price-low":
         sorted.sort(
-          (a, b) => (parseFloat(a.price) || 0) - (parseFloat(b.price) || 0)
+          (a, b) =>
+            (parseFloat(a.productPrice) || 0) -
+            (parseFloat(b.productPrice) || 0)
         );
         break;
       case "price-high":
         sorted.sort(
-          (a, b) => (parseFloat(b.price) || 0) - (parseFloat(a.price) || 0)
+          (a, b) =>
+            (parseFloat(b.productPrice) || 0) -
+            (parseFloat(a.productPrice) || 0)
         );
         break;
       default:
@@ -69,7 +73,7 @@ const Store = ({ initialProducts }) => {
       <div
         className={`fixed top-0 left-0 h-screen bg-[#FFFBF7] transform transition-transform duration-300 ease-in-out z-50 w-full sm:w-[300px] ${
           isFilterOpen ? "translate-x-0" : "-translate-x-full"
-        }`} 
+        }`}
       >
         <StoreTools
           totalProducts={validProducts.length}
@@ -162,7 +166,6 @@ const Store = ({ initialProducts }) => {
                   value={showCount}
                   onChange={(e) => handleShowCountChange(e.target.value)}
                   className="py-1.5 px-2 sm:py-2 sm:px-3 text-sm border-2 rounded-lg bg-[#FFFBF7] flex-1 sm:flex-none  focus:outline-none focus:border-purple-500 active:border-purple-600 hover:border-purple-600"
-
                 >
                   <option value={16}>Show 16</option>
                   <option value={32}>Show 32</option>

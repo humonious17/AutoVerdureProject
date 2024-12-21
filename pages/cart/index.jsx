@@ -88,7 +88,7 @@ const Cart = ({ products = [] }) => {
       minimumFractionDigits: 2,
     })
       .format(price)
-      .replace("₹", "Rs.");
+      .replace("₹", "₹");
   };
 
   return (

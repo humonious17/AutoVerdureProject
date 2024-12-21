@@ -161,7 +161,7 @@ const Index = () => {
                   {product.productName}
                 </h2>
                 <p className="text-base font-medium text-gray-900">
-                  Rs. {product.productPrice}
+                  ₹ {product.productPrice}
                 </p>
                 <span className="inline-flex items-center rounded-full bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700">
                   {product.productType}
@@ -231,7 +231,7 @@ const Index = () => {
                 {product.productType}
               </span>
             </div>
-            <div>Rs. {product.productPrice}</div>
+            <div>₹ {product.productPrice}</div>
             <div>
               <span className="inline-flex items-center rounded-full bg-green-50 px-2 py-1 text-xs font-medium text-green-700">
                 In Stock

@@ -142,7 +142,7 @@ const CartOverview = ({ items, onClose }) => {
               <p className="item-name">{item.productName}</p>
               <p className="item-price">
                 <span className="quantity">{item.productQty} x </span>
-                <span className="price">Rs. {formatPrice(item.price)}</span>
+                <span className="price">₹ {formatPrice(item.price)}</span>
               </p>
             </div>
             <button
@@ -159,7 +159,7 @@ const CartOverview = ({ items, onClose }) => {
       <div className="cart-footer">
         <div className="total-section">
           <p>Total</p>
-          <p className="total-amount">Rs. {formatPrice(total)}</p>
+          <p className="total-amount">₹ {formatPrice(total)}</p>
         </div>
         <div className="cart-divider"></div>
         <div

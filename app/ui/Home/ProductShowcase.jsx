@@ -111,7 +111,7 @@ const ProductShowcase = ({ productType = "plants" }) => {
               "product subtitle goes here"}
           </p>
           <p className="mt-3 text-base leading-5 text-[#0E0E0E]">
-            From Rs. {products[currentIndex].productPrice}
+            From ₹ {products[currentIndex].productPrice}
           </p>
         </div>
 
@@ -156,7 +156,7 @@ const ProductShowcase = ({ productType = "plants" }) => {
                   {products[0].productSubtitle || "product subtitle goes here"}
                 </p>
                 <p className="text-[17px] leading-5 text-[#0E0E0E]">
-                  From Rs. {products[0].productPrice}
+                  From ₹ {products[0].productPrice}
                 </p>
               </div>
             </div>
@@ -194,7 +194,7 @@ const ProductShowcase = ({ productType = "plants" }) => {
                   {product.productSubtitle || "product subtitle goes here"}
                 </p>
                 <p className="text-[17px] leading-5 text-[#0E0E0E]">
-                  From Rs. {product.productPrice}
+                  From ₹ {product.productPrice}
                 </p>
               </div>
             </Link>

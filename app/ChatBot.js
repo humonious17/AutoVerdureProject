@@ -8,11 +8,10 @@ import {
   Mic,
   Phone,
   X,
-  Smile,
   ExternalLink,
   Mail,
 } from "lucide-react";
-
+import Image from "next/image";
 // Function to process text formatting
 const formatText = (text) => {
   if (!text) return text;
@@ -217,7 +216,7 @@ const ChatBot = () => {
   const renderMessage = (message, index) => {
     if (message.type === "welcome") {
       return (
-        <div className="bg-white rounded-lg shadow-md p-4 max-w-[85%]">
+        <div className="bg-[#fffbf7] rounded-lg shadow-md p-4 max-w-[85%]">
           <h3 className="text-lg font-semibold text-primaryMain mb-2">
             {message.content.title}
           </h3>
@@ -239,9 +238,53 @@ const ChatBot = () => {
       );
     }
 
+    const chatWindowVariants = {
+      open: {
+        opacity: 1,
+        scale: 1,
+        y: 0,
+        transition: {
+          type: "spring",
+          damping: 20,
+          stiffness: 300,
+        },
+      },
+      closed: {
+        opacity: 0,
+        scale: 0,
+        y: 0,
+        transition: {
+          type: "spring",
+          damping: 20,
+          stiffness: 300,
+        },
+      },
+    };
+
+    const buttonVariants = {
+      open: {
+        opacity: 0,
+        scale: 0,
+        transition: {
+          type: "spring",
+          damping: 20,
+          stiffness: 300,
+        },
+      },
+      closed: {
+        opacity: 1,
+        scale: 1,
+        transition: {
+          type: "spring",
+          damping: 20,
+          stiffness: 300,
+        },
+      },
+    };
+
     if (message.type === "contact") {
       return (
-        <div className="bg-white rounded-lg shadow-md p-4 max-w-[85%]">
+        <div className="bg-[#fffbf7] rounded-lg shadow-md p-4 max-w-[85%]">
           <h3 className="text-lg font-semibold text-primaryMain mb-3">
             {message.content.title}
           </h3>
@@ -281,7 +324,7 @@ const ChatBot = () => {
 
     if (message.type === "quickOptions") {
       return (
-        <div className="bg-white rounded-lg shadow-md p-4 max-w-[85%]">
+        <div className="bg-[#fffbf7] rounded-lg shadow-md p-4 max-w-[85%]">
           <h3 className="text-lg font-semibold text-primaryMain mb-2">
             {message.content.title}
           </h3>
@@ -313,7 +356,7 @@ const ChatBot = () => {
         className={`max-w-[80%] px-4 py-2 rounded-2xl shadow-md ${
           message.sender === "user"
             ? "bg-primaryMain text-white ml-auto"
-            : "bg-white text-gray-800"
+            : "bg-[#fffbf7] text-gray-800"
         }`}
       >
         <MessageContent text={message.text} />
@@ -323,37 +366,68 @@ const ChatBot = () => {
 
   return (
     <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 drop-shadow-lg z-50">
-      <AnimatePresence>
-        {!isOpen && (
-          <motion.button
-            onClick={() => setIsOpen(true)}
-            className="bg-gradient-to-r from-primaryMain to-indigo-700 text-white p-3 sm:p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center space-x-2 text-sm sm:text-base"
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.8, opacity: 0 }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <MessageCircle className="w-6 h-6" />
-            <span className="hidden sm:block font-medium">Chat with Us</span>
-          </motion.button>
-        )}
-      </AnimatePresence>
+      <div className="fixed bottom-4 right-4 z-50">
+        <div className="relative">
+          {/* Desktop container */}
+          <div className="hidden sm:block w-[160px] h-[52px]">
+            <AnimatePresence>
+              {!isOpen && (
+                <motion.button
+                  onClick={() => setIsOpen(true)}
+                  className="bg-gradient-to-r from-primaryMain to-primaryMain text-white px-4 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center space-x-3 text-base font-medium w-full h-full"
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.8, opacity: 0 }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <MessageCircle className="w-5 h-5" />
+                  <span>Chat with Us</span>
+                </motion.button>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Mobile container */}
+          <div className="block sm:hidden w-[48px] h-[48px]">
+            <AnimatePresence>
+              {!isOpen && (
+                <motion.button
+                  onClick={() => setIsOpen(true)}
+                  className="bg-gradient-to-r from-primaryMain to-primaryMain text-white p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center w-full h-full"
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.8, opacity: 0 }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <MessageCircle className="w-5 h-5" />
+                </motion.button>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      </div>
 
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="w-[95vw] max-w-md h-[600px] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden"
+            className="w-[95vw] max-w-md h-[600px] bg-[#fffbf7] rounded-2xl shadow-2xl flex flex-col overflow-hidden"
             initial={{ opacity: 0, y: 50, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 50, scale: 0.9 }}
             transition={{ type: "spring", damping: 20, stiffness: 300 }}
           >
-            <div className="bg-gradient-to-r from-primaryMain to-indigo-700 text-white p-4">
+            <div className="bg-gradient-to-r from-primaryMain to-primaryMain text-white p-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-                    <Smile className="w-6 h-6" />
+                  <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+                    <Image
+                      src="/logoav.png"
+                      width={60}
+                      height={60}
+                      className="ml-3 mb-2 drop-shadow-lg"
+                    />
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold">
@@ -364,7 +438,7 @@ const ChatBot = () => {
                 </div>
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="p-2 hover:bg-white/20 rounded-full transition-colors"
+                  className="p-2 hover:bg-[#fffbf7]/20 rounded-full transition-colors"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -391,7 +465,7 @@ const ChatBot = () => {
                   animate={{ opacity: 1 }}
                   className="flex justify-start"
                 >
-                  <div className="bg-white p-3 rounded-xl shadow-md flex space-x-1">
+                  <div className="bg-[#fffbf7] p-3 rounded-xl shadow-md flex space-x-1">
                     <motion.div
                       className="w-2 h-2 bg-gray-400 rounded-full"
                       animate={{ scale: [1, 1.2, 1] }}
@@ -421,7 +495,7 @@ const ChatBot = () => {
               <div ref={messagesEndRef} />
             </div>
 
-            <div className="p-4 bg-white border-t border-gray-100">
+            <div className="p-4 bg-[#fffbf7] border-t border-gray-100">
               <div className="flex items-center space-x-2">
                 <div className="flex-1 relative">
                   <input

@@ -12,12 +12,10 @@ const CartOverview = ({ items, onClose }) => {
   const [isMinimized, setIsMinimized] = useState(false);
 
   useEffect(() => {
-    // Update cart items when items prop changes
     setCartItems(items);
   }, [items]);
 
   useEffect(() => {
-    // Calculate total whenever cartItems change
     const newTotal = cartItems.reduce((acc, item) => {
       const itemPrice = item.price || 0;
       const quantity = parseInt(item.productQty) || 1;
@@ -27,16 +25,12 @@ const CartOverview = ({ items, onClose }) => {
   }, [cartItems]);
 
   const handleCartGuestCheckout = () => {
-    if (!cartItems.length) {
-      return false;
-    }
+    if (!cartItems.length) return false;
     router.push("/checkout/guest");
   };
 
   const handleCartMemberCheckout = () => {
-    if (!cartItems.length) {
-      return false;
-    }
+    if (!cartItems.length) return false;
     router.push("/checkout/member");
   };
 
@@ -47,14 +41,10 @@ const CartOverview = ({ items, onClose }) => {
     }
 
     setIsRemoving(true);
-    console.log("Attempting to remove item with cartObjId:", cartObjId);
-
     try {
       const response = await fetch("/api/cart/remove", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ cartObjId }),
       });
 
@@ -63,12 +53,10 @@ const CartOverview = ({ items, onClose }) => {
         throw new Error(error.message || "Failed to remove item");
       }
 
-      // Only update UI after successful removal from database
       const newCartItems = cartItems.filter(
         (item) => item.cartObjId !== cartObjId
       );
       setCartItems(newCartItems);
-      console.log("Successfully removed item from cart");
     } catch (error) {
       console.error("Failed to remove item:", error);
       alert("Failed to remove item from cart. Please try again.");
@@ -83,49 +71,20 @@ const CartOverview = ({ items, onClose }) => {
         onClose();
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [onClose]);
 
-  // Function to format price with commas for thousands
   const formatPrice = (price) => {
     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
 
-  // Minimize and restore functions
-  const handleMinimize = () => {
-    setIsMinimized(true);
-  };
+  const handleMinimize = () => setIsMinimized(true);
+  const handleRestore = () => setIsMinimized(false);
 
-  const handleRestore = () => {
-    setIsMinimized(false);
-  };
-
-  // Minimized cart bubble styles
-  const minimizedCartStyle = {
-    position: "fixed",
-    bottom: "20px",
-    right: "20px",
-    width: "60px",
-    height: "60px",
-    borderRadius: "50%",
-    backgroundColor: "#A458FE",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
-    cursor: "pointer",
-    zIndex: 1000,
-  };
-
-  // If minimized, render the small cart bubble
   if (isMinimized) {
     return (
-      <div style={minimizedCartStyle} onClick={handleRestore}>
+      <div className="minimized-cart" onClick={handleRestore}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="25"
@@ -142,24 +101,7 @@ const CartOverview = ({ items, onClose }) => {
           <path d="M2.5 2.5h3l2.7 12.4a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6l1.6-8.4H7.1" />
         </svg>
         {cartItems.length > 0 && (
-          <div
-            style={{
-              position: "absolute",
-              top: "-5px",
-              right: "-5px",
-              backgroundColor: "black",
-              color: "white",
-              borderRadius: "50%",
-              width: "20px",
-              height: "20px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              fontSize: "12px",
-            }}
-          >
-            {cartItems.length}
-          </div>
+          <div className="cart-badge">{cartItems.length}</div>
         )}
       </div>
     );
@@ -167,118 +109,44 @@ const CartOverview = ({ items, onClose }) => {
 
   return (
     <div className="cart-style" ref={cartRef}>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginTop: "10px",
-          marginRight: "15px",
-          backgroundColor: "#fffbf7",
-        }}
-      >
-        <button
-          onClick={handleMinimize}
-          className="text-xl"
-          style={{
-            backgroundColor: "#9F9F9F",
-            color: "white",
-            border: "none",
-            borderRadius: "50%",
-            width: "20px",
-            height: "20px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            marginLeft: "15px",
-          }}
-        >
+      <div className="cart-header">
+        <button onClick={handleMinimize} className="minimize-button">
           -
         </button>
-        <button
-          onClick={onClose}
-          className="text-xl"
-          style={{
-            color: "black",
-            border: "none",
-            background: "none",
-          }}
-        >
+        <button onClick={onClose} className="close-button">
           ×
         </button>
       </div>
+
       <h2 className="cart-heading">Shopping Cart</h2>
-      <div
-        style={{
-          height: "1px",
-          margin: "26px 30px 0 30px",
-          backgroundColor: "#fffbf7",
-        }}
-      ></div>
-      <div style={{ height: "41.73px" }}></div>
-      <ul style={{ height: "400px", overflowY: "auto" }}>
+      <div className="cart-divider"></div>
+
+      <div className="cart-items-container">
         {cartItems.map((item) => (
-          <li
-            key={item.cartObjId}
-            className="mb-2"
-            style={{
-              display: "flex",
-              alignItems: "flex-start",
-              marginBottom: "20.27px",
-            }}
-          >
-            <Image
-              src={item.productImage}
-              alt={item.productName}
-              height={105}
-              width={105}
-              objectFit="cover"
-              style={{
-                borderRadius: "7.404px",
-                marginLeft: "26.5px",
-                aspectRatio: "1/1",
-              }}
-            />
-            <div
-              style={{ marginLeft: "35.5px", marginTop: "24.27px", flex: 1 }}
-            >
-              <p style={{ color: "#000", fontWeight: "550", fontSize: "16px" }}>
-                {item.productName}
-              </p>
-              <p>
-                <span
-                  style={{ color: "#000", fontWeight: "400", fontSize: "16px" }}
-                >
-                  {item.productQty} x{" "}
-                </span>
-                <span
-                  style={{
-                    color: "#A458FE",
-                    fontSize: "12px",
-                    fontWeight: "600",
-                  }}
-                >
-                  Rs. {formatPrice(item.price)}
-                </span>
+          <li key={item.cartObjId} className="cart-item">
+            <div className="cart-item-image">
+              <div className="image-wrapper">
+                <Image
+                  src={item.productImage}
+                  alt={item.productName}
+                  width={105}
+                  height={105}
+                  layout="responsive"
+                  objectFit="cover"
+                  quality={100}
+                  priority={true}
+                />
+              </div>
+            </div>
+            <div className="cart-item-details">
+              <p className="item-name">{item.productName}</p>
+              <p className="item-price">
+                <span className="quantity">{item.productQty} x </span>
+                <span className="price">Rs. {formatPrice(item.price)}</span>
               </p>
             </div>
             <button
-              className="text-xl"
-              style={{
-                marginTop: "33.85px",
-                marginRight: "10px",
-                backgroundColor: "#9F9F9F",
-                border: "none",
-                cursor: isRemoving ? "not-allowed" : "pointer",
-                borderRadius: "50%",
-                width: "20px",
-                height: "20px",
-                color: "#FFF",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                opacity: isRemoving ? 0.5 : 1,
-              }}
+              className="remove-button"
               onClick={() => removeCartItem(item.cartObjId)}
               disabled={isRemoving}
             >
@@ -286,64 +154,63 @@ const CartOverview = ({ items, onClose }) => {
             </button>
           </li>
         ))}
-      </ul>
-      <div className="flex justify-between items-center px-[51px] mt-[5px]">
-        <p className="font-poppins text-base font-normal text-black">Total</p>
-        <p className="font-poppins text-base font-semibold text-[#A458FE]">
-          Rs. {formatPrice(total)}
-        </p>
       </div>
-      <div
-        style={{ height: "1px", marginTop: "15px", backgroundColor: "#D9D9D9" }}
-      ></div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          marginTop: "20px",
-          gap: "20px",
-          width: "100%"
-        }}
-      >
-        <button
+
+      <div className="cart-footer">
+        <div className="total-section">
+          <p>Total</p>
+          <p className="total-amount">Rs. {formatPrice(total)}</p>
+        </div>
+        <div className="cart-divider"></div>
+        <div
           style={{
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            width: "150px",
-            minWidth: "150px",
-            whiteSpace: "nowrap",
-            borderRadius: "50px",
-            backgroundColor: "#000",
-            color: "#FFF",
-            cursor: "pointer",
-            fontSize: "15px",
-            height: "40px",
+            marginTop: "20px",
+            gap: "20px",
+            width: "100%",
           }}
-          onClick={handleCartGuestCheckout}
         >
-          Guest Checkout
-        </button>
-        <button
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "150px",
-            minWidth: "150px",
-            whiteSpace: "nowrap",
-            borderRadius: "50px",
-            backgroundColor: "#000",
-            color: "#FFF",
-            cursor: "pointer",
-            fontSize: "15px",
-            height: "40px",
-          }}
-          onClick={handleCartMemberCheckout}
-        >
-          Member Checkout
-        </button>
+          <button
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "150px",
+              minWidth: "150px",
+              whiteSpace: "nowrap",
+              borderRadius: "50px",
+              backgroundColor: "#000",
+              color: "#FFF",
+              cursor: "pointer",
+              fontSize: "15px",
+              height: "40px",
+            }}
+            onClick={handleCartGuestCheckout}
+          >
+            Guest Checkout
+          </button>
+          <button
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "150px",
+              minWidth: "150px",
+              whiteSpace: "nowrap",
+              borderRadius: "50px",
+              backgroundColor: "#000",
+              color: "#FFF",
+              cursor: "pointer",
+              fontSize: "15px",
+              height: "40px",
+            }}
+            onClick={handleCartMemberCheckout}
+          >
+            Member Checkout
+          </button>
+        </div>
       </div>
     </div>
   );

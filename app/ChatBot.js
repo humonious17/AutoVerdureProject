@@ -11,7 +11,6 @@ import {
   Smile,
   ExternalLink,
   Mail,
-  Bot,
 } from "lucide-react";
 
 // Function to process text formatting
@@ -219,7 +218,7 @@ const ChatBot = () => {
     if (message.type === "welcome") {
       return (
         <div className="bg-white rounded-lg shadow-md p-4 max-w-[85%]">
-          <h3 className="text-lg font-semibold text-indigo-600 mb-2">
+          <h3 className="text-lg font-semibold text-primaryMain mb-2">
             {message.content.title}
           </h3>
           <p className="text-gray-600 mb-4">
@@ -230,7 +229,7 @@ const ChatBot = () => {
               <button
                 key={idx}
                 onClick={() => handleOptionClick(option)}
-                className="text-left px-4 py-2 bg-gray-50 hover:bg-indigo-50 rounded-lg text-gray-700 hover:text-indigo-600 transition-colors duration-200"
+                className="text-left px-4 py-2 bg-gray-50 hover:bg-indigo-50 rounded-lg text-gray-700 hover:text-primaryMain transition-colors duration-200"
               >
                 {option}
               </button>
@@ -240,28 +239,68 @@ const ChatBot = () => {
       );
     }
 
+    if (message.type === "contact") {
+      return (
+        <div className="bg-white rounded-lg shadow-md p-4 max-w-[85%]">
+          <h3 className="text-lg font-semibold text-primaryMain mb-3">
+            {message.content.title}
+          </h3>
+          <div className="space-y-4">
+            {message.content.items.map((item, idx) => {
+              const Icon = item.icon;
+              return (
+                <div key={idx} className="flex items-start space-x-3">
+                  <div className="bg-indigo-50 p-2 rounded-lg">
+                    <Icon className="w-5 h-5 text-primaryMain" />
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-gray-900">{item.title}</h4>
+                    {item.link ? (
+                      <a
+                        href={item.link}
+                        className="text-primaryMain hover:text-indigo-700 font-medium"
+                      >
+                        {item.text}
+                      </a>
+                    ) : (
+                      <p className="text-gray-600">{item.text}</p>
+                    )}
+                    {item.subtext && (
+                      <p className="text-sm text-gray-500 mt-1">
+                        {item.subtext}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    }
+
     if (message.type === "quickOptions") {
       return (
         <div className="bg-white rounded-lg shadow-md p-4 max-w-[85%]">
-          <h3 className="text-lg font-semibold text-indigo-600 mb-2">
+          <h3 className="text-lg font-semibold text-primaryMain mb-2">
             {message.content.title}
           </h3>
           <p className="text-gray-600 mb-4">
             <MessageContent text={message.content.text} />
           </p>
-          <div className="flex flex-col space-y-3">
+          <div className="space-y-3">
             {message.content.options.map((option, idx) => (
               <button
                 key={idx}
                 onClick={() => handleQuickOptionClick(option.label)}
-                className="text-left px-4 py-3 bg-gray-50 hover:bg-indigo-50 rounded-lg transition-colors duration-200 group"
+                className="w-full flex flex-col text-left p-3 bg-gray-50 hover:bg-indigo-50 rounded-lg transition-colors duration-200"
               >
-                <div className="font-medium text-gray-900 group-hover:text-indigo-600">
+                <span className="font-medium text-gray-900">
                   {option.label}
-                </div>
-                <div className="text-sm text-gray-500 group-hover:text-indigo-500">
+                </span>
+                <span className="text-sm text-gray-500">
                   {option.description}
-                </div>
+                </span>
               </button>
             ))}
           </div>
@@ -273,7 +312,7 @@ const ChatBot = () => {
       <div
         className={`max-w-[80%] px-4 py-2 rounded-2xl shadow-md ${
           message.sender === "user"
-            ? "bg-indigo-600 text-white ml-auto"
+            ? "bg-primaryMain text-white ml-auto"
             : "bg-white text-gray-800"
         }`}
       >
@@ -283,12 +322,12 @@ const ChatBot = () => {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 drop-shadow-lg z-50">
+    <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 drop-shadow-lg z-50">
       <AnimatePresence>
         {!isOpen && (
           <motion.button
             onClick={() => setIsOpen(true)}
-            className="bg-gradient-to-r from-indigo-600 to-indigo-700 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center space-x-2"
+            className="bg-gradient-to-r from-primaryMain to-indigo-700 text-white p-3 sm:p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center space-x-2 text-sm sm:text-base"
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.8, opacity: 0 }}
@@ -310,11 +349,11 @@ const ChatBot = () => {
             exit={{ opacity: 0, y: 50, scale: 0.9 }}
             transition={{ type: "spring", damping: 20, stiffness: 300 }}
           >
-            <div className="bg-gradient-to-r from-indigo-600 to-indigo-700 text-white p-4">
+            <div className="bg-gradient-to-r from-primaryMain to-indigo-700 text-white p-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
                   <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-                    <Bot className="w-6 h-6" />
+                    <Smile className="w-6 h-6" />
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold">
@@ -397,19 +436,19 @@ const ChatBot = () => {
                   <button
                     onClick={sendMessage}
                     disabled={input.trim() === ""}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 text-indigo-600 disabled:text-gray-400 hover:text-indigo-500 disabled:hover:text-gray-400 transition-colors"
+                    className="absolute right-2 top-1/2 -translate-y-1/2 text-primaryMain disabled:text-gray-400 hover:text-indigo-500 disabled:hover:text-gray-400 transition-colors"
                   >
                     <Send className="w-5 h-5" />
                   </button>
                 </div>
                 <div className="flex space-x-2">
-                  <button className="text-gray-400 hover:text-indigo-600 transition-colors">
+                  <button className="text-gray-400 hover:text-primaryMain transition-colors">
                     <Paperclip className="w-5 h-5" />
                   </button>
-                  <button className="text-gray-400 hover:text-indigo-600 transition-colors">
+                  <button className="text-gray-400 hover:text-primaryMain transition-colors">
                     <Camera className="w-5 h-5" />
                   </button>
-                  <button className="text-gray-400 hover:text-indigo-600 transition-colors">
+                  <button className="text-gray-400 hover:text-primaryMain transition-colors">
                     <Mic className="w-5 h-5" />
                   </button>
                 </div>

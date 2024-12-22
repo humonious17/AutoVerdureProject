@@ -119,6 +119,7 @@ const EditProductForm = ({ product, onSave, onCancel }) => {
     imageIndex: null,
   });
 
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState(initialFormData);
 
   useEffect(() => {
@@ -226,18 +227,19 @@ const EditProductForm = ({ product, onSave, onCancel }) => {
     return true;
   };
 
-    const handleImageChange = (index, e) => {
-      if (!e) {
-        // Open file input when clicking edit button
-        if (!fileInputRefs[index]) {
-          fileInputRefs[index] = document.createElement('input');
-          fileInputRefs[index].type = 'file';
-          fileInputRefs[index].accept = 'image/*';
-          fileInputRefs[index].onchange = (event) => handleImageChange(index, event);
-        }
-        fileInputRefs[index].click();
-        return;
+  const handleImageChange = (index, e) => {
+    if (!e) {
+      // Open file input when clicking edit button
+      if (!fileInputRefs[index]) {
+        fileInputRefs[index] = document.createElement("input");
+        fileInputRefs[index].type = "file";
+        fileInputRefs[index].accept = "image/*";
+        fileInputRefs[index].onchange = (event) =>
+          handleImageChange(index, event);
       }
+      fileInputRefs[index].click();
+      return;
+    }
     if (!e.target.files || e.target.files.length === 0) {
       console.error("No files selected.");
       return;
@@ -349,9 +351,10 @@ const EditProductForm = ({ product, onSave, onCancel }) => {
     );
     return selectedSizes && selectedColors;
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+    setStoredValues({ ...formData });
     setStoredValues({ ...formData });
     if (!validateForm()) {
       alert("Please select at least one size and one color.");
@@ -1046,7 +1049,7 @@ const EditProductForm = ({ product, onSave, onCancel }) => {
                           accept="image/*"
                           onChange={(e) => handleImageChange(index, e)}
                           className="hidden"
-                          ref={(el) => fileInputRefs[index] = el}
+                          ref={(el) => (fileInputRefs[index] = el)}
                         />
                         <input
                           type="file"
@@ -1078,11 +1081,42 @@ const EditProductForm = ({ product, onSave, onCancel }) => {
               >
                 Cancel
               </button>
-              <button
+              {/* <button
                 type="submit"
                 className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >
                 Save Changes
+              </button> */}
+              <button
+                type="submit"
+                className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              >
+                <span className={isLoading ? "hidden" : "inline"}>
+                  Save Changes
+                </span>
+                <span className={!isLoading ? "hidden" : "inline"}>
+                  <svg
+                    className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                  Saved Changes
+                </span>
               </button>
             </div>
           </form>

@@ -15,8 +15,8 @@ const importScript = (src) => {
         await fetch('/api/addSession', {
             method: 'POST',
             headers: {
-                    'Content-Type': 'application/json',
-                },
+                'Content-Type': 'application/json',
+            },
             body: data,
         });
 
@@ -60,6 +60,11 @@ const Input = ({ label, placeholder, type, name, value, onChange }) => {
       </div>
     </div>
   );
+};
+
+// Microsoft authentication handler
+const handleMicrosoftLogin = () => {
+  window.location.href = "/api/auth/microsoft";
 };
 
 const Signin = (prop) => {
@@ -133,8 +138,8 @@ const Signin = (prop) => {
           </p>
         </div>
 
-        {/* Google Authentication */}
         <div className="mt-8 sm:mt-[52px] w-full flex flex-col items-center justify-center gap-y-4 sm:flex-row sm:gap-x-4">
+          {/* Google Authentication Button */}
           <div
             id="g_id_onload"
             data-client_id="39593396169-ppn7dc7v4huovmuromku2k01s26kngfa.apps.googleusercontent.com"
@@ -142,6 +147,7 @@ const Signin = (prop) => {
             data-ux_mode="popup"
             data-callback="handleCredentialResponse"
             data-auto_prompt="false"
+            style={{ backgroundColor: "#fffbf7" }}
           ></div>
 
           <div
@@ -153,8 +159,21 @@ const Signin = (prop) => {
             data-size="large"
             data-logo_alignment="center"
           ></div>
-        </div>
 
+          {/* Microsoft Authentication Button */}
+          <button
+            onClick={handleMicrosoftLogin}
+            className="w-full flex items-center justify-center gap-3 px-6 py-3 border border-gray-300 rounded-[30px] hover:bg-gray-50 transition-colors text-gray-800 text-base font-medium"
+          >
+            <svg className="w-5 h-5" viewBox="0 0 21 21" fill="none">
+              <path d="M10 0H0v10h10V0z" fill="#F25022" />
+              <path d="M21 0H11v10h10V0z" fill="#7FBA00" />
+              <path d="M10 11H0v10h10V11z" fill="#00A4EF" />
+              <path d="M21 11H11v10h10V11z" fill="#FFB900" />
+            </svg>
+            <span>Sign up with Microsoft</span>
+          </button>
+        </div>
         {/* Or */}
         <div className="my-6 sm:my-8 w-full sm:w-[560px] flex gap-x-2 items-center">
           <div className="w-full h-[1px] bg-[#E4E4E4]" />

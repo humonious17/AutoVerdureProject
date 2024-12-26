@@ -18,9 +18,7 @@ const Profile = (props) => {
 
   const redeemPoints = async () => {
     const redemptionValue = formData.avPoints * 10; // 1 point = 10rs
-    setRedeemMessage(
-      `You can redeem ₹ ${redemptionValue} on your next order.`
-    );
+    setRedeemMessage(`You can redeem ₹ ${redemptionValue} on your next order.`);
   };
 
   const handleChange = (e) => {
@@ -368,11 +366,11 @@ export async function getServerSideProps({ req, res }) {
       }
 
       const parsedUser = {
-        firstName: user.username.split(" ")[0],
+        firstName: user.username ? user.username.split(" ")[0] : "",
         lastName:
-          user.username.split(" ").length > 1
+          user.username && user.username.split(" ").length > 1
             ? user.username.split(" ")[1]
-            : null,
+            : "",
         email: user.email,
         phone: user.phone || null,
         avPoints: user.avPoints || 0,

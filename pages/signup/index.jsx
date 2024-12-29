@@ -163,7 +163,7 @@ const Signin = (prop) => {
           {/* Microsoft Authentication Button */}
           <button
             onClick={handleMicrosoftLogin}
-            className="w-full flex items-center justify-center gap-3 px-6 py-3 border border-gray-300 rounded-[30px] hover:bg-gray-50 transition-colors text-gray-800 text-base font-medium"
+            className="w-full h-[38px] flex items-center justify-center gap-3 px-6 border border-gray-300 rounded-[30px] bg-white hover:bg-gray-50 transition-colors text-[#3C4043] text-[14px] font-medium"
           >
             <svg className="w-5 h-5" viewBox="0 0 21 21" fill="none">
               <path d="M10 0H0v10h10V0z" fill="#F25022" />

@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { parse } from "cookie";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Mail, Lock } from "lucide-react";
 import Head from "next/head";
 
 const importScript = (src) => {
@@ -26,7 +26,6 @@ const importScript = (src) => {
             if (result.ok) {
                 window.location.href = '/profile';
             } else {
-                // Handle authentication error
                 console.error('Authentication failed');
                 alert('Authentication failed. Please try again.');
             }
@@ -43,34 +42,58 @@ const importScript = (src) => {
   document.body.appendChild(script);
 };
 
-const Input = ({ label, placeholder, type, name, value, onChange }) => {
+const Input = ({
+  label,
+  placeholder,
+  type,
+  name,
+  value,
+  onChange,
+  icon: Icon,
+}) => {
   const [isVisible, setIsVisible] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
 
   return (
-    <div className="w-full flex flex-col gap-y-2">
-      <label className="text-xl sm:text-2xl leading-6 capitalize font-normal text-[#070707]">
-        {label}
-      </label>
-      <div className="w-full text-base px-3 sm:px-4 py-2.5 sm:py-3 leading-[25.6px] rounded-[84px] border-[1px] border-[#070707] text-[#070707] bg-[#FFFFFF] font-medium flex gap-3 sm:gap-5 justify-between">
+    <div className="w-full space-y-2">
+      <label className="text-sm font-medium text-gray-700">{label}</label>
+      <div className="relative">
+        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+          <Icon
+            className={`h-5 w-5 ${
+              isFocused ? "text-primaryMain" : "text-gray-400"
+            }`}
+          />
+        </div>
         <input
-          className="w-full h-fit text-sm sm:text-base focus:outline-none text-[16px]"
+          className="w-full pl-11 pr-4 py-2.5 text-sm border border-gray-300 rounded-full transition-colors focus:outline-none focus:border-primaryMain focus:ring-1 focus:ring-primaryMain"
           placeholder={placeholder}
           type={type === "password" && isVisible ? "text" : type}
           name={name}
           value={value}
           onChange={onChange}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
         />
         {type === "password" && (
           <button
             type="button"
             onClick={() => setIsVisible(!isVisible)}
-            className="cursor-pointer"
+            className="absolute inset-y-0 right-0 pr-4 flex items-center"
             aria-label={isVisible ? "Hide password" : "Show password"}
           >
             {isVisible ? (
-              <EyeOff className="w-5 h-5 sm:w-6 sm:h-6" />
+              <EyeOff
+                className={`h-5 w-5 ${
+                  isFocused ? "text-primaryMain" : "text-gray-400"
+                }`}
+              />
             ) : (
-              <Eye className="w-5 h-5 sm:w-6 sm:h-6" />
+              <Eye
+                className={`h-5 w-5 ${
+                  isFocused ? "text-primaryMain" : "text-gray-400"
+                }`}
+              />
             )}
           </button>
         )}
@@ -79,12 +102,22 @@ const Input = ({ label, placeholder, type, name, value, onChange }) => {
   );
 };
 
+const SocialButton = ({ onClick, icon, children, className }) => (
+  <button
+    onClick={onClick}
+    className={`w-full flex items-center justify-center gap-3 px-4 py-2.5 border border-gray-300 rounded-full hover:bg-gray-50 transition-colors text-gray-700 text-sm font-medium ${className}`}
+  >
+    {icon}
+    {children}
+  </button>
+);
+
 const Signin = () => {
   useEffect(() => {
     importScript("https://accounts.google.com/gsi/client");
   }, []);
 
-  const [buttonText, setButtonText] = useState("Log In");
+  const [buttonText, setButtonText] = useState("Sign In");
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -98,9 +131,13 @@ const Signin = () => {
     }));
   };
 
+  const handleMicrosoftLogin = () => {
+    window.location.href = "/api/auth/microsoft";
+  };
+
   const handleSubmit = async (e) => {
-    setButtonText("Logging In...");
     e.preventDefault();
+    setButtonText("Signing in...");
     const form = new FormData();
     form.append("email", formData.email);
     form.append("password", formData.password);
@@ -118,10 +155,10 @@ const Signin = () => {
       if (response.status === 200) {
         window.location.href = "/profile";
       } else {
-        setButtonText("Log in");
+        setButtonText("Sign In");
       }
     } catch (error) {
-      setButtonText("Log In");
+      setButtonText("Sign In");
       console.error("Error submitting form:", error);
     }
   };
@@ -136,87 +173,105 @@ const Signin = () => {
       </Head>
 
       <div className="px-4 sm:px-0 pt-16 sm:pt-[80px] mt-8 sm:mt-[55px] mb-8 sm:mb-[41px] lg:mb-[152px] lg:pl-[70px] w-full flex flex-col lg:flex-row lg:gap-[57px] xl:gap-x-[152px] justify-center lg:justify-start items-start overflow-x-hidden">
-        {/* Left Section with Text */}
+        {/* Left Section - Form */}
         <div className="mb-8 sm:mb-[46px] lg:mb-0 w-full lg:w-[560px] px-0 sm:px-[50px] lg:px-0 flex flex-col justify-center items-start">
-          {/* Title */}
-          <div className="w-full flex flex-col gap-y-2 sm:gap-y-3">
-            <p className="text-2xl sm:text-[32px] leading-8 font-normal capitalize text-[#070707]">
-              Sign In
-            </p>
-            <p className="w-full text-sm leading-[22.4px] font-medium text-[#8E8F94]">
-              Sign in to track your orders, access tailored guides, and manage
-              your profile with redeemable loyalty points, saved payment
-              methods, and more...
-            </p>
-          </div>
+          <div className="max-w-md w-full mx-auto space-y-8">
+            <div>
+              <h2 className="text-3xl font-medium text-gray-900">
+                Welcome back
+              </h2>
+              <p className="mt-2 text-sm text-gray-600">
+                Sign in to track your orders, access tailored guides, and manage
+                your profile.
+              </p>
+            </div>
 
-          {/* Google and Apple Authentication */}
-          <div className="mt-8 sm:mt-[52px] w-full flex flex-col items-center justify-center gap-y-4 sm:flex-row sm:gap-x-4">
-            <div
-              id="g_id_onload"
-              data-client_id="39593396169-ppn7dc7v4huovmuromku2k01s26kngfa.apps.googleusercontent.com"
-              data-context="signin"
-              data-ux_mode="popup"
-              data-callback="handleCredentialResponse"
-              data-auto_prompt="false"
-            ></div>
+            <div className="mt-8 sm:mt-[52px] w-full flex flex-col items-center justify-center gap-y-4 sm:flex-row sm:gap-x-4">
+              {/* Google Authentication Button */}
+              <div
+                id="g_id_onload"
+                data-client_id="39593396169-ppn7dc7v4huovmuromku2k01s26kngfa.apps.googleusercontent.com"
+                data-context="signin"
+                data-ux_mode="popup"
+                data-callback="handleCredentialResponse"
+                data-auto_prompt="false"
+                style={{ backgroundColor: "#fffbf7" }}
+              ></div>
 
-            <div
-              className="g_id_signin w-[380px] sm:w-[380px] md:w-[400px] lg:w-[400px]"
-              data-type="standard"
-              data-shape="pill"
-              data-theme="outline"
-              data-text="signin_with"
-              data-size="large"
-              data-logo_alignment="center"
-            ></div>
-          </div>
-          {/* Or */}
-          <div className="my-6 sm:my-8 w-full sm:w-[560px] flex gap-x-2 items-center">
-            <div className="w-full h-[1px] bg-[#E4E4E4]" />
-            <p className="text-sm sm:text-base leading-[25.6px] font-medium text-[#070707] whitespace-nowrap px-2">
-              or
-            </p>
-            <div className="w-full h-[1px] bg-[#E4E4E4]" />
-          </div>
+              <div
+                className="g_id_signin w-full sm:w-full md:w-full lg:w-full"
+                data-type="standard"
+                data-shape="pill"
+                data-theme="outline"
+                data-text="signup_with"
+                data-size="large"
+                data-logo_alignment="center"
+              ></div>
 
-          {/* Form */}
-          <div className="w-full">
-            <form
-              className="w-full flex flex-col gap-y-4 sm:gap-y-6"
-              onSubmit={handleSubmit}
-            >
+              {/* Microsoft Authentication Button */}
+              <button
+                onClick={handleMicrosoftLogin}
+                className="w-full h-[38px] flex items-center justify-center gap-3 px-6 border border-gray-300 rounded-[30px] bg-white hover:bg-gray-50 transition-colors text-[#3C4043] text-[14px] font-medium"
+              >
+                <svg className="w-5 h-5" viewBox="0 0 21 21" fill="none">
+                  <path d="M10 0H0v10h10V0z" fill="#F25022" />
+                  <path d="M21 0H11v10h10V0z" fill="#7FBA00" />
+                  <path d="M10 11H0v10h10V11z" fill="#00A4EF" />
+                  <path d="M21 11H11v10h10V11z" fill="#FFB900" />
+                </svg>
+                <span>Sign In with Microsoft</span>
+              </button>
+            </div>
+
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-300" />
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-[#fffbf7] text-gray-500">
+                  Or continue with
+                </span>
+              </div>
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-6">
               <Input
                 label="Email"
-                placeholder="Type here"
+                placeholder="Enter your email"
                 type="email"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
+                icon={Mail}
               />
+
               <Input
                 label="Password"
-                placeholder="Type here"
+                placeholder="••••••••"
                 type="password"
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
+                icon={Lock}
               />
 
               <button
                 type="submit"
-                className="mt-8 sm:mt-[52px] w-full text-sm sm:text-base px-4 sm:px-6 py-3 sm:py-[17px] rounded-[30px] border-[1px] bg-[#070707] border-[#070707] text-[#FFFFFF] font-[600]"
+                className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-full shadow-sm text-sm font-medium text-white bg-black hover:bg-gray-800 focus:outline-none transition-colors"
               >
                 {buttonText}
               </button>
-
-              <p className="mt-4 sm:mt-6 text-xs sm:text-sm leading-[18.2px] text-[#8E8F94] font-medium text-center">
-                Don't have an account?
-                <Link href="/signup">
-                  <span className="text-[#070707]"> Sign Up</span>
-                </Link>
-              </p>
             </form>
+
+            <p className="text-center text-sm text-[#8E8F94]">
+              Don't have an account?{" "}
+              <Link
+                href="/signup"
+                className="font-medium text-black hover:text-primaryMain"
+              >
+                Create Account
+              </Link>
+            </p>
           </div>
         </div>
 
@@ -266,10 +321,6 @@ export async function getServerSideProps({ req }) {
           },
         };
       }
-    } else {
-      return {
-        props: { user: null },
-      };
     }
   }
   return {

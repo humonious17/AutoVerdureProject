@@ -124,6 +124,62 @@ const Signin = (prop) => {
       console.error("Error submitting form:", error);
     }
   };
+
+  const AuthButtons = ({ handleMicrosoftLogin }) => {
+    return (
+      <div className="w-full max-w-md mx-auto px-4">
+        {/* Main container with consistent max width and padding */}
+        <div className="mt-8 flex flex-col items-center gap-4">
+          {/* Google Auth Container */}
+          <div className="w-full">
+            <div
+              id="g_id_onload"
+              data-client_id="39593396169-ppn7dc7v4huovmuromku2k01s26kngfa.apps.googleusercontent.com"
+              data-context="signin"
+              data-ux_mode="popup"
+              data-callback="handleCredentialResponse"
+              data-auto_prompt="false"
+              className="bg-[#fffbf7]"
+            />
+            <div
+              className="g_id_signin w-full"
+              data-type="standard"
+              data-shape="pill"
+              data-theme="outline"
+              data-text="signup_with"
+              data-size="large"
+              data-logo_alignment="center"
+            />
+          </div>
+
+          {/* Microsoft Auth Button */}
+          <button
+            onClick={handleMicrosoftLogin}
+            className="w-full h-[38px] flex items-center justify-center gap-3 px-6 border border-gray-300 rounded-full bg-white hover:bg-gray-50 transition-colors text-[#3C4043] text-sm font-medium shadow-sm"
+          >
+            <svg
+              className="w-5 h-5 flex-shrink-0"
+              viewBox="0 0 21 21"
+              fill="none"
+            >
+              <path d="M10 0H0v10h10V0z" fill="#F25022" />
+              <path d="M21 0H11v10h10V0z" fill="#7FBA00" />
+              <path d="M10 11H0v10h10V11z" fill="#00A4EF" />
+              <path d="M21 11H11v10h10V11z" fill="#FFB900" />
+            </svg>
+            <span>Sign up with Microsoft</span>
+          </button>
+
+          {/* Divider */}
+          <div className="w-full flex items-center gap-4 my-6">
+            <div className="h-px bg-gray-200 flex-1" />
+            <span className="text-sm text-gray-500 font-medium px-2">or</span>
+            <div className="h-px bg-gray-200 flex-1" />
+          </div>
+        </div>
+      </div>
+    );
+  };
   return (
     <div className="px-4 sm:px-0 pt-16 sm:pt-[80px] mt-8 sm:mt-[55px] mb-8 sm:mb-[41px] lg:mb-[152px] lg:pl-[70px] w-full flex flex-col lg:flex-row lg:gap-[57px] xl:gap-x-[152px] justify-center lg:justify-start items-start overflow-x-hidden">
       {/* Left Section with Text */}
@@ -138,50 +194,7 @@ const Signin = (prop) => {
           </p>
         </div>
 
-        <div className="mt-8 sm:mt-[52px] w-full flex flex-col items-center justify-center gap-y-4 sm:flex-row sm:gap-x-4">
-          {/* Google Authentication Button */}
-          <div
-            id="g_id_onload"
-            data-client_id="39593396169-ppn7dc7v4huovmuromku2k01s26kngfa.apps.googleusercontent.com"
-            data-context="signin"
-            data-ux_mode="popup"
-            data-callback="handleCredentialResponse"
-            data-auto_prompt="false"
-            style={{ backgroundColor: "#fffbf7" }}
-          ></div>
-
-          <div
-            className="g_id_signin w-full sm:w-full md:w-full lg:w-full"
-            data-type="standard"
-            data-shape="pill"
-            data-theme="outline"
-            data-text="signup_with"
-            data-size="large"
-            data-logo_alignment="center"
-          ></div>
-
-          {/* Microsoft Authentication Button */}
-          <button
-            onClick={handleMicrosoftLogin}
-            className="w-full h-[38px] flex items-center justify-center gap-3 px-6 border border-gray-300 rounded-[30px] bg-white hover:bg-gray-50 transition-colors text-[#3C4043] text-[14px] font-medium"
-          >
-            <svg className="w-5 h-5" viewBox="0 0 21 21" fill="none">
-              <path d="M10 0H0v10h10V0z" fill="#F25022" />
-              <path d="M21 0H11v10h10V0z" fill="#7FBA00" />
-              <path d="M10 11H0v10h10V11z" fill="#00A4EF" />
-              <path d="M21 11H11v10h10V11z" fill="#FFB900" />
-            </svg>
-            <span>Sign up with Microsoft</span>
-          </button>
-        </div>
-        {/* Or */}
-        <div className="my-6 sm:my-8 w-full sm:w-[560px] flex gap-x-2 items-center">
-          <div className="w-full h-[1px] bg-[#E4E4E4]" />
-          <p className="text-sm sm:text-base leading-[25.6px] font-medium text-[#070707] whitespace-nowrap px-2">
-            or
-          </p>
-          <div className="w-full h-[1px] bg-[#E4E4E4]" />
-        </div>
+        <AuthButtons handleMicrosoftLogin={handleMicrosoftLogin} />
 
         {/* Form */}
         <div className="w-full">

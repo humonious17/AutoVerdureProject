@@ -21,6 +21,7 @@ export const adminNavItems = [
   { title: "productlist", url: "/admin/productlist" },
   { title: "orderlist", url: "/admin/orderlist" },
   { title: "blogslist", url: "/admin/blogslist" },
+  { title: "newsletter", url: "/admin/newsletter" },
   // { title: "settings", url: "/profile/settings" },
   // { title: "payments", url: "/profile/payments" },
 ];

@@ -1,16 +1,18 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import GuideCard from "../ui/GuideCard.jsx/GuideCard";
 import { guides } from "../constant/data";
 import Image from "next/image";
 import ResourcesNavbar from "../ui/ResourcesNavbar";
 import Blogs from "@/pages/Blogs";
 
-const resources = () => {
+const Resources = () => {
+  const [selectedCategory, setSelectedCategory] = useState("all");
+
   return (
     <div className="w-full px-4 md:px-[27px] xl:px-[119.99px] 2xl:px-[230px] bg-[#FFFBF7]">
-      <ResourcesNavbar />
-      <Blogs />
+      <ResourcesNavbar onCategoryChange={setSelectedCategory} />
+      <Blogs selectedCategory={selectedCategory} />
 
       {/* Contact Us */}
       <div className="w-full mt-[107px] px-[23px] pt-[39px] pb-[20px] xl:px-[100px] xl:pt-[110px] xl:pb-[94px] rounded-[24px] bg-primaryCream md:flex flex-col justify-center items-center">
@@ -32,4 +34,4 @@ const resources = () => {
   );
 };
 
-export default resources;
+export default Resources;

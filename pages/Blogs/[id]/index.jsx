@@ -2,6 +2,190 @@ import { db } from "@/pages/api/firebaseAdmin";
 import Image from "next/image";
 import Contact from "@/app/ui/Contact";
 import Displayblogs from "@/app/ui/Store/Displayblogs";
+import {
+  Share2,
+  Twitter,
+  Linkedin,
+  MessageCircle,
+  Send,
+  Clock,
+  Calendar,
+  BookOpen,
+  ChevronLeft,
+} from "lucide-react";
+import XIcon from "@mui/icons-material/X";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import Link from "next/link";
+
+export default function BlogPost({ blog }) {
+  const formatDate = (date) => {
+    return new Date(date).toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+  };
+
+  const estimateReadTime = (content) => {
+    const wordsPerMinute = 200;
+    const words = content.split(/\s+/).length;
+    return Math.ceil(words / wordsPerMinute);
+  };
+
+  return (
+    <div className="min-h-screen bg-[#fffbf7]">
+      {/* Hero Section with Full-width Image - Added mt-16 for navbar height */}
+      <div className="mt-16">
+        <div className="relative w-full h-[80vh]">
+          {blog.imageUrl && (
+            <>
+              <Image
+                src={blog.imageUrl}
+                alt={blog.title}
+                className="object-cover"
+                fill
+                priority
+                quality={90}
+              />
+              {/* Gradient Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/70" />
+            </>
+          )}
+
+          {/* Back Button - Adjusted position */}
+          <div className="absolute top-4 left-4 z-20 md:left-8">
+            <Link
+              href="/resources"
+              className="inline-flex items-center px-4 py-2 space-x-2 text-sm text-white bg-black/20 backdrop-blur-sm rounded-full shadow-sm hover:bg-black/30 transition-all duration-200"
+            >
+              <ChevronLeft className="w-4 h-4" />
+              <span>Back to Blog</span>
+            </Link>
+          </div>
+
+          {/* Centered Content */}
+          <div className="absolute inset-0 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8">
+            <div className="max-w-4xl mx-auto text-center">
+              <span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-white/20 text-white backdrop-blur-sm">
+                {blog.category || "General"}
+              </span>
+
+              <h1 className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tight">
+                {blog.title}
+              </h1>
+
+              {/* Meta Information */}
+              <div className="mt-8 flex flex-wrap justify-center gap-4 text-white/80">
+                <div className="flex items-center gap-2">
+                  <Calendar className="w-4 h-4" />
+                  <span className="text-sm">{formatDate(new Date())}</span>
+                </div>
+                <div className="hidden sm:block w-1 h-1 rounded-full bg-white/50" />
+                <div className="flex items-center gap-2">
+                  <Clock className="w-4 h-4" />
+                  <span className="text-sm">
+                    {estimateReadTime(blog.content)} min read
+                  </span>
+                </div>
+                <div className="hidden sm:block w-1 h-1 rounded-full bg-white/50" />
+                <div className="flex items-center gap-2">
+                  <BookOpen className="w-4 h-4" />
+                  <span className="text-sm">
+                    {blog.content.split(/\s+/).length} words
+                  </span>
+                </div>
+              </div>
+
+              {/* Author Info */}
+              <div className="mt-8 flex items-center justify-center">
+                <div className="flex items-center gap-4 bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full">
+                  <div className="h-10 w-10 rounded-full bg-gradient-to-br from-primaryMain to-indigo-700 flex items-center justify-center">
+                    <span className="text-lg font-bold text-white">
+                      {(blog.authorName || "Unknown").charAt(0)}
+                    </span>
+                  </div>
+                  <div className="text-left">
+                    <p className="text-sm font-medium text-white">
+                      {blog.authorName || "Unknown Author"}
+                    </p>
+                    <p className="text-sm text-white/70">Content Writer</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="relative px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto -mt-32">
+        <div className="bg-[#fffbf7] rounded-2xl shadow-xl p-6 sm:p-10 lg:p-16">
+          {/* Description */}
+          <div className="prose prose-lg mx-auto">
+            <blockquote className="text-xl md:text-2xl font-light italic text-gray-700 border-l-4 border-primaryMain pl-4 my-8">
+              {blog.description}
+            </blockquote>
+
+            {/* Content */}
+            <div
+              className="mt-8 prose prose-lg prose-green prose-headings:font-bold prose-p:text-gray-700 prose-a:text-green-600 prose-blockquote:text-gray-600 prose-strong:text-gray-900"
+              dangerouslySetInnerHTML={{
+                __html: blog.content,
+              }}
+            />
+          </div>
+
+          {/* Share Section */}
+          <div className="mt-16 pt-8 border-t border-gray-200">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
+              <p className="font-medium text-gray-900 flex items-center gap-2">
+                <Share2 className="w-5 h-5 text-gray-600" />
+                Share this article
+              </p>
+              <div className="flex gap-4">
+                <button className="p-3 rounded-full bg-gray-50 hover:bg-gray-100 transition-colors duration-200">
+                  <FacebookIcon className="w-5 h-5 text-gray-700" />
+                </button>
+                <button className="p-3 rounded-full bg-gray-50 hover:bg-gray-100 transition-colors duration-200">
+                  <XIcon className="w-5 h-5 text-gray-700" />
+                </button>
+                <button className="p-3 rounded-full bg-gray-50 hover:bg-gray-100 transition-colors duration-200">
+                  <InstagramIcon className="w-5 h-5 text-gray-700" />
+                </button>
+                <button className="p-3 rounded-full bg-gray-50 hover:bg-gray-100 transition-colors duration-200">
+                  <LinkedInIcon className="w-5 h-5 text-gray-700" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Related Blog Section */}
+      <section className="bg-[#fffbf7] mt-24 py-16 md:py-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">
+              More Articles
+            </h2>
+            <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
+              Discover more stories and insights about sustainable living and
+              eco-friendly practices.
+            </p>
+          </div>
+          <Displayblogs />
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section className="bg-[#fffbf7] py-16">
+        <Contact />
+      </section>
+    </div>
+  );
+}
 
 export async function getServerSideProps({ params }) {
   try {
@@ -18,90 +202,4 @@ export async function getServerSideProps({ params }) {
     console.error("Error fetching blog post:", error);
     return { notFound: true };
   }
-}
-
-export default function BlogPost({ blog }) {
-  return (
-    <>
-      <div className="container mx-auto p-6 mt-14 max-w-2xl md:max-w-3xl lg:max-w-4xl">
-        {/* Blog Header */}
-        <div className="text-center mb-8">
-          <span className="bg-green-200 text-green-800 px-2 py-1 rounded-lg text-xs uppercase tracking-wide">
-            {blog.category || "General"}
-          </span>
-          <h1 className="font-urbanist text-[40px] sm:text-[48px] md:text-[64px] leading-tight mt-4 mb-2 text-center font-normal text-primaryGrayscale">
-            {blog.title}
-          </h1>
-          <p className="font-bold text-black">{blog.authorName || "Unknown Author"}</p>
-          <p className="text-gray-500 text-sm">
-            {new Date().toLocaleDateString("en-GB")}
-          </p>
-        </div>
-
-        {/* Blog Image */}
-        {blog.imageUrl && (
-          <div className="flex justify-center mb-6 ">
-            <Image className="rounded-3xl w-[364px] h-[218px] sm:w-[681px] sm:h-[419px] xl:w-[833px] xl:h-[498px]"
-              src={blog.imageUrl}
-              alt={blog.title}
-              width={364}
-              height={218}
-             
-            />
-          </div>
-        )}
-
-        {/* Blog Description */}
-        <p className="font-urbanist text-[20px] sm:text-[24px] font-semibold leading-[28.8px] tracking-[-0.025em] text-left mb-4" style={{ color: "#6F6E73", fontFamily: "Urbanist" }}>
-          {blog.description}
-        </p>
-
-        {/* Blog Content */}
-        <div
-          className="font-urbanist text-[20px] sm:text-[24px] font-normal leading-[28.8px] tracking-[-0.025em] text-left"
-          style={{ color: "#3D3D3D", fontFamily: "Urbanist" }}
-          dangerouslySetInnerHTML={{
-            __html: blog.content.replace(
-              
-              '<p style="margin-bottom: 16px;">'
-            ),
-          }}
-        />
-
-        {/* Share Buttons */}
-        <div className="mt-6">
-          <p className="font-bold mb-2" style={{ color: "#3D3D3D", fontFamily: "Urbanist" }}>
-            Share
-          </p>
-          <div className="flex space-x-3 justify-start">
-            <button className="w-10 h-10 bg-purple-600 rounded-full hover:bg-purple-700 transition">
-              <i className="fab fa-discord text-white text-xl"></i>
-            </button>
-            <button className="w-10 h-10 bg-purple-600 rounded-full hover:bg-purple-700 transition">
-              <i className="fab fa-twitter text-white text-xl"></i>
-            </button>
-            <button className="w-10 h-10 bg-purple-600 rounded-full hover:bg-purple-700 transition">
-              <i className="fab fa-telegram text-white text-xl"></i>
-            </button>
-            <button className="w-10 h-10 bg-purple-600 rounded-full hover:bg-purple-700 transition">
-              <i className="fab fa-linkedin text-white text-xl"></i>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Related Blog Section */}
-      <div className="mx-auto p-6 md:p-16 max-w-screen-2xl text-center">
-        <Displayblogs
-          title="Related Blog"
-          description="Our blog is filled with informative and inspiring content on all things green. From plant care tips and advice to the latest trends in gardening and design, our experts share their knowledge to help you bring your indoor and outdoor spaces to life."
-        />
-      </div>
-
-      {/* Contact Us Section */}
-      <div className="mt-8 mb-24">
-        <Contact />
-      </div>
-    </>
-  );
 }

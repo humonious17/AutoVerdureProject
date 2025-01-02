@@ -81,31 +81,6 @@ const normalizeAmount = (order) => {
   return amount > 1000 ? amount / 100 : amount;
 };
 
-// New helper function for date formatting
-const formatDate = (date) => {
-  if (!date) return "N/A";
-
-  // Handle Firestore Timestamp
-  if (date.seconds) {
-    return new Date(date.seconds * 1000).toLocaleString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  }
-
-  // Handle regular date string
-  return new Date(date).toLocaleString("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-};
-
 // Enhanced OrderDetails Component
 const OrderDetails = ({ order, onClose, onUpdateStatus, onUpdateNotes }) => {
   const [status, setStatus] = useState(order.orderStatus || order.status);
@@ -343,29 +318,56 @@ const OrderList = ({ initialOrders }) => {
   const { toast } = useToast();
 
   // Enhanced filter and search logic
+  const [sortConfig, setSortConfig] = useState({
+    key: "createdAt",
+    direction: "desc",
+  });
+
+  // Add sorting function
+  const sortOrders = (orders, { key, direction }) => {
+    return [...orders].sort((a, b) => {
+      let aVal = key.split(".").reduce((obj, k) => obj?.[k], a);
+      let bVal = key.split(".").reduce((obj, k) => obj?.[k], b);
+
+      // Handle special cases
+      if (key === "createdAt") {
+        aVal = aVal?._seconds ? new Date(aVal._seconds * 1000) : new Date(aVal);
+        bVal = bVal?._seconds ? new Date(bVal._seconds * 1000) : new Date(bVal);
+      } else if (key === "totalAmount" || key === "amount") {
+        aVal = normalizeAmount(a);
+        bVal = normalizeAmount(b);
+      }
+
+      if (aVal === bVal) return 0;
+      if (direction === "asc") {
+        return aVal < bVal ? -1 : 1;
+      } else {
+        return aVal > bVal ? -1 : 1;
+      }
+    });
+  };
+
   useEffect(() => {
     let result = orders;
 
-    // Status filter
+    // Apply filters
     if (statusFilter !== "all") {
       result = result.filter(
         (order) => (order.orderStatus || order.status) === statusFilter
       );
     }
 
-    // Date range filter
     if (dateRange.start && dateRange.end) {
       const start = new Date(dateRange.start).getTime();
       const end = new Date(dateRange.end).getTime();
       result = result.filter((order) => {
-        const orderDate = order.createdAt?.seconds
-          ? order.createdAt.seconds * 1000
+        const orderDate = order.createdAt?._seconds
+          ? new Date(order.createdAt._seconds * 1000).getTime()
           : new Date(order.createdAt).getTime();
         return orderDate >= start && orderDate <= end;
       });
     }
 
-    // Search filter
     if (searchTerm) {
       const searchLower = searchTerm.toLowerCase();
       result = result.filter(
@@ -376,8 +378,11 @@ const OrderList = ({ initialOrders }) => {
       );
     }
 
+    // Apply sorting
+    result = sortOrders(result, sortConfig);
+
     setFilteredOrders(result);
-  }, [statusFilter, searchTerm, dateRange, orders]);
+  }, [statusFilter, searchTerm, dateRange, orders, sortConfig]);
 
   const getStatusColor = (status) => {
     const statusColors = {
@@ -510,6 +515,36 @@ const OrderList = ({ initialOrders }) => {
     }
   };
 
+  const formatTimestamp = (timestamp) => {
+    if (!timestamp) return "";
+
+    try {
+      let date;
+      if (timestamp._seconds) {
+        // Handle Firestore timestamp
+        date = new Date(timestamp._seconds * 1000);
+      } else if (typeof timestamp === "string") {
+        // Handle string timestamp
+        date = new Date(timestamp.replace("at", ""));
+      } else {
+        // Handle regular Date object
+        date = new Date(timestamp);
+      }
+
+      return new Intl.DateTimeFormat("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      }).format(date);
+    } catch (error) {
+      console.error("Error formatting timestamp:", error);
+      return "Invalid date";
+    }
+  };
+
   return (
     <ProtectedRoute>
       <div className="container mx-auto py-8">
@@ -570,6 +605,33 @@ const OrderList = ({ initialOrders }) => {
                   className="w-40"
                 />
               </div>
+              <Select
+                value={`${sortConfig.key}-${sortConfig.direction}`}
+                onValueChange={(value) => {
+                  const [key, direction] = value.split("-");
+                  setSortConfig({ key, direction });
+                }}
+              >
+                <SelectTrigger className="w-48">
+                  <SelectValue placeholder="Sort orders" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="createdAt-desc">Newest First</SelectItem>
+                  <SelectItem value="createdAt-asc">Oldest First</SelectItem>
+                  <SelectItem value="totalAmount-desc">
+                    Highest Amount
+                  </SelectItem>
+                  <SelectItem value="totalAmount-asc">Lowest Amount</SelectItem>
+                  <SelectItem value="shipping.fullName-asc">
+                    Customer Name A-Z
+                  </SelectItem>
+                  <SelectItem value="shipping.fullName-desc">
+                    Customer Name Z-A
+                  </SelectItem>
+                  <SelectItem value="status-asc">Status A-Z</SelectItem>
+                  <SelectItem value="status-desc">Status Z-A</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             {selectedOrders.length > 0 && (
@@ -693,7 +755,7 @@ const OrderList = ({ initialOrders }) => {
                           {order.paymentStatus || "Pending"}
                         </Badge>
                       </TableCell>
-                      <TableCell>{formatDate(order.createdAt)}</TableCell>
+                      <TableCell>{formatTimestamp(order.createdAt)}</TableCell>
                       <TableCell className="text-right">
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>

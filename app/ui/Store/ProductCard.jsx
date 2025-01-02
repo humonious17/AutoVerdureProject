@@ -76,7 +76,7 @@ const ProductCard = ({ product, viewType = "grid" }) => {
                     src={
                       product.petFriendly === "true"
                         ? "/veterinary.png"
-                        : "/noPets.png"
+                        : "/npf.png"
                     }
                     alt="veterinary"
                     width={32}

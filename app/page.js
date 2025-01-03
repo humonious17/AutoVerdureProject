@@ -206,7 +206,7 @@ export default function Home() {
       <div className="absolute top-[40px] right-[60px] md:right-[50px] image-container z-10">
         <Image
           className="xl:hidden pot-image transform-gpu scale-[2.2] origin-center"
-          src="/newmobile.png"
+          src="/nmb1.png"
           alt="bgImage"
           width={350}
           height={587}

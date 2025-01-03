@@ -275,7 +275,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
                       src={
                         productData.petFriendly === "true"
                           ? "/veterinary.png"
-                          : "/noPets.png"
+                          : "/npf1.png"
                       }
                       alt="veterinary"
                       width={30}
@@ -776,7 +776,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
                     src={
                       productData.petFriendly === "true"
                         ? "/veterinary.png"
-                        : "/noPets.png"
+                        : "/npf1.png"
                     }
                     alt="veterinary"
                     width={32}

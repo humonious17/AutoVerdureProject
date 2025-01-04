@@ -25,7 +25,7 @@ const Community = () => {
             Join THE AV Family <br /> World&apos;s first customizable hydroponic
             pots.
           </p>
-          <p className="mt-5 text-sm leading-6 font-normal text-[#6F6E73]">
+          <p className="mt-5 text-sm leading-6 font-normal text-[#6F6E73] -tracking-[0px] md:-tracking-[0px]">
             &quot; Unlock The Biophile Inside You: Embrace Your Connection With
             Nature ! &quot;
           </p>

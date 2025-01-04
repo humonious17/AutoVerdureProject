@@ -5,6 +5,10 @@ import { quickLinks, support } from "../constant/data";
 import Link from "next/link";
 import { useState } from "react";
 import axios from "axios";
+import XIcon from "@mui/icons-material/X";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
 
 const Footer = () => {
   const [email, setEmail] = useState("");
@@ -64,19 +68,19 @@ const Footer = () => {
           </p>
 
           <div className="flex justify-center items-center gap-[14px]">
-            <div className="object-contain w-8 h-8">
-              <Image src="/twitter.svg" alt="twitter" width={32} height={32} />
-            </div>
-            <div className="object-contain w-8 h-8">
-              <Image src="/facebook.svg" alt="twitter" width={32} height={32} />
-            </div>
-            <div className="object-contain w-8 h-8">
-              <Image
-                src="/instagram.svg"
-                alt="twitter"
-                width={32}
-                height={32}
-              />
+            <div className="flex gap-4">
+              <button className="p-0 rounded-full bg-gray-50 hover:bg-gray-100 transition-colors duration-200">
+                <FacebookIcon className="w-5 h-5 text-primaryMain" />
+              </button>
+              <button className="p-0 rounded-full bg-gray-50 hover:bg-gray-100 transition-colors duration-200">
+                <XIcon className="w-5 h-5 text-primaryMain" />
+              </button>
+              <button className="p-0 rounded-full bg-gray-50 hover:bg-gray-100 transition-colors duration-200">
+                <InstagramIcon className="w-5 h-5 text-primaryMain" />
+              </button>
+              <button className="p-0 rounded-full bg-gray-50 hover:bg-gray-100 transition-colors duration-200">
+                <LinkedInIcon className="w-5 h-5 text-primaryMain" />
+              </button>
             </div>
           </div>
         </div>
@@ -186,11 +190,14 @@ const Footer = () => {
               <button
                 type="submit"
                 disabled={isLoading}
-                className={`relative px-6 py-3 rounded-[100px] text-white overflow-hidden transition-all duration-300 ${
-                  isLoading
-                    ? "bg-gray-400 cursor-not-allowed"
-                    : "bg-primaryMain hover:shadow-lg hover:shadow-primaryMain/50 active:scale-95"
-                }`}
+                className={`relative px-6 py-3 rounded-[100px] text-white font-medium transform transition-all duration-300 ease-in-out
+          ${
+            isLoading
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-gradient-to-r from-primaryMain to-primaryMain/90 hover:from-primaryMain/90 hover:to-primaryMain hover:shadow-xl hover:shadow-primaryMain/30 active:scale-95"
+          }
+          before:absolute before:inset-0 before:rounded-[100px] before:bg-white before:opacity-0 before:transition-opacity hover:before:opacity-10
+        `}
               >
                 <span
                   className={`inline-flex items-center transition-all duration-300 ${
@@ -201,7 +208,7 @@ const Footer = () => {
                     <span className="flex items-center gap-2">
                       Done
                       <svg
-                        className="w-4 h-4"
+                        className="w-4 h-4 animate-bounce"
                         viewBox="0 0 20 20"
                         fill="currentColor"
                       >
@@ -213,7 +220,22 @@ const Footer = () => {
                       </svg>
                     </span>
                   ) : (
-                    "Submit"
+                    <span className="flex items-center gap-2">
+                      Subscribe
+                      <svg
+                        className="w-4 h-4 transform transition-transform group-hover:translate-x-1"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M14 5l7 7m0 0l-7 7m7-7H3"
+                        />
+                      </svg>
+                    </span>
                   )}
                 </span>
                 {isLoading && (
@@ -262,6 +284,7 @@ const Footer = () => {
               </p>
             </div>
           )}
+
           <p className="mt-[28px] text-xs font-medium">
             © Copyright 2024, All Rights Reserved by Auto Verdure
           </p>

@@ -45,6 +45,11 @@ import {
   Calendar,
   Filter,
   RefreshCcw,
+  Clock,
+  User,
+  Mail,
+  Phone,
+  MapPin,
 } from "lucide-react";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { useAuth } from "../../../context/AuthContext";
@@ -83,7 +88,7 @@ const normalizeAmount = (order) => {
 
 // Enhanced OrderDetails Component
 const OrderDetails = ({ order, onClose, onUpdateStatus, onUpdateNotes }) => {
-  const [status, setStatus] = useState(order.orderStatus || order.orderStatus);
+  const [status, setStatus] = useState(order.orderStatus || order.status);
   const [notes, setNotes] = useState(order.notes || "");
   const [paymentStatus, setPaymentStatus] = useState(
     order.paymentStatus || "pending"
@@ -111,11 +116,14 @@ const OrderDetails = ({ order, onClose, onUpdateStatus, onUpdateNotes }) => {
         }),
       });
 
-      if (!response.ok) throw new Error("Failed to update payment status");
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Failed to update payment status");
+      }
 
       setPaymentStatus(newStatus);
 
-      // Update the orders list if needed
+      // Update the order in the parent component
       if (onUpdatePaymentStatus) {
         await onUpdatePaymentStatus(order.orderId, newStatus);
       }
@@ -127,11 +135,24 @@ const OrderDetails = ({ order, onClose, onUpdateStatus, onUpdateNotes }) => {
     } catch (error) {
       toast({
         title: "Error updating payment status",
-        description: "Please try again later",
+        description: error.message || "Please try again later",
         variant: "destructive",
       });
     }
   };
+
+  const paymentStatusSelect = (
+    <Select value={paymentStatus} onValueChange={handlePaymentStatusChange}>
+      <SelectTrigger className="w-40">
+        <SelectValue />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="pending">Pending</SelectItem>
+        <SelectItem value="completed">Completed</SelectItem>
+        <SelectItem value="refunded">Refunded</SelectItem>
+      </SelectContent>
+    </Select>
+  );
 
   const handleNotesChange = async () => {
     await onUpdateNotes(order.orderId, notes);
@@ -145,8 +166,6 @@ const OrderDetails = ({ order, onClose, onUpdateStatus, onUpdateNotes }) => {
       completed: "bg-green-100 text-green-800",
       cancelled: "bg-red-100 text-red-800",
       created: "bg-purple-100 text-purple-800",
-      paid: "bg-green-100 text-green-800",
-      unpaid: "bg-red-100 text-red-800",
       refunded: "bg-gray-100 text-gray-800",
     };
     return statusColors[status] || "bg-gray-100 text-gray-800";
@@ -159,13 +178,60 @@ const OrderDetails = ({ order, onClose, onUpdateStatus, onUpdateNotes }) => {
     );
   };
 
+  const formatTimestamp = (timestamp) => {
+    if (!timestamp) return "";
+
+    try {
+      let date;
+      if (timestamp._seconds) {
+        // Handle Firestore timestamp
+        date = new Date(timestamp._seconds * 1000);
+      } else if (typeof timestamp === "string") {
+        // Handle string timestamp
+        date = new Date(timestamp.replace("at", ""));
+      } else {
+        // Handle regular Date object
+        date = new Date(timestamp);
+      }
+
+      return new Intl.DateTimeFormat("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      }).format(date);
+    } catch (error) {
+      console.error("Error formatting timestamp:", error);
+      return "Invalid date";
+    }
+  };
+
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <div className="space-y-4">
-          <div>
-            <h3 className="text-lg font-semibold">Order Status</h3>
-            <div className="mt-2 flex items-center space-x-4">
+    <div className="max-w-4xl mx-auto p-6 space-y-8 h-[700px] overflow-y-auto">
+      {/* Header Section */}
+      <div className="flex justify-between items-start">
+        <div className="space-y-1">
+          <h2 className="text-2xl font-bold">Order #{order.id}</h2>
+          <p className="text-gray-500">
+            <Clock className="inline-block w-4 h-4 mr-1" />
+            {formatTimestamp(order.createdAt)}
+          </p>
+        </div>
+        <Button variant="ghost" size="icon" onClick={onClose}>
+          <X className="h-4 w-4" />
+        </Button>
+      </div>
+
+      {/* Status Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Card>
+          <CardContent className="p-4">
+            <h3 className="text-sm font-medium text-gray-500 mb-2">
+              Order Status
+            </h3>
+            <div className="flex items-center space-x-3">
               <Select value={status} onValueChange={handleStatusChange}>
                 <SelectTrigger className="w-40">
                   <SelectValue />
@@ -182,11 +248,15 @@ const OrderDetails = ({ order, onClose, onUpdateStatus, onUpdateNotes }) => {
                 {status.charAt(0).toUpperCase() + status.slice(1)}
               </Badge>
             </div>
-          </div>
+          </CardContent>
+        </Card>
 
-          <div>
-            <h3 className="text-lg font-semibold">Payment Status</h3>
-            <div className="mt-2 flex items-center space-x-4">
+        <Card>
+          <CardContent className="p-4">
+            <h3 className="text-sm font-medium text-gray-500 mb-2">
+              Payment Status
+            </h3>
+            <div className="flex items-center space-x-3">
               <Select
                 value={paymentStatus}
                 onValueChange={handlePaymentStatusChange}
@@ -196,7 +266,7 @@ const OrderDetails = ({ order, onClose, onUpdateStatus, onUpdateNotes }) => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="pending">Pending</SelectItem>
-                  <SelectItem value="paid">Completed</SelectItem>
+                  <SelectItem value="completed">Completed</SelectItem>
                   <SelectItem value="refunded">Refunded</SelectItem>
                 </SelectContent>
               </Select>
@@ -204,89 +274,70 @@ const OrderDetails = ({ order, onClose, onUpdateStatus, onUpdateNotes }) => {
                 {paymentStatus.charAt(0).toUpperCase() + paymentStatus.slice(1)}
               </Badge>
             </div>
-          </div>
-        </div>
-        <Button variant="ghost" size="icon" onClick={onClose}>
-          <X className="h-4 w-4" />
-        </Button>
+          </CardContent>
+        </Card>
       </div>
 
-      <div className="grid grid-cols-2 gap-6">
-        <div>
-          <h3 className="text-lg font-semibold mb-2">Customer Details</h3>
-          <div className="space-y-2">
-            <p>
-              <span className="font-medium">Name:</span>{" "}
-              {normalizedShipping.fullName}
-            </p>
-            <p>
-              <span className="font-medium">Email:</span> {order.email}
-            </p>
-            <p>
-              <span className="font-medium">Phone:</span>{" "}
-              {normalizedShipping.phone}
-            </p>
-          </div>
-        </div>
-
-        <div>
-          <h3 className="text-lg font-semibold mb-2">Shipping Address</h3>
-          <div className="space-y-2">
-            {normalizedShipping.address1 && (
-              <p>{normalizedShipping.address1}</p>
-            )}
-            {normalizedShipping.address2 && (
-              <p>{normalizedShipping.address2}</p>
-            )}
-            <p>
-              {normalizedShipping.city}
-              {normalizedShipping.state && `, ${normalizedShipping.state}`}{" "}
-              {normalizedShipping.postalCode}
-            </p>
-            <p>{normalizedShipping.country}</p>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <h3 className="text-lg font-semibold mb-2">Order Notes</h3>
-        <div className="space-y-2">
-          {isEditing ? (
-            <>
-              <Textarea
-                value={notes}
-                onChange={(e) => setNotes(e.target.value)}
-                className="min-h-[100px]"
-                placeholder="Add notes about this order..."
-              />
-              <div className="flex justify-end space-x-2">
-                <Button variant="outline" onClick={() => setIsEditing(false)}>
-                  Cancel
-                </Button>
-                <Button onClick={handleNotesChange}>Save Notes</Button>
+      {/* Customer and Shipping Info */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Card>
+          <CardContent className="p-4">
+            <h3 className="text-lg font-semibold mb-4">Customer Details</h3>
+            <div className="space-y-3">
+              <div className="flex items-center">
+                <User className="w-4 h-4 mr-2 text-gray-400" />
+                <span>{normalizedShipping.fullName}</span>
               </div>
-            </>
-          ) : (
-            <div
-              className="min-h-[100px] p-3 border rounded-md cursor-pointer hover:bg-gray-50"
-              onClick={() => setIsEditing(true)}
-            >
-              {notes || "Click to add notes..."}
+              <div className="flex items-center">
+                <Mail className="w-4 h-4 mr-2 text-gray-400" />
+                <span>{order.email}</span>
+              </div>
+              <div className="flex items-center">
+                <Phone className="w-4 h-4 mr-2 text-gray-400" />
+                <span>{normalizedShipping.phone}</span>
+              </div>
             </div>
-          )}
-        </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-4">
+            <h3 className="text-lg font-semibold mb-4">Shipping Address</h3>
+            <div className="space-y-2">
+              <div className="flex items-start">
+                <MapPin className="w-4 h-4 mr-2 text-gray-400 mt-1" />
+                <div>
+                  {normalizedShipping.address1 && (
+                    <p>{normalizedShipping.address1}</p>
+                  )}
+                  {normalizedShipping.address2 && (
+                    <p>{normalizedShipping.address2}</p>
+                  )}
+                  <p>
+                    {normalizedShipping.city}
+                    {normalizedShipping.state &&
+                      `, ${normalizedShipping.state}`}{" "}
+                    {normalizedShipping.postalCode}
+                  </p>
+                  <p>{normalizedShipping.country}</p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
-      <div>
-        <h3 className="text-lg font-semibold mb-2">Order Items</h3>
-        <div className="border rounded-lg">
+      {/* Order Items */}
+      <Card>
+        <CardContent className="p-4">
+          <h3 className="text-lg font-semibold mb-4">Order Items</h3>
           <Table>
             <TableHeader>
               <TableRow>
                 <TableHead>Product</TableHead>
-                <TableHead>Quantity</TableHead>
-                <TableHead>Price</TableHead>
-                <TableHead>Total</TableHead>
+                <TableHead className="text-right">Quantity</TableHead>
+                <TableHead className="text-right">Price</TableHead>
+                <TableHead className="text-right">Total</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -300,47 +351,60 @@ const OrderDetails = ({ order, onClose, onUpdateStatus, onUpdateNotes }) => {
                       )}
                     </div>
                   </TableCell>
-                  <TableCell>{item.productQty}</TableCell>
-                  <TableCell>₹ {item.price}</TableCell>
-                  <TableCell>₹ {item.price * item.productQty}</TableCell>
+                  <TableCell className="text-right">
+                    {item.productQty}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    ₹{item.price.toLocaleString()}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    ₹{(item.price * item.productQty).toLocaleString()}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
-        </div>
-      </div>
 
-      <div className="border-t pt-4">
-        <div className="flex justify-between items-center">
-          <div className="space-y-1">
-            <p className="text-sm text-gray-500">
-              Subtotal: ₹ {calculateSubtotal()}
-            </p>
-            <p className="text-sm text-gray-500">Shipping: ₹ {0}</p>
-            {order.discount > 0 && (
-              <p className="text-sm text-gray-500">
-                Discount: -₹ {order.discount / 100}
-              </p>
-            )}
+          <div className="mt-4 border-t pt-4">
+            <div className="flex justify-end">
+              <div className="w-64 space-y-2">
+                <div className="flex justify-between">
+                  <span className="text-gray-500">Subtotal</span>
+                  <span>₹{calculateSubtotal().toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-500">Shipping</span>
+                  <span>₹0</span>
+                </div>
+                {order.discount > 0 && (
+                  <div className="flex justify-between text-green-600">
+                    <span>Discount</span>
+                    <span>-₹{(order.discount / 100).toLocaleString()}</span>
+                  </div>
+                )}
+                <div className="flex justify-between border-t pt-2 font-bold">
+                  <span>Total</span>
+                  <span>₹{calculateSubtotal().toLocaleString()}</span>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="text-xl font-bold">
-            Total: ₹ {calculateSubtotal()}
-          </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
-      <DialogFooter>
-        <div className="flex space-x-2">
-          <Button variant="outline" onClick={() => window.print()}>
-            <Printer className="w-4 h-4 mr-2" />
-            Print Order
-          </Button>
-          <Button>
-            <Download className="w-4 h-4 mr-2" />
-            Download Invoice
-          </Button>
-        </div>
-      </DialogFooter>
+      
+
+      {/* Footer Actions */}
+      <div className="flex justify-end space-x-3">
+        <Button variant="outline" onClick={() => window.print()}>
+          <Printer className="w-4 h-4 mr-2" />
+          Print Order
+        </Button>
+        <Button>
+          <Download className="w-4 h-4 mr-2" />
+          Download Invoice
+        </Button>
+      </div>
     </div>
   );
 };
@@ -430,6 +494,7 @@ const OrderList = ({ initialOrders }) => {
       completed: "bg-green-100 text-green-800",
       cancelled: "bg-red-100 text-red-800",
       created: "bg-purple-100 text-purple-800",
+      refunded: "bg-gray-100 text-gray-800",
     };
     return statusColors[status] || "bg-gray-100 text-gray-800";
   };
@@ -485,9 +550,22 @@ const OrderList = ({ initialOrders }) => {
         body: JSON.stringify({ orderId, paymentStatus: newStatus }),
       });
 
-      if (!response.ok) throw new Error("Failed to update payment status");
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Failed to update payment status");
+      }
 
+      // Update the orders state with the new payment status
       setOrders((prevOrders) =>
+        prevOrders.map((order) =>
+          order.orderId === orderId
+            ? { ...order, paymentStatus: newStatus }
+            : order
+        )
+      );
+
+      // Also update filtered orders to maintain consistency
+      setFilteredOrders((prevOrders) =>
         prevOrders.map((order) =>
           order.orderId === orderId
             ? { ...order, paymentStatus: newStatus }
@@ -502,7 +580,7 @@ const OrderList = ({ initialOrders }) => {
     } catch (error) {
       toast({
         title: "Error updating payment status",
-        description: "Please try again later",
+        description: error.message || "Please try again later",
         variant: "destructive",
       });
     }

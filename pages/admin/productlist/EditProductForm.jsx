@@ -855,6 +855,42 @@ const EditProductForm = ({ product, onSave, onCancel }) => {
                                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-gray-200 text-black p-2"
                                   />
                                 </div>
+
+                                <div>
+                                  <label className="block text-sm font-medium text-gray-700">
+                                    Weight (g)
+                                  </label>
+                                  <input
+                                    type="number"
+                                    value={formData.sizes[size].weight}
+                                    onChange={(e) =>
+                                      handleSizeDimensionChange(
+                                        size,
+                                        "weight",
+                                        e.target.value
+                                      )
+                                    }
+                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-gray-200 text-black p-2"
+                                  />
+                                </div>
+
+                                <div>
+                                  <label className="block text-sm font-medium text-gray-700">
+                                    Volume (L)
+                                  </label>
+                                  <input
+                                    type="number"
+                                    value={formData.sizes[size].volume}
+                                    onChange={(e) =>
+                                      handleSizeDimensionChange(
+                                        size,
+                                        "volume",
+                                        e.target.value
+                                      )
+                                    }
+                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-gray-200 text-black p-2"
+                                  />
+                                </div>
                               </div>
                             </CardContent>
                           </Card>

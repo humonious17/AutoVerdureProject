@@ -563,7 +563,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
   };
 
   // Products to display based on showAll state
-  const displayedProducts = showAll ? allProducts : allProducts.slice(0, 3);
+  const displayedProducts = showAll ? allProducts : allProducts.slice(0, 6);
 
   return (
     <div className="w-full max-w-[362px] sm:max-w-none px-[0px] sm:px-[38px] xl:px-16 bg-[#fffbf7]">
@@ -1107,7 +1107,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
         </div>
 
         {/* Testimonials */}
-        <div className="mt-[92.46px] sm:mt-[115px] xl:mt-[272.19px] xl:max-w-[1312px] w-full flex flex-col justify-center items-center">
+        <div className="mt-[92.46px] sm:mt-[115px] xl:mt-[92.19px] xl:max-w-[1312px] w-full flex flex-col justify-center items-center">
           <p className="text-xl sm:text-[38px] leading-[49.4px] font-normal text-center text-[#0E0E0E]">
             What customers are saying
           </p>

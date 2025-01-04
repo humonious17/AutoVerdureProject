@@ -5,8 +5,8 @@ import { Star, Quote } from "lucide-react";
 
 const ReviewCard = ({ review }) => {
   return (
-    <div className="w-full flex-shrink-0 px-4">
-      <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 max-w-lg mx-auto relative group">
+    <div className="w-full md:w-1/3 flex-shrink-0 px-4">
+      <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 h-full mx-auto relative group">
         {/* Quote Icon */}
         <div className="absolute top-4 right-4 text-gray-200 opacity-50 group-hover:opacity-100 transition-opacity">
           <Quote size={40} strokeWidth={1} />
@@ -36,9 +36,9 @@ const ReviewCard = ({ review }) => {
             {review.title || "Best on the market"}
           </h3>
 
-          <div className="flex gap-6">
+          <div className="flex flex-col sm:flex-row gap-6">
             {review.imageUrl && (
-              <div className="w-36 h-36 relative group">
+              <div className="w-full sm:w-36 h-36 relative group">
                 <Image
                   src={review.imageUrl}
                   alt={review.productName || "Product Image"}
@@ -79,20 +79,36 @@ const ReviewCard = ({ review }) => {
 
 const ReviewSlider = ({ reviews }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isPanelView, setIsPanelView] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsPanelView(window.innerWidth >= 768); // 768px is the md breakpoint
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const slidesPerView = isPanelView ? 3 : 1;
+  const maxSlides = Math.ceil(reviews.length / slidesPerView) - 1;
 
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % reviews.length);
+    setCurrentSlide((prev) => Math.min(prev + 1, maxSlides));
   };
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + reviews.length) % reviews.length);
+    setCurrentSlide((prev) => Math.max(prev - 1, 0));
   };
 
   return (
     <div className="relative overflow-hidden w-full">
       <div
         className="flex transition-transform duration-500 ease-in-out"
-        style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+        style={{
+          transform: `translateX(-${currentSlide * (100 / slidesPerView)}%)`,
+        }}
       >
         {reviews.map((review) => (
           <ReviewCard key={review.id} review={review} />
@@ -103,13 +119,18 @@ const ReviewSlider = ({ reviews }) => {
       <div className="flex justify-center items-center mt-6 space-x-4">
         <button
           onClick={prevSlide}
-          className="bg-gray-100 rounded-full p-2 hover:bg-gray-200 transition-colors"
+          disabled={currentSlide === 0}
+          className={`bg-gray-100 rounded-full p-2 transition-colors ${
+            currentSlide === 0
+              ? "opacity-50 cursor-not-allowed"
+              : "hover:bg-gray-200"
+          }`}
         >
           <ChevronLeft className="w-5 h-5 text-gray-600" />
         </button>
 
         <div className="flex space-x-2">
-          {reviews.map((_, index) => (
+          {[...Array(maxSlides + 1)].map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentSlide(index)}
@@ -124,7 +145,12 @@ const ReviewSlider = ({ reviews }) => {
 
         <button
           onClick={nextSlide}
-          className="bg-gray-100 rounded-full p-2 hover:bg-gray-200 transition-colors"
+          disabled={currentSlide === maxSlides}
+          className={`bg-gray-100 rounded-full p-2 transition-colors ${
+            currentSlide === maxSlides
+              ? "opacity-50 cursor-not-allowed"
+              : "hover:bg-gray-200"
+          }`}
         >
           <ChevronRight className="w-5 h-5 text-gray-600" />
         </button>
@@ -181,7 +207,7 @@ const Testimonials = ({ productId }) => {
 
   return (
     <div className="w-full bg-[#FFFBF7] py-12">
-      <div className="max-w-6xl mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-6">
         <ReviewSlider reviews={reviews} />
       </div>
     </div>

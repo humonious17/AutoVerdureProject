@@ -104,6 +104,11 @@ const ProductForm = () => {
       darkGrey: { selected: false, price: 0 },
       black: { selected: false, price: 0 },
     },
+    finish: {
+      matt: { selected: false, price: 0 },
+      gloss: { selected: false, price: 0 },
+      art: { selected: false, price: 0 },
+    },
     images: [],
     stockQuantity: 0,
     defaultSize: "",

@@ -122,7 +122,7 @@ const OrderDetailDialog = ({ order, open, onClose }) => {
 
       setIsLoading(true);
       try {
-        const productIds = order.products.map((p) => p.productId);
+        const productIds = order.products?.map((p) => p.productId) || [];
         const response = await fetch("/api/products/getProductDetails", {
           method: "POST",
           headers: {
@@ -146,7 +146,6 @@ const OrderDetailDialog = ({ order, open, onClose }) => {
 
     if (open && order) {
       fetchProductDetails();
-      // Reset form when dialog opens
       setRating(0);
       setComment("");
       setUploadedImage(null);
@@ -182,21 +181,16 @@ const OrderDetailDialog = ({ order, open, onClose }) => {
     }
   };
 
-  const handleImageUpload = async (e) => {
+  const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-      // Show preview
       setUploadedImage(URL.createObjectURL(file));
       setImageFile(file);
     }
   };
 
   const handleRating = (index) => {
-    if (rating === index + 1) {
-      setRating(0);
-    } else {
-      setRating(index + 1);
-    }
+    setRating(rating === index + 1 ? 0 : index + 1);
   };
 
   const handleSubmitReview = async (e) => {
@@ -213,7 +207,6 @@ const OrderDetailDialog = ({ order, open, onClose }) => {
 
     setIsSubmitting(true);
     try {
-      // Upload image to Cloudinary if an image was selected
       let cloudinaryUrl = null;
       if (imageFile) {
         cloudinaryUrl = await uploadToCloudinary(imageFile);
@@ -225,7 +218,7 @@ const OrderDetailDialog = ({ order, open, onClose }) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          orderId: order.orderId,
+          orderId: order?.orderId,
           rating,
           comment,
           imageUrl: cloudinaryUrl,
@@ -243,7 +236,6 @@ const OrderDetailDialog = ({ order, open, onClose }) => {
         description: "Your review has been submitted successfully",
       });
 
-      // Close the dialog and reset form
       onClose();
       setRating(0);
       setComment("");
@@ -260,7 +252,11 @@ const OrderDetailDialog = ({ order, open, onClose }) => {
     }
   };
 
-  if (!order) return null;
+  // If no order or dialog is closed, return null
+  if (!order || !open) return null;
+
+  const firstProduct = order.products?.[0] || {};
+  const shippingCity = order.shipping?.city || "N/A";
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
@@ -268,37 +264,32 @@ const OrderDetailDialog = ({ order, open, onClose }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 p-4 md:p-6 bg-[#fffbf7] mt-[40px] mb-[40px]">
           {/* Left side - Product Image and Details */}
           <div className="space-y-4 md:space-y-6">
-            {order.products && order.products[0] && (
-              <div className="aspect-square relative rounded-lg overflow-hidden">
-                <Image
-                  src={
-                    order.products[0].productImage &&
-                    order.products[0].productImage !== "null"
-                      ? order.products[0].productImage
-                      : ""
-                  }
-                  alt={order.products[0].productName || "Product Image"}
-                  layout="fill"
-                  objectFit="cover"
-                  className="rounded-lg"
-                  onError={(e) => {
-                    e.target.src = "";
-                  }}
-                />
-              </div>
-            )}
+            <div className="aspect-square relative rounded-lg overflow-hidden">
+              <Image
+                src={
+                  firstProduct.productImage &&
+                  firstProduct.productImage !== "null"
+                    ? firstProduct.productImage
+                    : "/api/placeholder/400/400"
+                }
+                alt={firstProduct.productName || "Product Image"}
+                layout="fill"
+                objectFit="cover"
+                className="rounded-lg"
+              />
+            </div>
             <div className="space-y-2">
               <h2 className="text-xl md:text-2xl font-semibold">
-                {order.products[0]?.productName}
+                {firstProduct.productName || "Product Name Not Available"}
               </h2>
               <p className="text-sm md:text-base text-gray-600">
-                Location: {order.shipping.city}
+                Location: {shippingCity}
               </p>
               <p className="text-sm md:text-base text-gray-600">
-                Pot Size: {order.products[0]?.size || "12 x 16 inch"}
+                Pot Size: {firstProduct.size || "12 x 16 inch"}
               </p>
               <p className="text-sm md:text-base text-gray-600">
-                Order ID: #{order.orderId}
+                Order ID: #{order.orderId || "N/A"}
               </p>
               <div className="bg-orange-50 text-orange-700 px-3 py-1 md:px-4 md:py-2 rounded-full inline-block text-xs md:text-base">
                 Arriving in 2 days
@@ -409,7 +400,9 @@ const OrderDetailDialog = ({ order, open, onClose }) => {
 };
 
 const ProfileOrders = ({ orders: initialOrders }) => {
-  const [orders, setOrders] = useState(initialOrders);
+  // Filter out orders without paymentStatus before setting initial state
+  const validOrders = initialOrders.filter((order) => order.paymentStatus);
+  const [orders, setOrders] = useState(validOrders);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortConfig, setSortConfig] = useState({
     key: "createdAt",
@@ -422,7 +415,7 @@ const ProfileOrders = ({ orders: initialOrders }) => {
   // Search functionality
   const handleSearch = (value) => {
     setSearchTerm(value);
-    const filtered = initialOrders.filter(
+    const filtered = validOrders.filter(
       (order) =>
         order.products.some((product) =>
           product.productName.toLowerCase().includes(value.toLowerCase())
@@ -466,9 +459,9 @@ const ProfileOrders = ({ orders: initialOrders }) => {
   const handleFilter = (status) => {
     setFilterStatus(status);
     if (status === "all") {
-      setOrders(initialOrders);
+      setOrders(validOrders);
     } else {
-      const filtered = initialOrders.filter(
+      const filtered = validOrders.filter(
         (order) => order.orderStatus.toLowerCase() === status.toLowerCase()
       );
       setOrders(filtered);
@@ -687,12 +680,41 @@ export async function getServerSideProps({ req }) {
   try {
     const orders = await findAllProfileOrders(user.email);
 
+    // Filter out orders without paymentStatus before serialization
+    const ordersWithPayment = orders.filter((order) => order.paymentStatus);
+
+    // Helper function to convert dates to ISO strings
+    const serializeDate = (obj) => {
+      if (obj === null || obj === undefined) return obj;
+
+      if (obj instanceof Date) {
+        return obj.toISOString();
+      }
+
+      if (Array.isArray(obj)) {
+        return obj.map(serializeDate);
+      }
+
+      if (typeof obj === "object") {
+        const newObj = {};
+        for (const key in obj) {
+          newObj[key] = serializeDate(obj[key]);
+        }
+        return newObj;
+      }
+
+      return obj;
+    };
+
+    // Serialize all dates in the filtered orders array
+    const serializedOrders = serializeDate(ordersWithPayment);
+
     // Verify that all data is serializable
-    JSON.stringify(orders);
+    JSON.stringify(serializedOrders);
 
     return {
       props: {
-        orders: orders || [],
+        orders: serializedOrders || [],
       },
     };
   } catch (error) {

@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
@@ -26,62 +25,64 @@ const Payment = (props) => {
         body: JSON.stringify(payload),
       });
 
-      if (result.ok) {
-        const parsedShippingDetails = JSON.parse(
-          decodeURIComponent(shippingDetails)
-        );
-        const parsedProducts = JSON.parse(
-          decodeURIComponent(router.query.products)
-        );
+      if (!result.ok) {
+        setError("Payment verification failed");
+        router.push("/checkout/failed");
+        return;
+      }
 
-        const orderPayload = {
+      // Only proceed with order creation if payment verification was successful
+      const parsedShippingDetails = JSON.parse(
+        decodeURIComponent(shippingDetails)
+      );
+      const parsedProducts = JSON.parse(
+        decodeURIComponent(router.query.products)
+      );
+
+      const orderPayload = {
+        orderId: orderId,
+        products: parsedProducts,
+        shipping: {
+          fullName: parsedShippingDetails.fullName,
+          address1: `${parsedShippingDetails.houseNumber} ${parsedShippingDetails.streetName}`,
+          address2: `${parsedShippingDetails.city}, ${parsedShippingDetails.country}`,
+          city: parsedShippingDetails.city,
+          state: "",
+          postalCode: parsedShippingDetails.zipCode,
+          country: parsedShippingDetails.country,
+          phone: parsedShippingDetails.phone,
+        },
+        email: email,
+        totalAmount: amount / 100,
+        paymentStatus: "completed",
+        isBuyNow: router.query.buyNow === "true",
+      };
+
+      const orderResult = await fetch("/api/addOrder", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderPayload),
+      });
+
+      if (orderResult.ok) {
+        const orderSummary = {
           orderId: orderId,
-          products: parsedProducts,
-          shipping: {
-            fullName: parsedShippingDetails.fullName,
-            address1: `${parsedShippingDetails.houseNumber} ${parsedShippingDetails.streetName}`,
-            address2: `${parsedShippingDetails.city}, ${parsedShippingDetails.country}`,
-            city: parsedShippingDetails.city,
-            state: "",
-            postalCode: parsedShippingDetails.zipCode,
-            country: parsedShippingDetails.country,
-            phone: parsedShippingDetails.phone,
-          },
           email: email,
           totalAmount: amount,
-          paymentStatus: "completed",
-          isBuyNow: router.query.buyNow === "true",
+          shipping: orderPayload.shipping,
+          products: parsedProducts,
         };
 
-        const orderResult = await fetch("/api/addOrder", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
+        router.push({
+          pathname: "/checkout/successful",
+          query: {
+            orderSummary: encodeURIComponent(JSON.stringify(orderSummary)),
           },
-          body: JSON.stringify(orderPayload),
         });
-
-        if (orderResult.ok) {
-          const orderSummary = {
-            orderId: orderId,
-            email: email,
-            totalAmount: amount,
-            shipping: orderPayload.shipping,
-            products: parsedProducts,
-          };
-
-          router.push({
-            pathname: "/checkout/successful",
-            query: {
-              orderSummary: encodeURIComponent(JSON.stringify(orderSummary)),
-            },
-          });
-        } else {
-          setError("Failed to create order. Please contact support.");
-          router.push("/checkout/failed");
-        }
       } else {
-        setError("Payment verification failed");
+        setError("Failed to create order. Please contact support.");
         router.push("/checkout/failed");
       }
     } catch (error) {
@@ -89,6 +90,12 @@ const Payment = (props) => {
       setError("Payment processing failed");
       router.push("/checkout/failed");
     }
+  };
+
+  const handlePaymentFailure = (response) => {
+    console.error("Payment failed:", response.error);
+    setError("Payment failed: " + response.error.description);
+    router.push("/checkout/failed");
   };
 
   useEffect(() => {
@@ -110,6 +117,11 @@ const Payment = (props) => {
               image: "/logo.png",
               order_id: orderId,
               handler: handlePaymentSuccess,
+              modal: {
+                ondismiss: function () {
+                  router.push("/checkout/failed");
+                },
+              },
               prefill: {
                 email: email,
               },
@@ -119,6 +131,7 @@ const Payment = (props) => {
             };
 
             const rzp = new window.Razorpay(options);
+            rzp.on("payment.failed", handlePaymentFailure);
             setPaymentInitiated(true);
             rzp.open();
           };
@@ -127,6 +140,7 @@ const Payment = (props) => {
         } catch (error) {
           console.error("Error loading Razorpay:", error);
           setError("Failed to load payment interface");
+          router.push("/checkout/failed");
         }
       };
 

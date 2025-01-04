@@ -83,7 +83,7 @@ const normalizeAmount = (order) => {
 
 // Enhanced OrderDetails Component
 const OrderDetails = ({ order, onClose, onUpdateStatus, onUpdateNotes }) => {
-  const [status, setStatus] = useState(order.orderStatus || order.status);
+  const [status, setStatus] = useState(order.orderStatus || order.orderStatus);
   const [notes, setNotes] = useState(order.notes || "");
   const [paymentStatus, setPaymentStatus] = useState(
     order.paymentStatus || "pending"
@@ -91,10 +91,46 @@ const OrderDetails = ({ order, onClose, onUpdateStatus, onUpdateNotes }) => {
   const normalizedItems = normalizeOrderItems(order);
   const normalizedShipping = normalizeAddress(order.shipping);
   const [isEditing, setIsEditing] = useState(false);
+  const { toast } = useToast();
 
   const handleStatusChange = async (newStatus) => {
     await onUpdateStatus(order.orderId, newStatus);
     setStatus(newStatus);
+  };
+
+  const handlePaymentStatusChange = async (newStatus) => {
+    try {
+      const response = await fetch("/api/orders/updatePaymentStatus", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          orderId: order.orderId,
+          paymentStatus: newStatus,
+        }),
+      });
+
+      if (!response.ok) throw new Error("Failed to update payment status");
+
+      setPaymentStatus(newStatus);
+
+      // Update the orders list if needed
+      if (onUpdatePaymentStatus) {
+        await onUpdatePaymentStatus(order.orderId, newStatus);
+      }
+
+      toast({
+        title: "Payment status updated",
+        description: "Payment status has been updated successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error updating payment status",
+        description: "Please try again later",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleNotesChange = async () => {
@@ -151,13 +187,16 @@ const OrderDetails = ({ order, onClose, onUpdateStatus, onUpdateNotes }) => {
           <div>
             <h3 className="text-lg font-semibold">Payment Status</h3>
             <div className="mt-2 flex items-center space-x-4">
-              <Select value={paymentStatus} onValueChange={setPaymentStatus}>
+              <Select
+                value={paymentStatus}
+                onValueChange={handlePaymentStatusChange}
+              >
                 <SelectTrigger className="w-40">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="pending">Pending</SelectItem>
-                  <SelectItem value="paid">Paid</SelectItem>
+                  <SelectItem value="paid">Completed</SelectItem>
                   <SelectItem value="refunded">Refunded</SelectItem>
                 </SelectContent>
               </Select>
@@ -353,7 +392,7 @@ const OrderList = ({ initialOrders }) => {
     // Apply filters
     if (statusFilter !== "all") {
       result = result.filter(
-        (order) => (order.orderStatus || order.status) === statusFilter
+        (order) => (order.orderStatus || order.orderStatus) === statusFilter
       );
     }
 
@@ -430,6 +469,39 @@ const OrderList = ({ initialOrders }) => {
     } catch (error) {
       toast({
         title: "Error updating status",
+        description: "Please try again later",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleUpdatePaymentStatus = async (orderId, newStatus) => {
+    try {
+      const response = await fetch("/api/orders/updatePaymentStatus", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ orderId, paymentStatus: newStatus }),
+      });
+
+      if (!response.ok) throw new Error("Failed to update payment status");
+
+      setOrders((prevOrders) =>
+        prevOrders.map((order) =>
+          order.orderId === orderId
+            ? { ...order, paymentStatus: newStatus }
+            : order
+        )
+      );
+
+      toast({
+        title: "Payment status updated",
+        description: "Payment status has been updated successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error updating payment status",
         description: "Please try again later",
         variant: "destructive",
       });
@@ -739,10 +811,10 @@ const OrderList = ({ initialOrders }) => {
                       <TableCell>
                         <Badge
                           className={getStatusColor(
-                            order.orderStatus || order.status
+                            order.orderStatus || order.orderStatus
                           )}
                         >
-                          {order.orderStatus || order.status}
+                          {order.orderStatus || order.orderStatus}
                         </Badge>
                       </TableCell>
                       <TableCell>
@@ -829,6 +901,7 @@ const OrderList = ({ initialOrders }) => {
                 onClose={() => setSelectedOrder(null)}
                 onUpdateStatus={handleUpdateStatus}
                 onUpdateNotes={handleUpdateNotes}
+                onUpdatePaymentStatus={handleUpdatePaymentStatus}
               />
             )}
           </DialogContent>

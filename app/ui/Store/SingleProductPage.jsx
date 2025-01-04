@@ -268,35 +268,36 @@ const SingleProductPage = ({ productData, allProducts }) => {
                   unoptimized={true}
                   priority
                 />
-                {productData.productType !== "accessory" && (
-                  <div className="flex w-fit xl:flex flex-col gap-[12px] absolute top-[21.18px] right-[22px]">
-                    <div className="w-[38px] h-[38px] p-[10px] rounded-xl bg-[#fffbf7]/50">
-                      <Image
-                        src={
-                          productData.petFriendly === "true"
-                            ? "/veterinary.png"
-                            : "/npf1.png"
-                        }
-                        alt="veterinary"
-                        width={30}
-                        height={30}
-                      />
-                    </div>
+                {productData.productType !== "accessory" &&
+                  productData.productType !== "planters" && (
+                    <div className="flex w-fit xl:flex flex-col gap-[12px] absolute top-[21.18px] right-[22px]">
+                      <div className="w-[38px] h-[38px] p-[10px] rounded-xl bg-[#fffbf7]/50">
+                        <Image
+                          src={
+                            productData.petFriendly === "true"
+                              ? "/veterinary.png"
+                              : "/npf1.png"
+                          }
+                          alt="veterinary"
+                          width={30}
+                          height={30}
+                        />
+                      </div>
 
-                    <div className="w-[38px] h-[38px] p-[10px] rounded-xl  bg-[#fffbf7]/50">
-                      <Image
-                        src={
-                          productData.lessLight === "true"
-                            ? "/noLight.png"
-                            : "/brightness.png"
-                        }
-                        alt="noLight"
-                        width={30}
-                        height={30}
-                      />
+                      <div className="w-[38px] h-[38px] p-[10px] rounded-xl  bg-[#fffbf7]/50">
+                        <Image
+                          src={
+                            productData.lessLight === "true"
+                              ? "/noLight.png"
+                              : "/brightness.png"
+                          }
+                          alt="noLight"
+                          width={30}
+                          height={30}
+                        />
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
               </div>
 
               {/* Navigation Arrows */}
@@ -736,14 +737,14 @@ const SingleProductPage = ({ productData, allProducts }) => {
             {error && <p className="text-red-600 mt-2">{error}</p>}
             {productData.stockQuantity > 0 ? (
               /* Quantity, Add to cart, Buy now */
-                <div className="mt-[18.5px] sm:mt-6 w-full h-[45px] xl:h-16 flex gap-[18px] justify-between xl:justify-between">
+              <div className="mt-[18.5px] sm:mt-6 w-full h-[45px] xl:h-16 flex gap-[18px] justify-between xl:justify-between">
                 <div className="w-[70px] xl:w-[123px] h-full rounded-[29.2px] border-[0.51px] bg-[#FFFFFF] border-[#8d8d8d] flex justify-center items-center">
                   <button className="px-2 py-1" onClick={decrementQuantity}>
-                  -
+                    -
                   </button>
                   <span className="px-2">{stockQuantity}</span>
                   <button className="px-2 py-1" onClick={incrementQuantity}>
-                  +
+                    +
                   </button>
                 </div>
                 <button
@@ -759,61 +760,62 @@ const SingleProductPage = ({ productData, allProducts }) => {
                 >
                   Buy Now
                 </button>
-                </div>
-              ) : (
-                <div className="mt-[18.5px] sm:mt-6 w-full">
+              </div>
+            ) : (
+              <div className="mt-[18.5px] sm:mt-6 w-full">
                 <p className="text-red-600 text-xl font-medium text-center">
                   Product is currently out of stock!
                 </p>
-                </div>
-              )}
-              {(productData.productType === "plants" ||
-                productData.productType === "planters" ||
-                productData.productType === "flowers") && (
-                <div className="mt-[21.5px] w-full sm:w-fit xl:w-full gap-[18px] flex flex-row sm:flex-col xl:flex-row sm:gap-y-3 xl:gap-x-[18px] xl:justify-start">
+              </div>
+            )}
+
+            {/* Small Icons */}
+            {(productData.productType === "plants" ||
+              productData.productType === "flowers") && (
+              <div className="mt-[21.5px] w-full sm:w-fit xl:w-full gap-[18px] flex flex-row sm:flex-col xl:flex-row sm:gap-y-3 xl:gap-x-[18px] xl:justify-start">
                 <div className="flex gap-2 mr-2 sm:gap-3 justify-between sm:justify-start xl:justify-between items-center">
                   <Image
-                  src={
-                    productData.petFriendly === "true"
-                    ? "/veterinary.png"
-                    : "/npf1.png"
-                  }
-                  alt="veterinary"
-                  width={32}
-                  height={32}
+                    src={
+                      productData.petFriendly === "true"
+                        ? "/veterinary.png"
+                        : "/npf1.png"
+                    }
+                    alt="veterinary"
+                    width={32}
+                    height={32}
                   />
                   <p className="text-[13px] leading-[15.6px] -tracking-[0.325px] font-normal text-[#000000]">
-                  {productData.petFriendly === "true"
-                    ? "Pet Friendly"
-                    : "Not pet Friendly"}
+                    {productData.petFriendly === "true"
+                      ? "Pet Friendly"
+                      : "Not pet Friendly"}
                   </p>
                 </div>
                 <div className="flex gap-2 sm:gap-3 justify-between sm:justify-start xl:justify-between items-center">
                   <Image
-                  src={
-                    productData.lessLight === "true"
-                    ? "/noLight.png"
-                    : "/brightness.png"
-                  }
-                  alt={
-                    productData.lessLight === "true"
-                    ? "lessLight"
-                    : "moreLight"
-                  }
-                  width={30}
-                  height={30}
+                    src={
+                      productData.lessLight === "true"
+                        ? "/noLight.png"
+                        : "/brightness.png"
+                    }
+                    alt={
+                      productData.lessLight === "true"
+                        ? "lessLight"
+                        : "moreLight"
+                    }
+                    width={30}
+                    height={30}
                   />
                   <p className="text-[13px] leading-[15.6px] -tracking-[0.325px] font-normal text-[#000000]">
-                  {productData.lessLight === "true"
-                    ? "Needs Less Light"
-                    : "Needs More Light"}
+                    {productData.lessLight === "true"
+                      ? "Needs Less Light"
+                      : "Needs More Light"}
                   </p>
                 </div>
-                </div>
-              )}
+              </div>
+            )}
 
-              <div className="mt-[30px] sm:mt-[39px] w-full sm:pr-[0px] hidden xl:flex xl:flex-col">
-                {/* Product long description */}
+            <div className="mt-[30px] sm:mt-[39px] w-full sm:pr-[0px] hidden xl:flex xl:flex-col">
+              {/* Product long description */}
               <div className="w-full text-sm sm:text-[17px] leading-[30px] flex flex-col gap-[18px]">
                 {/* Description Dropdown */}
                 <div className="w-full">

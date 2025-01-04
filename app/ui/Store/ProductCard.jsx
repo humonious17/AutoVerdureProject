@@ -65,7 +65,7 @@ const ProductCard = ({ product, viewType = "grid" }) => {
           </div>
 
           {/* Product Icons */}
-          {(plants || planters || flowers) && (
+          {(plants || flowers) && (
             <div
               className={`w-fit flex flex-col gap-[6px] sm:gap-[12px] 
               absolute top-[10px] right-[10px] sm:top-[21.18px] sm:right-[29px]`}

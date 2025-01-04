@@ -78,7 +78,7 @@ const normalizeAddress = (shipping) => {
 
 const normalizeAmount = (order) => {
   const amount = order.totalAmount || order.amount || 0;
-  return amount > 1000 ? amount / 100 : amount;
+  return amount > 1000 ? amount / 1 : amount;
 };
 
 // Enhanced OrderDetails Component
@@ -285,7 +285,7 @@ const OrderDetails = ({ order, onClose, onUpdateStatus, onUpdateNotes }) => {
             )}
           </div>
           <div className="text-xl font-bold">
-            Total: ₹ {normalizeAmount(order)}
+            Total: ₹ {calculateSubtotal()}
           </div>
         </div>
       </div>

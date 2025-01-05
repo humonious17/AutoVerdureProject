@@ -30,6 +30,12 @@ const ProductForm = () => {
     matt: "false",
     gloss: "false",
     art: "false",
+    finish: {
+      matt: { selected: false, price: 0 },
+      gloss: { selected: false, price: 0 },
+      art: { selected: false, price: 0 },
+    },
+    defaultFinish: "",
     sizes: {
       XS: {
         selected: false,
@@ -125,17 +131,17 @@ const ProductForm = () => {
 
   const [formData, setFormData] = useState(initialFormData);
   useEffect(() => {
-    (() => {
-      const defaultSizePrice = formData.sizes[formData.defaultSize]?.price || 0;
-      const defaultColorPrice =
-        formData.colors[formData.defaultColor]?.price || 0;
+    const defaultSizePrice = formData.sizes[formData.defaultSize]?.price || 0;
+    const defaultColorPrice =
+      formData.colors[formData.defaultColor]?.price || 0;
+    const defaultFinishPrice =
+      formData.finish[formData.defaultFinish]?.price || 0;
 
-      setFormData((prev) => ({
-        ...prev,
-        productPrice: defaultSizePrice + defaultColorPrice,
-      }));
-    })();
-  }, [formData.defaultSize, formData.defaultColor]);
+    setFormData((prev) => ({
+      ...prev,
+      productPrice: defaultSizePrice + defaultColorPrice + defaultFinishPrice,
+    }));
+  }, [formData.defaultSize, formData.defaultColor, formData.defaultFinish]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -216,6 +222,24 @@ const ProductForm = () => {
         [color]: { ...prev.colors[color], price: Number(value) },
       },
     }));
+  };
+
+  const handleFinishPriceChange = (finish, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      finish: {
+        ...prev.finish,
+        [finish]: { ...prev.finish[finish], price: Number(value) },
+      },
+    }));
+  };
+
+  const setDefaultFinish = (finish) => {
+    setFormData((prev) => ({
+      ...prev,
+      defaultFinish: finish,
+    }));
+    calculateProductPrice();
   };
 
   const validateSelection = () => {
@@ -327,9 +351,12 @@ const ProductForm = () => {
     const defaultSizePrice = formData.sizes[formData.defaultSize]?.price || 0;
     const defaultColorPrice =
       formData.colors[formData.defaultColor]?.price || 0;
+    const defaultFinishPrice =
+      formData.finish[formData.defaultFinish]?.price || 0;
+
     setFormData((prev) => ({
       ...prev,
-      productPrice: defaultSizePrice + defaultColorPrice,
+      productPrice: defaultSizePrice + defaultColorPrice + defaultFinishPrice,
     }));
   };
 
@@ -340,7 +367,10 @@ const ProductForm = () => {
     const selectedColors = Object.values(formData.colors).some(
       (color) => color.selected
     );
-    return selectedSizes && selectedColors;
+    const selectedFinishes = Object.values(formData.finish).some(
+      (finish) => finish.selected
+    );
+    return selectedSizes && selectedColors && selectedFinishes;
   };
 
   const handleSubmit = async (e) => {
@@ -668,54 +698,69 @@ const ProductForm = () => {
               </div>
             </div>
 
+            {/* Product Finish Section */}
             <div className="space-y-4">
               <h3 className="text-lg font-semibold text-gray-700 border-b pb-2">
-                Product Finish
+                Product Finish (Price)
               </h3>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="flex items-center space-x-3">
-                    <input
-                      type="checkbox"
-                      name="matt"
-                      checked={formData.matt === "true"}
-                      onChange={handleChange}
-                      className="rounded border-gray-300  focus:ring-blue-500 h-4 w-4 bg-gray-200 text-black p-2"
-                    />
-                    <span className="text-sm text-gray-700">Matt</span>
-                  </label>
-                </div>
-              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {Object.keys(formData.finish).map((finish) => (
+                  <div key={finish} className="bg-gray-50 p-4 rounded-lg">
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="flex items-center space-x-2">
+                        <input
+                          type="checkbox"
+                          name={finish}
+                          checked={formData.finish[finish].selected}
+                          onChange={(e) => {
+                            const { checked } = e.target;
+                            setFormData((prev) => ({
+                              ...prev,
+                              finish: {
+                                ...prev.finish,
+                                [finish]: {
+                                  ...prev.finish[finish],
+                                  selected: checked,
+                                },
+                              },
+                            }));
+                          }}
+                          className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 h-4 w-4 bg-gray-200 text-black p-2"
+                        />
+                        <span className="font-medium text-gray-700">
+                          {finish.charAt(0).toUpperCase() + finish.slice(1)}
+                        </span>
+                      </label>
+                    </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="flex items-center space-x-3">
-                    <input
-                      type="checkbox"
-                      name="gloss"
-                      checked={formData.gloss === "true"}
-                      onChange={handleChange}
-                      className="rounded border-gray-300  focus:ring-blue-500 h-4 w-4 bg-gray-200 text-black p-2"
-                    />
-                    <span className="text-sm text-gray-700">Gloss</span>
-                  </label>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="flex items-center space-x-3">
-                    <input
-                      type="checkbox"
-                      name="art"
-                      checked={formData.art === "true"}
-                      onChange={handleChange}
-                      className="rounded border-gray-300  focus:ring-blue-500 h-4 w-4 bg-gray-200 text-black p-2"
-                    />
-                    <span className="text-sm text-gray-700">Art</span>
-                  </label>
-                </div>
+                    {formData.finish[finish].selected && (
+                      <div className="space-y-2">
+                        <input
+                          type="number"
+                          value={formData.finish[finish].price}
+                          onChange={(e) =>
+                            handleFinishPriceChange(finish, e.target.value)
+                          }
+                          placeholder={`Price for ${finish}`}
+                          className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-gray-200 text-black p-2"
+                        />
+                        <label className="flex items-center space-x-2">
+                          <input
+                            type="radio"
+                            name="defaultFinish"
+                            checked={formData.defaultFinish === finish}
+                            onChange={() => setDefaultFinish(finish)}
+                            className="rounded-full border-gray-300 text-blue-600 focus:ring-blue-500 bg-gray-200 text-black p-2"
+                          />
+                          <span className="text-sm text-gray-600">
+                            Set as Default
+                          </span>
+                        </label>
+                      </div>
+                    )}
+                  </div>
+                ))}
               </div>
             </div>
 

@@ -46,6 +46,7 @@ const SingleProductPage = ({ productData, allProducts }) => {
   const [basePrice] = useState(productData.productPrice);
   const [price, setPrice] = useState(basePrice); // Initial price
   const [selectedColor, setSelectedColor] = useState(productData.defaultColor);
+  const [selectFinish, setSelectedFinish] = useState(productData.defaultFinish);
   const [dimensions, setDimensions] = useState(
     "Please Select a size to see it's dimensions"
   );
@@ -161,6 +162,16 @@ const SingleProductPage = ({ productData, allProducts }) => {
     const selectedColorPrice = colors[colorKey].price;
     const sizePrice = productData.sizes[size]?.price || basePrice;
     setPrice(sizePrice + selectedColorPrice);
+  };
+  const handleFinishSelection = (finishOption) => {
+    setStyle(finishOption);
+
+    // Update price based on selected finish and current size/color
+    const sizePrice = productData.sizes[size]?.price || basePrice;
+    const colorPrice = productData.colors[selectedColor]?.price || 0;
+    const finishPrice =
+      productData.finish[finishOption.toLowerCase()]?.price || 0;
+    setPrice(sizePrice + colorPrice + finishPrice);
   };
 
   useEffect(() => {
@@ -713,18 +724,21 @@ const SingleProductPage = ({ productData, allProducts }) => {
               <div className="flex flex-col gap-3">
                 <p className="text-sm font-normal">Finish</p>
                 <div className="w-[200px] flex gap-4">
-                  {["Matt", "Gloss", "Art"].map((finishOption) =>
-                    productData[finishOption.toLowerCase()] === "true" ? (
+                  {["matt", "gloss", "art"].map((finishOption) =>
+                    productData.finish?.[finishOption]?.selected ? (
                       <button
                         key={finishOption}
-                        onClick={() => setStyle(finishOption)}
+                        onClick={() => handleFinishSelection(finishOption)}
                         className={`px-4 py-2 rounded-[5px] cursor-pointer flex justify-center items-center transition-transform duration-300 ease-in-out ${
                           style === finishOption
                             ? "bg-[#9A5CF5] text-[#fff] shadow-lg transform scale-105"
                             : "bg-[#9A5CF5] bg-opacity-20 hover:bg-opacity-100 text-gray hover:text-[#fff] hover:shadow-md"
                         }`}
                       >
-                        <p className="font-semibold">{finishOption}</p>
+                        <p className="font-semibold">
+                          {finishOption.charAt(0).toUpperCase() +
+                            finishOption.slice(1)}
+                        </p>
                       </button>
                     ) : null
                   )}

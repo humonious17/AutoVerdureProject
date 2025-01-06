@@ -71,7 +71,7 @@ const ProductCard = ({ product, viewType = "grid" }) => {
               absolute top-[10px] right-[10px] sm:top-[21.18px] sm:right-[29px]`}
             >
               {product.petFriendly && (
-                <div className="w-[28px] h-[28px] sm:w-[52px] sm:h-[52px] p-[4px] sm:p-[10px] rounded-xl sm:rounded-2xl bg-[#FFFFFF]">
+                <div className="w-[28px] h-[28px] sm:w-[52px] sm:h-[52px] p-[4px] sm:p-[10px] rounded-xl sm:rounded-2xl bg-[#FFFFFF]/50">
                   <Image
                     src={
                       product.petFriendly === "true"
@@ -86,7 +86,7 @@ const ProductCard = ({ product, viewType = "grid" }) => {
                 </div>
               )}
               {product.lessLight && (
-                <div className="w-[28px] h-[28px] sm:w-[52px] sm:h-[52px] p-[4px] sm:p-[10px] rounded-xl sm:rounded-2xl bg-[#FFFFFF]">
+                <div className="w-[28px] h-[28px] sm:w-[52px] sm:h-[52px] p-[4px] sm:p-[10px] rounded-xl sm:rounded-2xl bg-[#FFFFFF]/50">
                   <Image
                     src={
                       product.lessLight === "true"

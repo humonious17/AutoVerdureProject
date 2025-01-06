@@ -40,13 +40,13 @@ export const quickLinks = [
   { title: "Community", url: "/community" },
   { title: "Resources", url: "/resources" },
   { title: "My Profile", url: "/profile" },
-  { title: "My Cart", url: "/my-cart" },
+  { title: "My Cart", url: "/cart" },
 ];
 
 export const support = [
   { title: "About Us", url: "/about-us" },
   { title: "Contact Us", url: "/contact" },
-  { title: "FAQ", url: "/faq" },
+  { title: "FAQ", url: "/about-us" },
   { title: "Terms & Conditions", url: "/terms-&-conditions" },
   { title: "Shipping Policy", url: "/shipping-policy" },
   { title: "Privacy Policy", url: "/privacy-policy" },

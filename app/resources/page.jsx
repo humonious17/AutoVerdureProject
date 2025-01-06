@@ -26,9 +26,12 @@ const Resources = () => {
           plant consultation services to help you make informed decisions about
           your indoor and outdoor greenery.
         </p>
-        <div className="mt-6 w-fit px-[42px] py-[18px] rounded-[100px] text-base text-white bg-primaryMain font-normal cursor-pointer">
-          <p>Contact us</p>
-        </div>
+        <button
+          onClick={() => (window.location.href = "/contact")}
+          className="mt-6 w-fit px-[42px] py-[18px] rounded-[100px] text-base text-white bg-primaryMain font-normal cursor-pointer"
+        >
+          Contact us
+        </button>
       </div>
     </div>
   );

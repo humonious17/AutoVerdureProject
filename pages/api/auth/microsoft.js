@@ -14,7 +14,7 @@ export default function handler(req, res) {
       `auth_state=${state}; Path=/; HttpOnly; SameSite=Lax`
     );
 
-    // Use 'common' endpoint instead of specific tenant ID to allow any Microsoft account
+    // Updated scope to include all required permissions
     const params = new URLSearchParams({
       client_id: process.env.MICROSOFT_CLIENT_ID,
       response_type: "code",
@@ -24,12 +24,12 @@ export default function handler(req, res) {
       response_mode: "query",
     });
 
-    // Use 'common' tenant instead of specific tenant ID
-    const authUrl = `https://login.microsoftonline.com/common/oauth2/v2.0/authorize?${params.toString()}`;
+    const authUrl = `https://login.microsoftonline.com/${
+      process.env.MICROSOFT_TENANT_ID
+    }/oauth2/v2.0/authorize?${params.toString()}`;
     res.redirect(authUrl);
   } catch (error) {
     console.error("Microsoft auth initialization error:", error);
     res.redirect("/signin?error=auth_init_failed");
   }
 }
-

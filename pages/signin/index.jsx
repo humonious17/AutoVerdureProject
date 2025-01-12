@@ -103,51 +103,56 @@ const Input = ({
 };
 
 const Signin = () => {
-  const [isGoogleInitialized, setIsGoogleInitialized] = useState(false);
-
-  useEffect(() => {
-    // Load Google Script
-    const script = document.createElement("script");
-    script.src = "https://accounts.google.com/gsi/client";
-    script.async = true;
-    script.defer = true;
-    document.head.appendChild(script);
-
-    // Initialize after script loads
-    script.onload = () => {
-      window.google.accounts.id.initialize({
-        client_id:
-          "39593396169-ppn7dc7v4huovmuromku2k01s26kngfa.apps.googleusercontent.com",
-        callback: async (response) => {
-          try {
-            const result = await fetch("/api/addSession", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({ data: response }),
-            });
-
-            if (result.ok) {
-              window.location.href = "/profile";
-            } else {
-              console.error("Authentication failed");
-              alert("Authentication failed. Please try again.");
-            }
-          } catch (error) {
-            console.error("Error during authentication:", error);
-            alert("An error occurred. Please try again.");
-          }
-        },
-      });
-    };
-  }, []);
-
+  const [isGoogleLoaded, setIsGoogleLoaded] = useState(false);
   const [buttonText, setButtonText] = useState("Sign In");
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+
+  // Initialize Google Sign-In
+  useEffect(() => {
+    // Only initialize if not already loaded
+    if (!isGoogleLoaded) {
+      const script = document.createElement("script");
+      script.src = "https://accounts.google.com/gsi/client";
+      script.async = true;
+      script.defer = true;
+
+      script.onload = () => {
+        window.google.accounts.id.initialize({
+          client_id:
+            "39593396169-ppn7dc7v4huovmuromku2k01s26kngfa.apps.googleusercontent.com",
+          callback: handleGoogleCallback,
+        });
+        setIsGoogleLoaded(true);
+      };
+
+      document.head.appendChild(script);
+    }
+  }, [isGoogleLoaded]);
+
+  const handleGoogleCallback = async (response) => {
+    try {
+      const result = await fetch("/api/addSession", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ data: response }),
+      });
+
+      if (result.ok) {
+        window.location.href = "/profile";
+      } else {
+        console.error("Authentication failed");
+        alert("Authentication failed. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error during authentication:", error);
+      alert("An error occurred. Please try again.");
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -162,11 +167,15 @@ const Signin = () => {
   };
 
   const handleGoogleLogin = () => {
+    if (!isGoogleLoaded) {
+      console.log("Google Sign-In is not yet initialized");
+      return;
+    }
+
     try {
-      // This will directly trigger the Google One Tap prompt
       window.google.accounts.id.prompt((notification) => {
         if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-          // Try again with a different moment
+          // Only render button if prompt fails
           window.google.accounts.id.renderButton(
             document.getElementById("google-signin-button"),
             { theme: "outline", size: "large" }

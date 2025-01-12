@@ -25,7 +25,9 @@ export default async function handler(req, res) {
       return;
     }
 
-    const tokenUrl = `https://login.microsoftonline.com/${process.env.MICROSOFT_TENANT_ID}/oauth2/v2.0/token`;
+    // Use 'common' endpoint for token exchange
+    const tokenUrl =
+      "https://login.microsoftonline.com/common/oauth2/v2.0/token";
     const body = new URLSearchParams({
       client_id: process.env.MICROSOFT_CLIENT_ID,
       client_secret: process.env.MICROSOFT_CLIENT_SECRET,
@@ -56,7 +58,7 @@ export default async function handler(req, res) {
 
     const tokens = JSON.parse(tokenData);
 
-    // Get user info with specific fields
+    // Get user info
     const userResponse = await fetch(
       "https://graph.microsoft.com/v1.0/me?$select=id,displayName,givenName,surname,mail,userPrincipalName,identities",
       {
@@ -74,31 +76,26 @@ export default async function handler(req, res) {
 
     const userData = await userResponse.json();
 
-    // Extract the actual email from userPrincipalName or identities
-    let email = userData.mail; // Try direct mail first
-    if (!email) {
-      // If mail is not available, try to extract from userPrincipalName
-      const upn = userData.userPrincipalName;
-      if (upn && upn.includes("@")) {
-        // If it's an external user (contains #EXT#), clean up the email
-        if (upn.includes("#EXT#")) {
-          email = upn
-            .split("#EXT#")[0] // Get the part before #EXT#
-            .replace("_", "@"); // Replace the first underscore with @
-        } else {
-          email = upn; // Use userPrincipalName as is
-        }
-      }
-    }
+    // Enhanced email extraction logic for all account types
+    let email = userData.mail || userData.userPrincipalName;
 
-    // If still no email, try to find it in identities
+    // For personal Microsoft accounts, check identities
     if (!email && userData.identities) {
       const emailIdentity = userData.identities.find(
-        (identity) => identity.signInType === "emailAddress"
+        (identity) =>
+          identity.signInType === "emailAddress" ||
+          identity.signInType === "personalMicrosoftAccount"
       );
       if (emailIdentity) {
         email = emailIdentity.issuerAssignedId;
       }
+    }
+
+    // Fallback if still no email
+    if (!email) {
+      console.error("Could not determine user email");
+      res.redirect("/signin?error=email_not_found");
+      return;
     }
 
     // Handle name fields
@@ -116,14 +113,20 @@ export default async function handler(req, res) {
 
     const sessionToken = uuidv4();
 
-    await usersRef.doc(userData.id).set(
+    // Use email as the unique identifier instead of Microsoft ID
+    // This ensures consistent user records across different Microsoft account types
+    const userDoc = await usersRef.where("email", "==", email).limit(1).get();
+    const userId = userDoc.empty ? uuidv4() : userDoc.docs[0].id;
+
+    await usersRef.doc(userId).set(
       {
-        email: email,
+        email,
         firstName,
         lastName,
         name: userData.displayName || `${firstName} ${lastName}`.trim(),
         sessionToken,
         provider: "microsoft",
+        microsoftId: userData.id, // Store Microsoft ID as reference
         avPoints: 0,
         updatedAt: new Date().toISOString(),
       },

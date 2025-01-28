@@ -517,6 +517,66 @@ const Navbar = () => {
               </li>
             ))}
           </ul>
+          <div className="flex justify-center gap-8 mt-8">
+            {["cart", "profile"].map((item, index) => (
+              <Link
+                key={item}
+                href={`/${item}`}
+                className={`
+                        relative
+                        w-[36px] 
+                        h-[36px] 
+                        flex 
+                        items-center 
+                        justify-center 
+                        transform 
+                        transition-all 
+                        duration-100 
+                        hover:scale-110
+                        group
+                        ${
+                          isMobileMenuOpen
+                            ? "translate-y-0 opacity-100"
+                            : "translate-y-10 opacity-0"
+                        }
+                      `}
+                style={{
+                  transitionDelay: `${(navItems.length + index) * 50}ms`,
+                }}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <Image
+                  className="
+                        object-contain 
+                        transition-all 
+                        duration-100 
+                        group-hover:opacity-70
+                        group-hover:transform
+                        group-hover:translate-y-[-2px]
+                        "
+                  src={`/${item}.svg`}
+                  alt={item}
+                  width={36}
+                  height={36}
+                />
+                <span
+                  className="
+                        absolute 
+                        -bottom-6 
+                        text-xs 
+                        text-gray-500 
+                        opacity-0 
+                        group-hover:opacity-100 
+                        transition-all 
+                        duration-100
+                        capitalize
+                      "
+                >
+                  {item}
+                </span>
+              </Link>
+            ))}
+          </div>
           {/* Mobile Search Component */}
           <div className="relative z-[60]">
             {" "}
@@ -550,14 +610,12 @@ const Navbar = () => {
         w-full
         bg-white 
         border 
-        border-gray-300 
+        border-primaryMain 
         rounded-full 
         px-6 
         py-2 
         shadow-sm
         focus:outline-none 
-        focus:ring-2 
-        focus:ring-gray-600 
         transition-all 
         duration-100
         ease-out
@@ -832,66 +890,6 @@ const Navbar = () => {
                 </div>
               </div>
             </form>
-            <div className="flex justify-center gap-8 mt-8">
-              {["cart", "profile"].map((item, index) => (
-                <Link
-                  key={item}
-                  href={`/${item}`}
-                  className={`
-                        relative
-                        w-[36px] 
-                        h-[36px] 
-                        flex 
-                        items-center 
-                        justify-center 
-                        transform 
-                        transition-all 
-                        duration-100 
-                        hover:scale-110
-                        group
-                        ${
-                          isMobileMenuOpen
-                            ? "translate-y-0 opacity-100"
-                            : "translate-y-10 opacity-0"
-                        }
-                      `}
-                  style={{
-                    transitionDelay: `${(navItems.length + index) * 50}ms`,
-                  }}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  <Image
-                    className="
-                        object-contain 
-                        transition-all 
-                        duration-100 
-                        group-hover:opacity-70
-                        group-hover:transform
-                        group-hover:translate-y-[-2px]
-                        "
-                    src={`/${item}.svg`}
-                    alt={item}
-                    width={36}
-                    height={36}
-                  />
-                  <span
-                    className="
-                        absolute 
-                        -bottom-6 
-                        text-xs 
-                        text-gray-500 
-                        opacity-0 
-                        group-hover:opacity-100 
-                        transition-all 
-                        duration-100
-                        capitalize
-                      "
-                  >
-                    {item}
-                  </span>
-                </Link>
-              ))}
-            </div>
           </div>
         </div>
       )}
@@ -918,14 +916,12 @@ const Navbar = () => {
             className={`
             bg-[white] 
             border 
-            border-gray-300 
+            border-primaryMain
             rounded-full 
             px-6 
             py-2 
             shadow-sm
             focus:outline-none 
-            focus:ring-2 
-            focus:ring-gray-600 
             transition-all 
             duration-100
             ease-out

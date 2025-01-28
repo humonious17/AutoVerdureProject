@@ -5,7 +5,12 @@ import TopSegment from "@/app/ui/Store/TopSegment";
 import StoreTools from "@/app/ui/Store/StoreTools";
 import findAllProducts from "/pages/api/products/findAllProducts";
 import TuneIcon from "@mui/icons-material/Tune";
-import { LayoutGrid, Smartphone, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  LayoutGrid,
+  Smartphone,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import TikTokProductView from "./TikTokProductView";
 
 const Store = ({ initialProducts }) => {
@@ -221,9 +226,9 @@ const Store = ({ initialProducts }) => {
                   onMouseLeave={() => setHoveredProductId(null)}
                 >
                   <div
-                    className={`w-full transition-all duration-300 ease-in-out ${
+                    className={`w-full transition-all duration-300 ease-in-out rounded-[24px] sm:rounded-[44px] ${
                       hoveredProductId === product.productId
-                        ? "scale-105 z-20 shadow-xl"
+                        ? "scale-100 z-20 shadow-lg"
                         : "scale-100 z-10"
                     }`}
                   >

@@ -30,16 +30,27 @@ async function searchProducts(searchQuery) {
 
     productsSnapshot.forEach((doc) => {
       const data = doc.data();
-      if (
+
+      // Check if the search term matches either product name or description
+      const nameMatch =
         data.productName &&
-        data.productName.toLowerCase().includes(searchLower)
-      ) {
+        data.productName.toLowerCase().includes(searchLower);
+      const descriptionMatch =
+        data.productDescription &&
+        data.productDescription.toLowerCase().includes(searchLower);
+
+      if (nameMatch || descriptionMatch) {
         results.push({
           productId: doc.id,
           productName: data.productName,
           productType: data.productType,
-          // Add URL using the product ID
+          description: data.productDescription, // Include description in results
           url: `/store/${data.productType}/${doc.id}`,
+          // Add a relevance indicator to show where the match was found
+          matchedFields: {
+            name: nameMatch,
+            description: descriptionMatch,
+          },
         });
       }
     });

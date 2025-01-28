@@ -226,9 +226,9 @@ const Store = ({ initialProducts }) => {
                   onMouseLeave={() => setHoveredProductId(null)}
                 >
                   <div
-                    className={`w-full transition-all duration-300 ease-in-out ${
+                    className={`w-full transition-all duration-300 ease-in-out rounded-[24px] sm:rounded-[44px] ${
                       hoveredProductId === product.productId
-                        ? "scale-105 z-20 shadow-xl"
+                        ? "scale-100 z-20 shadow-lg"
                         : "scale-100 z-10"
                     }`}
                   >

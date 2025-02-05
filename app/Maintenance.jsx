@@ -14,7 +14,7 @@ const Maintenance = () => {
         fontFamily: "Arial, sans-serif",
       }}
     >
-      <h1 style={{ fontSize: "2.5rem", color: "#333", marginBottom: "20px" }}>
+      {/* <h1 style={{ fontSize: "2.5rem", color: "#333", marginBottom: "20px" }}>
         Page Under Maintenance
       </h1>
       <p style={{ fontSize: "1.2rem", color: "#666", margin: "10px 0" }}>
@@ -23,7 +23,7 @@ const Maintenance = () => {
       </p>
       <p style={{ fontSize: "1.2rem", color: "#666", margin: "10px 0" }}>
         Thank you for your patience!
-      </p>
+      </p> */}
     </div>
   );
 };

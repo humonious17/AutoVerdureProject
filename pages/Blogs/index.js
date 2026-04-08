@@ -13,8 +13,14 @@ const Blogs = ({ selectedCategory }) => {
         setLoading(true);
         const res = await fetch("/api/addblogs");
         const data = await res.json();
-        setBlogs(data);
-        filterBlogs(data, selectedCategory);
+        if (Array.isArray(data)) {
+          setBlogs(data);
+          filterBlogs(data, selectedCategory);
+        } else {
+          console.error("Invalid blogs data fetched:", data);
+          setBlogs([]);
+          filterBlogs([], selectedCategory);
+        }
       } catch (error) {
         console.error("Error fetching blogs:", error);
       } finally {
@@ -30,6 +36,11 @@ const Blogs = ({ selectedCategory }) => {
   }, [selectedCategory]); // Re-filter when category changes
 
   const filterBlogs = (blogData, category) => {
+    if (!Array.isArray(blogData)) {
+      setFilteredBlogs([]);
+      return;
+    }
+
     if (category === "all") {
       setFilteredBlogs(blogData);
     } else {

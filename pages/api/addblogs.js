@@ -3,6 +3,9 @@ import { db } from "@/pages/api/firebaseAdmin";
 export default async function handler(req, res) {
   if (req.method === 'POST') {
     try {
+      if (!db) {
+        return res.status(500).json({ error: 'Database not initialized' });
+      }
       const { title, description, content, imageUrl, category } = req.body; // Get data from request body
 
       // Save the blog data to Firestore
@@ -22,6 +25,9 @@ export default async function handler(req, res) {
     }
   } else if (req.method === 'GET') {
     try {
+      if (!db) {
+        return res.status(500).json({ error: 'Database not initialized', blogs: [] });
+      }
       const snapshot = await db.collection('blogs').orderBy('createdAt', 'desc').get();
       const blogs = snapshot.docs.map((doc) => ({
         id: doc.id,
